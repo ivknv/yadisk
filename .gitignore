@@ -1,0 +1,6 @@
+.*.sw[a-z]
+*.py[co]
+app_info.json
+dist/
+build/
+yadisk.egg-info/
