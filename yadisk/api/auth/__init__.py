@@ -3,3 +3,4 @@
 
 from .GetTokenRequest import *
 from .RefreshTokenRequest import *
+from .RevokeTokenRequest import *
