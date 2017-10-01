@@ -24,7 +24,10 @@ class YaDisk(object):
 
         return session
 
-    def get_auth_url(self):
+    def get_auth_url(self, *args, **kwargs):
+        return functions.get_auth_url(self.id, *args, **kwargs)
+
+    def get_code_url(self):
         return functions.get_auth_url(self.id)
 
     def get_token(self, code, *args, **kwargs):
@@ -32,6 +35,12 @@ class YaDisk(object):
 
     def refresh_token(self, refresh_token, *args, **kwargs):
         return functions.refresh_token(self.make_session(), refresh_token, self.id, self.secret, *args, **kwargs)
+
+    def revoke_token(self, token=None, *args, **kwargs):
+        if token is None:
+            token = self.token
+
+        return functions.revoke_token(token, self.id, self.secret, *args, **kwargs)
 
     def get_disk_info(self, *args, **kwargs):
         return functions.get_disk_info(self.make_session(), *args, **kwargs)
