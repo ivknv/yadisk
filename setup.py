@@ -1,12 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import codecs
+import os
+
 from setuptools import setup, find_packages
+
+module_dir = os.path.dirname(__file__)
+
+with codecs.open(os.path.join(module_dir, "README.rst"), encoding="utf8") as f:
+    long_description = f.read()
 
 setup(name="yadisk",
       version="0.1.0",
       packages=find_packages(),
       description="Yandex.Disk REST API client library",
+      long_description=long_description,
       author="Ivan Konovalov",
       author_email="rvan.mega@gmail.com",
       license="GPLv3",
