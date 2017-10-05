@@ -7,6 +7,14 @@ from ...objects import LinkObject
 __all__ = ["GetDownloadLinkRequest"]
 
 class GetDownloadLinkRequest(APIRequest):
+    """
+        A request to get a download link to a resource.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param path: path to the resource to be downloaded
+        :param fields: list of keys to be included in the response
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk/resources/download"
     method = "GET"
 

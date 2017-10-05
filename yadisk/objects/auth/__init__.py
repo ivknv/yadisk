@@ -2,4 +2,4 @@
 # -*- coding: utf-8 -*-
 
 from .TokenObject import *
-from .TokenRevokeStatus import *
+from .TokenRevokeStatusObject import *

@@ -4,6 +4,14 @@
 __all__ = ["YaDiskObject"]
 
 class YaDiskObject(object):
+    """
+        Base class for all objects mirroring the ones returned by Yandex.Disk REST API.
+        It must have a fixed number of fields, each field must have a type.
+        It also supports subscripting and access of fields through the . operator.
+
+        :param field_types: `dict` or `None`
+    """
+
     def __init__(self, field_types=None):
         if field_types is None:
             field_types = {}
@@ -13,20 +21,46 @@ class YaDiskObject(object):
         self.set_field_types(field_types)
 
     def set_field_types(self, field_types):
+        """
+            Set the field types of the object
+
+            :param field_types: `dict`, where keys are the field names and values are types (or factories)
+        """
+
         self.FIELD_TYPES = field_types
 
         for field in field_types.keys():
             self[field] = None
 
     def set_field_type(self, field, type):
+        """
+            Set field type.
+
+            :param field: `str`
+            :param type: type or factory
+        """
+
         self.FIELD_TYPES[field] = type
         self[field] = None
 
     def remove_field(self, field):
+        """
+            Remove field.
+
+            :param field: `str`
+        """
+
         self.FIELDS.pop(field)
         self.FIELD_TYPES.pop(field)
 
     def import_fields(self, source_dict):
+        """
+            Set all the fields of the object to the values in `source_dict`.
+            All the other fields are ignored
+
+            :param source_dict: `dict` or `None` (nothing will be done in that case)
+        """
+
         if source_dict is not None:
             for field in self.FIELDS:
                 self[field] = source_dict.get(field)
@@ -66,4 +100,3 @@ class YaDiskObject(object):
 
     def __repr__(self, initial_indent_size=0):
         return "<%s%r>" % (self.__class__.__name__, self.FIELDS)
-

@@ -7,6 +7,17 @@ from ...objects import LinkObject
 __all__ = ["CopyRequest"]
 
 class CopyRequest(APIRequest):
+    """
+        A request to copy a file or a directory.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param src_path: source path
+        :param dst_path: destination path
+        :param overwrite: if `True` the destination path can be overwritten,
+                          otherwise, an error will be raised
+        :param fields: list of keys to be included in the response
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk/resources/copy"
     method = "POST"
     success_codes = {201, 202}

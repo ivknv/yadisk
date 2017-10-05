@@ -7,6 +7,13 @@ from ...objects import DiskObject
 __all__ = ["DiskRequest"]
 
 class DiskRequest(APIRequest):
+    """
+        A request to get disk information.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param fields: list of keys to be included in the response
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk"
     method = "GET"
 
