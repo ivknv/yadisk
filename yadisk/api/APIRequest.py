@@ -15,6 +15,26 @@ EXCEPTION_MAP = {i.error_type: i for i in (UnauthorizedError,
                                            PathExistsError)}
 
 class APIRequest(object):
+    """
+        Base class for all API requests
+
+        Class attributes:
+            :param url: request URL
+            :param method: request method
+            :param timeout: request timeout
+            :param n_retries: maximum number of retries
+            :param success_codes: list of response codes that indicate request's success
+            :param retry_codes: list of response codes that trigger a retry
+            :param retry_interval: delay between retries in seconds (`float`)
+
+        __init__() parameters:
+            :param session: an instance of `requests.Session`
+            :param args: `dict` of arguments, that will be passed to `process_args`
+            :param timeout: request timeout
+            :param n_retries: maximum number of retries
+            :param *send_args, **send_kwargs: other parameters for session.send()
+    """
+
     url = None
     method = None
     timeout = (10, 15)
@@ -47,6 +67,8 @@ class APIRequest(object):
         raise NotImplementedError
 
     def prepare(self):
+        """Prepare the request"""
+
         self.request = requests.Request(self.method, self.url,
                                         data=self.data, params=self.params)
 
@@ -95,6 +117,8 @@ class APIRequest(object):
         return exc("%s: %s (%s)" % (error.error, msg, desc))
 
     def process(self):
+        """Process the response"""
+
         success = self.response.status_code in self.success_codes
 
         try:

@@ -3,9 +3,9 @@
 
 from ..YaDiskObject import YaDiskObject
 
-__all__ = ["TokenRevokeStatus"]
+__all__ = ["TokenRevokeStatusObject"]
 
-class TokenRevokeStatus(YaDiskObject):
+class TokenRevokeStatusObject(YaDiskObject):
     def __init__(self, token_revoke_status=None):
         YaDiskObject.__init__(self, {"status": str})
 

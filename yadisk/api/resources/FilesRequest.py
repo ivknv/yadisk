@@ -1,12 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import collections
+
 from ..APIRequest import APIRequest
 from ...objects import FilesResourceListObject
 
 __all__ = ["FilesRequest"]
 
 class FilesRequest(APIRequest):
+    """
+        A request to get a flat list of all files (that doesn't include directories).
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param offset: offset from the beginning of the list
+        :param limit: number of list elements to be included
+        :param media_type: type of files to include in the list
+        :param sort: sort type
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk/resources/files"
     method = "GET"
 
@@ -26,7 +38,13 @@ class FilesRequest(APIRequest):
         self.params["limit"] = limit
 
         if media_type is not None:
-            self.params["media_type"] = media_type
+            if not isinstance(media_type, collections.Iterable):
+                raise TypeError("media_type should be a string or an iterable")
+
+            if isinstance(media_type, str):
+                self.params["media_type"] = media_type
+            else:
+                self.params["media_type"] = ",".join(media_type)
 
         if preview_size is not None:
             self.params["preview_size"] = preview_size

@@ -6,6 +6,19 @@ from .YaDiskObject import YaDiskObject
 __all__ = ["ErrorObject"]
 
 class ErrorObject(YaDiskObject):
+    """
+        Mirrors Yandex.Disk REST API error object.
+
+        :param error: `dict` or `None`
+
+        message:
+            `str`, human-readable error message
+        description:
+            `str`, technical error description
+        error:
+            `str`, error code
+    """
+
     def __init__(self, error=None):
         YaDiskObject.__init__(self, {"message":     str,
                                      "description": str,

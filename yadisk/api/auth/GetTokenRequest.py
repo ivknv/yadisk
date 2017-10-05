@@ -7,6 +7,15 @@ from ...objects import TokenObject
 __all__ = ["GetTokenRequest"]
 
 class GetTokenRequest(APIRequest):
+    """
+        A request to get the token.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param code: confirmation code
+        :param client_id: application ID
+        :param device_id: unique device ID (between 6 and 50 characters)
+    """
+
     url = "https://oauth.yandex.ru/token"
     method = "POST"
 

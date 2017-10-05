@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import collections
+
 from ..APIRequest import APIRequest
 from ...objects import LastUploadedResourceListObject
 
@@ -22,7 +24,13 @@ class LastUploadedRequest(APIRequest):
         self.params["limit"] = limit
 
         if media_type is not None:
-            self.params["media_type"] = media_type
+            if not isinstance(media_type, collections.Iterable):
+                raise TypeError("media_type should be a string or an iterable")
+
+            if isinstance(media_type, str):
+                self.params["media_type"] = media_type
+            else:
+                self.params["media_type"] = ",".join(media_type)
 
         if preview_size is not None:
             self.params["preview_size"] = preview_size

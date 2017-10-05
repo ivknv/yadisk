@@ -2,11 +2,20 @@
 # -*- coding: utf-8 -*-
 
 from ..APIRequest import APIRequest
-from ...objects import TokenRevokeStatus
+from ...objects import TokenRevokeStatusObject
 
 __all__ = ["RevokeTokenRequest"]
 
 class RevokeTokenRequest(APIRequest):
+    """
+        A request to revoke the token.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param token: the token to be revoked
+        :param client_id: application ID
+        :param client_secret: application secret password
+    """
+
     url = "https://oauth.yandex.ru/revoke_token"
     method = "POST"
 
@@ -21,4 +30,4 @@ class RevokeTokenRequest(APIRequest):
         self.data["client_secret"] = client_secret
 
     def process_json(self, js):
-        return TokenRevokeStatus(js)
+        return TokenRevokeStatusObject(js)

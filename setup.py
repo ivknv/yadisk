@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(name="yadisk",
       version="0.1.0",
-      packages=["yadisk"],
+      packages=find_packages(),
       description="Yandex.Disk REST API client library",
       author="Ivan Konovalov",
       author_email="rvan.mega@gmail.com",

@@ -7,6 +7,15 @@ from ...objects import TokenObject
 __all__ = ["RefreshTokenRequest"]
 
 class RefreshTokenRequest(APIRequest):
+    """
+        A request to refresh an existing token.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param refresh_token: the refresh token that was received with the original token
+        :param client_id: application ID
+        :param client_secret: application secret password
+    """
+
     url = "https://oauth.yandex.ru/token"
     method = "POST"
 

@@ -7,6 +7,18 @@ from ...objects import ResourceObject
 __all__ = ["GetMetaRequest"]
 
 class GetMetaRequest(APIRequest):
+    """
+        A request to get meta-information about a resource.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param path: path to the resource
+        :param limit: number of children resources to be included in the response
+        :param offset: number of children resources to be skipped in the response
+        :param preview_size: size of the file preview
+        :param preview_crop: cut the preview to the size specified in the `preview_size`
+        :param fields: list of keys to be included in the response
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk/resources"
     method = "GET"
 

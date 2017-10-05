@@ -4,3 +4,4 @@ app_info.json
 dist/
 build/
 yadisk.egg-info/
+docs/_build
