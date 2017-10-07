@@ -294,3 +294,14 @@ class YaDisk(object):
         """
 
         return functions.copy(self.make_session(), src_path, dst_path, *args, **kwargs)
+
+    def restore_trash(self, path, *args, **kwargs):
+        """
+            Restore a trash resource.
+
+            :param path: path to the trash resource to restore
+
+            :returns: `LinkObject`
+        """
+
+        return functions.restore_trash(self.make_session(), path, *args, **kwargs)

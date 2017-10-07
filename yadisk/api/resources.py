@@ -121,23 +121,33 @@ class GetTrashRequest(APIRequest):
         return TrashResourceObject(js)
 
 class RestoreTrashRequest(APIRequest):
+    """
+        A request to restore trash.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param dst_path: destination
+        :param path: path to the trash resource to be restored
+        :param overwrite: `bool`, determines whether the destination can be overwritten
+        :param fields: list of keys to be included in the response
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk/trash/resources/restore"
     method = "PUT"
     success_codes = {201, 202}
 
-    def __init__(self, session, path=None, name=None, overwrite=False, fields=None,
+    def __init__(self, session, path, dst_path=None, overwrite=False, fields=None,
                  *args, **kwargs):
         APIRequest.__init__(self, session, {"path":      path,
-                                            "name":      name,
+                                            "dst_path":  dst_path,
                                             "overwrite": overwrite,
                                             "fields":    fields}, *args, **kwargs)
 
-    def process_args(self, path, name, overwrite, fields):
+    def process_args(self, path, dst_path, overwrite, fields):
         self.params["path"] = path
         self.params["overwrite"] = "true" if overwrite else "false"
 
-        if name is not None:
-            self.params["name"] = name
+        if dst_path is not None:
+            self.params["name"] = dst_path
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)

@@ -56,3 +56,12 @@ class ResourcesTestCase(TestCase):
         self.yadisk.mkdir(path)
         self.yadisk.remove(path, permanently=True)
         self.assertFalse(self.yadisk.trash_exists(path))
+
+    def test_restore_trash(self):
+        path = posixpath.join(self.path, "dir")
+
+        self.yadisk.mkdir(path)
+        self.yadisk.remove(path)
+        self.yadisk.restore_trash("dir", path)
+        self.assertTrue(self.yadisk.exists(path))
+        self.yadisk.remove(path, permanently=True)
