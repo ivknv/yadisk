@@ -7,11 +7,12 @@ import requests
 
 from ..api import CopyRequest, GetDownloadLinkRequest, GetMetaRequest, APIRequest
 from ..api import GetUploadLinkRequest, MkdirRequest, DeleteRequest, GetTrashRequest
+from ..api import RestoreTrashRequest
 from ..exceptions import DiskNotFoundError
 
 __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_type",
            "get_upload_link", "is_dir", "is_file", "listdir", "mkdir", "remove",
-           "upload", "get_trash_meta", "trash_exists"]
+           "upload", "get_trash_meta", "trash_exists", "restore_trash"]
 
 def copy(session, src_path, dst_path, *args, **kwargs):
     """
@@ -337,3 +338,18 @@ def trash_exists(session, path, *args, **kwargs):
         return True
     except DiskNotFoundError:
         return False
+
+def restore_trash(session, path, *args, **kwargs):
+    """
+        Restore a trash resource.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param path: path to the trash resource to be restored
+
+        :returns: `LinkObject`
+    """
+
+    request = RestoreTrashRequest(session, path, *args, **kwargs)
+    request.send()
+
+    return request.process()
