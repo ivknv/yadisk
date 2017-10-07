@@ -18,7 +18,7 @@ class ResourcesTestCase(TestCase):
        self.assertIsInstance(self.yadisk.get_meta(self.path), yadisk.objects.ResourceObject)
 
     def test_mkdir_and_exists(self):
-        names = ["dir1", "dir2", "dir3"]
+        names = ["dir1", "dir2"]
 
         for name in names:
             path = posixpath.join(self.path, name)
@@ -65,3 +65,13 @@ class ResourcesTestCase(TestCase):
         self.yadisk.restore_trash("dir", path)
         self.assertTrue(self.yadisk.exists(path))
         self.yadisk.remove(path, permanently=True)
+
+    def test_move(self):
+        path1 = posixpath.join(self.path, "dir1")
+        path2 = posixpath.join(self.path, "dir2")
+        self.yadisk.mkdir(path1)
+        self.yadisk.move(path1, path2)
+
+        self.assertTrue(self.yadisk.exists(path2))
+
+        self.yadisk.remove(path2, permanently=True)

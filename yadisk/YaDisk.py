@@ -305,3 +305,15 @@ class YaDisk(object):
         """
 
         return functions.restore_trash(self.make_session(), path, *args, **kwargs)
+
+    def move(self, src_path, dst_path, *args, **kwargs):
+        """
+            Move `src_path` to `dst_path`.
+
+            :param src_path: source path to be moved
+            :param dst_path: destination path
+
+            :returns: `LinkObject`
+        """
+
+        return functions.move(self.make_session(), src_path, dst_path, *args, **kwargs)

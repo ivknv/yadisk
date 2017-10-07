@@ -492,7 +492,17 @@ class GetPublicDownloadLinkRequest(APIRequest):
         return LinkObject(js)
 
 class MoveRequest(APIRequest):
-    url = "https://cloud-api.yandex.net/v1/disk/move"
+    """
+        A Request to move a resource.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param src_path: source path to be moved
+        :param dst_path: destination path
+        :param overwrite: `bool`, determines whether to overwrite the destination
+        :param fields: list of keys to be included in the response
+    """
+
+    url = "https://cloud-api.yandex.net/v1/disk/resources/move"
     method = "POST"
     success_codes = {201, 202}
 
