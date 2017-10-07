@@ -7,12 +7,12 @@ import requests
 
 from ..api import CopyRequest, GetDownloadLinkRequest, GetMetaRequest, APIRequest
 from ..api import GetUploadLinkRequest, MkdirRequest, DeleteRequest, GetTrashRequest
-from ..api import RestoreTrashRequest
+from ..api import RestoreTrashRequest, MoveRequest
 from ..exceptions import DiskNotFoundError
 
 __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_type",
            "get_upload_link", "is_dir", "is_file", "listdir", "mkdir", "remove",
-           "upload", "get_trash_meta", "trash_exists", "restore_trash"]
+           "upload", "get_trash_meta", "trash_exists", "restore_trash", "move"]
 
 def copy(session, src_path, dst_path, *args, **kwargs):
     """
@@ -350,6 +350,22 @@ def restore_trash(session, path, *args, **kwargs):
     """
 
     request = RestoreTrashRequest(session, path, *args, **kwargs)
+    request.send()
+
+    return request.process()
+
+def move(session, src_path, dst_path, *args, **kwargs):
+    """
+        Move `src_path` to `dst_path`.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param src_path: source path to be moved
+        :param dst_path: destination path
+
+        :returns: `LinkObject`
+    """
+
+    request = MoveRequest(session, src_path, dst_path, *args, **kwargs)
     request.send()
 
     return request.process()
