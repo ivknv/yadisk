@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from ..APIRequest import APIRequest
-from ...objects import DiskObject
+from .APIRequest import APIRequest
+from ..objects import DiskObject
 
 __all__ = ["DiskRequest"]
 
