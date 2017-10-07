@@ -77,3 +77,77 @@ Objects
 
    .. autoclass:: OperationStatusListObject
       :members:
+
+API request objects
+*******************
+
+.. automodule:: yadisk.api
+
+   .. autoclass:: APIRequest
+      :members: 
+
+   .. autoclass:: DiskRequest
+      :members:
+
+   .. autoclass:: RefreshTokenRequest
+      :members:
+
+   .. autoclass:: GetPublicResourcesRequest
+      :members:
+
+   .. autoclass:: UnpublishRequest
+      :members:
+
+   .. autoclass:: GetDownloadLinkRequest
+      :members:
+
+   .. autoclass:: GetTrashRequest
+      :members:
+
+   .. autoclass:: RestoreTrashRequest
+      :members:
+
+   .. autoclass:: DeleteTrashRequest
+      :members:
+
+   .. autoclass:: LastUploadedRequest
+      :members:
+
+   .. autoclass:: CopyRequest
+      :members:
+
+   .. autoclass:: GetMetaRequest
+      :members:
+
+   .. autoclass:: GetUploadLinkRequest
+      :members:
+
+   .. autoclass:: MkdirRequest
+      :members:
+
+   .. autoclass:: PublishRequest
+      :members:
+
+   .. autoclass:: UploadURLRequest
+      :members:
+
+   .. autoclass:: DeleteRequest
+      :members:
+
+   .. autoclass:: SaveToDiskRequest
+      :members:
+
+   .. autoclass:: GetPublicMetaRequest
+      :members:
+
+   .. autoclass:: GetPublicDownloadLinkRequest
+      :members:
+
+   .. autoclass:: MoveRequest
+      :members:
+
+   .. autoclass:: FilesRequest
+      :members:
+
+   .. autoclass:: PatchRequest
+      :members:
