@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from ..APIRequest import APIRequest
-from ...objects import ResourceUploadLink
+from ...objects import ResourceUploadLinkObject
 
 __all__ = ["GetUploadLinkRequest"]
 
@@ -23,4 +23,4 @@ class GetUploadLinkRequest(APIRequest):
             self.params["fields"] = ",".join(fields)
 
     def process_json(self, js):
-        return ResourceUploadLink(js)
+        return ResourceUploadLinkObject(js)

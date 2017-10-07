@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from ..YaDiskObject import YaDiskObject
+from .YaDiskObject import YaDiskObject
 
-__all__ = ["TokenObject"]
+__all__ = ["TokenObject", "TokenRevokeStatusObject"]
 
 class TokenObject(YaDiskObject):
     def __init__(self, token=None):
@@ -13,3 +13,9 @@ class TokenObject(YaDiskObject):
                                      "exprires_in":   int})
 
         self.import_fields(token)
+
+class TokenRevokeStatusObject(YaDiskObject):
+    def __init__(self, token_revoke_status=None):
+        YaDiskObject.__init__(self, {"status": str})
+
+        self.import_fields(token_revoke_status)

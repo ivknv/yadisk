@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# pylint: disable=wildcard-import
 from .public import *
 from .trash import *
 from .GetMetaRequest import *
