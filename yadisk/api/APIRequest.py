@@ -18,21 +18,32 @@ class APIRequest(object):
     """
         Base class for all API requests
 
-        Class attributes:
-            :param url: request URL
-            :param method: request method
-            :param timeout: request timeout
-            :param n_retries: maximum number of retries
-            :param success_codes: list of response codes that indicate request's success
-            :param retry_codes: list of response codes that trigger a retry
-            :param retry_interval: delay between retries in seconds (`float`)
+        url:
+            request URL
 
-        __init__() parameters:
-            :param session: an instance of `requests.Session`
-            :param args: `dict` of arguments, that will be passed to `process_args`
-            :param timeout: request timeout
-            :param n_retries: maximum number of retries
-            :param *send_args, **send_kwargs: other parameters for session.send()
+        method:
+            request method
+
+        timeout:
+            request timeout
+
+        n_retries:
+            maximum number of retries
+
+        success_codes:
+            list of response codes that indicate request's success
+
+        retry_codes:
+            list of response codes that trigger a retry
+
+        retry_interval:
+            delay between retries in seconds (`float`)
+
+        :param session: an instance of `requests.Session`
+        :param args: `dict` of arguments, that will be passed to `process_args`
+        :param timeout: request timeout
+        :param n_retries: maximum number of retries
+        :param send_args, send_kwargs: other parameters for session.send()
     """
 
     url = None
@@ -73,6 +84,11 @@ class APIRequest(object):
                                         data=self.data, params=self.params)
 
     def send(self):
+        """
+            Actually send the request
+           
+           :returns: `requests.Response` (`self.response`)
+        """
         for i in range(self.n_retries + 1):
             if i > 0:
                 if not self.on_retry():
