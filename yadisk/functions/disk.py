@@ -10,6 +10,7 @@ def get_disk_info(session, *args, **kwargs):
         Get disk information.
 
         :param session: an instance of `requests.Session` with prepared headers
+        :param fields: list of keys to be included in the response
 
         :returns: `DiskObject`
     """

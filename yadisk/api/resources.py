@@ -87,6 +87,17 @@ class GetDownloadLinkRequest(APIRequest):
         return LinkObject(js)
 
 class GetTrashRequest(APIRequest):
+    """
+        A request to get meta-information about a trash resource.
+
+        :param path: path to the trash resource
+        :param limit: number of children resources to be included in the response
+        :param offset: number of children resources to be skipped in the response
+        :param preview_size: size of the file preview
+        :param preview_crop: cut the preview to the size specified in the `preview_size`
+        :param fields: list of keys to be included in the response
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk/trash/resources"
     method = "GET"
 
@@ -125,8 +136,8 @@ class RestoreTrashRequest(APIRequest):
         A request to restore trash.
 
         :param session: an instance of `requests.Session` with prepared headers
-        :param dst_path: destination
         :param path: path to the trash resource to be restored
+        :param dst_path: destination path
         :param overwrite: `bool`, determines whether the destination can be overwritten
         :param fields: list of keys to be included in the response
     """
@@ -292,6 +303,15 @@ class GetMetaRequest(APIRequest):
         return ResourceObject(js)
 
 class GetUploadLinkRequest(APIRequest):
+    """
+        A request to get an upload link.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param path: path to be uploaded at
+        :param overwrite: `bool`, determines whether to overwrite the destination
+        :param fields: list of keys to be included in the response
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk/resources/upload"
     method = "GET"
 
@@ -311,6 +331,13 @@ class GetUploadLinkRequest(APIRequest):
         return ResourceUploadLinkObject(js)
 
 class MkdirRequest(APIRequest):
+    """
+        A request to create a new directory.
+
+        :param path: path to the directory to be created
+        :param fields: list of keys to be included in the response
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk/resources"
     method = "PUT"
     success_codes = {201}

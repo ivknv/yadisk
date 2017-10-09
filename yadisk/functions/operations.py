@@ -11,6 +11,7 @@ def get_operation_status(session, operation_id, *args, **kwargs):
 
         :param session: an instance of `requests.Session` with prepared headers
         :param operation_id: ID of the operation or a link
+        :param fields: list of keys to be included in the response
 
         :returns: `str`
     """

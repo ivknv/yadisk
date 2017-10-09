@@ -23,6 +23,9 @@ def copy(session, src_path, dst_path, *args, **kwargs):
         :param session: an instance of `requests.Session` with prepared headers
         :param src_path: source path
         :param dst_path: destination path
+        :param overwrite: if `True` the destination path can be overwritten,
+                          otherwise, an error will be raised
+        :param fields: list of keys to be included in the response
 
         :returns: `LinkObject`
     """
@@ -107,6 +110,7 @@ def get_download_link(session, path, *args, **kwargs):
 
         :param session: an instance of `requests.Session` with prepared headers
         :param path: path to the resource
+        :param fields: list of keys to be included in the response
 
         :returns: `LinkObject`
     """
@@ -122,6 +126,11 @@ def get_meta(session, *args, **kwargs):
 
         :param session: an instance of `requests.Session` with prepared headers
         :param path: path to the resource
+        :param limit: number of children resources to be included in the response
+        :param offset: number of children resources to be skipped in the response
+        :param preview_size: size of the file preview
+        :param preview_crop: cut the preview to the size specified in the `preview_size`
+        :param fields: list of keys to be included in the response
 
         :returns: `ResourceObject`
     """
@@ -149,6 +158,8 @@ def get_upload_link(session, path, *args, **kwargs):
 
         :param session: an instance of `requests.Session` with prepared headers
         :param path: destination path
+        :param overwrite: `bool`, determines whether to overwrite the destination
+        :param fields: list of keys to be included in the response
 
         :returns: `LinkObject`
     """
@@ -226,6 +237,7 @@ def mkdir(session, path, *args, **kwargs):
 
         :param session: an instance of `requests.Session` with prepared headers
         :param path: path to the directory to be created
+        :param fields: list of keys to be included in the response
 
         :returns: `LinkObject`
     """
@@ -242,6 +254,9 @@ def remove(session, path, *args, **kwargs):
 
         :param session: an instance of `requests.Session` with prepared headers
         :param path: path to the resource to be removed
+        :param permanently: if `True`, the resource will be removed permanently,
+                            otherwise, it will be just moved to the trash
+        :param fields: list of keys to be included in the response
 
         :returns: `LinkObject` if the operation is performed asynchronously, `None` otherwise
     """
@@ -313,6 +328,11 @@ def get_trash_meta(session, path, *args, **kwargs):
 
         :param session: an instance of `requests.Session` with prepared headers
         :param path: path to the trash resource
+        :param limit: number of children resources to be included in the response
+        :param offset: number of children resources to be skipped in the response
+        :param preview_size: size of the file preview
+        :param preview_crop: cut the preview to the size specified in the `preview_size`
+        :param fields: list of keys to be included in the response
 
         :returns: `TrashResourceObject`
     """
@@ -345,6 +365,9 @@ def restore_trash(session, path, *args, **kwargs):
 
         :param session: an instance of `requests.Session` with prepared headers
         :param path: path to the trash resource to be restored
+        :param dst_path: destination path
+        :param overwrite: `bool`, determines whether the destination can be overwritten
+        :param fields: list of keys to be included in the response
 
         :returns: `LinkObject`
     """
@@ -361,6 +384,8 @@ def move(session, src_path, dst_path, *args, **kwargs):
         :param session: an instance of `requests.Session` with prepared headers
         :param src_path: source path to be moved
         :param dst_path: destination path
+        :param overwrite: `bool`, determines whether to overwrite the destination
+        :param fields: list of keys to be included in the response
 
         :returns: `LinkObject`
     """
