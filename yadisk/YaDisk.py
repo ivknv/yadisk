@@ -43,6 +43,16 @@ class YaDisk(object):
         """
             Get authentication URL for the user to go to.
 
+            :param device_id: unique device ID, must be between 6 and 50 characters
+            :param device_name: device name, should not be longer than 100 characters
+            :param display: indicates whether to use lightweight layout, values other than "popup" are ignored
+            :param login_hint: username or email for the account the token is being requested for
+            :param scope: list of permissions for the application
+            :param optional_scope: list of optional permissions for the application
+            :param force_confirm: if True, user will be required to confirm access to the account
+                                  even if the user has already granted access for the application
+            :param state: The state string, which Yandex.OAuth returns without any changes (<= 1024 characters)
+
             :returns: authentication URL
         """
 
@@ -63,6 +73,7 @@ class YaDisk(object):
             Get a new token.
 
             :param code: confirmation code
+            :param device_id: unique device ID (between 6 and 50 characters
 
             :returns: `TokenObject`
         """
@@ -98,6 +109,8 @@ class YaDisk(object):
         """
             Get disk information.
 
+            :param fields: list of keys to be included in the response
+
             :returns: `DiskObject`
         """
 
@@ -108,6 +121,11 @@ class YaDisk(object):
             Get meta information about a file/directory.
 
             :param path: path to the resource
+            :param limit: number of children resources to be included in the response
+            :param offset: number of children resources to be skipped in the response
+            :param preview_size: size of the file preview
+            :param preview_crop: cut the preview to the size specified in the `preview_size`
+            :param fields: list of keys to be included in the response
 
             :returns: `ResourceObject`
         """
@@ -174,6 +192,8 @@ class YaDisk(object):
             Get a link to upload the file to.
 
             :param path: destination path
+            :param overwrite: `bool`, determines whether to overwrite the destination
+            :param fields: list of keys to be included in the response
 
             :returns: `LinkObject`
         """
@@ -186,6 +206,9 @@ class YaDisk(object):
 
             :param path_or_file: path or file-like object to be uploaded
             :param dst_path: destination path
+            :param overwrite: if `True`, the resource will be overwritten if it already exists,
+                              an error will be raised otherwise
+            :param fields: list of keys to be included in the response
 
             :returns: `True` if the upload succeeded, `False` otherwise
         """
@@ -197,6 +220,7 @@ class YaDisk(object):
             Get a download link for a file (or a directory).
 
             :param path: path to the resource
+            :param fields: list of keys to be included in the response
 
             :returns: `LinkObject`
         """
@@ -220,6 +244,9 @@ class YaDisk(object):
             Remove the resource.
 
             :param path: path to the resource to be removed
+            :param permanently: if `True`, the resource will be removed permanently,
+                                otherwise, it will be just moved to the trash
+            :param fields: list of keys to be included in the response
 
             :returns: `LinkObject` if the operation is performed asynchronously, `None` otherwise
         """
@@ -231,6 +258,7 @@ class YaDisk(object):
             Create a new directory.
 
             :param path: path to the directory to be created
+            :param fields: list of keys to be included in the response
 
             :returns: `LinkObject`
         """
@@ -253,6 +281,11 @@ class YaDisk(object):
             Get meta information about a trash resource.
 
             :param path: path to the trash resource
+            :param limit: number of children resources to be included in the response
+            :param offset: number of children resources to be skipped in the response
+            :param preview_size: size of the file preview
+            :param preview_crop: cut the preview to the size specified in the `preview_size`
+            :param fields: list of keys to be included in the response
 
             :returns: `TrashResourceObject`
         """
@@ -264,6 +297,9 @@ class YaDisk(object):
             Check whether the trash resource at `path` exists.
 
             :param path: path to the trash resource
+            :param dst_path: destination path
+            :param overwrite: `bool`, determines whether the destination can be overwritten
+            :param fields: list of keys to be included in the response
 
             :returns: `bool`
         """
@@ -275,6 +311,7 @@ class YaDisk(object):
             Get operation status.
 
             :param operation_id: ID of the operation or a link
+            :param fields: list of keys to be included in the response
 
             :returns: `str`
         """
@@ -289,6 +326,9 @@ class YaDisk(object):
 
             :param src_path: source path
             :param dst_path: destination path
+            :param overwrite: if `True` the destination path can be overwritten,
+                              otherwise, an error will be raised
+            :param fields: list of keys to be included in the response
 
             :returns: `LinkObject`
         """
@@ -312,6 +352,8 @@ class YaDisk(object):
 
             :param src_path: source path to be moved
             :param dst_path: destination path
+            :param overwrite: `bool`, determines whether to overwrite the destination
+            :param fields: list of keys to be included in the response
 
             :returns: `LinkObject`
         """
