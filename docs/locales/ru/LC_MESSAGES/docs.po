@@ -1,0 +1,587 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, Ivan Konovalov
+# This file is distributed under the same license as the YaDisk package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: YaDisk 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-07 22:06+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.5.1\n"
+
+#: ../../docs.rst:2
+msgid "Documentation"
+msgstr "Документация"
+
+#: ../../docstring of yadisk.YaDisk:1
+msgid "Implements access to Yandex.Disk REST API"
+msgstr "Реализует доступ к REST API Яндекс.Диска"
+
+#: ../../docstring of yadisk.YaDisk yadisk.YaDisk.check_token
+#: yadisk.YaDisk.copy yadisk.YaDisk.download yadisk.YaDisk.exists
+#: yadisk.YaDisk.get_download_link yadisk.YaDisk.get_meta
+#: yadisk.YaDisk.get_operation_status yadisk.YaDisk.get_token
+#: yadisk.YaDisk.get_trash_meta yadisk.YaDisk.get_type
+#: yadisk.YaDisk.get_upload_link yadisk.YaDisk.is_dir yadisk.YaDisk.is_file
+#: yadisk.YaDisk.listdir yadisk.YaDisk.make_session yadisk.YaDisk.mkdir
+#: yadisk.YaDisk.refresh_token yadisk.YaDisk.remove yadisk.YaDisk.revoke_token
+#: yadisk.YaDisk.trash_exists yadisk.YaDisk.upload yadisk.api.APIRequest
+#: yadisk.api.CopyRequest yadisk.api.DeleteRequest yadisk.api.DiskRequest
+#: yadisk.api.FilesRequest yadisk.api.GetDownloadLinkRequest
+#: yadisk.api.GetMetaRequest yadisk.api.RefreshTokenRequest
+#: yadisk.objects.ErrorObject yadisk.objects.YaDiskObject
+#: yadisk.objects.YaDiskObject.import_fields
+#: yadisk.objects.YaDiskObject.remove_field
+#: yadisk.objects.YaDiskObject.set_field_type
+#: yadisk.objects.YaDiskObject.set_field_types
+msgid "Parameters"
+msgstr "Параметры"
+
+#: ../../docstring of yadisk.YaDisk:3 yadisk.api.RefreshTokenRequest:5
+msgid "application ID"
+msgstr "идентификатор приложения"
+
+#: ../../docstring of yadisk.YaDisk:4 yadisk.api.RefreshTokenRequest:6
+msgid "application secret password"
+msgstr "пароль приложения"
+
+#: ../../docstring of yadisk.YaDisk:5
+msgid "application token"
+msgstr "токен"
+
+#: ../../docstring of yadisk.YaDisk.check_token:1
+msgid "Check whether the token is valid."
+msgstr "Проверяет, действителен ли токен."
+
+#: ../../docstring of yadisk.YaDisk.check_token:3
+msgid "token to check, equivalent to `self.token` if `None`"
+msgstr "токен, подлежащий проверке, то же самое, что `self.token` при `None`"
+
+#: ../../docstring of yadisk.YaDisk.check_token yadisk.YaDisk.copy
+#: yadisk.YaDisk.download yadisk.YaDisk.exists yadisk.YaDisk.get_auth_url
+#: yadisk.YaDisk.get_code_url yadisk.YaDisk.get_disk_info
+#: yadisk.YaDisk.get_download_link yadisk.YaDisk.get_meta
+#: yadisk.YaDisk.get_operation_status yadisk.YaDisk.get_token
+#: yadisk.YaDisk.get_trash_meta yadisk.YaDisk.get_type
+#: yadisk.YaDisk.get_upload_link yadisk.YaDisk.is_dir yadisk.YaDisk.is_file
+#: yadisk.YaDisk.listdir yadisk.YaDisk.make_session yadisk.YaDisk.mkdir
+#: yadisk.YaDisk.refresh_token yadisk.YaDisk.remove yadisk.YaDisk.revoke_token
+#: yadisk.YaDisk.trash_exists yadisk.YaDisk.upload yadisk.api.APIRequest.send
+msgid "Returns"
+msgstr "Возвращает"
+
+#: ../../docstring of yadisk.YaDisk.check_token:5 yadisk.YaDisk.exists:5
+#: yadisk.YaDisk.trash_exists:5
+msgid "`bool`"
+msgstr ""
+
+#: ../../docstring of yadisk.YaDisk.copy:1
+msgid ""
+"Copy `src_path` to `dst_path`. If the operation is performed "
+"asynchronously, returns the link to the operation, otherwise, returns the"
+" link to the newly created resource."
+msgstr ""
+"Копирует `src_path` в `dst_path`. Если операция выполняется "
+"асинхронно, возвращает ссылку на операцию, иначе, возвращает ссылку на новый ресурс."
+
+#: ../../docstring of yadisk.YaDisk.copy:5 yadisk.YaDisk.download:3
+#: yadisk.api.CopyRequest:4
+msgid "source path"
+msgstr "исходный путь"
+
+#: ../../docstring of yadisk.YaDisk.copy:6 yadisk.YaDisk.get_upload_link:3
+#: yadisk.YaDisk.upload:4 yadisk.api.CopyRequest:5
+msgid "destination path"
+msgstr "путь назначения"
+
+#: ../../docstring of yadisk.YaDisk.copy:8 yadisk.YaDisk.get_download_link:5
+#: yadisk.YaDisk.get_upload_link:5 yadisk.YaDisk.mkdir:5
+msgid "`LinkObject`"
+msgstr ""
+
+#: ../../docstring of yadisk.YaDisk.download:1
+msgid "Download the file."
+msgstr "Скачивает файл."
+
+#: ../../docstring of yadisk.YaDisk.download:4
+msgid "destination path or file-like object"
+msgstr "путь назначения или файл-подобный объект"
+
+#: ../../docstring of yadisk.YaDisk.download:6
+msgid "`True` if the download succeeded, `False` otherwise"
+msgstr "`True`, если скачивание удалось, `False`, иначе"
+
+#: ../../docstring of yadisk.YaDisk.exists:1
+msgid "Check whether `path` exists."
+msgstr "Проверяет, существует ли `path`."
+
+#: ../../docstring of yadisk.YaDisk.exists:3 yadisk.YaDisk.get_download_link:3
+#: yadisk.YaDisk.get_meta:3 yadisk.YaDisk.get_type:3 yadisk.YaDisk.is_dir:3
+#: yadisk.YaDisk.is_file:3 yadisk.api.GetMetaRequest:4
+msgid "path to the resource"
+msgstr "путь к ресурсу"
+
+#: ../../docstring of yadisk.YaDisk.get_auth_url:1
+msgid "Get authentication URL for the user to go to."
+msgstr "Получает URL для аутентификации для пользователя."
+
+#: ../../docstring of yadisk.YaDisk.get_auth_url:3 yadisk.YaDisk.get_code_url:4
+msgid "authentication URL"
+msgstr "URL для аутентификации"
+
+#: ../../docstring of yadisk.YaDisk.get_code_url:1
+msgid ""
+"Get the URL for the user to get the confirmation code. The confirmation "
+"code can later be used to get the token."
+msgstr ""
+"Получает URL для получения пользователем кода подтверждения."
+"Он может быть использован для получения токена."
+
+#: ../../docstring of yadisk.YaDisk.get_disk_info:1
+msgid "Get disk information."
+msgstr "Получает информацию о диске."
+
+#: ../../docstring of yadisk.YaDisk.get_disk_info:3
+msgid "`DiskObject`"
+msgstr ""
+
+#: ../../docstring of yadisk.YaDisk.get_download_link:1
+msgid "Get a download link for a file (or a directory)."
+msgstr "Получает ссылку на скачивание файла (или папки)."
+
+#: ../../docstring of yadisk.YaDisk.get_meta:1
+msgid "Get meta information about a file/directory."
+msgstr "Полчает мета-информацию о ресурсе."
+
+#: ../../docstring of yadisk.YaDisk.get_meta:5
+msgid "`ResourceObject`"
+msgstr ""
+
+#: ../../docstring of yadisk.YaDisk.get_operation_status:1
+msgid "Get operation status."
+msgstr "Получает статус операции."
+
+#: ../../docstring of yadisk.YaDisk.get_operation_status:3
+msgid "ID of the operation or a link"
+msgstr "идентификатор операции или ссылка на нее"
+
+#: ../../docstring of yadisk.YaDisk.get_operation_status:5
+#: yadisk.objects.YaDiskObject.remove_field:3
+#: yadisk.objects.YaDiskObject.set_field_type:3
+msgid "`str`"
+msgstr ""
+
+#: ../../docstring of yadisk.YaDisk.get_token:1
+msgid "Get a new token."
+msgstr "Получает новый токен."
+
+#: ../../docstring of yadisk.YaDisk.get_token:3
+msgid "confirmation code"
+msgstr "код подтверждения"
+
+#: ../../docstring of yadisk.YaDisk.get_token:5 yadisk.YaDisk.refresh_token:5
+msgid "`TokenObject`"
+msgstr ""
+
+#: ../../docstring of yadisk.YaDisk.get_trash_meta:1
+msgid "Get meta information about a trash resource."
+msgstr "Получает мета-информацию о ресурсе корзины."
+
+#: ../../docstring of yadisk.YaDisk.get_trash_meta:3
+#: yadisk.YaDisk.trash_exists:3
+msgid "path to the trash resource"
+msgstr "путь к ресурсу корзины"
+
+#: ../../docstring of yadisk.YaDisk.get_trash_meta:5
+msgid "`TrashResourceObject`"
+msgstr ""
+
+#: ../../docstring of yadisk.YaDisk.get_type:1
+msgid "Get resource type."
+msgstr "Получает тип ресурса"
+
+#: ../../docstring of yadisk.YaDisk.get_type:5
+msgid "\"file\" or \"dir\""
+msgstr "\"file\" или \"dir\""
+
+#: ../../docstring of yadisk.YaDisk.get_upload_link:1
+msgid "Get a link to upload the file to."
+msgstr "Получает ссылку для загрузки файла."
+
+#: ../../docstring of yadisk.YaDisk.is_dir:1
+msgid "Check whether `path` is a directory."
+msgstr "Проверяет, является ли `path` папкой."
+
+#: ../../docstring of yadisk.YaDisk.is_dir:5
+msgid ""
+"`True` if `path` is a directory, `False` otherwise (even if it doesn't "
+"exist)"
+msgstr ""
+"`True`, если `path` является папкой, `False`, в остальных случаях (даже если "
+"ресурс не существует)"
+
+#: ../../docstring of yadisk.YaDisk.is_file:1
+msgid "Check whether `path` is a file."
+msgstr "Проверяет, является ли `path` файлом."
+
+#: ../../docstring of yadisk.YaDisk.is_file:5
+msgid "`True` if `path` is a file, `False` otherwise (even if it doesn't exist)"
+msgstr ""
+"`True`, если `path` является файлом, `False`, в остальных случаях (даже если "
+"ресурс не существует)"
+
+#: ../../docstring of yadisk.YaDisk.listdir:1
+msgid "Get contents of `path`."
+msgstr "Получает содержимое `path`."
+
+#: ../../docstring of yadisk.YaDisk.listdir:3
+msgid "path to the directory"
+msgstr "путь к папке"
+
+#: ../../docstring of yadisk.YaDisk.listdir:5
+msgid "generator of `ResourceObject`"
+msgstr "генератор `ResourceObject`"
+
+#: ../../docstring of yadisk.YaDisk.make_session:1
+msgid "Prepares `requests.Session` object with headers needed for API."
+msgstr "Готовит объект `requests.Session` с заголовками, необходимыми для API."
+
+#: ../../docstring of yadisk.YaDisk.make_session:3
+msgid "application token, equivalent to `self.token` if `None`"
+msgstr "токен, то же самое, что `self.token`, если `None`"
+
+#: ../../docstring of yadisk.YaDisk.make_session:4
+msgid "`requests.Session`"
+msgstr ""
+
+#: ../../docstring of yadisk.YaDisk.mkdir:1
+msgid "Create a new directory."
+msgstr "Создаёт новую папку."
+
+#: ../../docstring of yadisk.YaDisk.mkdir:3
+msgid "path to the directory to be created"
+msgstr "путь к папке, подлежащей созданию"
+
+#: ../../docstring of yadisk.YaDisk.refresh_token:1
+msgid "Refresh an existing token."
+msgstr "Обновляет существующий токен."
+
+#: ../../docstring of yadisk.YaDisk.refresh_token:3
+msgid "the refresh token that was receieved with the token"
+msgstr "refresh-токен, полученный вместе с токеном"
+
+#: ../../docstring of yadisk.YaDisk.remove:1
+msgid "Remove the resource."
+msgstr "Удаляет ресурс."
+
+#: ../../docstring of yadisk.YaDisk.remove:3 yadisk.api.DeleteRequest:4
+msgid "path to the resource to be removed"
+msgstr "путь к удаляемому ресурсу"
+
+#: ../../docstring of yadisk.YaDisk.remove:5
+msgid ""
+"`LinkObject` if the operation is performed asynchronously, `None` "
+"otherwise"
+msgstr "`LinkObject`, если операция выполняется асинхронно, иначе `None`"
+
+#: ../../docstring of yadisk.YaDisk.revoke_token:1
+msgid "Revoke the token."
+msgstr "Отзывает токен."
+
+#: ../../docstring of yadisk.YaDisk.revoke_token:3
+msgid "token to revoke, equivalent to `self.token,` if `None`"
+msgstr "токен, подлежащий отзыву, то же самое, что `self.token`, если `None`"
+
+#: ../../docstring of yadisk.YaDisk.revoke_token:5
+msgid "`TokenRevokeStatusObject`"
+msgstr ""
+
+#: ../../docstring of yadisk.YaDisk.trash_exists:1
+msgid "Check whether the trash resource at `path` exists."
+msgstr "Проверяет, существует ли `path` в корзине."
+
+#: ../../docstring of yadisk.YaDisk.upload:1
+msgid "Upload a file to disk."
+msgstr "Загружает файл на диск."
+
+#: ../../docstring of yadisk.YaDisk.upload:3
+msgid "path or file-like object to be uploaded"
+msgstr "путь к файлу или файл-объект для загрузки"
+
+#: ../../docstring of yadisk.YaDisk.upload:6
+msgid "`True` if the upload succeeded, `False` otherwise"
+msgstr "`True`, если загрузка удалась, `False` иначе"
+
+#: ../../docs.rst:8
+msgid "Objects"
+msgstr "Объекты"
+
+#: ../../docstring of yadisk.objects.YaDiskObject:1
+msgid ""
+"Base class for all objects mirroring the ones returned by Yandex.Disk "
+"REST API. It must have a fixed number of fields, each field must have a "
+"type. It also supports subscripting and access of fields through the . "
+"operator."
+msgstr ""
+"Базовый класс для всех объектов, реализующий объекты, возвращаемые REST API Яндекс.Диска. "
+"У наследующего объекта фиксированное количество полей, каждое со своим типом. "
+"Поддерживает доступ по индексу и через точку."
+
+#: ../../docstring of yadisk.objects.ErrorObject:3
+#: yadisk.objects.YaDiskObject:5
+msgid "`dict` or `None`"
+msgstr "`dict` или `None`"
+
+#: ../../docstring of yadisk.objects.YaDiskObject.import_fields:1
+msgid ""
+"Set all the fields of the object to the values in `source_dict`. All the "
+"other fields are ignored"
+msgstr "Задаёт значения всех полей объекта из `source_dict`. Все остальные ключи игнорируются."
+
+#: ../../docstring of yadisk.objects.YaDiskObject.import_fields:4
+msgid "`dict` or `None` (nothing will be done in that case)"
+msgstr "`dict` или `None` (тогда ничего не будет сделано)"
+
+#: ../../docstring of yadisk.objects.YaDiskObject.remove_field:1
+msgid "Remove field."
+msgstr "Удаляет поле."
+
+#: ../../docstring of yadisk.objects.YaDiskObject.set_field_type:1
+msgid "Set field type."
+msgstr "Задаёт тип поля."
+
+#: ../../docstring of yadisk.objects.YaDiskObject.set_field_type:4
+msgid "type or factory"
+msgstr "тип данных или factory"
+
+#: ../../docstring of yadisk.objects.YaDiskObject.set_field_types:1
+msgid "Set the field types of the object"
+msgstr "Задаёт типы полей объекта"
+
+#: ../../docstring of yadisk.objects.YaDiskObject.set_field_types:3
+msgid "`dict`, where keys are the field names and values are types (or factories)"
+msgstr "`dict`, где ключи - это наименования полей, а значения - это типы"
+
+#: ../../docstring of yadisk.objects.ErrorObject:1
+msgid "Mirrors Yandex.Disk REST API error object."
+msgstr "Реализует объект ошибки REST API Яндекс.Диска."
+
+#: ../../docstring of yadisk.objects.ErrorObject:5
+msgid "message:"
+msgstr ""
+
+#: ../../docstring of yadisk.objects.ErrorObject:6
+msgid "`str`, human-readable error message"
+msgstr "`str`, человеко-читаемое сообщение ошибки"
+
+#: ../../docstring of yadisk.objects.ErrorObject:7
+msgid "description:"
+msgstr ""
+
+#: ../../docstring of yadisk.objects.ErrorObject:8
+msgid "`str`, technical error description"
+msgstr "`str`, техническое описание ошибки"
+
+#: ../../docstring of yadisk.objects.ErrorObject:9
+msgid "error:"
+msgstr ""
+
+#: ../../docstring of yadisk.objects.ErrorObject:10
+msgid "`str`, error code"
+msgstr "`str`, уникальный код ошибки"
+
+#: ../../docs.rst:82
+msgid "API request objects"
+msgstr "Объекты запросов к API"
+
+#: ../../docstring of yadisk.api.APIRequest:1
+msgid "Base class for all API requests"
+msgstr "Базовый класс для всех объектов запросов к REST API"
+
+#: ../../docstring of yadisk.api.APIRequest:4
+msgid "url:"
+msgstr ""
+
+#: ../../docstring of yadisk.api.APIRequest:4
+msgid "request URL"
+msgstr "URL запроса"
+
+#: ../../docstring of yadisk.api.APIRequest:7
+msgid "method:"
+msgstr ""
+
+#: ../../docstring of yadisk.api.APIRequest:7
+msgid "request method"
+msgstr "метод запроса"
+
+#: ../../docstring of yadisk.api.APIRequest:10
+msgid "timeout:"
+msgstr ""
+
+#: ../../docstring of yadisk.api.APIRequest:10 yadisk.api.APIRequest:26
+msgid "request timeout"
+msgstr "таймаут запроса"
+
+#: ../../docstring of yadisk.api.APIRequest:13
+msgid "n_retries:"
+msgstr ""
+
+#: ../../docstring of yadisk.api.APIRequest:13 yadisk.api.APIRequest:27
+msgid "maximum number of retries"
+msgstr "максимальное число повторных попыток запроса"
+
+#: ../../docstring of yadisk.api.APIRequest:16
+msgid "success_codes:"
+msgstr ""
+
+#: ../../docstring of yadisk.api.APIRequest:16
+msgid "list of response codes that indicate request's success"
+msgstr "список кодов ответов, означающих успех запроса"
+
+#: ../../docstring of yadisk.api.APIRequest:19
+msgid "retry_codes:"
+msgstr ""
+
+#: ../../docstring of yadisk.api.APIRequest:19
+msgid "list of response codes that trigger a retry"
+msgstr "Список кодов ответа, вызывающих повторный запрос"
+
+#: ../../docstring of yadisk.api.APIRequest:22
+msgid "retry_interval:"
+msgstr ""
+
+#: ../../docstring of yadisk.api.APIRequest:22
+msgid "delay between retries in seconds (`float`)"
+msgstr "задержка между повторными попытками в секундах (`float`)"
+
+#: ../../docstring of yadisk.api.APIRequest:24
+msgid "an instance of `requests.Session`"
+msgstr "объект `requests.Session`"
+
+#: ../../docstring of yadisk.api.APIRequest:25
+msgid "`dict` of arguments, that will be passed to `process_args`"
+msgstr "`dict`, аргументы, которые будут перданы в `process_args`"
+
+#: ../../docstring of yadisk.api.APIRequest:28
+msgid "other parameters for session.send()"
+msgstr "другие параметры для session.send()"
+
+#: ../../docstring of yadisk.api.APIRequest.prepare:1
+msgid "Prepare the request"
+msgstr "Готовит запрос"
+
+#: ../../docstring of yadisk.api.APIRequest.process:1
+msgid "Process the response"
+msgstr "Обрабатывает ответ"
+
+#: ../../docstring of yadisk.api.APIRequest.send:1
+msgid "Actually send the request"
+msgstr "Отправляет запрос"
+
+#: ../../docstring of yadisk.api.APIRequest.send:3
+msgid "`requests.Response` (`self.response`)"
+msgstr ""
+
+#: ../../docstring of yadisk.api.DiskRequest:1
+msgid "A request to get disk information."
+msgstr "Запрос для получения информации о диске."
+
+#: ../../docstring of yadisk.api.CopyRequest:3 yadisk.api.DeleteRequest:3
+#: yadisk.api.DiskRequest:3 yadisk.api.FilesRequest:3
+#: yadisk.api.GetDownloadLinkRequest:3 yadisk.api.GetMetaRequest:3
+#: yadisk.api.RefreshTokenRequest:3
+msgid "an instance of `requests.Session` with prepared headers"
+msgstr "объект `requests.Session` с приготовленными заголовками"
+
+#: ../../docstring of yadisk.api.CopyRequest:8 yadisk.api.DeleteRequest:7
+#: yadisk.api.DiskRequest:4 yadisk.api.GetDownloadLinkRequest:5
+#: yadisk.api.GetMetaRequest:9
+msgid "list of keys to be included in the response"
+msgstr "список ключей, которые будут включены в ответ"
+
+#: ../../docstring of yadisk.api.RefreshTokenRequest:1
+msgid "A request to refresh an existing token."
+msgstr "Запрос для обновления существующего токена."
+
+#: ../../docstring of yadisk.api.RefreshTokenRequest:4
+msgid "the refresh token that was received with the original token"
+msgstr "refresh-токен, полученный вместе с токеном"
+
+#: ../../docstring of yadisk.api.GetDownloadLinkRequest:1
+msgid "A request to get a download link to a resource."
+msgstr "Запрос для прлучения ссылки на сакачивание ресурса."
+
+#: ../../docstring of yadisk.api.GetDownloadLinkRequest:4
+msgid "path to the resource to be downloaded"
+msgstr "путь к скачиваемому ресурсу"
+
+#: ../../docstring of yadisk.api.CopyRequest:1
+msgid "A request to copy a file or a directory."
+msgstr "Запрос копирования файла или папки."
+
+#: ../../docstring of yadisk.api.CopyRequest:6
+msgid ""
+"if `True` the destination path can be overwritten, otherwise, an error "
+"will be raised"
+msgstr "если `True`, путь назначения может быть перезаписан, иначе будет вызвана ошибка"
+
+#: ../../docstring of yadisk.api.GetMetaRequest:1
+msgid "A request to get meta-information about a resource."
+msgstr "Запрос для получния мета-информации о ресурсе."
+
+#: ../../docstring of yadisk.api.GetMetaRequest:5
+msgid "number of children resources to be included in the response"
+msgstr "количество ресурсов в папке, которые будут включены в ответ"
+
+#: ../../docstring of yadisk.api.GetMetaRequest:6
+msgid "number of children resources to be skipped in the response"
+msgstr "количество ресурсов в папке, которые будут пропущены"
+
+#: ../../docstring of yadisk.api.GetMetaRequest:7
+msgid "size of the file preview"
+msgstr "размер превью файла"
+
+#: ../../docstring of yadisk.api.GetMetaRequest:8
+msgid "cut the preview to the size specified in the `preview_size`"
+msgstr "обрезает превью согласно размеру, заданному в `preview_size`"
+
+#: ../../docstring of yadisk.api.DeleteRequest:1
+msgid "A request to delete a file or a directory."
+msgstr "Запрос для удаления ресурса."
+
+#: ../../docstring of yadisk.api.DeleteRequest:5
+msgid ""
+"if `True`, the resource will be removed permanently, otherwise, it will "
+"be just moved to the trash"
+msgstr "если `True`, ресурс будет безвозвратно удалён, иначе ресурс будет перемещён в корзину"
+
+#: ../../docstring of yadisk.api.FilesRequest:1
+msgid ""
+"A request to get a flat list of all files (that doesn't include "
+"directories)."
+msgstr "Запрос для получения плоского списка всех файлов."
+
+#: ../../docstring of yadisk.api.FilesRequest:4
+msgid "offset from the beginning of the list"
+msgstr "отступ от начала списка"
+
+#: ../../docstring of yadisk.api.FilesRequest:5
+msgid "number of list elements to be included"
+msgstr "максимальное количество элементов списка"
+
+#: ../../docstring of yadisk.api.FilesRequest:6
+msgid "type of files to include in the list"
+msgstr "тип файлов, которые будут включены в список"
+
+#: ../../docstring of yadisk.api.FilesRequest:7
+msgid "sort type"
+msgstr "тип сортировки"
+
