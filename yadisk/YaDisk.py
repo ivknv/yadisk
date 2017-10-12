@@ -73,7 +73,7 @@ class YaDisk(object):
             Get a new token.
 
             :param code: confirmation code
-            :param device_id: unique device ID (between 6 and 50 characters
+            :param device_id: unique device ID (between 6 and 50 characters)
 
             :returns: `TokenObject`
         """

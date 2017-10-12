@@ -18,25 +18,19 @@ class APIRequest(object):
     """
         Base class for all API requests
 
-        url:
+        url
             request URL
-
-        method:
+        method
             request method
-
-        timeout:
+        timeout
             request timeout
-
-        n_retries:
+        n_retries
             maximum number of retries
-
-        success_codes:
+        success_codes
             list of response codes that indicate request's success
-
-        retry_codes:
+        retry_codes
             list of response codes that trigger a retry
-
-        retry_interval:
+        retry_interval
             delay between retries in seconds (`float`)
 
         :param session: an instance of `requests.Session`

@@ -95,7 +95,7 @@ def get_token(code, client_id, client_secret, *args, **kwargs):
         :param code: confirmation code
         :param client_id: application ID
         :param client_secret: application secret password
-        :param device_id: unique device ID (between 6 and 50 characters
+        :param device_id: unique device ID (between 6 and 50 characters)
 
         :returns: `TokenObject`
     """
