@@ -44,5 +44,4 @@ class GetOperationStatusRequest(APIRequest):
     def process_json(self, js):
         if "items" in js:
             return OperationStatusObject(js["items"][0])
-        else:
-            return OperationStatusObject(js)
+        return OperationStatusObject(js)

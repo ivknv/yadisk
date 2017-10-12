@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from ..api import DiskRequest
+from ..api import DiskInfoRequest
 
 __all__ = ["get_disk_info"]
 
@@ -15,7 +15,7 @@ def get_disk_info(session, *args, **kwargs):
         :returns: `DiskObject`
     """
 
-    request = DiskRequest(session, *args, **kwargs)
+    request = DiskInfoRequest(session, *args, **kwargs)
     request.send()
 
     return request.process()

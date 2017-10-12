@@ -3,11 +3,27 @@
 
 from .YaDiskObject import YaDiskObject
 from .resources import LinkObject
-from ..common import typed_list
 
-__all__ = ["OperationStatusObject", "OperationStatusListObject"]
+__all__ = ["OperationStatusObject"]
 
 class OperationStatusObject(YaDiskObject):
+    """
+        Operation status object.
+
+        :param operation_status: `dict` or `None`
+
+        type
+            `str`, type of the operation
+        status
+            `str`, status of the operation
+        operation_id
+            `str`, ID of the operation
+        link
+            `LinkObject`, link to the operation
+        data
+            `dict`, other information about the operation
+    """
+
     def __init__(self, operation_status=None):
         YaDiskObject.__init__(self, {"type":         str,
                                      "status":       str,
@@ -16,8 +32,3 @@ class OperationStatusObject(YaDiskObject):
                                      "data":         dict})
 
         self.import_fields(operation_status)
-
-class OperationStatusListObject(YaDiskObject):
-    def __init__(self, operation_status_list=None):
-        YaDiskObject.__init__(self, {"items": typed_list(OperationStatusObject)})
-        self.import_fields(operation_status_list)

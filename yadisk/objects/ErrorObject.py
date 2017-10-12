@@ -11,11 +11,11 @@ class ErrorObject(YaDiskObject):
 
         :param error: `dict` or `None`
 
-        message:
+        message
             `str`, human-readable error message
-        description:
+        description
             `str`, technical error description
-        error:
+        error
             `str`, error code
     """
 

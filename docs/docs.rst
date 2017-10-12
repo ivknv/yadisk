@@ -15,10 +15,13 @@ Objects
    .. autoclass:: ErrorObject
       :members:
 
-   .. autoclass:: DiskObject
+   .. autoclass:: DiskInfoObject
       :members:
 
    .. autoclass:: SystemFoldersObject
+      :members:
+
+   .. autoclass:: UserObject
       :members:
 
    .. autoclass:: LinkObject
@@ -51,9 +54,6 @@ Objects
    .. autoclass:: PublicResourceListObject
       :members:
 
-   .. autoclass:: UserPublicInfoObject
-      :members:
-
    .. autoclass:: CommentIDsObject
       :members:
 
@@ -75,9 +75,6 @@ Objects
    .. autoclass:: OperationStatusObject
       :members:
 
-   .. autoclass:: OperationStatusListObject
-      :members:
-
 API request objects
 *******************
 
@@ -86,7 +83,7 @@ API request objects
    .. autoclass:: APIRequest
       :members: 
 
-   .. autoclass:: DiskRequest
+   .. autoclass:: DiskInfoRequest
       :members:
 
    .. autoclass:: RefreshTokenRequest

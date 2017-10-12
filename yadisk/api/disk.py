@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 from .APIRequest import APIRequest
-from ..objects import DiskObject
+from ..objects import DiskInfoObject
 
-__all__ = ["DiskRequest"]
+__all__ = ["DiskInfoRequest"]
 
-class DiskRequest(APIRequest):
+class DiskInfoRequest(APIRequest):
     """
         A request to get disk information.
 
@@ -25,4 +25,4 @@ class DiskRequest(APIRequest):
             self.params["fields"] = ",".join(fields)
 
     def process_json(self, js):
-        return DiskObject(js)
+        return DiskInfoObject(js)
