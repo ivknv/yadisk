@@ -8,12 +8,13 @@ import requests
 from ..api import CopyRequest, GetDownloadLinkRequest, GetMetaRequest, APIRequest
 from ..api import GetUploadLinkRequest, MkdirRequest, DeleteRequest, GetTrashRequest
 from ..api import RestoreTrashRequest, MoveRequest, DeleteTrashRequest
+from ..api import PublishRequest, UnpublishRequest
 from ..exceptions import DiskNotFoundError
 
 __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_type",
            "get_upload_link", "is_dir", "is_file", "listdir", "mkdir", "remove",
            "upload", "get_trash_meta", "trash_exists", "restore_trash", "move",
-           "remove_trash"]
+           "remove_trash", "publish", "unpublish"]
 
 def copy(session, src_path, dst_path, *args, **kwargs):
     """
@@ -408,6 +409,38 @@ def remove_trash(session, path, *args, **kwargs):
     """
 
     request = DeleteTrashRequest(session, path, *args, **kwargs)
+    request.send()
+
+    return request.process()
+
+def publish(session, path, *args, **kwargs):
+    """
+        Make a resource public.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param path: path to the resource to be published
+        :param fields: list of keys to be included in the response
+
+        :returns: `LinkObject`, link to the resource
+    """
+
+    request = PublishRequest(session, path, *args, **kwargs)
+    request.send()
+
+    return request.process()
+
+def unpublish(session, path, *args, **kwargs):
+    """
+        Make a public resource private.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param path: path to the resource to be unpublished
+        :param fields: list of keys to be included in the response
+
+        :returns: `LinkObject`
+    """
+
+    request = UnpublishRequest(session, path, *args, **kwargs)
     request.send()
 
     return request.process()

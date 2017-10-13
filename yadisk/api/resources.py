@@ -45,6 +45,14 @@ class GetPublicResourcesRequest(APIRequest):
         return PublicResourcesListObject(js)
 
 class UnpublishRequest(APIRequest):
+    """
+        A request to make a public resource private.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param path: path to the resource to be unpublished
+        :param fields: list of keys to be included in the response
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk/resources/unpublish"
     method = "PUT"
 
@@ -364,6 +372,14 @@ class MkdirRequest(APIRequest):
         return LinkObject(js)
 
 class PublishRequest(APIRequest):
+    """
+        A request to make a resource public.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param path: path to the resource to be published
+        :param fields: list of keys to be included in the response
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk/resources/publish"
     method = "PUT"
 

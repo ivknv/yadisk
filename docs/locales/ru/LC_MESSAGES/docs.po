@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-13 16:52+0500\n"
+"POT-Creation-Date: 2017-10-13 19:18+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,23 +33,24 @@ msgstr "Реализует доступ к REST API Яндекс.Диска"
 #: yadisk.YaDisk.get_trash_meta yadisk.YaDisk.get_type
 #: yadisk.YaDisk.get_upload_link yadisk.YaDisk.is_dir yadisk.YaDisk.is_file
 #: yadisk.YaDisk.listdir yadisk.YaDisk.make_session yadisk.YaDisk.mkdir
-#: yadisk.YaDisk.move yadisk.YaDisk.refresh_token yadisk.YaDisk.remove
-#: yadisk.YaDisk.remove_trash yadisk.YaDisk.restore_trash
-#: yadisk.YaDisk.revoke_token yadisk.YaDisk.trash_exists yadisk.YaDisk.upload
-#: yadisk.api.APIRequest yadisk.api.auth.GetTokenRequest
-#: yadisk.api.auth.RefreshTokenRequest yadisk.api.auth.RevokeTokenRequest
-#: yadisk.api.disk.DiskInfoRequest
+#: yadisk.YaDisk.move yadisk.YaDisk.publish yadisk.YaDisk.refresh_token
+#: yadisk.YaDisk.remove yadisk.YaDisk.remove_trash yadisk.YaDisk.restore_trash
+#: yadisk.YaDisk.revoke_token yadisk.YaDisk.trash_exists
+#: yadisk.YaDisk.unpublish yadisk.YaDisk.upload yadisk.api.APIRequest
+#: yadisk.api.auth.GetTokenRequest yadisk.api.auth.RefreshTokenRequest
+#: yadisk.api.auth.RevokeTokenRequest yadisk.api.disk.DiskInfoRequest
 #: yadisk.api.operations.GetOperationStatusRequest
 #: yadisk.api.resources.CopyRequest yadisk.api.resources.DeleteRequest
 #: yadisk.api.resources.DeleteTrashRequest yadisk.api.resources.FilesRequest
 #: yadisk.api.resources.GetDownloadLinkRequest
 #: yadisk.api.resources.GetMetaRequest yadisk.api.resources.GetTrashRequest
 #: yadisk.api.resources.GetUploadLinkRequest yadisk.api.resources.MkdirRequest
-#: yadisk.api.resources.MoveRequest yadisk.api.resources.RestoreTrashRequest
-#: yadisk.functions.auth.check_token yadisk.functions.auth.get_auth_url
-#: yadisk.functions.auth.get_code_url yadisk.functions.auth.get_token
-#: yadisk.functions.auth.refresh_token yadisk.functions.auth.revoke_token
-#: yadisk.functions.disk.get_disk_info
+#: yadisk.api.resources.MoveRequest yadisk.api.resources.PublishRequest
+#: yadisk.api.resources.RestoreTrashRequest
+#: yadisk.api.resources.UnpublishRequest yadisk.functions.auth.check_token
+#: yadisk.functions.auth.get_auth_url yadisk.functions.auth.get_code_url
+#: yadisk.functions.auth.get_token yadisk.functions.auth.refresh_token
+#: yadisk.functions.auth.revoke_token yadisk.functions.disk.get_disk_info
 #: yadisk.functions.operations.get_operation_status
 #: yadisk.functions.resources.copy yadisk.functions.resources.download
 #: yadisk.functions.resources.exists
@@ -60,11 +61,12 @@ msgstr "Реализует доступ к REST API Яндекс.Диска"
 #: yadisk.functions.resources.get_upload_link yadisk.functions.resources.is_dir
 #: yadisk.functions.resources.is_file yadisk.functions.resources.listdir
 #: yadisk.functions.resources.mkdir yadisk.functions.resources.move
-#: yadisk.functions.resources.remove yadisk.functions.resources.remove_trash
+#: yadisk.functions.resources.publish yadisk.functions.resources.remove
+#: yadisk.functions.resources.remove_trash
 #: yadisk.functions.resources.restore_trash
-#: yadisk.functions.resources.trash_exists yadisk.functions.resources.upload
-#: yadisk.objects.ErrorObject yadisk.objects.YaDiskObject
-#: yadisk.objects.YaDiskObject.import_fields
+#: yadisk.functions.resources.trash_exists yadisk.functions.resources.unpublish
+#: yadisk.functions.resources.upload yadisk.objects.ErrorObject
+#: yadisk.objects.YaDiskObject yadisk.objects.YaDiskObject.import_fields
 #: yadisk.objects.YaDiskObject.remove_alias
 #: yadisk.objects.YaDiskObject.remove_field
 #: yadisk.objects.YaDiskObject.set_alias
@@ -161,13 +163,14 @@ msgstr "токен, подлежащий проверке, то же самое,
 #: yadisk.YaDisk.get_trash_meta yadisk.YaDisk.get_type
 #: yadisk.YaDisk.get_upload_link yadisk.YaDisk.is_dir yadisk.YaDisk.is_file
 #: yadisk.YaDisk.listdir yadisk.YaDisk.make_session yadisk.YaDisk.mkdir
-#: yadisk.YaDisk.move yadisk.YaDisk.refresh_token yadisk.YaDisk.remove
-#: yadisk.YaDisk.remove_trash yadisk.YaDisk.restore_trash
-#: yadisk.YaDisk.revoke_token yadisk.YaDisk.trash_exists yadisk.YaDisk.upload
-#: yadisk.api.APIRequest.send yadisk.functions.auth.check_token
-#: yadisk.functions.auth.get_auth_url yadisk.functions.auth.get_code_url
-#: yadisk.functions.auth.get_token yadisk.functions.auth.refresh_token
-#: yadisk.functions.auth.revoke_token yadisk.functions.disk.get_disk_info
+#: yadisk.YaDisk.move yadisk.YaDisk.publish yadisk.YaDisk.refresh_token
+#: yadisk.YaDisk.remove yadisk.YaDisk.remove_trash yadisk.YaDisk.restore_trash
+#: yadisk.YaDisk.revoke_token yadisk.YaDisk.trash_exists
+#: yadisk.YaDisk.unpublish yadisk.YaDisk.upload yadisk.api.APIRequest.send
+#: yadisk.functions.auth.check_token yadisk.functions.auth.get_auth_url
+#: yadisk.functions.auth.get_code_url yadisk.functions.auth.get_token
+#: yadisk.functions.auth.refresh_token yadisk.functions.auth.revoke_token
+#: yadisk.functions.disk.get_disk_info
 #: yadisk.functions.operations.get_operation_status
 #: yadisk.functions.resources.copy yadisk.functions.resources.download
 #: yadisk.functions.resources.exists
@@ -178,9 +181,11 @@ msgstr "токен, подлежащий проверке, то же самое,
 #: yadisk.functions.resources.get_upload_link yadisk.functions.resources.is_dir
 #: yadisk.functions.resources.is_file yadisk.functions.resources.listdir
 #: yadisk.functions.resources.mkdir yadisk.functions.resources.move
-#: yadisk.functions.resources.remove yadisk.functions.resources.remove_trash
+#: yadisk.functions.resources.publish yadisk.functions.resources.remove
+#: yadisk.functions.resources.remove_trash
 #: yadisk.functions.resources.restore_trash
-#: yadisk.functions.resources.trash_exists yadisk.functions.resources.upload
+#: yadisk.functions.resources.trash_exists yadisk.functions.resources.unpublish
+#: yadisk.functions.resources.upload
 msgid "Returns"
 msgstr ""
 
@@ -229,9 +234,9 @@ msgstr ""
 #: yadisk.YaDisk.get_download_link:4 yadisk.YaDisk.get_meta:8
 #: yadisk.YaDisk.get_operation_status:4 yadisk.YaDisk.get_trash_meta:8
 #: yadisk.YaDisk.get_upload_link:5 yadisk.YaDisk.mkdir:4 yadisk.YaDisk.move:6
-#: yadisk.YaDisk.remove:6 yadisk.YaDisk.remove_trash:4
-#: yadisk.YaDisk.trash_exists:6 yadisk.YaDisk.upload:7
-#: yadisk.api.disk.DiskInfoRequest:4
+#: yadisk.YaDisk.publish:4 yadisk.YaDisk.remove:6 yadisk.YaDisk.remove_trash:4
+#: yadisk.YaDisk.trash_exists:6 yadisk.YaDisk.unpublish:4
+#: yadisk.YaDisk.upload:7 yadisk.api.disk.DiskInfoRequest:4
 #: yadisk.api.operations.GetOperationStatusRequest:5
 #: yadisk.api.resources.CopyRequest:8 yadisk.api.resources.DeleteRequest:7
 #: yadisk.api.resources.DeleteTrashRequest:5
@@ -239,7 +244,9 @@ msgstr ""
 #: yadisk.api.resources.GetMetaRequest:9 yadisk.api.resources.GetTrashRequest:8
 #: yadisk.api.resources.GetUploadLinkRequest:6
 #: yadisk.api.resources.MkdirRequest:4 yadisk.api.resources.MoveRequest:7
+#: yadisk.api.resources.PublishRequest:5
 #: yadisk.api.resources.RestoreTrashRequest:7
+#: yadisk.api.resources.UnpublishRequest:5
 #: yadisk.functions.disk.get_disk_info:4
 #: yadisk.functions.operations.get_operation_status:5
 #: yadisk.functions.resources.copy:10
@@ -248,10 +255,10 @@ msgstr ""
 #: yadisk.functions.resources.get_trash_meta:9
 #: yadisk.functions.resources.get_upload_link:6
 #: yadisk.functions.resources.mkdir:5 yadisk.functions.resources.move:7
-#: yadisk.functions.resources.remove:7
+#: yadisk.functions.resources.publish:5 yadisk.functions.resources.remove:7
 #: yadisk.functions.resources.remove_trash:5
 #: yadisk.functions.resources.restore_trash:7
-#: yadisk.functions.resources.upload:8
+#: yadisk.functions.resources.unpublish:5 yadisk.functions.resources.upload:8
 msgid "list of keys to be included in the response"
 msgstr "список ключей, которые будут включены в ответ"
 
@@ -262,6 +269,7 @@ msgstr "список ключей, которые будут включены в
 #: yadisk.functions.resources.get_upload_link:8
 #: yadisk.functions.resources.mkdir:7 yadisk.functions.resources.move:9
 #: yadisk.functions.resources.restore_trash:9
+#: yadisk.functions.resources.unpublish:7
 msgid "`LinkObject`"
 msgstr ""
 
@@ -569,6 +577,21 @@ msgstr "Перемещает `src_path` в `dst_path`."
 msgid "source path to be moved"
 msgstr "исходный путь, подлежащий перемещению"
 
+#: ../../docstring of yadisk.YaDisk.publish:1
+#: yadisk.functions.resources.publish:1
+msgid "Make a resource public."
+msgstr "Делает ресурс публичным."
+
+#: ../../docstring of yadisk.YaDisk.publish:3
+#: yadisk.api.resources.PublishRequest:4 yadisk.functions.resources.publish:4
+msgid "path to the resource to be published"
+msgstr "путь к публикуемому ресурсу"
+
+#: ../../docstring of yadisk.YaDisk.publish:6 yadisk.YaDisk.unpublish:6
+#: yadisk.functions.resources.publish:7
+msgid "`LinkObject`, link to the resource"
+msgstr "`LinkObject`, ссылка на ресурс"
+
 #: ../../docstring of yadisk.YaDisk.refresh_token:1
 #: yadisk.functions.auth.refresh_token:1
 msgid "Refresh an existing token."
@@ -650,6 +673,17 @@ msgstr "Проверяет, существует ли `path` в корзине."
 #: yadisk.functions.resources.restore_trash:6
 msgid "`bool`, determines whether the destination can be overwritten"
 msgstr "`bool`, определяет может ли путь назначения быть перезаписан"
+
+#: ../../docstring of yadisk.YaDisk.unpublish:1
+#: yadisk.functions.resources.unpublish:1
+msgid "Make a public resource private."
+msgstr "Делает публичный ресурс приватным."
+
+#: ../../docstring of yadisk.YaDisk.unpublish:3
+#: yadisk.api.resources.UnpublishRequest:4
+#: yadisk.functions.resources.unpublish:4
+msgid "path to the resource to be unpublished"
+msgstr "путь к ресурсу, подлежащему депубликации"
 
 #: ../../docstring of yadisk.YaDisk.upload:1
 #: yadisk.functions.resources.upload:1
@@ -1235,10 +1269,10 @@ msgstr "Функции"
 #: yadisk.api.resources.GetDownloadLinkRequest:3
 #: yadisk.api.resources.GetMetaRequest:3
 #: yadisk.api.resources.GetUploadLinkRequest:3
-#: yadisk.api.resources.MoveRequest:3
+#: yadisk.api.resources.MoveRequest:3 yadisk.api.resources.PublishRequest:3
 #: yadisk.api.resources.RestoreTrashRequest:3
-#: yadisk.functions.auth.check_token:3 yadisk.functions.auth.refresh_token:3
-#: yadisk.functions.disk.get_disk_info:3
+#: yadisk.api.resources.UnpublishRequest:3 yadisk.functions.auth.check_token:3
+#: yadisk.functions.auth.refresh_token:3 yadisk.functions.disk.get_disk_info:3
 #: yadisk.functions.operations.get_operation_status:3
 #: yadisk.functions.resources.copy:5 yadisk.functions.resources.download:3
 #: yadisk.functions.resources.exists:3
@@ -1249,11 +1283,12 @@ msgstr "Функции"
 #: yadisk.functions.resources.get_upload_link:3
 #: yadisk.functions.resources.is_dir:3 yadisk.functions.resources.is_file:3
 #: yadisk.functions.resources.listdir:3 yadisk.functions.resources.mkdir:3
-#: yadisk.functions.resources.move:3 yadisk.functions.resources.remove:3
+#: yadisk.functions.resources.move:3 yadisk.functions.resources.publish:3
+#: yadisk.functions.resources.remove:3
 #: yadisk.functions.resources.remove_trash:3
 #: yadisk.functions.resources.restore_trash:3
 #: yadisk.functions.resources.trash_exists:3
-#: yadisk.functions.resources.upload:3
+#: yadisk.functions.resources.unpublish:3 yadisk.functions.resources.upload:3
 msgid "an instance of `requests.Session` with prepared headers"
 msgstr "объект `requests.Session` с приготовленными заголовками"
 
@@ -1362,6 +1397,10 @@ msgstr "Запрос для получения токена."
 msgid "A request to get disk information."
 msgstr "Запрос для получения информации о диске."
 
+#: ../../docstring of yadisk.api.resources.UnpublishRequest:1
+msgid "A request to make a public resource private."
+msgstr "Запрос для того, чтобы сделать публичный ресурс приватным."
+
 #: ../../docstring of yadisk.api.resources.GetDownloadLinkRequest:1
 msgid "A request to get a download link to a resource."
 msgstr "Запрос для прлучения ссылки на сакачивание ресурса."
@@ -1402,6 +1441,10 @@ msgstr "путь назначения для загрузки файла"
 msgid "A request to create a new directory."
 msgstr "Запрос для создания новой папки."
 
+#: ../../docstring of yadisk.api.resources.PublishRequest:1
+msgid "A request to make a resource public."
+msgstr "Запрос для того, чтобы сделать ресурс публичным."
+
 #: ../../docstring of yadisk.api.resources.DeleteRequest:1
 msgid "A request to delete a file or a directory."
 msgstr "Запрос для удаления ресурса."
@@ -1439,7 +1482,3 @@ msgstr "Запрос для получения статуса операции."
 #: ../../docstring of yadisk.api.operations.GetOperationStatusRequest:4
 msgid "operation ID or link"
 msgstr "идентификатор операции или ссылка на нее"
-
-#~ msgid "`DiskObject`"
-#~ msgstr ""
-
