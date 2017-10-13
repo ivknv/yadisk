@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-12 17:33+0500\n"
+"POT-Creation-Date: 2017-10-13 15:44+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -73,6 +73,34 @@ msgstr "пароль приложения"
 #: ../../docstring of yadisk.YaDisk:5
 msgid "application token"
 msgstr "токен"
+
+#: ../../docstring of yadisk.YaDisk yadisk.api.APIRequest
+#: yadisk.objects.CommentIDsObject yadisk.objects.DiskInfoObject
+#: yadisk.objects.EXIFObject yadisk.objects.ErrorObject
+#: yadisk.objects.FilesResourceListObject
+#: yadisk.objects.LastUploadedResourceListObject yadisk.objects.LinkObject
+#: yadisk.objects.OperationStatusObject yadisk.objects.PublicResourceListObject
+#: yadisk.objects.PublicResourceObject yadisk.objects.PublicResourcesListObject
+#: yadisk.objects.ResourceListObject yadisk.objects.ResourceObject
+#: yadisk.objects.ResourceUploadLinkObject yadisk.objects.ShareInfoObject
+#: yadisk.objects.SystemFoldersObject yadisk.objects.TokenObject
+#: yadisk.objects.TokenRevokeStatusObject
+#: yadisk.objects.TrashResourceListObject yadisk.objects.TrashResourceObject
+#: yadisk.objects.UserObject
+msgid "Variables"
+msgstr ""
+
+#: ../../docstring of yadisk.YaDisk:7
+msgid "`str`, application ID"
+msgstr "`str`, идентификатор приложения"
+
+#: ../../docstring of yadisk.YaDisk:8
+msgid "`str`, application secret password"
+msgstr "`str`, пароль приложения"
+
+#: ../../docstring of yadisk.YaDisk:9
+msgid "`str`, application token"
+msgstr "`str`, токен"
 
 #: ../../docstring of yadisk.YaDisk.check_token:1
 msgid "Check whether the token is valid."
@@ -560,26 +588,14 @@ msgid "Mirrors Yandex.Disk REST API error object."
 msgstr "Реализует объект ошибки REST API Яндекс.Диска."
 
 #: ../../docstring of yadisk.objects.ErrorObject:5
-msgid "message"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.ErrorObject:6
 msgid "`str`, human-readable error message"
 msgstr "`str`, человеко-читаемое сообщение ошибки"
 
-#: ../../docstring of yadisk.objects.ErrorObject:7
-msgid "description"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.ErrorObject:8
+#: ../../docstring of yadisk.objects.ErrorObject:6
 msgid "`str`, technical error description"
 msgstr "`str`, техническое описание ошибки"
 
-#: ../../docstring of yadisk.objects.ErrorObject:9
-msgid "error"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.ErrorObject:10
+#: ../../docstring of yadisk.objects.ErrorObject:7
 msgid "`str`, error code"
 msgstr "`str`, уникальный код ошибки"
 
@@ -588,68 +604,34 @@ msgid "Disk information object."
 msgstr "Объект информации о диске."
 
 #: ../../docstring of yadisk.objects.DiskInfoObject:5
-msgid "max_file_size"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.DiskInfoObject:6
 msgid "`int`, maximum supported file size (bytes)"
 msgstr "`int`, максимальный поддерживаемый размер файла (в байтах)"
 
-#: ../../docstring of yadisk.objects.DiskInfoObject:7
-msgid "total_space"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.DiskInfoObject:8
+#: ../../docstring of yadisk.objects.DiskInfoObject:6
 msgid "`int`, total disk size (bytes)"
 msgstr "`int`, общий размер диска (в байтах)"
 
-#: ../../docstring of yadisk.objects.DiskInfoObject:9
-msgid "trash_size"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.DiskInfoObject:10
+#: ../../docstring of yadisk.objects.DiskInfoObject:7
 msgid "`int`, amount of space used by trash (bytes), part of `used_space`"
 msgstr "`int`, размер, занятый мусором (в байтах), чась `used_space`"
 
-#: ../../docstring of yadisk.objects.DiskInfoObject:11
-msgid "is_paid"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.DiskInfoObject:12
+#: ../../docstring of yadisk.objects.DiskInfoObject:8
 msgid "`bool`, tells if the account is paid or not"
 msgstr "`bool`, признак платного аккаунта"
 
-#: ../../docstring of yadisk.objects.DiskInfoObject:13
-msgid "used_space"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.DiskInfoObject:14
+#: ../../docstring of yadisk.objects.DiskInfoObject:9
 msgid "`int`, amount of space used (bytes)"
 msgstr "`int`, количество занятого места (в байтах)"
 
-#: ../../docstring of yadisk.objects.DiskInfoObject:15
-msgid "system_folders"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.DiskInfoObject:16
+#: ../../docstring of yadisk.objects.DiskInfoObject:10
 msgid "`SystemFoldersObject`, paths to the system folders"
 msgstr "`SystemFoldersObject`, пути к системным папкам"
 
-#: ../../docstring of yadisk.objects.DiskInfoObject:17
-msgid "user"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.DiskInfoObject:18
+#: ../../docstring of yadisk.objects.DiskInfoObject:11
 msgid "`UserObject`, owner of the disk"
 msgstr "`UserObject`, владелец диска"
 
-#: ../../docstring of yadisk.objects.DiskInfoObject:19
-#: yadisk.objects.PublicResourceObject:43 yadisk.objects.ResourceObject:43
-#: yadisk.objects.TrashResourceObject:43
-msgid "revision"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.DiskInfoObject:20
+#: ../../docstring of yadisk.objects.DiskInfoObject:12
 msgid "`int`, current revision of Yandex.Disk"
 msgstr "`int`, текущая ревизия Яндекс.Диска"
 
@@ -658,74 +640,38 @@ msgid "Object, containing paths to system folders."
 msgstr "Объект, содержащий пути к системным папкам."
 
 #: ../../docstring of yadisk.objects.SystemFoldersObject:5
-msgid "odnoklassniki"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.SystemFoldersObject:6
 msgid "`str`, path to the Odnoklassniki folder"
 msgstr "`str`, путь к папке Одноклассников"
 
-#: ../../docstring of yadisk.objects.SystemFoldersObject:7
-msgid "google"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.SystemFoldersObject:8
+#: ../../docstring of yadisk.objects.SystemFoldersObject:6
 msgid "`str`, path to the Google+ folder"
 msgstr "`str`, путь к папке Google+"
 
-#: ../../docstring of yadisk.objects.SystemFoldersObject:9
-msgid "instagram"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.SystemFoldersObject:10
+#: ../../docstring of yadisk.objects.SystemFoldersObject:7
 msgid "`str`, path to the Instagram folder"
 msgstr "`str`, путь к папке Instagram"
 
-#: ../../docstring of yadisk.objects.SystemFoldersObject:11
-msgid "vkontakte"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.SystemFoldersObject:12
+#: ../../docstring of yadisk.objects.SystemFoldersObject:8
 msgid "`str`, path to the VKontakte folder"
 msgstr "`str`, путь к папке ВКонтакте"
 
-#: ../../docstring of yadisk.objects.SystemFoldersObject:13
-msgid "mailru"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.SystemFoldersObject:14
+#: ../../docstring of yadisk.objects.SystemFoldersObject:9
 msgid "`str`, path to the My World folder"
 msgstr "`str`, путь к папке Моего Мира"
 
-#: ../../docstring of yadisk.objects.SystemFoldersObject:15
-msgid "facebook"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.SystemFoldersObject:16
+#: ../../docstring of yadisk.objects.SystemFoldersObject:10
 msgid "`str`, path to the Facebook folder"
 msgstr "`str`, путь к папке Facebook"
 
-#: ../../docstring of yadisk.objects.SystemFoldersObject:17
-msgid "social"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.SystemFoldersObject:18
+#: ../../docstring of yadisk.objects.SystemFoldersObject:11
 msgid "`str`, path to the social networks folder"
 msgstr "`str`, путь к папке социальных сетей"
 
-#: ../../docstring of yadisk.objects.SystemFoldersObject:19
-msgid "screenshots"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.SystemFoldersObject:20
+#: ../../docstring of yadisk.objects.SystemFoldersObject:12
 msgid "`str`, path to the screenshot folder"
 msgstr "`str`, путь к папке скриншотов"
 
-#: ../../docstring of yadisk.objects.SystemFoldersObject:21
-msgid "photostream"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.SystemFoldersObject:22
+#: ../../docstring of yadisk.objects.SystemFoldersObject:13
 msgid "`str`, path to the camera folder"
 msgstr "`str`, путь к папке фотокамеры"
 
@@ -734,26 +680,14 @@ msgid "User object."
 msgstr "Объект пользователя."
 
 #: ../../docstring of yadisk.objects.UserObject:5
-msgid "login"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.UserObject:6
 msgid "`str`, user's login"
 msgstr "`str`, логин пользователя"
 
-#: ../../docstring of yadisk.objects.UserObject:7
-msgid "display_name"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.UserObject:8
-msgid "`str`. user's display name"
+#: ../../docstring of yadisk.objects.UserObject:6
+msgid "`str`, user's display name"
 msgstr "`str`, отображаемое имя пользователя"
 
-#: ../../docstring of yadisk.objects.UserObject:9
-msgid "uid"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.UserObject:10
+#: ../../docstring of yadisk.objects.UserObject:7
 msgid "`str`, user's UID"
 msgstr "`str`, уникальный идентификатор пользователя"
 
@@ -762,32 +696,17 @@ msgid "Link object."
 msgstr "Объект ссылки."
 
 #: ../../docstring of yadisk.objects.LinkObject:5
-#: yadisk.objects.ResourceUploadLinkObject:7
-msgid "href"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.LinkObject:6
-#: yadisk.objects.ResourceUploadLinkObject:8
+#: yadisk.objects.ResourceUploadLinkObject:6
 msgid "`str`, link URL"
 msgstr "`str`, URL ссылки"
 
-#: ../../docstring of yadisk.objects.LinkObject:7
-#: yadisk.objects.ResourceUploadLinkObject:9
-msgid "method"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.LinkObject:8
-#: yadisk.objects.ResourceUploadLinkObject:10
+#: ../../docstring of yadisk.objects.LinkObject:6
+#: yadisk.objects.ResourceUploadLinkObject:7
 msgid "`str`, HTTP method"
 msgstr "`str`, HTTP метод"
 
-#: ../../docstring of yadisk.objects.LinkObject:9
-#: yadisk.objects.ResourceUploadLinkObject:11
-msgid "templated"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.LinkObject:10
-#: yadisk.objects.ResourceUploadLinkObject:12
+#: ../../docstring of yadisk.objects.LinkObject:7
+#: yadisk.objects.ResourceUploadLinkObject:8
 msgid "`bool`, tells whether the URL is templated"
 msgstr "`bool`, признак шаблонизированного URL"
 
@@ -797,200 +716,100 @@ msgstr "Объект ресурса."
 
 #: ../../docstring of yadisk.objects.PublicResourceObject:5
 #: yadisk.objects.ResourceObject:5 yadisk.objects.TrashResourceObject:5
-msgid "size"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:6
-#: yadisk.objects.ResourceObject:6 yadisk.objects.TrashResourceObject:6
 msgid "`int`, file size"
 msgstr "`int`, размер файла"
 
-#: ../../docstring of yadisk.objects.PublicResourceListObject:17
-#: yadisk.objects.PublicResourceObject:7 yadisk.objects.ResourceObject:7
-#: yadisk.objects.TrashResourceObject:7
-msgid "public_key"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:8
-#: yadisk.objects.ResourceObject:8 yadisk.objects.TrashResourceObject:8
+#: ../../docstring of yadisk.objects.PublicResourceObject:6
+#: yadisk.objects.ResourceObject:6 yadisk.objects.TrashResourceObject:6
 msgid "`str`, public resource key"
 msgstr "`str`, публичный ключ"
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:9
-#: yadisk.objects.ResourceObject:9 yadisk.objects.TrashResourceObject:9
-msgid "sha256"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:10
-#: yadisk.objects.ResourceObject:10 yadisk.objects.TrashResourceObject:10
+#: ../../docstring of yadisk.objects.PublicResourceObject:7
+#: yadisk.objects.ResourceObject:7 yadisk.objects.TrashResourceObject:7
 msgid "`str`, SHA256 hash"
 msgstr "`str`, SHA256 хэш"
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:11
-#: yadisk.objects.ResourceObject:11 yadisk.objects.TrashResourceObject:11
-msgid "md5"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:12
-#: yadisk.objects.ResourceObject:12 yadisk.objects.TrashResourceObject:12
+#: ../../docstring of yadisk.objects.PublicResourceObject:8
+#: yadisk.objects.ResourceObject:8 yadisk.objects.TrashResourceObject:8
 msgid "`str`, MD5 hash"
 msgstr "`str`, MD5 хэш"
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:13
-#: yadisk.objects.ResourceObject:13 yadisk.objects.TrashResourceObject:13
-msgid "embedded"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.ResourceObject:14
+#: ../../docstring of yadisk.objects.ResourceObject:9
 msgid "`ResourceListObject`, list of nested resources"
 msgstr "`ResourceListObject`, список вложенных ресурсов"
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:15
-#: yadisk.objects.ResourceObject:15 yadisk.objects.TrashResourceObject:15
-msgid "name"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:16
-#: yadisk.objects.ResourceObject:16 yadisk.objects.TrashResourceObject:16
+#: ../../docstring of yadisk.objects.PublicResourceObject:10
+#: yadisk.objects.ResourceObject:10 yadisk.objects.TrashResourceObject:10
 msgid "`str`, filename"
 msgstr "`str`, имя файла"
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:17
-#: yadisk.objects.ResourceObject:17 yadisk.objects.TrashResourceObject:17
-msgid "exif"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:18
-#: yadisk.objects.ResourceObject:18 yadisk.objects.TrashResourceObject:18
+#: ../../docstring of yadisk.objects.PublicResourceObject:11
+#: yadisk.objects.ResourceObject:11 yadisk.objects.TrashResourceObject:11
 msgid "`EXIFObject`, EXIF metadata"
 msgstr "`EXIFObject`, метаданные EXIF"
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:19
-#: yadisk.objects.ResourceObject:19 yadisk.objects.TrashResourceObject:19
-msgid "resource_id"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:20
-#: yadisk.objects.ResourceObject:20 yadisk.objects.TrashResourceObject:20
+#: ../../docstring of yadisk.objects.PublicResourceObject:12
+#: yadisk.objects.ResourceObject:12 yadisk.objects.TrashResourceObject:12
 msgid "`str`, resource ID"
 msgstr "`str`, идентификатор ресурса"
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:21
-#: yadisk.objects.ResourceObject:21 yadisk.objects.TrashResourceObject:21
-msgid "custom_properties"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:22
-#: yadisk.objects.ResourceObject:22 yadisk.objects.TrashResourceObject:22
+#: ../../docstring of yadisk.objects.PublicResourceObject:13
+#: yadisk.objects.ResourceObject:13 yadisk.objects.TrashResourceObject:13
 msgid "`dict`, custom resource properties"
 msgstr "`dict`, пользовательские свойства ресурса"
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:23
-#: yadisk.objects.ResourceObject:23 yadisk.objects.TrashResourceObject:23
-msgid "public_url"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:24
-#: yadisk.objects.ResourceObject:24 yadisk.objects.TrashResourceObject:24
+#: ../../docstring of yadisk.objects.PublicResourceObject:14
+#: yadisk.objects.ResourceObject:14 yadisk.objects.TrashResourceObject:14
 msgid "`str`, public URL"
 msgstr "`str`, публичный URL"
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:25
-#: yadisk.objects.ResourceObject:25 yadisk.objects.TrashResourceObject:25
-msgid "share"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:26
-#: yadisk.objects.ResourceObject:26 yadisk.objects.TrashResourceObject:26
+#: ../../docstring of yadisk.objects.PublicResourceObject:15
+#: yadisk.objects.ResourceObject:15 yadisk.objects.TrashResourceObject:15
 msgid "`ShareInfoObject`, shared folder information"
 msgstr "`ShareInfoObject`, информация об общей папке"
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:27
-#: yadisk.objects.ResourceObject:27 yadisk.objects.TrashResourceObject:27
-msgid "modified"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:28
-#: yadisk.objects.ResourceObject:28 yadisk.objects.TrashResourceObject:28
+#: ../../docstring of yadisk.objects.PublicResourceObject:16
+#: yadisk.objects.ResourceObject:16 yadisk.objects.TrashResourceObject:16
 msgid "`datetime.datetime`, date of last modification"
 msgstr "`datetime.datetime`, дата последнего изменения"
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:29
-#: yadisk.objects.ResourceObject:29 yadisk.objects.TrashResourceObject:29
-msgid "created"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:30
-#: yadisk.objects.ResourceObject:30 yadisk.objects.TrashResourceObject:30
+#: ../../docstring of yadisk.objects.PublicResourceObject:17
+#: yadisk.objects.ResourceObject:17 yadisk.objects.TrashResourceObject:17
 msgid "`datetime.datetime`, date of creation"
 msgstr "`datetime.datetime`, дата создания"
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:31
-#: yadisk.objects.ResourceObject:31 yadisk.objects.TrashResourceObject:31
-msgid "mime_type"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:32
-#: yadisk.objects.ResourceObject:32 yadisk.objects.TrashResourceObject:32
+#: ../../docstring of yadisk.objects.PublicResourceObject:18
+#: yadisk.objects.ResourceObject:18 yadisk.objects.TrashResourceObject:18
 msgid "`str`, MIME type"
 msgstr "`str`, MIME-тип"
 
-#: ../../docstring of yadisk.objects.PublicResourceListObject:13
-#: yadisk.objects.PublicResourceObject:33 yadisk.objects.ResourceListObject:13
-#: yadisk.objects.ResourceObject:33 yadisk.objects.TrashResourceListObject:13
-#: yadisk.objects.TrashResourceObject:33
-msgid "path"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:34
-#: yadisk.objects.ResourceObject:34 yadisk.objects.TrashResourceObject:34
+#: ../../docstring of yadisk.objects.PublicResourceObject:19
+#: yadisk.objects.ResourceObject:19 yadisk.objects.TrashResourceObject:19
 msgid "`str`, path to the resource"
 msgstr "`str`, путь к ресурсу"
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:35
-#: yadisk.objects.ResourceObject:35 yadisk.objects.TrashResourceObject:35
-msgid "preview"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:36
-#: yadisk.objects.ResourceObject:36 yadisk.objects.TrashResourceObject:36
+#: ../../docstring of yadisk.objects.PublicResourceObject:20
+#: yadisk.objects.ResourceObject:20 yadisk.objects.TrashResourceObject:20
 msgid "`str`, file preview URL"
 msgstr "`str`, URL превью файла"
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:37
-#: yadisk.objects.ResourceObject:37 yadisk.objects.TrashResourceObject:37
-msgid "comment_ids"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:38
-#: yadisk.objects.ResourceObject:38 yadisk.objects.TrashResourceObject:38
+#: ../../docstring of yadisk.objects.PublicResourceObject:21
+#: yadisk.objects.ResourceObject:21 yadisk.objects.TrashResourceObject:21
 msgid "`CommentIDsObject`, comment IDs"
 msgstr "`CommentIDsObject`, идентификаторы комментариев"
 
-#: ../../docstring of yadisk.objects.OperationStatusObject:5
-#: yadisk.objects.PublicResourceObject:39
-#: yadisk.objects.PublicResourcesListObject:7 yadisk.objects.ResourceObject:39
-#: yadisk.objects.TrashResourceObject:39
-msgid "type"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:40
-#: yadisk.objects.ResourceObject:40 yadisk.objects.TrashResourceObject:40
+#: ../../docstring of yadisk.objects.PublicResourceObject:22
+#: yadisk.objects.ResourceObject:22 yadisk.objects.TrashResourceObject:22
 msgid "`str`, type (\"file\" or \"dir\")"
 msgstr "`str`, тип (\"file\" или \"dir\")"
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:41
-#: yadisk.objects.ResourceObject:41 yadisk.objects.TrashResourceObject:41
-msgid "media_type"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:42
-#: yadisk.objects.ResourceObject:42 yadisk.objects.TrashResourceObject:42
+#: ../../docstring of yadisk.objects.PublicResourceObject:23
+#: yadisk.objects.ResourceObject:23 yadisk.objects.TrashResourceObject:23
 msgid "`str`, file type as determined by Yandex.Disk"
 msgstr "`str`, тип файла, согласно Яндекс.Диску"
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:44
-#: yadisk.objects.ResourceObject:44 yadisk.objects.TrashResourceObject:44
+#: ../../docstring of yadisk.objects.PublicResourceObject:24
+#: yadisk.objects.ResourceObject:24 yadisk.objects.TrashResourceObject:24
 msgid "`int`, Yandex.Disk revision at the time of last modification"
 msgstr "`int`, ревизия Яндекс.Диска на момент последнего изменения"
 
@@ -1000,76 +819,38 @@ msgstr "Список ресурсов."
 
 #: ../../docstring of yadisk.objects.PublicResourceListObject:5
 #: yadisk.objects.ResourceListObject:5 yadisk.objects.TrashResourceListObject:5
-msgid "sort"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceListObject:6
-#: yadisk.objects.ResourceListObject:6 yadisk.objects.TrashResourceListObject:6
 msgid "`str`, sort type"
 msgstr "`str`, тип сортировки"
 
-#: ../../docstring of yadisk.objects.FilesResourceListObject:5
-#: yadisk.objects.LastUploadedResourceListObject:5
-#: yadisk.objects.PublicResourceListObject:7
-#: yadisk.objects.PublicResourcesListObject:5
-#: yadisk.objects.ResourceListObject:7 yadisk.objects.TrashResourceListObject:7
-msgid "items"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.LastUploadedResourceListObject:6
-#: yadisk.objects.PublicResourceListObject:8
-#: yadisk.objects.ResourceListObject:8
+#: ../../docstring of yadisk.objects.LastUploadedResourceListObject:5
+#: yadisk.objects.PublicResourceListObject:6
+#: yadisk.objects.ResourceListObject:6
 msgid "`list`, list of resources (`ResourceObject`)"
 msgstr "`list`, список ресурсов (`ResourceObject`)"
 
-#: ../../docstring of yadisk.objects.FilesResourceListObject:7
-#: yadisk.objects.LastUploadedResourceListObject:7
-#: yadisk.objects.PublicResourceListObject:9
-#: yadisk.objects.PublicResourcesListObject:9
-#: yadisk.objects.ResourceListObject:9 yadisk.objects.TrashResourceListObject:9
-msgid "limit"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.FilesResourceListObject:8
-#: yadisk.objects.LastUploadedResourceListObject:8
-#: yadisk.objects.PublicResourceListObject:10
-#: yadisk.objects.PublicResourcesListObject:10
-#: yadisk.objects.ResourceListObject:10
-#: yadisk.objects.TrashResourceListObject:10
+#: ../../docstring of yadisk.objects.FilesResourceListObject:6
+#: yadisk.objects.LastUploadedResourceListObject:6
+#: yadisk.objects.PublicResourceListObject:7
+#: yadisk.objects.PublicResourcesListObject:7
+#: yadisk.objects.ResourceListObject:7 yadisk.objects.TrashResourceListObject:7
 msgid "`int`, maximum number of elements in the list"
 msgstr "`int`, максимальное число элементов в списке"
 
-#: ../../docstring of yadisk.objects.FilesResourceListObject:9
-#: yadisk.objects.PublicResourceListObject:11
-#: yadisk.objects.PublicResourcesListObject:11
-#: yadisk.objects.ResourceListObject:11
-#: yadisk.objects.TrashResourceListObject:11
-msgid "offset"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.FilesResourceListObject:10
-#: yadisk.objects.PublicResourceListObject:12
-#: yadisk.objects.PublicResourcesListObject:12
-#: yadisk.objects.ResourceListObject:12
-#: yadisk.objects.TrashResourceListObject:12
+#: ../../docstring of yadisk.objects.FilesResourceListObject:7
+#: yadisk.objects.PublicResourceListObject:8
+#: yadisk.objects.PublicResourcesListObject:8
+#: yadisk.objects.ResourceListObject:8 yadisk.objects.TrashResourceListObject:8
 msgid "`int`, offset from the beginning of the list"
 msgstr "`int`, отступ от начала списка"
 
-#: ../../docstring of yadisk.objects.PublicResourceListObject:14
-#: yadisk.objects.ResourceListObject:14
-#: yadisk.objects.TrashResourceListObject:14
+#: ../../docstring of yadisk.objects.PublicResourceListObject:9
+#: yadisk.objects.ResourceListObject:9 yadisk.objects.TrashResourceListObject:9
 msgid "`str`, path to the directory that contains the elements of the list"
 msgstr "`str`, путь к папке, содержащей элементы списка"
 
-#: ../../docstring of yadisk.objects.PublicResourceListObject:15
-#: yadisk.objects.ResourceListObject:15
-#: yadisk.objects.TrashResourceListObject:15
-msgid "total"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceListObject:16
-#: yadisk.objects.ResourceListObject:16
-#: yadisk.objects.TrashResourceListObject:16
+#: ../../docstring of yadisk.objects.PublicResourceListObject:10
+#: yadisk.objects.ResourceListObject:10
+#: yadisk.objects.TrashResourceListObject:10
 msgid "`int`, number of elements in the list"
 msgstr "`int`, количество элементов списка"
 
@@ -1077,23 +858,15 @@ msgstr "`int`, количество элементов списка"
 msgid "Trash resource object."
 msgstr "Объект ресурса корзины."
 
-#: ../../docstring of yadisk.objects.TrashResourceObject:14
+#: ../../docstring of yadisk.objects.TrashResourceObject:9
 msgid "`TrashResourceList`, list of nested resources"
 msgstr "`TrashResourceList`, список вложенных ресурсов"
 
-#: ../../docstring of yadisk.objects.TrashResourceObject:45
-msgid "origin_path"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.TrashResourceObject:46
+#: ../../docstring of yadisk.objects.TrashResourceObject:25
 msgid "`str`, original path"
 msgstr "`str`, оригинальный путь"
 
-#: ../../docstring of yadisk.objects.TrashResourceObject:47
-msgid "deleted"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.TrashResourceObject:48
+#: ../../docstring of yadisk.objects.TrashResourceObject:26
 msgid "`datetime.datetime`, date of deletion"
 msgstr "`datetime.datetime`, дата удаления"
 
@@ -1101,7 +874,7 @@ msgstr "`datetime.datetime`, дата удаления"
 msgid "List of trash resources."
 msgstr "Список ресурсов корзины."
 
-#: ../../docstring of yadisk.objects.TrashResourceListObject:8
+#: ../../docstring of yadisk.objects.TrashResourceListObject:6
 msgid "`list`, list of resources (`TrashResourceObject`)"
 msgstr "`list`, список ресурсов (`TrashResourceObject`)"
 
@@ -1113,7 +886,7 @@ msgstr "Список последних загруженных файлов."
 msgid "Flat list of files."
 msgstr "Плоский список файлов."
 
-#: ../../docstring of yadisk.objects.FilesResourceListObject:6
+#: ../../docstring of yadisk.objects.FilesResourceListObject:5
 msgid "`list`, flat list of files (`ResourceObject`)"
 msgstr "`list`, плоский список файлов (`ResourceObject`)"
 
@@ -1122,10 +895,6 @@ msgid "EXIF metadata object."
 msgstr "Объект метаданных EXIF."
 
 #: ../../docstring of yadisk.objects.EXIFObject:5
-msgid "date_time"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.EXIFObject:6
 msgid "`datetime.datetime`, capture date"
 msgstr "`datetime.datetime`, дата съёмки"
 
@@ -1133,23 +902,15 @@ msgstr "`datetime.datetime`, дата съёмки"
 msgid "Public resource object."
 msgstr "Объект публичного ресурса."
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:14
+#: ../../docstring of yadisk.objects.PublicResourceObject:9
 msgid "`PublicResourceObject`, list of nested resources"
 msgstr "`PublicResourceObject`, список вложенных ресурсов"
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:45
-msgid "view_count"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:46
+#: ../../docstring of yadisk.objects.PublicResourceObject:25
 msgid "`int`, number of times the public resource was viewed"
 msgstr "`int`, количество просмотров публичного ресурса"
 
-#: ../../docstring of yadisk.objects.PublicResourceObject:47
-msgid "owner"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.PublicResourceObject:48
+#: ../../docstring of yadisk.objects.PublicResourceObject:26
 msgid "`UserObject`, owner of the public resource"
 msgstr "`UserObject`, владелец публичного ресурса"
 
@@ -1158,7 +919,7 @@ msgstr "`UserObject`, владелец публичного ресурса"
 msgid "List of public resources."
 msgstr "Список публичных ресурсов."
 
-#: ../../docstring of yadisk.objects.PublicResourceListObject:18
+#: ../../docstring of yadisk.objects.PublicResourceListObject:11
 msgid "`str`, public key of the resource"
 msgstr "`str`, публичный ключ к ресурсу"
 
@@ -1167,18 +928,10 @@ msgid "Comment IDs object."
 msgstr "Список идентификаторов комментариев."
 
 #: ../../docstring of yadisk.objects.CommentIDsObject:5
-msgid "private_resource"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.CommentIDsObject:6
 msgid "`str`, comment ID for private resources"
 msgstr "`str`, идентификатор комментария для приватных ресурсов"
 
-#: ../../docstring of yadisk.objects.CommentIDsObject:7
-msgid "public_resource"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.CommentIDsObject:8
+#: ../../docstring of yadisk.objects.CommentIDsObject:6
 msgid "`str`, comment ID for public resources"
 msgstr "`str`, идентификатор комментария для публичных ресурсов"
 
@@ -1187,34 +940,22 @@ msgid "Shared folder information object."
 msgstr "Объект информации об общей папке."
 
 #: ../../docstring of yadisk.objects.ShareInfoObject:5
-msgid "is_root"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.ShareInfoObject:6
 msgid "`bool`, tells whether the folder is root"
 msgstr "`bool`, признак того, что папка является корневой"
 
-#: ../../docstring of yadisk.objects.ShareInfoObject:7
-msgid "is_owned"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.ShareInfoObject:8
+#: ../../docstring of yadisk.objects.ShareInfoObject:6
 msgid "`bool`, tells whether the user is the owner of this directory"
 msgstr "`bool`, признак того, что пользователь является владельцем этой папки"
 
-#: ../../docstring of yadisk.objects.ShareInfoObject:9
-msgid "rights"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.ShareInfoObject:10
+#: ../../docstring of yadisk.objects.ShareInfoObject:7
 msgid "`str`, access rights"
 msgstr "`str`, права доступа"
 
-#: ../../docstring of yadisk.objects.PublicResourcesListObject:6
+#: ../../docstring of yadisk.objects.PublicResourcesListObject:5
 msgid "`list`, list of public resources (`ResourceObject`)"
 msgstr "`list`, список публичных ресурсов (`ResourceObject`)"
 
-#: ../../docstring of yadisk.objects.PublicResourcesListObject:8
+#: ../../docstring of yadisk.objects.PublicResourcesListObject:6
 msgid "`str`, resource type to filter by"
 msgstr "`str`, тип ресурса по которому фильтровать"
 
@@ -1222,12 +963,7 @@ msgstr "`str`, тип ресурса по которому фильтроват�
 msgid "Resource upload link."
 msgstr "Ссылка для загрузки файла."
 
-#: ../../docstring of yadisk.objects.OperationStatusObject:9
-#: yadisk.objects.ResourceUploadLinkObject:5
-msgid "operation_id"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.ResourceUploadLinkObject:6
+#: ../../docstring of yadisk.objects.ResourceUploadLinkObject:5
 msgid "`str`, ID of the upload operation"
 msgstr "`str`, идентификатор операции по загрузке файла"
 
@@ -1235,13 +971,8 @@ msgstr "`str`, идентификатор операции по загрузке
 msgid "Result of token revocation request."
 msgstr "Результат запроса по отзыве токена."
 
-#: ../../docstring of yadisk.objects.OperationStatusObject:7
+#: ../../docstring of yadisk.objects.OperationStatusObject:6
 #: yadisk.objects.TokenRevokeStatusObject:5
-msgid "status"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.OperationStatusObject:8
-#: yadisk.objects.TokenRevokeStatusObject:6
 msgid "`str`, status of the operation"
 msgstr "`str`, статус операции"
 
@@ -1250,34 +981,18 @@ msgid "Token object."
 msgstr "Объект токена."
 
 #: ../../docstring of yadisk.objects.TokenObject:5
-msgid "access_token"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.TokenObject:6
 msgid "`str`, token string"
 msgstr "`str`, строка токена"
 
-#: ../../docstring of yadisk.objects.TokenObject:7
-msgid "refresh_token"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.TokenObject:8
+#: ../../docstring of yadisk.objects.TokenObject:6
 msgid "`str`, the refresh-token"
 msgstr "`str`, refresh-токен"
 
-#: ../../docstring of yadisk.objects.TokenObject:9
-msgid "token_type"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.TokenObject:10
+#: ../../docstring of yadisk.objects.TokenObject:7
 msgid "`str`, type of the token"
 msgstr "`str`, тип токена"
 
-#: ../../docstring of yadisk.objects.TokenObject:11
-msgid "expires_in"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.TokenObject:12
+#: ../../docstring of yadisk.objects.TokenObject:8
 msgid "`int`, amount of time before the token expires"
 msgstr "`int`, количество времени, на которое выдаётся токен"
 
@@ -1285,27 +1000,19 @@ msgstr "`int`, количество времени, на которое выда
 msgid "Operation status object."
 msgstr "Объект статуса операции."
 
-#: ../../docstring of yadisk.objects.OperationStatusObject:6
+#: ../../docstring of yadisk.objects.OperationStatusObject:5
 msgid "`str`, type of the operation"
 msgstr "`str`, тип операции"
 
-#: ../../docstring of yadisk.objects.OperationStatusObject:10
+#: ../../docstring of yadisk.objects.OperationStatusObject:7
 msgid "`str`, ID of the operation"
 msgstr "`str`, идентификатор операции"
 
-#: ../../docstring of yadisk.objects.OperationStatusObject:11
-msgid "link"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.OperationStatusObject:12
+#: ../../docstring of yadisk.objects.OperationStatusObject:8
 msgid "`LinkObject`, link to the operation"
 msgstr "`LinkObject`, ссылка на операцию"
 
-#: ../../docstring of yadisk.objects.OperationStatusObject:13
-msgid "data"
-msgstr ""
-
-#: ../../docstring of yadisk.objects.OperationStatusObject:14
+#: ../../docstring of yadisk.objects.OperationStatusObject:9
 msgid "`dict`, other information about the operation"
 msgstr "`dict`, другая информация об операции"
 
@@ -1317,73 +1024,53 @@ msgstr "Объекты запросов к API"
 msgid "Base class for all API requests"
 msgstr "Базовый класс для всех объектов запросов к REST API"
 
-#: ../../docstring of yadisk.api.APIRequest:4
-msgid "url"
-msgstr ""
-
-#: ../../docstring of yadisk.api.APIRequest:4
-msgid "request URL"
-msgstr "URL запроса"
-
-#: ../../docstring of yadisk.api.APIRequest:7
-msgid "method"
-msgstr ""
-
-#: ../../docstring of yadisk.api.APIRequest:7
-msgid "request method"
-msgstr "метод запроса"
-
-#: ../../docstring of yadisk.api.APIRequest:10
-msgid "timeout"
-msgstr ""
-
-#: ../../docstring of yadisk.api.APIRequest:10 yadisk.api.APIRequest:26
-msgid "request timeout"
-msgstr "таймаут запроса"
-
-#: ../../docstring of yadisk.api.APIRequest:13
-msgid "n_retries"
-msgstr ""
-
-#: ../../docstring of yadisk.api.APIRequest:13 yadisk.api.APIRequest:27
-msgid "maximum number of retries"
-msgstr "максимальное число повторных попыток запроса"
-
-#: ../../docstring of yadisk.api.APIRequest:16
-msgid "success_codes"
-msgstr ""
-
-#: ../../docstring of yadisk.api.APIRequest:16
-msgid "list of response codes that indicate request's success"
-msgstr "список кодов ответов, означающих успех запроса"
-
-#: ../../docstring of yadisk.api.APIRequest:19
-msgid "retry_codes"
-msgstr ""
-
-#: ../../docstring of yadisk.api.APIRequest:19
-msgid "list of response codes that trigger a retry"
-msgstr "Список кодов ответа, вызывающих повторный запрос"
-
-#: ../../docstring of yadisk.api.APIRequest:22
-msgid "retry_interval"
-msgstr ""
-
-#: ../../docstring of yadisk.api.APIRequest:22
-msgid "delay between retries in seconds (`float`)"
-msgstr "задержка между повторными попытками в секундах (`float`)"
-
-#: ../../docstring of yadisk.api.APIRequest:24
+#: ../../docstring of yadisk.api.APIRequest:3
 msgid "an instance of `requests.Session`"
 msgstr "объект `requests.Session`"
 
-#: ../../docstring of yadisk.api.APIRequest:25
+#: ../../docstring of yadisk.api.APIRequest:4
 msgid "`dict` of arguments, that will be passed to `process_args`"
 msgstr "`dict`, аргументы, которые будут перданы в `process_args`"
 
-#: ../../docstring of yadisk.api.APIRequest:28
+#: ../../docstring of yadisk.api.APIRequest:5
+msgid "request timeout"
+msgstr "таймаут запроса"
+
+#: ../../docstring of yadisk.api.APIRequest:6
+msgid "maximum number of retries"
+msgstr "максимальное число повторных попыток запроса"
+
+#: ../../docstring of yadisk.api.APIRequest:7
 msgid "other parameters for session.send()"
 msgstr "другие параметры для session.send()"
+
+#: ../../docstring of yadisk.api.APIRequest:9
+msgid "`str`, request URL"
+msgstr "`str`, URL запроса"
+
+#: ../../docstring of yadisk.api.APIRequest:10
+msgid "`str`, request method"
+msgstr "`str`, метод запроса"
+
+#: ../../docstring of yadisk.api.APIRequest:11
+msgid "`float` or `tuple`, request timeout"
+msgstr "`float` или `tuple`, таймаут запроса"
+
+#: ../../docstring of yadisk.api.APIRequest:12
+msgid "`int`, maximum number of retries"
+msgstr "`int`, максимальное число повторных попыток запроса"
+
+#: ../../docstring of yadisk.api.APIRequest:13
+msgid "`list`-like, list of response codes that indicate request's success"
+msgstr "`list`-подобный, список кодов ответов, означающих успех запроса"
+
+#: ../../docstring of yadisk.api.APIRequest:14
+msgid "`list`-like, list of response codes that trigger a retry"
+msgstr "`list`-подобный, cписок кодов ответа, вызывающих повторный запрос"
+
+#: ../../docstring of yadisk.api.APIRequest:15
+msgid "`float`, delay between retries in seconds"
+msgstr "`float`, задержка между повторными попытками в секундах (`float`)"
 
 #: ../../docstring of yadisk.api.APIRequest.prepare:1
 msgid "Prepare the request"
@@ -1490,13 +1177,3 @@ msgstr "тип файлов, которые будут включены в сп�
 #: ../../docstring of yadisk.api.FilesRequest:7
 msgid "sort type"
 msgstr "тип сортировки"
-
-#~ msgid "message:"
-#~ msgstr ""
-
-#~ msgid "description:"
-#~ msgstr ""
-
-#~ msgid "error:"
-#~ msgstr ""
-

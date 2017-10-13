@@ -18,26 +18,19 @@ class APIRequest(object):
     """
         Base class for all API requests
 
-        url
-            request URL
-        method
-            request method
-        timeout
-            request timeout
-        n_retries
-            maximum number of retries
-        success_codes
-            list of response codes that indicate request's success
-        retry_codes
-            list of response codes that trigger a retry
-        retry_interval
-            delay between retries in seconds (`float`)
-
         :param session: an instance of `requests.Session`
         :param args: `dict` of arguments, that will be passed to `process_args`
         :param timeout: request timeout
         :param n_retries: maximum number of retries
         :param send_args, send_kwargs: other parameters for session.send()
+
+        :ivar url: `str`, request URL
+        :ivar method: `str`, request method
+        :ivar timeout: `float` or `tuple`, request timeout
+        :ivar n_retries: `int`, maximum number of retries
+        :ivar success_codes: `list`-like, list of response codes that indicate request's success
+        :ivar retry_codes: `list`-like, list of response codes that trigger a retry
+        :ivar retry_interval: `float`, delay between retries in seconds
     """
 
     url = None

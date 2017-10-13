@@ -14,6 +14,10 @@ class YaDisk(object):
         :param id: application ID
         :param secret: application secret password
         :param token: application token
+
+        :ivar id: `str`, application ID
+        :ivar secret: `str`, application secret password
+        :ivar token: `str`, application token
     """
 
     def __init__(self, id="", secret="", token=""):

@@ -11,22 +11,14 @@ class DiskInfoObject(YaDiskObject):
 
         :param disk_info: `dict` or `None`
 
-        max_file_size
-            `int`, maximum supported file size (bytes)
-        total_space
-            `int`, total disk size (bytes)
-        trash_size
-            `int`, amount of space used by trash (bytes), part of `used_space`
-        is_paid
-            `bool`, tells if the account is paid or not
-        used_space
-            `int`, amount of space used (bytes)
-        system_folders
-            `SystemFoldersObject`, paths to the system folders
-        user
-            `UserObject`, owner of the disk
-        revision
-            `int`, current revision of Yandex.Disk
+        :ivar max_file_size: `int`, maximum supported file size (bytes)
+        :ivar total_space: `int`, total disk size (bytes)
+        :ivar trash_size: `int`, amount of space used by trash (bytes), part of `used_space`
+        :ivar is_paid: `bool`, tells if the account is paid or not
+        :ivar used_space: `int`, amount of space used (bytes)
+        :ivar system_folders: `SystemFoldersObject`, paths to the system folders
+        :ivar user: `UserObject`, owner of the disk
+        :ivar revision: `int`, current revision of Yandex.Disk
     """
 
     def __init__(self, disk_info=None):
@@ -47,24 +39,15 @@ class SystemFoldersObject(YaDiskObject):
 
         :param system_folders: `dict` or `None`
 
-        odnoklassniki
-            `str`, path to the Odnoklassniki folder
-        google
-            `str`, path to the Google+ folder
-        instagram
-            `str`, path to the Instagram folder
-        vkontakte
-            `str`, path to the VKontakte folder
-        mailru
-            `str`, path to the My World folder
-        facebook
-            `str`, path to the Facebook folder
-        social
-            `str`, path to the social networks folder
-        screenshots
-            `str`, path to the screenshot folder
-        photostream
-            `str`, path to the camera folder
+        :ivar odnoklassniki: `str`, path to the Odnoklassniki folder
+        :ivar google: `str`, path to the Google+ folder
+        :ivar instagram: `str`, path to the Instagram folder
+        :ivar vkontakte: `str`, path to the VKontakte folder
+        :ivar mailru: `str`, path to the My World folder
+        :ivar facebook: `str`, path to the Facebook folder
+        :ivar social: `str`, path to the social networks folder
+        :ivar screenshots: `str`, path to the screenshot folder
+        :ivar photostream: `str`, path to the camera folder
     """
 
     def __init__(self, system_folders=None):
@@ -88,12 +71,9 @@ class UserObject(YaDiskObject):
 
         :param user: `dict` or `None`
 
-        login
-            `str`, user's login
-        display_name
-            `str`. user's display name
-        uid
-            `str`, user's UID
+        :ivar login: `str`, user's login
+        :ivar display_name: `str`, user's display name
+        :ivar uid: `str`, user's UID
     """
 
     def __init__(self, user=None):

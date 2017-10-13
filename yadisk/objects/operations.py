@@ -12,16 +12,11 @@ class OperationStatusObject(YaDiskObject):
 
         :param operation_status: `dict` or `None`
 
-        type
-            `str`, type of the operation
-        status
-            `str`, status of the operation
-        operation_id
-            `str`, ID of the operation
-        link
-            `LinkObject`, link to the operation
-        data
-            `dict`, other information about the operation
+        :ivar type: `str`, type of the operation
+        :ivar status: `str`, status of the operation
+        :ivar operation_id: `str`, ID of the operation
+        :ivar link: `LinkObject`, link to the operation
+        :ivar data: `dict`, other information about the operation
     """
 
     def __init__(self, operation_status=None):
