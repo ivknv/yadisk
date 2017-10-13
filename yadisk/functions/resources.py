@@ -207,7 +207,7 @@ def listdir(session, path, *args, **kwargs):
         :param session: an instance of `requests.Session` with prepared headers
         :param path: path to the directory
 
-        :returns: generator of `ResourceObject`s.
+        :returns: generator of `ResourceObject`
     """
 
     result = get_meta(session, path, *args, **kwargs)

@@ -75,6 +75,21 @@ Objects
    .. autoclass:: OperationStatusObject
       :members:
 
+Functions
+*********
+
+.. automodule:: yadisk.functions.auth
+   :members:
+
+.. automodule:: yadisk.functions.disk
+   :members:
+
+.. automodule:: yadisk.functions.resources
+   :members:
+
+.. automodule:: yadisk.functions.operations
+   :members:
+
 API request objects
 *******************
 
