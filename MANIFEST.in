@@ -1,2 +1,4 @@
 include LICENSE.txt
 include README.rst
+include README.en.rst
+include README.ru.rst

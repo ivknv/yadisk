@@ -1,17 +1,17 @@
 YaDisk
 ======
 
-YaDisk is a Yandex.Disk REST API client library.
+YaDisk &#8212; это библиотека-клиент REST API Яндекс.Диска.
 
 .. _Read the Docs (EN): http://yadisk.readthedocs.io
 .. _Read the Docs (RU): http://yadisk.readthedocs.io/ru/latest
 
-Documentation is available at `Read the Docs (EN)`_ and `Read the Docs (RU)`_ (although it's not complete yet).
+Документация доступна на `Read the Docs (RU)`_ и `Read the Docs (EN)`_.
 
-Installation
-************
+Установка
+*********
 
-First, you need to have `requests` installed:
+Для начала, должен быть установлен `requests`:
 
 .. code:: bash
 
@@ -21,36 +21,36 @@ First, you need to have `requests` installed:
 
     python setup.py install
 
-Examples
-********
+Примеры
+*******
 
 .. code:: python
 
     import yadisk
 
-    y = yadisk.YaDisk("<application-id>", "<application-secret>", "<token>")
+    y = yadisk.YaDisk("<id-приложения>", "<secret-приложения>", "<токен>")
 
-    # Check if the token is valid
+    # Проверяет, валиден ли токен
     print(y.check_token())
 
-    # Get disk information
+    # Получает общую информацию о диске
     print(y.get_disk_info())
 
-    # Print files and directories at "/some/path"
+    # Выводит содержимое "/some/path"
     print(list(y.listdir("/some/path")))
 
-    # Upload "file_to_upload.txt" to "/destination.txt"
+    # Загружает "file_to_upload.txt" в "/destination.txt"
     y.upload("file_to_upload.txt", "/destination.txt")
 
-    # Same thing
+    # То же самое
     with open("file_to_upload.txt", "rb") as f:
         y.upload(f, "/destination.txt")
 
-    # Download "/some-file-to-download.txt" to "downloaded.txt"
+    # Скачивает "/some-file-to-download.txt" в "downloaded.txt"
     y.download("/some-file-to-download.txt", "downloaded.txt")
 
-    # Permanently remove "/file-to-remove"
+    # Безвозвратно удаляет "/file-to-remove"
     y.remove("/file-to-remove", permanently=True)
 
-    # Create a new directory at "/test-dir"
+    # Создаёт новую папку "/test-dir"
     print(y.mkdir("/test-dir"))
