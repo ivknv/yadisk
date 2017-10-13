@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-13 19:18+0500\n"
+"POT-Creation-Date: 2017-10-13 20:28+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -710,6 +710,33 @@ msgid "`True` if the upload succeeded, `False` otherwise"
 msgstr "`True`, если загрузка удалась, `False` иначе"
 
 #: ../../docs.rst:8
+msgid "General parameters"
+msgstr "Общие параметры"
+
+#: ../../docs.rst:10
+msgid "Almost all methods of `YaDisk` accept some additional arguments:"
+msgstr "Почти все методы `YaDisk` принимают некоторые дополнительные параметры:"
+
+#: ../../docs.rst:12
+msgid "**n_retries** - `int`, maximum number of retries for a request"
+msgstr "**n_retries** - `int`, максимальное число повторных попыток запроса"
+
+#: ../../docs.rst:13
+msgid "**retry_delay** - `float`, delay between retries (in seconds)"
+msgstr "**retry_delay** - `float`, задержка между повторными попытками (в секундах)"
+
+#: ../../docs.rst:15
+msgid ""
+"`requests` parameters like `timeout`, `proxies`, etc. are also accepted "
+"(see `requests.request()`)."
+msgstr "Параметры `requests`, такие как `timeout`, `proxies` и подобные так же принимаются "
+"(см. `requests.request()`)."
+
+#: ../../docs.rst:17
+msgid "This also applies to low-level functions and API request objects as well."
+msgstr "Это так же применяется для низкоуровневых функций и объектов запросов API."
+
+#: ../../docs.rst:20
 msgid "Objects"
 msgstr "Объекты"
 
@@ -1251,11 +1278,11 @@ msgstr "`LinkObject`, ссылка на операцию"
 msgid "`dict`, other information about the operation"
 msgstr "`dict`, другая информация об операции"
 
-#: ../../docs.rst:31
+#: ../../docs.rst:43
 msgid "Low-level API"
 msgstr "Низкоуровневый API"
 
-#: ../../docs.rst:34
+#: ../../docs.rst:46
 msgid "Functions"
 msgstr "Функции"
 
@@ -1301,7 +1328,7 @@ msgstr "токен, подлежащий отзыву"
 msgid "path to the trash resource to be restored"
 msgstr "путь к восстанавливаему ресурсу"
 
-#: ../../docs.rst:49
+#: ../../docs.rst:61
 msgid "API request objects"
 msgstr "Объекты запросов к API"
 
@@ -1482,3 +1509,4 @@ msgstr "Запрос для получения статуса операции."
 #: ../../docstring of yadisk.api.operations.GetOperationStatusRequest:4
 msgid "operation ID or link"
 msgstr "идентификатор операции или ссылка на нее"
+
