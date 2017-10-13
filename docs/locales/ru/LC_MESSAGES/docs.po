@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-13 16:46+0500\n"
+"POT-Creation-Date: 2017-10-13 16:52+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -374,7 +374,7 @@ msgstr "Получает информацию о диске."
 
 #: ../../docstring of yadisk.YaDisk.get_disk_info:5
 #: yadisk.functions.disk.get_disk_info:6
-msgid "`DiskObject`"
+msgid "`DiskInfoObject`"
 msgstr ""
 
 #: ../../docstring of yadisk.YaDisk.get_download_link:1
@@ -1439,4 +1439,7 @@ msgstr "Запрос для получения статуса операции."
 #: ../../docstring of yadisk.api.operations.GetOperationStatusRequest:4
 msgid "operation ID or link"
 msgstr "идентификатор операции или ссылка на нее"
+
+#~ msgid "`DiskObject`"
+#~ msgstr ""
 

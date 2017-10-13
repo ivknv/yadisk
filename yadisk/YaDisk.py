@@ -115,7 +115,7 @@ class YaDisk(object):
 
             :param fields: list of keys to be included in the response
 
-            :returns: `DiskObject`
+            :returns: `DiskInfoObject`
         """
 
         return functions.get_disk_info(self.make_session(), *args, **kwargs)
