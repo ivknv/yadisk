@@ -1,7 +1,7 @@
 YaDisk
 ======
 
-YaDisk &#8212; это библиотека-клиент REST API Яндекс.Диска.
+YaDisk - это библиотека-клиент REST API Яндекс.Диска.
 
 .. _Read the Docs (EN): http://yadisk.readthedocs.io
 .. _Read the Docs (RU): http://yadisk.readthedocs.io/ru/latest
