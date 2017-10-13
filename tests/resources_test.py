@@ -82,3 +82,12 @@ class ResourcesTestCase(TestCase):
         self.yadisk.remove(path)
         self.yadisk.remove_trash("dir-to-remove")
         self.assertFalse(self.yadisk.trash_exists("dir-to-remove"))
+
+    def test_publish_unpublish(self):
+        path = self.path
+
+        self.yadisk.publish(path)
+        self.assertIsNotNone(self.yadisk.get_meta(path).public_url)
+
+        self.yadisk.unpublish(path)
+        self.assertIsNone(self.yadisk.get_meta(path).public_url)

@@ -375,3 +375,27 @@ class YaDisk(object):
         """
 
         return functions.remove_trash(self.make_session(), path, *args, **kwargs)
+
+    def publish(self, path, *args, **kwargs):
+        """
+            Make a resource public.
+
+            :param path: path to the resource to be published
+            :param fields: list of keys to be included in the response
+
+            :returns: `LinkObject`, link to the resource
+        """
+
+        return functions.publish(self.make_session(), path, *args, **kwargs)
+
+    def unpublish(self, path, *args, **kwargs):
+        """
+            Make a public resource private.
+
+            :param path: path to the resource to be unpublished
+            :param fields: list of keys to be included in the response
+
+            :returns: `LinkObject`, link to the resource
+        """
+
+        return functions.unpublish(self.make_session(), path, *args, **kwargs)
