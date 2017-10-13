@@ -17,10 +17,8 @@ class CommentIDsObject(YaDiskObject):
 
         :param comment_ids: `dict` or `None`
 
-        private_resource
-            `str`, comment ID for private resources
-        public_resource
-            `str`, comment ID for public resources
+        :ivar private_resource: `str`, comment ID for private resources
+        :ivar public_resource: `str`, comment ID for public resources
     """
 
     def __init__(self, comment_ids=None):
@@ -35,8 +33,7 @@ class EXIFObject(YaDiskObject):
 
         :param exif: `dict` or `None`
 
-        date_time
-            `datetime.datetime`, capture date
+        :ivar date_time: `datetime.datetime`, capture date
     """
 
     def __init__(self, exif=None):
@@ -50,12 +47,9 @@ class FilesResourceListObject(YaDiskObject):
 
         :param files_resource_list: `dict` or `None`
 
-        items
-            `list`, flat list of files (`ResourceObject`)
-        limit
-            `int`, maximum number of elements in the list
-        offset
-            `int`, offset from the beginning of the list
+        :ivar items: `list`, flat list of files (`ResourceObject`)
+        :ivar limit: `int`, maximum number of elements in the list
+        :ivar offset: `int`, offset from the beginning of the list
     """
 
     def __init__(self, files_resource_list=None):
@@ -71,10 +65,8 @@ class LastUploadedResourceListObject(YaDiskObject):
 
         :param last_uploaded_resources_list: `dict` or `None`
 
-        items
-            `list`, list of resources (`ResourceObject`)
-        limit
-            `int`, maximum number of elements in the list
+        :ivar items: `list`, list of resources (`ResourceObject`)
+        :ivar limit: `int`, maximum number of elements in the list
     """
 
     def __init__(self, last_uploaded_resources_list=None):
@@ -88,12 +80,9 @@ class LinkObject(YaDiskObject):
 
         :param link: `dict` or `None`
 
-        href
-            `str`, link URL
-        method
-            `str`, HTTP method
-        templated
-            `bool`, tells whether the URL is templated
+        :ivar href: `str`, link URL
+        :ivar method: `str`, HTTP method
+        :ivar templated: `bool`, tells whether the URL is templated
     """
 
     def __init__(self, link=None):
@@ -109,14 +98,10 @@ class PublicResourcesListObject(YaDiskObject):
 
         :param public_resources_list: `dict` or `None`
 
-        items
-            `list`, list of public resources (`ResourceObject`)
-        type
-            `str`, resource type to filter by
-        limit
-            `int`, maximum number of elements in the list
-        offset
-            `int`, offset from the beginning of the list
+        :ivar items: `list`, list of public resources (`ResourceObject`)
+        :ivar type: `str`, resource type to filter by
+        :ivar limit: `int`, maximum number of elements in the list
+        :ivar offset: `int`, offset from the beginning of the list
     """
 
     def __init__(self, public_resources_list=None):
@@ -133,46 +118,26 @@ class ResourceObject(YaDiskObject):
 
         :param resource: `dict` or `None`
 
-        size
-            `int`, file size
-        public_key
-            `str`, public resource key
-        sha256
-            `str`, SHA256 hash
-        md5
-            `str`, MD5 hash
-        embedded
-            `ResourceListObject`, list of nested resources
-        name
-            `str`, filename
-        exif
-            `EXIFObject`, EXIF metadata
-        resource_id
-            `str`, resource ID
-        custom_properties
-            `dict`, custom resource properties
-        public_url
-            `str`, public URL
-        share
-            `ShareInfoObject`, shared folder information
-        modified
-            `datetime.datetime`, date of last modification
-        created
-            `datetime.datetime`, date of creation
-        mime_type
-            `str`, MIME type
-        path
-            `str`, path to the resource
-        preview
-            `str`, file preview URL
-        comment_ids
-            `CommentIDsObject`, comment IDs
-        type
-            `str`, type ("file" or "dir")
-        media_type
-            `str`, file type as determined by Yandex.Disk
-        revision
-            `int`, Yandex.Disk revision at the time of last modification
+        :ivar size: `int`, file size
+        :ivar public_key: `str`, public resource key
+        :ivar sha256: `str`, SHA256 hash
+        :ivar md5: `str`, MD5 hash
+        :ivar embedded: `ResourceListObject`, list of nested resources
+        :ivar name: `str`, filename
+        :ivar exif: `EXIFObject`, EXIF metadata
+        :ivar resource_id: `str`, resource ID
+        :ivar custom_properties: `dict`, custom resource properties
+        :ivar public_url: `str`, public URL
+        :ivar share: `ShareInfoObject`, shared folder information
+        :ivar modified: `datetime.datetime`, date of last modification
+        :ivar created: `datetime.datetime`, date of creation
+        :ivar mime_type: `str`, MIME type
+        :ivar path: `str`, path to the resource
+        :ivar preview: `str`, file preview URL
+        :ivar comment_ids: `CommentIDsObject`, comment IDs
+        :ivar type: `str`, type ("file" or "dir")
+        :ivar media_type: `str`, file type as determined by Yandex.Disk
+        :ivar revision: `int`, Yandex.Disk revision at the time of last modification
     """
 
     def __init__(self, resource=None):
@@ -205,18 +170,12 @@ class ResourceListObject(YaDiskObject):
 
         :param resource_list: `dict` or `None`
 
-        sort
-            `str`, sort type
-        items
-            `list`, list of resources (`ResourceObject`)
-        limit
-            `int`, maximum number of elements in the list
-        offset
-            `int`, offset from the beginning of the list
-        path
-            `str`, path to the directory that contains the elements of the list
-        total
-            `int`, number of elements in the list
+        :ivar sort: `str`, sort type
+        :ivar items: `list`, list of resources (`ResourceObject`)
+        :ivar limit: `int`, maximum number of elements in the list
+        :ivar offset: `int`, offset from the beginning of the list
+        :ivar path: `str`, path to the directory that contains the elements of the list
+        :ivar total: `int`, number of elements in the list
     """
 
     def __init__(self, resource_list=None):
@@ -234,14 +193,10 @@ class ResourceUploadLinkObject(LinkObject):
 
         :param resource_upload_link: `dict` or `None`
 
-        operation_id
-            `str`, ID of the upload operation
-        href
-            `str`, link URL
-        method
-            `str`, HTTP method
-        templated
-            `bool`, tells whether the URL is templated
+        :ivar operation_id: `str`, ID of the upload operation
+        :ivar href: `str`, link URL
+        :ivar method: `str`, HTTP method
+        :ivar templated: `bool`, tells whether the URL is templated
     """
 
     def __init__(self, resource_upload_link=None):
@@ -255,12 +210,9 @@ class ShareInfoObject(YaDiskObject):
 
         :param share_info: `dict` or `None`
 
-        is_root
-            `bool`, tells whether the folder is root
-        is_owned
-            `bool`, tells whether the user is the owner of this directory
-        rights
-            `str`, access rights
+        :ivar is_root: `bool`, tells whether the folder is root
+        :ivar is_owned: `bool`, tells whether the user is the owner of this directory
+        :ivar rights: `str`, access rights
     """
 
     def __init__(self, share_info=None):
@@ -275,50 +227,28 @@ class PublicResourceObject(ResourceObject):
 
         :param resource: `dict` or `None`
 
-        size
-            `int`, file size
-        public_key
-            `str`, public resource key
-        sha256
-            `str`, SHA256 hash
-        md5
-            `str`, MD5 hash
-        embedded
-            `PublicResourceObject`, list of nested resources
-        name
-            `str`, filename
-        exif
-            `EXIFObject`, EXIF metadata
-        resource_id
-            `str`, resource ID
-        custom_properties
-            `dict`, custom resource properties
-        public_url
-            `str`, public URL
-        share
-            `ShareInfoObject`, shared folder information
-        modified
-            `datetime.datetime`, date of last modification
-        created
-            `datetime.datetime`, date of creation
-        mime_type
-            `str`, MIME type
-        path
-            `str`, path to the resource
-        preview
-            `str`, file preview URL
-        comment_ids
-            `CommentIDsObject`, comment IDs
-        type
-            `str`, type ("file" or "dir")
-        media_type
-            `str`, file type as determined by Yandex.Disk
-        revision
-            `int`, Yandex.Disk revision at the time of last modification
-        view_count
-            `int`, number of times the public resource was viewed
-        owner
-            `UserObject`, owner of the public resource
+        :ivar size: `int`, file size
+        :ivar public_key: `str`, public resource key
+        :ivar sha256: `str`, SHA256 hash
+        :ivar md5: `str`, MD5 hash
+        :ivar embedded: `PublicResourceObject`, list of nested resources
+        :ivar name: `str`, filename
+        :ivar exif: `EXIFObject`, EXIF metadata
+        :ivar resource_id: `str`, resource ID
+        :ivar custom_properties: `dict`, custom resource properties
+        :ivar public_url: `str`, public URL
+        :ivar share: `ShareInfoObject`, shared folder information
+        :ivar modified: `datetime.datetime`, date of last modification
+        :ivar created: `datetime.datetime`, date of creation
+        :ivar mime_type: `str`, MIME type
+        :ivar path: `str`, path to the resource
+        :ivar preview: `str`, file preview URL
+        :ivar comment_ids: `CommentIDsObject`, comment IDs
+        :ivar type: `str`, type ("file" or "dir")
+        :ivar media_type: `str`, file type as determined by Yandex.Disk
+        :ivar revision: `int`, Yandex.Disk revision at the time of last modification
+        :ivar view_count: `int`, number of times the public resource was viewed
+        :ivar owner: `UserObject`, owner of the public resource
     """
 
     def __init__(self, public_resource=None):
@@ -335,20 +265,13 @@ class PublicResourceListObject(ResourceListObject):
 
         :param public_resource_list: `dict` or `None`
 
-        sort
-            `str`, sort type
-        items
-            `list`, list of resources (`ResourceObject`)
-        limit
-            `int`, maximum number of elements in the list
-        offset
-            `int`, offset from the beginning of the list
-        path
-            `str`, path to the directory that contains the elements of the list
-        total
-            `int`, number of elements in the list
-        public_key
-            `str`, public key of the resource
+        :ivar sort: `str`, sort type
+        :ivar items: `list`, list of resources (`ResourceObject`)
+        :ivar limit: `int`, maximum number of elements in the list
+        :ivar offset: `int`, offset from the beginning of the list
+        :ivar path: `str`, path to the directory that contains the elements of the list
+        :ivar total: `int`, number of elements in the list
+        :ivar public_key: `str`, public key of the resource
     """
 
     def __init__(self, public_resource_list=None):
@@ -363,50 +286,28 @@ class TrashResourceObject(ResourceObject):
 
         :param trash_resource: `dict` or `None`
 
-        size
-            `int`, file size
-        public_key
-            `str`, public resource key
-        sha256
-            `str`, SHA256 hash
-        md5
-            `str`, MD5 hash
-        embedded
-            `TrashResourceList`, list of nested resources
-        name
-            `str`, filename
-        exif
-            `EXIFObject`, EXIF metadata
-        resource_id
-            `str`, resource ID
-        custom_properties
-            `dict`, custom resource properties
-        public_url
-            `str`, public URL
-        share
-            `ShareInfoObject`, shared folder information
-        modified
-            `datetime.datetime`, date of last modification
-        created
-            `datetime.datetime`, date of creation
-        mime_type
-            `str`, MIME type
-        path
-            `str`, path to the resource
-        preview
-            `str`, file preview URL
-        comment_ids
-            `CommentIDsObject`, comment IDs
-        type
-            `str`, type ("file" or "dir")
-        media_type
-            `str`, file type as determined by Yandex.Disk
-        revision
-            `int`, Yandex.Disk revision at the time of last modification
-        origin_path
-            `str`, original path
-        deleted
-            `datetime.datetime`, date of deletion
+        :ivar size: `int`, file size
+        :ivar public_key: `str`, public resource key
+        :ivar sha256: `str`, SHA256 hash
+        :ivar md5: `str`, MD5 hash
+        :ivar embedded: `TrashResourceList`, list of nested resources
+        :ivar name: `str`, filename
+        :ivar exif: `EXIFObject`, EXIF metadata
+        :ivar resource_id: `str`, resource ID
+        :ivar custom_properties: `dict`, custom resource properties
+        :ivar public_url: `str`, public URL
+        :ivar share: `ShareInfoObject`, shared folder information
+        :ivar modified: `datetime.datetime`, date of last modification
+        :ivar created: `datetime.datetime`, date of creation
+        :ivar mime_type: `str`, MIME type
+        :ivar path: `str`, path to the resource
+        :ivar preview: `str`, file preview URL
+        :ivar comment_ids: `CommentIDsObject`, comment IDs
+        :ivar type: `str`, type ("file" or "dir")
+        :ivar media_type: `str`, file type as determined by Yandex.Disk
+        :ivar revision: `int`, Yandex.Disk revision at the time of last modification
+        :ivar origin_path: `str`, original path
+        :ivar deleted: `datetime.datetime`, date of deletion
     """
 
     def __init__(self, trash_resource=None):
@@ -422,18 +323,12 @@ class TrashResourceListObject(ResourceListObject):
 
         :param trash_resource_list: `dict` or `None`
 
-        sort
-            `str`, sort type
-        items
-            `list`, list of resources (`TrashResourceObject`)
-        limit
-            `int`, maximum number of elements in the list
-        offset
-            `int`, offset from the beginning of the list
-        path
-            `str`, path to the directory that contains the elements of the list
-        total
-            `int`, number of elements in the list
+        :ivar sort: `str`, sort type
+        :ivar items: `list`, list of resources (`TrashResourceObject`)
+        :ivar limit: `int`, maximum number of elements in the list
+        :ivar offset: `int`, offset from the beginning of the list
+        :ivar path: `str`, path to the directory that contains the elements of the list
+        :ivar total: `int`, number of elements in the list
     """
 
     def __init__(self, trash_resource_list=None):

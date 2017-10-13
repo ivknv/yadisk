@@ -11,12 +11,9 @@ class ErrorObject(YaDiskObject):
 
         :param error: `dict` or `None`
 
-        message
-            `str`, human-readable error message
-        description
-            `str`, technical error description
-        error
-            `str`, error code
+        :ivar message: `str`, human-readable error message
+        :ivar description: `str`, technical error description
+        :ivar error: `str`, error code
     """
 
     def __init__(self, error=None):
