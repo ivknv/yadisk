@@ -5,7 +5,7 @@ Documentation
    :members:
 
 Objects
-*******
+#######
 
 .. automodule:: yadisk.objects
 
@@ -26,6 +26,9 @@ Objects
 
 .. automodule:: yadisk.objects.operations
    :members:
+
+Low-level API
+#############
 
 Functions
 *********
