@@ -7,12 +7,13 @@ import requests
 
 from ..api import CopyRequest, GetDownloadLinkRequest, GetMetaRequest, APIRequest
 from ..api import GetUploadLinkRequest, MkdirRequest, DeleteRequest, GetTrashRequest
-from ..api import RestoreTrashRequest, MoveRequest
+from ..api import RestoreTrashRequest, MoveRequest, DeleteTrashRequest
 from ..exceptions import DiskNotFoundError
 
 __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_type",
            "get_upload_link", "is_dir", "is_file", "listdir", "mkdir", "remove",
-           "upload", "get_trash_meta", "trash_exists", "restore_trash", "move"]
+           "upload", "get_trash_meta", "trash_exists", "restore_trash", "move",
+           "remove_trash"]
 
 def copy(session, src_path, dst_path, *args, **kwargs):
     """
@@ -391,6 +392,22 @@ def move(session, src_path, dst_path, *args, **kwargs):
     """
 
     request = MoveRequest(session, src_path, dst_path, *args, **kwargs)
+    request.send()
+
+    return request.process()
+
+def remove_trash(session, path, *args, **kwargs):
+    """
+        Remove a trash resource.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param path: path to the trash resource to be deleted
+        :param fields: list of keys to be included in the response
+
+        :returns: `LinkObject` if the operation is performed asynchronously, `None` otherwise
+    """
+
+    request = DeleteTrashRequest(session, path, *args, **kwargs)
     request.send()
 
     return request.process()

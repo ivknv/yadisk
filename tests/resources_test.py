@@ -75,3 +75,10 @@ class ResourcesTestCase(TestCase):
         self.assertTrue(self.yadisk.exists(path2))
 
         self.yadisk.remove(path2, permanently=True)
+
+    def test_remove_trash(self):
+        path = posixpath.join(self.path, "dir-to-remove")
+        self.yadisk.mkdir(path)
+        self.yadisk.remove(path)
+        self.yadisk.remove_trash("dir-to-remove")
+        self.assertFalse(self.yadisk.trash_exists("dir-to-remove"))

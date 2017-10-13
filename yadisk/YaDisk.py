@@ -363,3 +363,15 @@ class YaDisk(object):
         """
 
         return functions.move(self.make_session(), src_path, dst_path, *args, **kwargs)
+
+    def remove_trash(self, path, *args, **kwargs):
+        """
+            Remove a trash resource.
+
+            :param path: path to the trash resource to be deleted
+            :param fields: list of keys to be included in the response
+
+            :returns: `LinkObject` if the operation is performed asynchronously, `None` otherwise
+        """
+
+        return functions.remove_trash(self.make_session(), path, *args, **kwargs)
