@@ -167,6 +167,14 @@ class RestoreTrashRequest(APIRequest):
         return LinkObject(js)
 
 class DeleteTrashRequest(APIRequest):
+    """
+        A request to delete a trash resource.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param path: path to the trash resource to be deleted
+        :param fields: list of keys to be included in the response
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk/trash/resources"
     method = "DELETE"
     success_codes = {202, 204}

@@ -85,6 +85,9 @@ class YaDiskObject(object):
             for field in self.FIELDS:
                 self[field] = source_dict.get(field)
 
+            for field in self.ALIASES:
+                self[field] = source_dict.get(field)
+
     def __setattr__(self, attr, value):
         if attr in ("FIELDS", "FIELD_TYPES", "ALIASES"):
             self.__dict__[attr] = value
