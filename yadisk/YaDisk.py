@@ -128,7 +128,7 @@ class YaDisk(object):
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview
-            :param preview_crop: cut the preview to the size specified in the `preview_size`
+            :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param fields: list of keys to be included in the response
 
             :returns: `ResourceObject`
@@ -188,7 +188,7 @@ class YaDisk(object):
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview
-            :param preview_crop: cut the preview to the size specified in the `preview_size`
+            :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param fields: list of keys to be included in the response
 
             :returns: generator of `ResourceObject`
@@ -293,7 +293,7 @@ class YaDisk(object):
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview
-            :param preview_crop: cut the preview to the size specified in the `preview_size`
+            :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param fields: list of keys to be included in the response
 
             :returns: `TrashResourceObject`
@@ -455,7 +455,7 @@ class YaDisk(object):
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview
-            :param preview_crop: cut the preview to the size specified in the `preview_size`
+            :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param fields: list of keys to be included in the response
 
             :returns: generator of `PublicResourceObject`
@@ -505,7 +505,7 @@ class YaDisk(object):
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview
-            :param preview_crop: cut the preview to the size specified in the `preview_size`
+            :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param fields: list of keys to be included in the response
 
             :returns: generator of `TrashResourceObject`
@@ -545,3 +545,17 @@ class YaDisk(object):
         """
 
         return functions.is_trash_file(self.make_session(), path, *args, **kwargs)
+
+    def get_public_resources(self, *args, **kwargs):
+        """
+            Get a list of public resources.
+
+            :param offset: offset from the beginning of the list
+            :param limit: maximum number of elements in the list
+            :param preview_size: size of the file preview
+            :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+            :param type: filter based on type of resources ("file" or "dir")
+            :param fields: list of keys to be included in the response
+        """
+
+        return functions.get_public_resources(self.make_session(), *args, **kwargs)

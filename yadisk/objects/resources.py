@@ -98,14 +98,14 @@ class PublicResourcesListObject(YaDiskObject):
 
         :param public_resources_list: `dict` or `None`
 
-        :ivar items: `list`, list of public resources (`ResourceObject`)
+        :ivar items: `list`, list of public resources (`PublicResourceObject`)
         :ivar type: `str`, resource type to filter by
         :ivar limit: `int`, maximum number of elements in the list
         :ivar offset: `int`, offset from the beginning of the list
     """
 
     def __init__(self, public_resources_list=None):
-        YaDiskObject.__init__(self, {"items":  typed_list(ResourceObject),
+        YaDiskObject.__init__(self, {"items":  typed_list(PublicResourceObject),
                                      "type":   str,
                                      "limit":  int,
                                      "offset": int})
