@@ -7,7 +7,7 @@ Documentation
 General parameters
 ##################
 
-Almost all methods of `YaDisk` accept some additional arguments:
+Almost all methods of `YaDisk` (the ones that accept `*args` and `**kwargs`) accept some additional arguments:
 
 * **n_retries** - `int`, maximum number of retries for a request
 * **retry_delay** - `float`, delay between retries (in seconds)

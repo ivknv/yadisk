@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-15 16:37+0500\n"
+"POT-Creation-Date: 2017-10-15 17:07+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -566,20 +566,17 @@ msgid "`PublicResourceObject`"
 msgstr ""
 
 #: ../../docstring of yadisk.YaDisk.get_public_type:1
-#: yadisk.YaDisk.is_public_dir:1 yadisk.functions.resources.is_public_dir:1
-msgid "Check whether `public_key` is a public directory."
-msgstr "Проверяет, является ли `public_key` публичной папкой."
+#: yadisk.functions.resources.get_public_type:1
+msgid "Get public resource type."
+msgstr "Получает тип публичного ресурса."
 
-#: ../../docstring of yadisk.YaDisk.get_public_type:5 yadisk.YaDisk.is_dir:5
-#: yadisk.YaDisk.is_trash_dir:5 yadisk.YaDisk.is_trash_file:5
-#: yadisk.functions.resources.is_dir:6
-#: yadisk.functions.resources.is_trash_dir:6
-msgid ""
-"`True` if `path` is a directory, `False` otherwise (even if it doesn't "
-"exist)"
-msgstr ""
-"`True`, если `path` является папкой, `False`, в остальных случаях (даже "
-"если ресурс не существует)"
+#: ../../docstring of yadisk.YaDisk.get_public_type:5
+#: yadisk.YaDisk.get_trash_type:5 yadisk.YaDisk.get_type:5
+#: yadisk.functions.resources.get_public_type:6
+#: yadisk.functions.resources.get_trash_type:6
+#: yadisk.functions.resources.get_type:6
+msgid "\"file\" or \"dir\""
+msgstr "\"file\" или \"dir\""
 
 #: ../../docstring of yadisk.YaDisk.get_token:1
 #: yadisk.functions.auth.get_token:1
@@ -628,13 +625,6 @@ msgstr ""
 msgid "Get trash resource type."
 msgstr "Получает тип ресурса корзины."
 
-#: ../../docstring of yadisk.YaDisk.get_trash_type:5 yadisk.YaDisk.get_type:5
-#: yadisk.functions.resources.get_public_type:6
-#: yadisk.functions.resources.get_trash_type:6
-#: yadisk.functions.resources.get_type:6
-msgid "\"file\" or \"dir\""
-msgstr "\"file\" или \"dir\""
-
 #: ../../docstring of yadisk.YaDisk.get_type:1
 #: yadisk.functions.resources.get_type:1
 msgid "Get resource type."
@@ -658,6 +648,16 @@ msgstr "`bool`, определяет, перезаписывать путь на
 msgid "Check whether `path` is a directory."
 msgstr "Проверяет, является ли `path` папкой."
 
+#: ../../docstring of yadisk.YaDisk.is_dir:5 yadisk.YaDisk.is_trash_dir:5
+#: yadisk.YaDisk.is_trash_file:5 yadisk.functions.resources.is_dir:6
+#: yadisk.functions.resources.is_trash_dir:6
+msgid ""
+"`True` if `path` is a directory, `False` otherwise (even if it doesn't "
+"exist)"
+msgstr ""
+"`True`, если `path` является папкой, `False`, в остальных случаях (даже "
+"если ресурс не существует)"
+
 #: ../../docstring of yadisk.YaDisk.is_file:1
 #: yadisk.functions.resources.is_file:1
 msgid "Check whether `path` is a file."
@@ -670,6 +670,11 @@ msgid "`True` if `path` is a file, `False` otherwise (even if it doesn't exist)"
 msgstr ""
 "`True`, если `path` является файлом, `False`, в остальных случаях (даже "
 "если ресурс не существует)"
+
+#: ../../docstring of yadisk.YaDisk.is_public_dir:1
+#: yadisk.functions.resources.is_public_dir:1
+msgid "Check whether `public_key` is a public directory."
+msgstr "Проверяет, является ли `public_key` публичной папкой."
 
 #: ../../docstring of yadisk.YaDisk.is_public_dir:3
 #: yadisk.YaDisk.public_listdir:3 yadisk.api.auth.GetTokenRequest:3
@@ -723,8 +728,8 @@ msgid ""
 "`True` if `public_key` is a directory, `False` otherwise (even if it "
 "doesn't exist)"
 msgstr ""
-"`True`, если `public_key` является папкой, `False`, в остальных случаях (даже "
-"если ресурс не существует)"
+"`True`, если `public_key` является папкой, `False`, в остальных случаях "
+"(даже если ресурс не существует)"
 
 #: ../../docstring of yadisk.YaDisk.is_public_file:1
 #: yadisk.functions.resources.is_public_file:1
@@ -737,8 +742,8 @@ msgid ""
 "`True` if `public_key` is a file, `False` otherwise (even if it doesn't "
 "exist)"
 msgstr ""
-"`True`, если `public_key` является файлом, `False`, в остальных случаях (даже "
-"если ресурс не существует)"
+"`True`, если `public_key` является файлом, `False`, в остальных случаях "
+"(даже если ресурс не существует)"
 
 #: ../../docstring of yadisk.YaDisk.is_trash_dir:1
 #: yadisk.functions.resources.is_trash_dir:1
@@ -975,8 +980,10 @@ msgid "General parameters"
 msgstr "Общие параметры"
 
 #: ../../docs.rst:10
-msgid "Almost all methods of `YaDisk` accept some additional arguments:"
-msgstr "Почти все методы `YaDisk` принимают некоторые дополнительные параметры:"
+msgid ""
+"Almost all methods of `YaDisk` (the ones that accept `*args` and "
+"`**kwargs`) accept some additional arguments:"
+msgstr "Почти все методы `YaDisk` (те, которые принимают `*args` и `**kwargs`) принимают некоторые дополнительные параметры:"
 
 #: ../../docs.rst:12
 msgid "**n_retries** - `int`, maximum number of retries for a request"
@@ -1563,10 +1570,6 @@ msgstr "путь к восстанавливаему ресурсу"
 #: yadisk.functions.resources.restore_trash:6
 msgid "`bool`, determines whether the destination can be overwritten"
 msgstr "`bool`, определяет может ли путь назначения быть перезаписан"
-
-#: ../../docstring of yadisk.functions.resources.get_public_type:1
-msgid "Get public resource type."
-msgstr "Получает тип публичного ресурса."
 
 #: ../../docs.rst:61
 msgid "API request objects"
