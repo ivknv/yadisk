@@ -17,18 +17,33 @@ __all__ = ["GetPublicResourcesRequest", "UnpublishRequest", "GetDownloadLinkRequ
            "MoveRequest", "FilesRequest", "PatchRequest"]
 
 class GetPublicResourcesRequest(APIRequest):
+    """
+        A request to get a list of public resources.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param offset: offset from the beginning of the list
+        :param limit: maximum number of elements in the list
+        :param preview_size: size of the file preview
+        :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+        :param type: filter based on type of resources ("file" or "dir")
+        :param fields: list of keys to be included in the response
+
+        :returns: `PublicResourcesList`
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk/resources/public"
     method = "GET"
 
     def __init__(self, session, offset=0, limit=20, preview_size=None,
-                 preview_crop=None, type=None, *args, **kwargs):
+                 preview_crop=None, type=None, fields=None, *args, **kwargs):
         APIRequest.__init__(self, session, {"offset":       offset,
                                             "limit":        limit,
                                             "preview_size": preview_size,
                                             "preview_crop": preview_crop,
-                                            "type":         type}, *args, **kwargs)
+                                            "type":         type,
+                                            "fields":       fields}, *args, **kwargs)
 
-    def process_args(self, offset, limit, preview_size, preview_crop, type):
+    def process_args(self, offset, limit, preview_size, preview_crop, type, fields):
         self.params["offset"] = offset
         self.params["limit"] = limit
 
@@ -40,6 +55,9 @@ class GetPublicResourcesRequest(APIRequest):
 
         if type is not None:
             self.params["type"] = type
+
+        if fields is not None:
+            self.params["fields"] = ",".join(fields)
 
     def process_json(self, js):
         return PublicResourcesListObject(js)
@@ -102,7 +120,7 @@ class GetTrashRequest(APIRequest):
         :param limit: number of children resources to be included in the response
         :param offset: number of children resources to be skipped in the response
         :param preview_size: size of the file preview
-        :param preview_crop: cut the preview to the size specified in the `preview_size`
+        :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
     """
 
@@ -280,7 +298,7 @@ class GetMetaRequest(APIRequest):
         :param limit: number of children resources to be included in the response
         :param offset: number of children resources to be skipped in the response
         :param preview_size: size of the file preview
-        :param preview_crop: cut the preview to the size specified in the `preview_size`
+        :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
     """
 

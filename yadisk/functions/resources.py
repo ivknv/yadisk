@@ -9,6 +9,7 @@ from ..api import CopyRequest, GetDownloadLinkRequest, GetMetaRequest, APIReques
 from ..api import GetUploadLinkRequest, MkdirRequest, DeleteRequest, GetTrashRequest
 from ..api import RestoreTrashRequest, MoveRequest, DeleteTrashRequest
 from ..api import PublishRequest, UnpublishRequest, SaveToDiskRequest, GetPublicMetaRequest
+from ..api import GetPublicResourcesRequest
 from ..exceptions import DiskNotFoundError
 
 __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_type",
@@ -17,7 +18,7 @@ __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_t
            "remove_trash", "publish", "unpublish", "save_to_disk", "get_public_meta",
            "public_exists", "public_listdir", "get_public_type", "is_public_dir",
            "is_public_file", "trash_listdir", "get_trash_type", "is_trash_dir",
-           "is_trash_file"]
+           "is_trash_file", "get_public_resources"]
 
 def copy(session, src_path, dst_path, *args, **kwargs):
     """
@@ -137,7 +138,7 @@ def get_meta(session, *args, **kwargs):
         :param limit: number of children resources to be included in the response
         :param offset: number of children resources to be skipped in the response
         :param preview_size: size of the file preview
-        :param preview_crop: cut the preview to the size specified in the `preview_size`
+        :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
 
         :returns: `ResourceObject`
@@ -242,7 +243,7 @@ def listdir(session, path, *args, **kwargs):
         :param limit: number of children resources to be included in the response
         :param offset: number of children resources to be skipped in the response
         :param preview_size: size of the file preview
-        :param preview_crop: cut the preview to the size specified in the `preview_size`
+        :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
 
         :returns: generator of `ResourceObject`
@@ -350,7 +351,7 @@ def get_trash_meta(session, path, *args, **kwargs):
         :param limit: number of children resources to be included in the response
         :param offset: number of children resources to be skipped in the response
         :param preview_size: size of the file preview
-        :param preview_crop: cut the preview to the size specified in the `preview_size`
+        :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
 
         :returns: `TrashResourceObject`
@@ -520,7 +521,7 @@ def public_listdir(session, public_key, *args, **kwargs):
         :param limit: number of children resources to be included in the response
         :param offset: number of children resources to be skipped in the response
         :param preview_size: size of the file preview
-        :param preview_crop: cut the preview to the size specified in the `preview_size`
+        :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
 
         :returns: generator of `PublicResourceObject`
@@ -579,7 +580,7 @@ def trash_listdir(session, path, *args, **kwargs):
         :param limit: number of children resources to be included in the response
         :param offset: number of children resources to be skipped in the response
         :param preview_size: size of the file preview
-        :param preview_crop: cut the preview to the size specified in the `preview_size`
+        :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
 
         :returns: generator of `TrashResourceObject`
@@ -628,3 +629,23 @@ def is_trash_file(session, path, *args, **kwargs):
         return get_trash_type(session, path, *args, **kwargs) == "file"
     except DiskNotFoundError:
         return False
+
+def get_public_resources(session, *args, **kwargs):
+    """
+        Get a list of public resources.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param offset: offset from the beginning of the list
+        :param limit: maximum number of elements in the list
+        :param preview_size: size of the file preview
+        :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+        :param type: filter based on type of resources ("file" or "dir")
+        :param fields: list of keys to be included in the response
+
+        :returns: `PublicResourcesList`
+    """
+
+    request = GetPublicResourcesRequest(session, *args, **kwargs)
+    request.send()
+
+    return request.process()
