@@ -185,6 +185,11 @@ class YaDisk(object):
             Get contents of `path`.
 
             :param path: path to the directory
+            :param limit: number of children resources to be included in the response
+            :param offset: number of children resources to be skipped in the response
+            :param preview_size: size of the file preview
+            :param preview_crop: cut the preview to the size specified in the `preview_size`
+            :param fields: list of keys to be included in the response
 
             :returns: generator of `ResourceObject`
         """
@@ -301,9 +306,6 @@ class YaDisk(object):
             Check whether the trash resource at `path` exists.
 
             :param path: path to the trash resource
-            :param dst_path: destination path
-            :param overwrite: `bool`, determines whether the destination can be overwritten
-            :param fields: list of keys to be included in the response
 
             :returns: `bool`
         """
@@ -399,3 +401,147 @@ class YaDisk(object):
         """
 
         return functions.unpublish(self.make_session(), path, *args, **kwargs)
+
+    def save_to_disk(self, public_key, *args, **kwargs):
+        """
+            Saves a public resource to the disk.
+            Returns the link to the operation if it's performed asynchronously,
+            or a link to the resource otherwise.
+
+            :param public_key: public key or public URL of the resource
+            :param name: filename of the saved resource
+            :param save_path: path to the destination directory (downloads directory by default)
+            :param fields: list of keys to be included in the response
+
+            :returns: `LinkObject`
+        """
+
+        return functions.save_to_disk(self.make_session(), public_key, *args, **kwargs)
+
+    def get_public_meta(self, public_key, *args, **kwargs):
+        """
+            Get meta-information about a public resource.
+
+            :param public_key: public key or public URL of the resource
+            :param offset: offset from the beginning of the list of nested resources
+            :param limit: maximum number of nested elements to be included in the list
+            :param sort: key to sort by
+            :param preview_size: file preview size
+            :param preview_crop: `bool`, allow preview crop
+            :param fields: list of keys to be included in the response
+
+            :returns: `PublicResourceObject`
+        """
+
+        return functions.get_public_meta(self.make_session(), public_key, *args, **kwargs)
+
+    def public_exists(self, public_key, *args, **kwargs):
+        """
+            Check whether the public resource exists.
+
+            :param public_key: public key or public URL of the resource
+
+            :returns: `bool`
+        """
+
+        return functions.public_exists(self.make_session(), public_key, *args, **kwargs)
+
+    def public_listdir(self, public_key, *args, **kwargs):
+        """
+            Get contents of a public directory.
+
+            :param session: an instance of `requests.Session` with prepared headers
+            :param public_key: public key or public URL of the resource
+            :param limit: number of children resources to be included in the response
+            :param offset: number of children resources to be skipped in the response
+            :param preview_size: size of the file preview
+            :param preview_crop: cut the preview to the size specified in the `preview_size`
+            :param fields: list of keys to be included in the response
+
+            :returns: generator of `PublicResourceObject`
+        """
+
+        return functions.public_listdir(self.make_session(), public_key, *args, **kwargs)
+
+    def get_public_type(self, public_key, *args, **kwargs):
+        """
+            Get public resource type.
+
+            :param public_key: public key or public URL of the resource
+
+            :returns: "file" or "dir"
+        """
+
+        return functions.get_public_type(self.make_session(), public_key, *args, **kwargs)
+
+    def is_public_dir(self, public_key, *args, **kwargs):
+        """
+            Check whether `public_key` is a public directory.
+
+            :param session: an instance of `requests.Session` with prepared headers
+            :param public_key: public key or public URL of the resource
+
+            :returns: `True` if `public_key` is a directory, `False` otherwise (even if it doesn't exist)
+        """
+
+        return functions.is_public_dir(self.make_session(), public_key, *args, **kwargs)
+
+    def is_public_file(self, public_key, *args, **kwargs):
+        """
+            Check whether `public_key` is a public file.
+
+            :param public_key: public key or public URL of the resource
+
+            :returns: `True` if `public_key` is a file, `False` otherwise (even if it doesn't exist)
+        """
+
+        return functions.is_public_file(self.make_session(), public_key, *args, **kwargs)
+
+    def trash_listdir(self, path, *args, **kwargs):
+        """
+            Get contents of a trash resource.
+
+            :param path: path to the directory in the trash bin
+            :param limit: number of children resources to be included in the response
+            :param offset: number of children resources to be skipped in the response
+            :param preview_size: size of the file preview
+            :param preview_crop: cut the preview to the size specified in the `preview_size`
+            :param fields: list of keys to be included in the response
+
+            :returns: generator of `TrashResourceObject`
+        """
+
+        return functions.trash_listdir(self.make_session(), path, *args, **kwargs)
+
+    def get_trash_type(self, path, *args, **kwargs):
+        """
+            Get trash resource type.
+
+            :param path: path to the trash resource
+
+            :returns: "file" or "dir"
+        """
+
+        return functions.get_trash_type(self.make_session(), path, *args, **kwargs)
+
+    def is_trash_dir(self, path, *args, **kwargs):
+        """
+            Check whether `path` is a trash directory.
+
+            :param path: path to the trash resource
+
+            :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
+        """
+
+        return functions.is_trash_dir(self.make_session(), path, *args, **kwargs)
+
+    def is_trash_file(self, path, *args, **kwargs):
+        """
+            Check whether `path` is a trash file.
+
+            :param path: path to the trash resource
+
+            :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
+        """
+
+        return functions.is_trash_file(self.make_session(), path, *args, **kwargs)
