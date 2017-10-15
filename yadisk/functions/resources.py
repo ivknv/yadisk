@@ -8,13 +8,16 @@ import requests
 from ..api import CopyRequest, GetDownloadLinkRequest, GetMetaRequest, APIRequest
 from ..api import GetUploadLinkRequest, MkdirRequest, DeleteRequest, GetTrashRequest
 from ..api import RestoreTrashRequest, MoveRequest, DeleteTrashRequest
-from ..api import PublishRequest, UnpublishRequest
+from ..api import PublishRequest, UnpublishRequest, SaveToDiskRequest, GetPublicMetaRequest
 from ..exceptions import DiskNotFoundError
 
 __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_type",
            "get_upload_link", "is_dir", "is_file", "listdir", "mkdir", "remove",
            "upload", "get_trash_meta", "trash_exists", "restore_trash", "move",
-           "remove_trash", "publish", "unpublish"]
+           "remove_trash", "publish", "unpublish", "save_to_disk", "get_public_meta",
+           "public_exists", "public_listdir", "get_public_type", "is_public_dir",
+           "is_public_file", "trash_listdir", "get_trash_type", "is_trash_dir",
+           "is_trash_file"]
 
 def copy(session, src_path, dst_path, *args, **kwargs):
     """
@@ -89,6 +92,14 @@ def download(session, src_path, file_or_path, *args, **kwargs):
 
     return response.status_code == 200
 
+def _exists(get_meta_function, *args, **kwargs):
+    try:
+        get_meta_function(*args, limit=0, **kwargs)
+
+        return True
+    except DiskNotFoundError:
+        return False
+
 def exists(session, path, *args, **kwargs):
     """
         Check whether `path` exists.
@@ -99,12 +110,7 @@ def exists(session, path, *args, **kwargs):
         :returns: `bool`
     """
 
-    try:
-        get_meta(session, path, *args, **kwargs)
-
-        return True
-    except DiskNotFoundError:
-        return False
+    return _exists(get_meta, session, path, *args, **kwargs)
 
 def get_download_link(session, path, *args, **kwargs):
     """
@@ -142,6 +148,9 @@ def get_meta(session, *args, **kwargs):
 
     return request.process()
 
+def _get_type(get_meta_function, session, *args, **kwargs):
+    return get_meta_function(session, *args, limit=0, **kwargs).type
+
 def get_type(session, path, *args, **kwargs):
     """
         Get resource type.
@@ -152,7 +161,7 @@ def get_type(session, path, *args, **kwargs):
         :returns: "file" or "dir"
     """
 
-    return get_meta(session, path, *args, **kwargs).type
+    return _get_type(get_meta, session, path, *args, **kwargs)
 
 def get_upload_link(session, path, *args, **kwargs):
     """
@@ -201,17 +210,8 @@ def is_file(session, path, *args, **kwargs):
     except DiskNotFoundError:
         return False
 
-def listdir(session, path, *args, **kwargs):
-    """
-        Get contents of `path`.
-
-        :param session: an instance of `requests.Session` with prepared headers
-        :param path: path to the directory
-
-        :returns: generator of `ResourceObject`
-    """
-
-    result = get_meta(session, path, *args, **kwargs)
+def _listdir(get_meta_function, session, path, *args, **kwargs):
+    result = get_meta_function(session, path, *args, **kwargs)
 
     if result.type == "file":
         raise NotADirectoryError("%r is a file" % (path,))
@@ -224,7 +224,7 @@ def listdir(session, path, *args, **kwargs):
     total = result.embedded.total
 
     while offset + limit < total:
-        result = get_meta(session, path, *args, offset=offset, limit=limit, **kwargs)
+        result = get_meta_function(session, path, *args, offset=offset, limit=limit, **kwargs)
 
         for child in result.embedded.items:
             yield child
@@ -232,6 +232,23 @@ def listdir(session, path, *args, **kwargs):
         offset += limit
         limit = result.embedded.limit
         total = result.embedded.total
+
+def listdir(session, path, *args, **kwargs):
+    """
+        Get contents of `path`.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param path: path to the directory
+        :param limit: number of children resources to be included in the response
+        :param offset: number of children resources to be skipped in the response
+        :param preview_size: size of the file preview
+        :param preview_crop: cut the preview to the size specified in the `preview_size`
+        :param fields: list of keys to be included in the response
+
+        :returns: generator of `ResourceObject`
+    """
+
+    return _listdir(get_meta, session, path, *args, **kwargs)
 
 def mkdir(session, path, *args, **kwargs):
     """
@@ -355,11 +372,7 @@ def trash_exists(session, path, *args, **kwargs):
         :returns: `bool`
     """
 
-    try:
-        get_trash_meta(session, path, *args, **kwargs)
-        return True
-    except DiskNotFoundError:
-        return False
+    return _exists(get_trash_meta, session, path, *args, **kwargs)
 
 def restore_trash(session, path, *args, **kwargs):
     """
@@ -444,3 +457,174 @@ def unpublish(session, path, *args, **kwargs):
     request.send()
 
     return request.process()
+
+def save_to_disk(session, public_key, *args, **kwargs):
+    """
+        Saves a public resource to the disk.
+        Returns the link to the operation if it's performed asynchronously,
+        or a link to the resource otherwise.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param public_key: public key or public URL of the resource
+        :param name: filename of the saved resource
+        :param save_path: path to the destination directory (downloads directory by default)
+        :param fields: list of keys to be included in the response
+
+        :returns: `LinkObject`
+    """
+
+    request = SaveToDiskRequest(session, public_key, *args, **kwargs)
+    request.send()
+
+    return request.process()
+
+def get_public_meta(session, public_key, *args, **kwargs):
+    """
+        Get meta-information about a public resource.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param public_key: public key or public URL of the resource
+        :param offset: offset from the beginning of the list of nested resources
+        :param limit: maximum number of nested elements to be included in the list
+        :param sort: key to sort by
+        :param preview_size: file preview size
+        :param preview_crop: `bool`, allow preview crop
+        :param fields: list of keys to be included in the response
+
+        :returns: `PublicResourceObject`
+    """
+
+    request = GetPublicMetaRequest(session, public_key, *args, **kwargs)
+    request.send()
+
+    return request.process()
+
+def public_exists(session, public_key, *args, **kwargs):
+    """
+        Check whether the public resource exists.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param public_key: public key or public URL of the resource
+
+        :returns: `bool`
+    """
+
+    return _exists(get_public_meta, session, public_key, *args, **kwargs)
+
+def public_listdir(session, public_key, *args, **kwargs):
+    """
+        Get contents of a public directory.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param public_key: public key or public URL of the resource
+        :param limit: number of children resources to be included in the response
+        :param offset: number of children resources to be skipped in the response
+        :param preview_size: size of the file preview
+        :param preview_crop: cut the preview to the size specified in the `preview_size`
+        :param fields: list of keys to be included in the response
+
+        :returns: generator of `PublicResourceObject`
+    """
+
+    return _listdir(get_public_meta, session, public_key, *args, **kwargs)
+
+def get_public_type(session, public_key, *args, **kwargs):
+    """
+        Get public resource type.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param public_key: public key or public URL of the resource
+
+        :returns: "file" or "dir"
+    """
+
+    return _get_type(get_public_meta, session, public_key, *args, **kwargs)
+
+def is_public_dir(session, public_key, *args, **kwargs):
+    """
+        Check whether `public_key` is a public directory.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param public_key: public key or public URL of the resource
+
+        :returns: `True` if `public_key` is a directory, `False` otherwise (even if it doesn't exist)
+    """
+
+    try:
+        return get_public_type(session, public_key, *args, **kwargs) == "dir"
+    except DiskNotFoundError:
+        return False
+
+def is_public_file(session, public_key, *args, **kwargs):
+    """
+        Check whether `public_key` is a public file.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param public_key: public key or public URL of the resource
+
+        :returns: `True` if `public_key` is a file, `False` otherwise (even if it doesn't exist)
+    """
+
+    try:
+        return get_public_type(session, public_key, *args, **kwargs) == "file"
+    except DiskNotFoundError:
+        return False
+
+def trash_listdir(session, path, *args, **kwargs):
+    """
+        Get contents of a trash resource.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param path: path to the directory in the trash bin
+        :param limit: number of children resources to be included in the response
+        :param offset: number of children resources to be skipped in the response
+        :param preview_size: size of the file preview
+        :param preview_crop: cut the preview to the size specified in the `preview_size`
+        :param fields: list of keys to be included in the response
+
+        :returns: generator of `TrashResourceObject`
+    """
+
+    return _listdir(get_trash_meta, session, path, *args, **kwargs)
+
+def get_trash_type(session, path, *args, **kwargs):
+    """
+        Get trash resource type.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param path: path to the trash resource
+
+        :returns: "file" or "dir"
+    """
+
+    return _get_type(get_trash_meta, session, path, *args, **kwargs)
+
+def is_trash_dir(session, path, *args, **kwargs):
+    """
+        Check whether `path` is a trash directory.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param path: path to the trash resource
+
+        :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
+    """
+
+    try:
+        return get_trash_type(session, path, *args, **kwargs) == "dir"
+    except DiskNotFoundError:
+        return False
+
+def is_trash_file(session, path, *args, **kwargs):
+    """
+        Check whether `path` is a trash file.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param path: path to the trash resource
+
+        :returns: `True` if `path` is a file, `False` otherwise (even if it doesn't exist)
+    """
+
+    try:
+        return get_trash_type(session, path, *args, **kwargs) == "file"
+    except DiskNotFoundError:
+        return False

@@ -7,7 +7,7 @@ import json
 from .APIRequest import APIRequest
 from ..objects import LinkObject, PublicResourcesListObject, TrashResourceObject
 from ..objects import FilesResourceListObject, LastUploadedResourceListObject
-from ..objects import ResourceObject, ResourceUploadLinkObject
+from ..objects import ResourceObject, ResourceUploadLinkObject, PublicResourceObject
 
 __all__ = ["GetPublicResourcesRequest", "UnpublishRequest", "GetDownloadLinkRequest",
            "GetTrashRequest", "RestoreTrashRequest", "DeleteTrashRequest",
@@ -451,6 +451,16 @@ class DeleteRequest(APIRequest):
             return LinkObject(js)
 
 class SaveToDiskRequest(APIRequest):
+    """
+        A request to save a public resource to the disk.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param public_key: public key or public URL of the resource
+        :param name: filename of the saved resource
+        :param save_path: path to the destination directory (downloads directory by default)
+        :param fields: list of keys to be included in the response
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk/public/resources/save-to-disk"
     method = "POST"
     success_codes = {201, 202}
@@ -482,6 +492,19 @@ class SaveToDiskRequest(APIRequest):
         return LinkObject(js)
 
 class GetPublicMetaRequest(APIRequest):
+    """
+        A request to get meta-information about a public resource.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param public_key: public key or public URL of the resource
+        :param offset: offset from the beginning of the list of nested resources
+        :param limit: maximum number of nested elements to be included in the list
+        :param sort: key to sort by
+        :param preview_size: file preview size
+        :param preview_crop: `bool`, allow preview crop
+        :param fields: list of keys to be included in the response
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk/public/resources"
     method = "GET"
 
@@ -519,7 +542,7 @@ class GetPublicMetaRequest(APIRequest):
             self.params["fields"] = ",".join(fields)
 
     def process_json(self, js):
-        return LinkObject(js)
+        return PublicResourceObject(js)
 
 class GetPublicDownloadLinkRequest(APIRequest):
     url = "https://cloud-api.yandex.net/v1/disk/public/resources/download"
@@ -544,7 +567,7 @@ class GetPublicDownloadLinkRequest(APIRequest):
 
 class MoveRequest(APIRequest):
     """
-        A Request to move a resource.
+        A request to move a resource.
 
         :param session: an instance of `requests.Session` with prepared headers
         :param src_path: source path to be moved
