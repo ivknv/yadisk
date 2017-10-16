@@ -26,7 +26,7 @@ class APIRequest(object):
 
         :ivar url: `str`, request URL
         :ivar method: `str`, request method
-        :ivar content_type: `str`, content type header ("application/x-www-form-urlencoded" by default)
+        :ivar content_type: `str`, Content-Type header ("application/x-www-form-urlencoded" by default)
         :ivar timeout: `float` or `tuple`, request timeout
         :ivar n_retries: `int`, maximum number of retries
         :ivar success_codes: `list`-like, list of response codes that indicate request's success

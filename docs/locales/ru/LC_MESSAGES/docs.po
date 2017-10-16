@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-16 16:59+0500\n"
+"POT-Creation-Date: 2017-10-16 21:34+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,16 +28,17 @@ msgstr "Реализует доступ к REST API Яндекс.Диска"
 #: ../../docstring of yadisk.YaDisk yadisk.YaDisk.check_token
 #: yadisk.YaDisk.copy yadisk.YaDisk.download yadisk.YaDisk.exists
 #: yadisk.YaDisk.get_auth_url yadisk.YaDisk.get_disk_info
-#: yadisk.YaDisk.get_download_link yadisk.YaDisk.get_meta
-#: yadisk.YaDisk.get_operation_status yadisk.YaDisk.get_public_meta
-#: yadisk.YaDisk.get_public_resources yadisk.YaDisk.get_public_type
-#: yadisk.YaDisk.get_token yadisk.YaDisk.get_trash_meta
-#: yadisk.YaDisk.get_trash_type yadisk.YaDisk.get_type
-#: yadisk.YaDisk.get_upload_link yadisk.YaDisk.is_dir yadisk.YaDisk.is_file
-#: yadisk.YaDisk.is_public_dir yadisk.YaDisk.is_public_file
-#: yadisk.YaDisk.is_trash_dir yadisk.YaDisk.is_trash_file yadisk.YaDisk.listdir
-#: yadisk.YaDisk.make_session yadisk.YaDisk.mkdir yadisk.YaDisk.move
-#: yadisk.YaDisk.patch yadisk.YaDisk.public_exists yadisk.YaDisk.public_listdir
+#: yadisk.YaDisk.get_download_link yadisk.YaDisk.get_files
+#: yadisk.YaDisk.get_meta yadisk.YaDisk.get_operation_status
+#: yadisk.YaDisk.get_public_meta yadisk.YaDisk.get_public_resources
+#: yadisk.YaDisk.get_public_type yadisk.YaDisk.get_token
+#: yadisk.YaDisk.get_trash_meta yadisk.YaDisk.get_trash_type
+#: yadisk.YaDisk.get_type yadisk.YaDisk.get_upload_link yadisk.YaDisk.is_dir
+#: yadisk.YaDisk.is_file yadisk.YaDisk.is_public_dir
+#: yadisk.YaDisk.is_public_file yadisk.YaDisk.is_trash_dir
+#: yadisk.YaDisk.is_trash_file yadisk.YaDisk.listdir yadisk.YaDisk.make_session
+#: yadisk.YaDisk.mkdir yadisk.YaDisk.move yadisk.YaDisk.patch
+#: yadisk.YaDisk.public_exists yadisk.YaDisk.public_listdir
 #: yadisk.YaDisk.publish yadisk.YaDisk.refresh_token yadisk.YaDisk.remove
 #: yadisk.YaDisk.remove_trash yadisk.YaDisk.restore_trash
 #: yadisk.YaDisk.revoke_token yadisk.YaDisk.save_to_disk
@@ -65,7 +66,7 @@ msgstr "Реализует доступ к REST API Яндекс.Диска"
 #: yadisk.functions.resources.copy yadisk.functions.resources.download
 #: yadisk.functions.resources.exists
 #: yadisk.functions.resources.get_download_link
-#: yadisk.functions.resources.get_meta
+#: yadisk.functions.resources.get_files yadisk.functions.resources.get_meta
 #: yadisk.functions.resources.get_public_meta
 #: yadisk.functions.resources.get_public_resources
 #: yadisk.functions.resources.get_public_type
@@ -179,16 +180,16 @@ msgstr "токен, подлежащий проверке, то же самое,
 #: ../../docstring of yadisk.YaDisk.check_token yadisk.YaDisk.copy
 #: yadisk.YaDisk.download yadisk.YaDisk.exists yadisk.YaDisk.get_auth_url
 #: yadisk.YaDisk.get_code_url yadisk.YaDisk.get_disk_info
-#: yadisk.YaDisk.get_download_link yadisk.YaDisk.get_meta
-#: yadisk.YaDisk.get_operation_status yadisk.YaDisk.get_public_meta
-#: yadisk.YaDisk.get_public_type yadisk.YaDisk.get_token
-#: yadisk.YaDisk.get_trash_meta yadisk.YaDisk.get_trash_type
-#: yadisk.YaDisk.get_type yadisk.YaDisk.get_upload_link yadisk.YaDisk.is_dir
-#: yadisk.YaDisk.is_file yadisk.YaDisk.is_public_dir
-#: yadisk.YaDisk.is_public_file yadisk.YaDisk.is_trash_dir
-#: yadisk.YaDisk.is_trash_file yadisk.YaDisk.listdir yadisk.YaDisk.make_session
-#: yadisk.YaDisk.mkdir yadisk.YaDisk.move yadisk.YaDisk.patch
-#: yadisk.YaDisk.public_exists yadisk.YaDisk.public_listdir
+#: yadisk.YaDisk.get_download_link yadisk.YaDisk.get_files
+#: yadisk.YaDisk.get_meta yadisk.YaDisk.get_operation_status
+#: yadisk.YaDisk.get_public_meta yadisk.YaDisk.get_public_type
+#: yadisk.YaDisk.get_token yadisk.YaDisk.get_trash_meta
+#: yadisk.YaDisk.get_trash_type yadisk.YaDisk.get_type
+#: yadisk.YaDisk.get_upload_link yadisk.YaDisk.is_dir yadisk.YaDisk.is_file
+#: yadisk.YaDisk.is_public_dir yadisk.YaDisk.is_public_file
+#: yadisk.YaDisk.is_trash_dir yadisk.YaDisk.is_trash_file yadisk.YaDisk.listdir
+#: yadisk.YaDisk.make_session yadisk.YaDisk.mkdir yadisk.YaDisk.move
+#: yadisk.YaDisk.patch yadisk.YaDisk.public_exists yadisk.YaDisk.public_listdir
 #: yadisk.YaDisk.publish yadisk.YaDisk.refresh_token yadisk.YaDisk.remove
 #: yadisk.YaDisk.remove_trash yadisk.YaDisk.restore_trash
 #: yadisk.YaDisk.revoke_token yadisk.YaDisk.save_to_disk
@@ -203,7 +204,7 @@ msgstr "токен, подлежащий проверке, то же самое,
 #: yadisk.functions.resources.copy yadisk.functions.resources.download
 #: yadisk.functions.resources.exists
 #: yadisk.functions.resources.get_download_link
-#: yadisk.functions.resources.get_meta
+#: yadisk.functions.resources.get_files yadisk.functions.resources.get_meta
 #: yadisk.functions.resources.get_public_meta
 #: yadisk.functions.resources.get_public_resources
 #: yadisk.functions.resources.get_public_type
@@ -429,8 +430,8 @@ msgid ""
 "Get the URL for the user to get the confirmation code. The confirmation "
 "code can later be used to get the token."
 msgstr ""
-"Получает URL для получения пользователем кода подтверждения.Он может быть"
-" использован для получения токена."
+"Получает URL для получения пользователем кода подтверждения. Он может "
+"быть использован для получения токена."
 
 #: ../../docstring of yadisk.YaDisk.get_disk_info:1
 #: yadisk.functions.disk.get_disk_info:1
@@ -446,6 +447,39 @@ msgstr ""
 #: yadisk.functions.resources.get_download_link:1
 msgid "Get a download link for a file (or a directory)."
 msgstr "Получает ссылку на скачивание файла (или папки)."
+
+#: ../../docstring of yadisk.YaDisk.get_files:1
+#: yadisk.functions.resources.get_files:1
+msgid "Get a flat list of all files (that doesn't include directories)."
+msgstr "Получить плоский список всех файлов (без папок)."
+
+#: ../../docstring of yadisk.YaDisk.get_files:3
+#: yadisk.YaDisk.get_public_resources:3 yadisk.api.resources.FilesRequest:4
+#: yadisk.api.resources.GetPublicResourcesRequest:4
+#: yadisk.functions.resources.get_files:4
+#: yadisk.functions.resources.get_public_resources:4
+msgid "offset from the beginning of the list"
+msgstr "отступ от начала списка"
+
+#: ../../docstring of yadisk.YaDisk.get_files:4
+#: yadisk.api.resources.FilesRequest:5 yadisk.functions.resources.get_files:5
+msgid "number of list elements to be included"
+msgstr "максимальное количество элементов списка"
+
+#: ../../docstring of yadisk.YaDisk.get_files:5
+#: yadisk.api.resources.FilesRequest:6 yadisk.functions.resources.get_files:6
+msgid "type of files to include in the list"
+msgstr "тип файлов, которые будут включены в список"
+
+#: ../../docstring of yadisk.YaDisk.get_files:6
+#: yadisk.api.resources.FilesRequest:7 yadisk.functions.resources.get_files:7
+msgid "sort type"
+msgstr "тип сортировки"
+
+#: ../../docstring of yadisk.YaDisk.get_files:8 yadisk.YaDisk.listdir:10
+#: yadisk.functions.resources.get_files:9 yadisk.functions.resources.listdir:11
+msgid "generator of `ResourceObject`"
+msgstr "генератор `ResourceObject`"
 
 #: ../../docstring of yadisk.YaDisk.get_meta:1
 #: yadisk.functions.resources.get_meta:1
@@ -585,13 +619,6 @@ msgstr ""
 #: yadisk.functions.resources.get_public_resources:1
 msgid "Get a list of public resources."
 msgstr "Получает список публичных ресурсов."
-
-#: ../../docstring of yadisk.YaDisk.get_public_resources:3
-#: yadisk.api.resources.FilesRequest:4
-#: yadisk.api.resources.GetPublicResourcesRequest:4
-#: yadisk.functions.resources.get_public_resources:4
-msgid "offset from the beginning of the list"
-msgstr "отступ от начала списка"
 
 #: ../../docstring of yadisk.YaDisk.get_public_resources:4
 #: yadisk.api.resources.GetPublicResourcesRequest:5
@@ -739,7 +766,7 @@ msgstr "Проверяет, является ли `public_key` публично�
 #: yadisk.functions.resources.copy:5 yadisk.functions.resources.download:3
 #: yadisk.functions.resources.exists:3
 #: yadisk.functions.resources.get_download_link:3
-#: yadisk.functions.resources.get_meta:3
+#: yadisk.functions.resources.get_files:3 yadisk.functions.resources.get_meta:3
 #: yadisk.functions.resources.get_public_meta:3
 #: yadisk.functions.resources.get_public_resources:3
 #: yadisk.functions.resources.get_public_type:3
@@ -809,11 +836,6 @@ msgstr "Получает содержимое `path`."
 msgid "path to the directory"
 msgstr "путь к папке"
 
-#: ../../docstring of yadisk.YaDisk.listdir:10
-#: yadisk.functions.resources.listdir:11
-msgid "generator of `ResourceObject`"
-msgstr "генератор `ResourceObject`"
-
 #: ../../docstring of yadisk.YaDisk.make_session:1
 msgid "Prepares `requests.Session` object with headers needed for API."
 msgstr "Готовит объект `requests.Session` с заголовками, необходимыми для API."
@@ -850,7 +872,7 @@ msgstr "Обновляет пользовательские свойства р�
 
 #: ../../docstring of yadisk.YaDisk.patch:4 yadisk.api.resources.PatchRequest:5
 #: yadisk.functions.resources.patch:5
-msgid "`dict` of new custom properties"
+msgid "`dict`, custom properties to update"
 msgstr "`dict`, новые пользовательские свойства ресурса"
 
 #: ../../docstring of yadisk.YaDisk.public_exists:1
@@ -959,8 +981,9 @@ msgstr ""
 msgid ""
 "Saves a public resource to the disk. Returns the link to the operation if"
 " it's performed asynchronously, or a link to the resource otherwise."
-msgstr "Сохраняет публичный ресурс на диск. Возвращает ссылку на операцию, если"
-" сохранение выполняется асинхронно, или возвращает ссылку на ресурс."
+msgstr ""
+"Сохраняет публичный ресурс на диск. Возвращает ссылку на операцию, если "
+"сохранение выполняется асинхронно, или возвращает ссылку на ресурс."
 
 #: ../../docstring of yadisk.YaDisk.save_to_disk:6
 #: yadisk.api.resources.SaveToDiskRequest:5
@@ -1670,9 +1693,11 @@ msgstr "`str`, метод запроса"
 
 #: ../../docstring of yadisk.api.APIRequest:11
 msgid ""
-"`str`, content type header (\"application/x-www-form-urlencoded\" by "
+"`str`, Content-Type header (\"application/x-www-form-urlencoded\" by "
 "default)"
 msgstr ""
+"`str`, заголовок Content-Type (\"application/x-www-form-urlencoded\" по "
+"умолчанию)"
 
 #: ../../docstring of yadisk.api.APIRequest:12
 msgid "`float` or `tuple`, request timeout"
@@ -1808,18 +1833,6 @@ msgid ""
 "directories)."
 msgstr "Запрос для получения плоского списка всех файлов."
 
-#: ../../docstring of yadisk.api.resources.FilesRequest:5
-msgid "number of list elements to be included"
-msgstr "максимальное количество элементов списка"
-
-#: ../../docstring of yadisk.api.resources.FilesRequest:6
-msgid "type of files to include in the list"
-msgstr "тип файлов, которые будут включены в список"
-
-#: ../../docstring of yadisk.api.resources.FilesRequest:7
-msgid "sort type"
-msgstr "тип сортировки"
-
 #: ../../docstring of yadisk.api.resources.PatchRequest:1
 msgid "A request to update custom properties of a resource."
 msgstr "Запрос для обновления пользовательских свойств ресурса."
@@ -1831,4 +1844,3 @@ msgstr "Запрос для получения статуса операции."
 #: ../../docstring of yadisk.api.operations.GetOperationStatusRequest:4
 msgid "operation ID or link"
 msgstr "идентификатор операции или ссылка на нее"
-
