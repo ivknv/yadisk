@@ -559,3 +559,16 @@ class YaDisk(object):
         """
 
         return functions.get_public_resources(self.make_session(), *args, **kwargs)
+
+    def patch(self, path, properties, *args, **kwargs):
+        """
+            Update custom properties of a resource.
+
+            :param path: path to the resource
+            :param properties: `dict`, custom properties to update
+            :param fields: list of keys to be included in the response
+
+            :returns: `ResourceObject`
+        """
+
+        return functions.patch(self.make_session(), path, properties, *args, **kwargs)

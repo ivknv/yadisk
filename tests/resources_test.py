@@ -91,3 +91,12 @@ class ResourcesTestCase(TestCase):
 
         self.yadisk.unpublish(path)
         self.assertIsNone(self.yadisk.get_meta(path).public_url)
+
+    def test_patch(self):
+        path = self.path
+
+        self.yadisk.patch(path, {"test_property": "I'm a value!"})
+        self.assertEqual(self.yadisk.get_meta(path).custom_properties["test_property"], "I'm a value!")
+
+        self.yadisk.patch(path, {"test_property": None})
+        self.assertIsNone(self.yadisk.get_meta(path).custom_properties)
