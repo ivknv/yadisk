@@ -670,17 +670,32 @@ class FilesRequest(APIRequest):
         return FilesResourceListObject(js)
 
 class PatchRequest(APIRequest):
+    """
+        A request to update custom properties of a resource.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param path: path to the resource
+        :param properties: `dict`, custom properties to update
+        :param fields: list of keys to be included in the response
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk/resources"
     method = "PATCH"
+    content_type = "application/json"
 
-    def __init__(self, session, path, body, fields=None, *args, **kwargs):
-        APIRequest.__init__(self, session, {"path":   path,
-                                            "body":   body,
-                                            "fields": fields}, *args, **kwargs)
+    def __init__(self, session, path, properties, fields=None, *args, **kwargs):
+        APIRequest.__init__(self, session, {"path":       path,
+                                            "properties": properties,
+                                            "fields":     fields}, *args, **kwargs)
+    def prepare(self, *args, **kwargs):
+        APIRequest.prepare(self, *args, **kwargs)
 
-    def process_args(self, path, body, fields):
+        self.request.body = self.data["body"]
+        self.request.headers["Content-Length"] = len(self.request.body)
+
+    def process_args(self, path, properties, fields):
         self.params["path"] = path
-        self.params["body"] = json.dumps(body)
+        self.data["body"] = json.dumps({"custom_properties": properties}).encode("utf8")
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)

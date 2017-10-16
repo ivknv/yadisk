@@ -26,6 +26,7 @@ class APIRequest(object):
 
         :ivar url: `str`, request URL
         :ivar method: `str`, request method
+        :ivar content_type: `str`, content type header ("application/x-www-form-urlencoded" by default)
         :ivar timeout: `float` or `tuple`, request timeout
         :ivar n_retries: `int`, maximum number of retries
         :ivar success_codes: `list`-like, list of response codes that indicate request's success
@@ -35,6 +36,7 @@ class APIRequest(object):
 
     url = None
     method = None
+    content_type = "application/x-www-form-urlencoded"
     timeout = (10, 15)
     n_retries = 3
     success_codes = {200}
@@ -67,8 +69,10 @@ class APIRequest(object):
     def prepare(self):
         """Prepare the request"""
 
-        self.request = requests.Request(self.method, self.url,
-                                        data=self.data, params=self.params)
+        r = requests.Request(self.method, self.url,
+                             data=self.data, params=self.params)
+        r.headers["Content-Type"] = self.content_type
+        self.request = self.session.prepare_request(r)
 
     def send(self):
         """
@@ -83,10 +87,8 @@ class APIRequest(object):
 
                 time.sleep(self.retry_interval)
 
-            prepped = self.session.prepare_request(self.request)
-
             try:
-                self.response = self.session.send(prepped, *self.send_args, timeout=self.timeout, **self.send_kwargs)
+                self.response = self.session.send(self.request, *self.send_args, timeout=self.timeout, **self.send_kwargs)
             except requests.exceptions.RequestException as e:
                 if i == self.n_retries:
                     raise e

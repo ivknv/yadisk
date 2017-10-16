@@ -9,7 +9,7 @@ from ..api import CopyRequest, GetDownloadLinkRequest, GetMetaRequest, APIReques
 from ..api import GetUploadLinkRequest, MkdirRequest, DeleteRequest, GetTrashRequest
 from ..api import RestoreTrashRequest, MoveRequest, DeleteTrashRequest
 from ..api import PublishRequest, UnpublishRequest, SaveToDiskRequest, GetPublicMetaRequest
-from ..api import GetPublicResourcesRequest
+from ..api import GetPublicResourcesRequest, PatchRequest
 from ..exceptions import DiskNotFoundError
 
 __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_type",
@@ -18,7 +18,7 @@ __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_t
            "remove_trash", "publish", "unpublish", "save_to_disk", "get_public_meta",
            "public_exists", "public_listdir", "get_public_type", "is_public_dir",
            "is_public_file", "trash_listdir", "get_trash_type", "is_trash_dir",
-           "is_trash_file", "get_public_resources"]
+           "is_trash_file", "get_public_resources", "patch"]
 
 def copy(session, src_path, dst_path, *args, **kwargs):
     """
@@ -646,6 +646,23 @@ def get_public_resources(session, *args, **kwargs):
     """
 
     request = GetPublicResourcesRequest(session, *args, **kwargs)
+    request.send()
+
+    return request.process()
+
+def patch(session, path, properties, *args, **kwargs):
+    """
+        Update custom properties of a resource.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param path: path to the resource
+        :param properties: `dict`, custom properties to update
+        :param fields: list of keys to be included in the response
+
+        :returns: `ResourceObject`
+    """
+
+    request = PatchRequest(session, path, properties, *args, **kwargs)
     request.send()
 
     return request.process()
