@@ -9,7 +9,7 @@ from ..api import CopyRequest, GetDownloadLinkRequest, GetMetaRequest, APIReques
 from ..api import GetUploadLinkRequest, MkdirRequest, DeleteRequest, GetTrashRequest
 from ..api import RestoreTrashRequest, MoveRequest, DeleteTrashRequest
 from ..api import PublishRequest, UnpublishRequest, SaveToDiskRequest, GetPublicMetaRequest
-from ..api import GetPublicResourcesRequest, PatchRequest
+from ..api import GetPublicResourcesRequest, PatchRequest, FilesRequest
 from ..exceptions import DiskNotFoundError
 
 __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_type",
@@ -18,7 +18,7 @@ __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_t
            "remove_trash", "publish", "unpublish", "save_to_disk", "get_public_meta",
            "public_exists", "public_listdir", "get_public_type", "is_public_dir",
            "is_public_file", "trash_listdir", "get_trash_type", "is_trash_dir",
-           "is_trash_file", "get_public_resources", "patch"]
+           "is_trash_file", "get_public_resources", "patch", "get_files"]
 
 def copy(session, src_path, dst_path, *args, **kwargs):
     """
@@ -666,3 +666,41 @@ def patch(session, path, properties, *args, **kwargs):
     request.send()
 
     return request.process()
+
+def get_files(session, *args, **kwargs):
+    """
+        Get a flat list of all files (that doesn't include directories).
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param offset: offset from the beginning of the list
+        :param limit: number of list elements to be included
+        :param media_type: type of files to include in the list
+        :param sort: sort type
+
+        :returns: generator of `ResourceObject`
+    """
+
+    if kwargs.get("limit") is not None:
+        request = FilesRequest(session, *args, **kwargs)
+        request.send()
+
+        for i in request.process().items:
+            yield i
+
+        return
+
+    kwargs = dict(kwargs)
+
+    kwargs.setdefault("offset", 0)
+    kwargs["limit"] = 1000
+
+    while True:
+        counter = 0
+        for i in get_files(session, *args, **kwargs):
+            counter += 1
+            yield i
+
+        if counter < kwargs["limit"]:
+            break
+
+        kwargs["offset"] += kwargs["limit"]

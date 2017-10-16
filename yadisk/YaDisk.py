@@ -572,3 +572,17 @@ class YaDisk(object):
         """
 
         return functions.patch(self.make_session(), path, properties, *args, **kwargs)
+
+    def get_files(self, *args, **kwargs):
+        """
+            Get a flat list of all files (that doesn't include directories).
+
+            :param offset: offset from the beginning of the list
+            :param limit: number of list elements to be included
+            :param media_type: type of files to include in the list
+            :param sort: sort type
+
+            :returns: generator of `ResourceObject`
+        """
+
+        return functions.get_files(self.make_session(), *args, **kwargs)
