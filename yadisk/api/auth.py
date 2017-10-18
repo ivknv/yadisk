@@ -66,23 +66,26 @@ class GetTokenRequest(APIRequest):
         :param session: an instance of `requests.Session` with prepared headers
         :param code: confirmation code
         :param client_id: application ID
+        :param client_secret: application secret password
         :param device_id: unique device ID (between 6 and 50 characters)
     """
 
     url = "https://oauth.yandex.ru/token"
     method = "POST"
 
-    def __init__(self, session, code, client_id,
+    def __init__(self, session, code, client_id, client_secret,
                  device_id=None, device_name=None, *args, **kwargs):
         APIRequest.__init__(self, session, {"code":          code,
                                             "client_id":     client_id,
+                                            "client_secret": client_secret,
                                             "device_id":     device_id,
                                             "device_name":   device_name}, *args, **kwargs)
 
-    def process_args(self, code, client_id, device_id, device_name):
+    def process_args(self, code, client_id, client_secret, device_id, device_name):
         self.data["grant_type"] = "authorization_code"
         self.data["code"] = code
         self.data["client_id"] = client_id
+        self.data["client_secret"] = client_secret
 
         if device_id is not None:
             self.data["device_id"] = device_id
