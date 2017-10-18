@@ -4,3 +4,5 @@
 # pylint: disable=wildcard-import
 from . import functions
 from .YaDisk import *
+
+__version__ = "1.0.0"

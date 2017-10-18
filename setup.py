@@ -12,7 +12,7 @@ with codecs.open(os.path.join(module_dir, "README.rst"), encoding="utf8") as f:
     long_description = f.read()
 
 setup(name="yadisk",
-      version="0.1.0",
+      version="1.0.0",
       packages=find_packages(),
       description="Yandex.Disk REST API client library",
       long_description=long_description,
@@ -20,8 +20,9 @@ setup(name="yadisk",
       author_email="rvan.mega@gmail.com",
       license="GPLv3",
       python_requires=">=3",
+      url="https://github.com/ivknv/yadisk",
       classifiers=[
-          "Development Status :: 3 - Alpha",
+          "Development Status :: 4 - Beta",
           "Intended Audience :: Developers",
           "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
           "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
