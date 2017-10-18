@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-18 20:00+0500\n"
+"POT-Creation-Date: 2017-10-18 20:14+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -337,11 +337,9 @@ msgstr ""
 msgid "list of keys to be included in the response"
 msgstr "список ключей, которые будут включены в ответ"
 
-#: ../../docstring of yadisk.YaDisk.copy:11 yadisk.YaDisk.get_download_link:6
-#: yadisk.YaDisk.get_public_download_link:6 yadisk.YaDisk.get_upload_link:7
-#: yadisk.YaDisk.mkdir:6 yadisk.YaDisk.move:8 yadisk.YaDisk.restore_trash:5
+#: ../../docstring of yadisk.YaDisk.copy:11 yadisk.YaDisk.mkdir:6
+#: yadisk.YaDisk.move:8 yadisk.YaDisk.restore_trash:5
 #: yadisk.YaDisk.save_to_disk:10 yadisk.functions.resources.copy:12
-#: yadisk.functions.resources.get_upload_link:8
 #: yadisk.functions.resources.mkdir:7 yadisk.functions.resources.move:9
 #: yadisk.functions.resources.restore_trash:9
 #: yadisk.functions.resources.save_to_disk:11
@@ -495,6 +493,19 @@ msgstr ""
 msgid "Get a download link for a file (or a directory)."
 msgstr "Получает ссылку на скачивание файла (или папки)."
 
+#: ../../docstring of yadisk.YaDisk.get_download_link:6
+#: yadisk.YaDisk.get_operation_status:6
+#: yadisk.YaDisk.get_public_download_link:6 yadisk.YaDisk.get_upload_link:7
+#: yadisk.functions.operations.get_operation_status:7
+#: yadisk.functions.resources.get_download_link:7
+#: yadisk.functions.resources.get_public_download_link:7
+#: yadisk.functions.resources.get_upload_link:8
+#: yadisk.objects.YaDiskObject.remove_alias:3
+#: yadisk.objects.YaDiskObject.remove_field:3
+#: yadisk.objects.YaDiskObject.set_field_type:3
+msgid "`str`"
+msgstr ""
+
 #: ../../docstring of yadisk.YaDisk.get_files:1
 #: yadisk.functions.resources.get_files:1
 msgid "Get a flat list of all files (that doesn't include directories)."
@@ -630,16 +641,6 @@ msgstr "Получает статус операции."
 msgid "ID of the operation or a link"
 msgstr "идентификатор операции или ссылка на нее"
 
-#: ../../docstring of yadisk.YaDisk.get_operation_status:6
-#: yadisk.functions.operations.get_operation_status:7
-#: yadisk.functions.resources.get_download_link:7
-#: yadisk.functions.resources.get_public_download_link:7
-#: yadisk.objects.YaDiskObject.remove_alias:3
-#: yadisk.objects.YaDiskObject.remove_field:3
-#: yadisk.objects.YaDiskObject.set_field_type:3
-msgid "`str`"
-msgstr ""
-
 #: ../../docstring of yadisk.YaDisk.get_public_download_link:1
 #: yadisk.functions.resources.get_public_download_link:1
 msgid "Get a download link for a public resource."
@@ -763,8 +764,8 @@ msgstr "Получает тип ресурса"
 
 #: ../../docstring of yadisk.YaDisk.get_upload_link:1
 #: yadisk.functions.resources.get_upload_link:1
-msgid "Get a link to upload the file to."
-msgstr "Получает ссылку для загрузки файла."
+msgid "Get a link to upload the file using the PUT request."
+msgstr "Получает ссылку для загрузки файла на диск при помощи PUT запроса."
 
 #: ../../docstring of yadisk.YaDisk.get_upload_link:4 yadisk.YaDisk.move:5
 #: yadisk.api.resources.GetUploadLinkRequest:5
@@ -1952,4 +1953,3 @@ msgstr "Запрос для получения статуса операции."
 #: ../../docstring of yadisk.api.operations.GetOperationStatusRequest:4
 msgid "operation ID or link"
 msgstr "идентификатор операции или ссылка на нее"
-
