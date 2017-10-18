@@ -168,14 +168,14 @@ def get_type(session, path, *args, **kwargs):
 
 def get_upload_link(session, path, *args, **kwargs):
     """
-        Get a link to upload the file to.
+        Get a link to upload the file using the PUT request.
 
         :param session: an instance of `requests.Session` with prepared headers
         :param path: destination path
         :param overwrite: `bool`, determines whether to overwrite the destination
         :param fields: list of keys to be included in the response
 
-        :returns: `LinkObject`
+        :returns: `str`
     """
 
     request = GetUploadLinkRequest(session, path, *args, **kwargs)

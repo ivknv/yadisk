@@ -198,13 +198,13 @@ class YaDisk(object):
 
     def get_upload_link(self, path, *args, **kwargs):
         """
-            Get a link to upload the file to.
+            Get a link to upload the file using the PUT request.
 
             :param path: destination path
             :param overwrite: `bool`, determines whether to overwrite the destination
             :param fields: list of keys to be included in the response
 
-            :returns: `LinkObject`
+            :returns: `str`
         """
 
         return functions.get_upload_link(self.make_session(), path, *args, **kwargs)
@@ -231,7 +231,7 @@ class YaDisk(object):
             :param path: path to the resource
             :param fields: list of keys to be included in the response
 
-            :returns: `LinkObject`
+            :returns: `str`
         """
 
         return functions.get_download_link(self.make_session(), path, *args, **kwargs)
@@ -623,7 +623,7 @@ class YaDisk(object):
             :param public_key: public key or public URL of the resource
             :param fields: list of keys to be included in the response
 
-            :returns: `LinkObject`
+            :returns: `str`
         """
 
         return functions.get_public_download_link(self.make_session(), public_key, *args, **kwargs)
