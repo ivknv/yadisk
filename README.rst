@@ -11,11 +11,13 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 Установка
 *********
 
-Для начала, должен быть установлен `requests`:
+Для начала, должен быть установлен `requests`.
 
 .. code:: bash
 
-    pip install requests
+    pip install yadisk requests
+
+или
 
 .. code:: bash
 

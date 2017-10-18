@@ -11,11 +11,13 @@ Documentation is available at `Read the Docs (EN)`_ and `Read the Docs (RU)`_ (a
 Installation
 ************
 
-First, you need to have `requests` installed:
+First, you need to have `requests` installed.
 
 .. code:: bash
 
-    pip install requests
+    pip install yadisk requests
+
+or
 
 .. code:: bash
 
