@@ -586,3 +586,18 @@ class YaDisk(object):
         """
 
         return functions.get_files(self.make_session(), *args, **kwargs)
+
+    def get_last_uploaded(self, *args, **kwargs):
+        """
+            Get the list of latest uploaded files sorted by upload date.
+
+            :param limit: maximum number of elements in the list
+            :param media_type: type of files to include in the list
+            :param preview_size: size of the file preview
+            :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+            :param fields: list of keys to be included in the response
+
+            :returns: generator of `LastUploadedResourceListObject`
+        """
+
+        return functions.get_last_uploaded(self.make_session(), *args, **kwargs)

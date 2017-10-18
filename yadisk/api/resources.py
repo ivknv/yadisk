@@ -220,6 +220,17 @@ class DeleteTrashRequest(APIRequest):
         return LinkObject(js)
 
 class LastUploadedRequest(APIRequest):
+    """
+        A request to get the list of latest uploaded files sorted by upload date.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param limit: maximum number of elements in the list
+        :param media_type: type of files to include in the list
+        :param preview_size: size of the file preview
+        :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+        :param fields: list of keys to be included in the response
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk/resources/last-uploaded"
     method = "GET"
 
