@@ -601,3 +601,17 @@ class YaDisk(object):
         """
 
         return functions.get_last_uploaded(self.make_session(), *args, **kwargs)
+
+    def upload_url(self, url, path, *args, **kwargs):
+        """
+            Upload a file from URL.
+
+            :param url: source URL
+            :param path: destination path
+            :param disable_redirects: `bool`, forbid redirects
+            :param fields: list of keys to be included in the response
+
+            :returns: `LinkObject`, link to the asynchronous operation
+        """
+
+        return functions.upload_url(self.make_session(), url, path, *args, **kwargs)
