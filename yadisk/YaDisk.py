@@ -615,3 +615,27 @@ class YaDisk(object):
         """
 
         return functions.upload_url(self.make_session(), url, path, *args, **kwargs)
+
+    def get_public_download_link(self, public_key, *args, **kwargs):
+        """
+            Get a download link for a public resource.
+
+            :param public_key: public key or public URL of the resource
+            :param fields: list of keys to be included in the response
+
+            :returns: `LinkObject`
+        """
+
+        return functions.get_public_download_link(self.make_session(), public_key, *args, **kwargs)
+
+    def download_public(self, public_key, file_or_path, *args, **kwargs):
+        """
+            Download the public resource.
+
+            :param public_key: public key or public URL of the resource
+            :param path_or_file: destination path or file-like object
+
+            :returns: `True` if the download succeeded, `False` otherwise
+        """
+
+        return functions.download_public(self.make_session(), public_key, file_or_path, *args, **kwargs)

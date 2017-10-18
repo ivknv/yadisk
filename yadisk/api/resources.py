@@ -584,20 +584,24 @@ class GetPublicMetaRequest(APIRequest):
         return PublicResourceObject(js)
 
 class GetPublicDownloadLinkRequest(APIRequest):
+    """
+        A request to get a download link for a public resource.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param public_key: public key or public URL of the resource
+        :param fields: list of keys to be included in the response
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk/public/resources/download"
     method = "GET"
 
-    def __init__(self, session, public_key, path=None, fields=None, *args, **kwargs):
-        APIRequest.__init__(self, session, {"public_key":   public_key,
-                                            "path":         path,
-                                            "fields":       fields}, *args, **kwargs)
+    def __init__(self, session, public_key, fields=None, *args, **kwargs):
+        APIRequest.__init__(self, session, {"public_key": public_key,
+                                            "fields":     fields}, *args, **kwargs)
 
-    def process_args(self, public_key, path, fields):
+    def process_args(self, public_key, fields):
         self.params["public_key"] = public_key
         
-        if path is not None:
-            self.params["path"] = path
-
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 

@@ -10,7 +10,7 @@ from ..api import GetUploadLinkRequest, MkdirRequest, DeleteRequest, GetTrashReq
 from ..api import RestoreTrashRequest, MoveRequest, DeleteTrashRequest
 from ..api import PublishRequest, UnpublishRequest, SaveToDiskRequest, GetPublicMetaRequest
 from ..api import GetPublicResourcesRequest, PatchRequest, FilesRequest
-from ..api import LastUploadedRequest, UploadURLRequest
+from ..api import LastUploadedRequest, UploadURLRequest, GetPublicDownloadLinkRequest
 from ..exceptions import DiskNotFoundError
 
 __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_type",
@@ -20,7 +20,7 @@ __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_t
            "public_exists", "public_listdir", "get_public_type", "is_public_dir",
            "is_public_file", "trash_listdir", "get_trash_type", "is_trash_dir",
            "is_trash_file", "get_public_resources", "patch", "get_files",
-           "get_last_uploaded", "upload_url"]
+           "get_last_uploaded", "upload_url", "get_public_download_link", "download_public"]
 
 def copy(session, src_path, dst_path, *args, **kwargs):
     """
@@ -123,7 +123,7 @@ def get_download_link(session, path, *args, **kwargs):
         :param path: path to the resource
         :param fields: list of keys to be included in the response
 
-        :returns: `LinkObject`
+        :returns: `str`
     """
 
     request = GetDownloadLinkRequest(session, path, *args, **kwargs)
@@ -744,3 +744,70 @@ def upload_url(session, url, path, *args, **kwargs):
     request.send()
 
     return request.process()
+
+def get_public_download_link(session, public_key, *args, **kwargs):
+    """
+        Get a download link for a public resource.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param public_key: public key or public URL of the resource
+        :param fields: list of keys to be included in the response
+
+        :returns: `str`
+    """
+
+    request = GetPublicDownloadLinkRequest(session, public_key, *args, **kwargs)
+    request.send()
+
+    return request.process().href
+
+def download_public(session, public_key, file_or_path, *args, **kwargs):
+    """
+        Download the public resource.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param public_key: public key or public URL of the resource
+        :param path_or_file: destination path or file-like object
+
+        :returns: `True` if the download succeeded, `False` otherwise
+    """
+
+    link = get_public_download_link(session, public_key, *args, **kwargs)
+
+    n_retries = kwargs.get("n_retries", APIRequest.n_retries)
+
+    if isinstance(file_or_path, (str, bytes)):
+        file = open(file_or_path, "wb")
+        close_file = True
+    else:
+        file = file_or_path
+        close_file = False
+
+    file_position = file.tell()
+
+    try:
+        for i in range(n_retries + 1):
+            file.seek(file_position)
+
+            try:
+                response = requests.get(link, data=file, *args, **kwargs)
+
+                for chunk in response.iter_content(chunk_size=8192):
+                    if chunk:
+                        file.write(chunk)
+
+            except requests.exceptions.RequestException as e:
+                if i == n_retries:
+                    raise e
+
+                continue
+
+            if response.status_code in APIRequest.retry_codes:
+                continue
+
+            break
+    finally:
+        if close_file:
+            file.close()
+
+    return response.status_code == 200
