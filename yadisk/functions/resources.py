@@ -9,7 +9,8 @@ from ..api import CopyRequest, GetDownloadLinkRequest, GetMetaRequest, APIReques
 from ..api import GetUploadLinkRequest, MkdirRequest, DeleteRequest, GetTrashRequest
 from ..api import RestoreTrashRequest, MoveRequest, DeleteTrashRequest
 from ..api import PublishRequest, UnpublishRequest, SaveToDiskRequest, GetPublicMetaRequest
-from ..api import GetPublicResourcesRequest, PatchRequest, FilesRequest, LastUploadedRequest
+from ..api import GetPublicResourcesRequest, PatchRequest, FilesRequest
+from ..api import LastUploadedRequest, UploadURLRequest
 from ..exceptions import DiskNotFoundError
 
 __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_type",
@@ -19,7 +20,7 @@ __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_t
            "public_exists", "public_listdir", "get_public_type", "is_public_dir",
            "is_public_file", "trash_listdir", "get_trash_type", "is_trash_dir",
            "is_trash_file", "get_public_resources", "patch", "get_files",
-           "get_last_uploaded"]
+           "get_last_uploaded", "upload_url"]
 
 def copy(session, src_path, dst_path, *args, **kwargs):
     """
@@ -725,3 +726,21 @@ def get_last_uploaded(session, *args, **kwargs):
 
     for i in request.process().items:
         yield i
+
+def upload_url(session, url, path, *args, **kwargs):
+    """
+        Upload a file from URL.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param url: source URL
+        :param path: destination path
+        :param disable_redirects: `bool`, forbid redirects
+        :param fields: list of keys to be included in the response
+
+        :returns: `LinkObject`, link to the asynchronous operation
+    """
+
+    request = UploadURLRequest(session, url, path, *args, **kwargs)
+    request.send()
+
+    return request.process()

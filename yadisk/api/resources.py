@@ -426,20 +426,30 @@ class PublishRequest(APIRequest):
         return LinkObject(js)
 
 class UploadURLRequest(APIRequest):
+    """
+        A request to upload a file from URL.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param url: source URL
+        :param path: destination path
+        :param disable_redirects: `bool`, forbid redirects
+        :param fields: list of keys to be included in the response
+    """
+
     url = "https://cloud-api.yandex.net/v1/disk/resources/upload"
     method = "POST"
     success_codes = {202}
 
-    def __init__(self, session, path, url, disable_redirects=False, fields=None,
+    def __init__(self, session, url, path, disable_redirects=False, fields=None,
                  *args, **kwargs):
-        APIRequest.__init__(self, session, {"path":              path,
-                                            "url":               url,
+        APIRequest.__init__(self, session, {"url":               url,
+                                            "path":              path,
                                             "disable_redirects": disable_redirects,
                                             "fields":            fields}, *args, **kwargs)
 
-    def process_args(self, path, url, disable_redirects, fields):
-        self.params["path"] = path
+    def process_args(self, url, path, disable_redirects, fields):
         self.params["url"] = url
+        self.params["path"] = path
         self.params["disable_redirects"] = "true" if disable_redirects else "false"
 
         if fields is not None:
