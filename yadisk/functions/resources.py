@@ -9,7 +9,7 @@ from ..api import CopyRequest, GetDownloadLinkRequest, GetMetaRequest, APIReques
 from ..api import GetUploadLinkRequest, MkdirRequest, DeleteRequest, GetTrashRequest
 from ..api import RestoreTrashRequest, MoveRequest, DeleteTrashRequest
 from ..api import PublishRequest, UnpublishRequest, SaveToDiskRequest, GetPublicMetaRequest
-from ..api import GetPublicResourcesRequest, PatchRequest, FilesRequest
+from ..api import GetPublicResourcesRequest, PatchRequest, FilesRequest, LastUploadedRequest
 from ..exceptions import DiskNotFoundError
 
 __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_type",
@@ -18,7 +18,8 @@ __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_t
            "remove_trash", "publish", "unpublish", "save_to_disk", "get_public_meta",
            "public_exists", "public_listdir", "get_public_type", "is_public_dir",
            "is_public_file", "trash_listdir", "get_trash_type", "is_trash_dir",
-           "is_trash_file", "get_public_resources", "patch", "get_files"]
+           "is_trash_file", "get_public_resources", "patch", "get_files",
+           "get_last_uploaded"]
 
 def copy(session, src_path, dst_path, *args, **kwargs):
     """
@@ -704,3 +705,23 @@ def get_files(session, *args, **kwargs):
             break
 
         kwargs["offset"] += kwargs["limit"]
+
+def get_last_uploaded(session, *args, **kwargs):
+    """
+        Get the list of latest uploaded files sorted by upload date.
+
+        :param session: an instance of `requests.Session` with prepared headers
+        :param limit: maximum number of elements in the list
+        :param media_type: type of files to include in the list
+        :param preview_size: size of the file preview
+        :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+        :param fields: list of keys to be included in the response
+
+        :returns: generator of `LastUploadedResourceListObject`
+    """
+
+    request = LastUploadedRequest(session, *args, **kwargs)
+    request.send()
+
+    for i in request.process().items:
+        yield i
