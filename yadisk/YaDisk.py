@@ -47,6 +47,7 @@ class YaDisk(object):
         """
             Get authentication URL for the user to go to.
 
+            :param type: response type ("code" to get the confirmation code or "token" to get the token automatically)
             :param device_id: unique device ID, must be between 6 and 50 characters
             :param device_name: device name, should not be longer than 100 characters
             :param display: indicates whether to use lightweight layout, values other than "popup" are ignored
@@ -62,15 +63,25 @@ class YaDisk(object):
 
         return functions.get_auth_url(self.id, *args, **kwargs)
 
-    def get_code_url(self):
+    def get_code_url(self, *args, **kwargs):
         """
             Get the URL for the user to get the confirmation code.
             The confirmation code can later be used to get the token.
 
+            :param device_id: unique device ID, must be between 6 and 50 characters
+            :param device_name: device name, should not be longer than 100 characters
+            :param display: indicates whether to use lightweight layout, values other than "popup" are ignored
+            :param login_hint: username or email for the account the token is being requested for
+            :param scope: list of permissions for the application
+            :param optional_scope: list of optional permissions for the application
+            :param force_confirm: if True, user will be required to confirm access to the account
+                                  even if the user has already granted access for the application
+            :param state: The state string, which Yandex.OAuth returns without any changes (<= 1024 characters)
+
             :returns: authentication URL
         """
 
-        return functions.get_code_url(self.id)
+        return functions.get_code_url(self.id, *args, **kwargs)
 
     def get_token(self, code, *args, **kwargs):
         """
