@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-18 20:14+0500\n"
+"POT-Creation-Date: 2017-10-19 17:12+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,19 +27,19 @@ msgstr "Реализует доступ к REST API Яндекс.Диска"
 
 #: ../../docstring of yadisk.YaDisk yadisk.YaDisk.check_token
 #: yadisk.YaDisk.copy yadisk.YaDisk.download yadisk.YaDisk.download_public
-#: yadisk.YaDisk.exists yadisk.YaDisk.get_auth_url yadisk.YaDisk.get_disk_info
-#: yadisk.YaDisk.get_download_link yadisk.YaDisk.get_files
-#: yadisk.YaDisk.get_last_uploaded yadisk.YaDisk.get_meta
-#: yadisk.YaDisk.get_operation_status yadisk.YaDisk.get_public_download_link
-#: yadisk.YaDisk.get_public_meta yadisk.YaDisk.get_public_resources
-#: yadisk.YaDisk.get_public_type yadisk.YaDisk.get_token
-#: yadisk.YaDisk.get_trash_meta yadisk.YaDisk.get_trash_type
-#: yadisk.YaDisk.get_type yadisk.YaDisk.get_upload_link yadisk.YaDisk.is_dir
-#: yadisk.YaDisk.is_file yadisk.YaDisk.is_public_dir
-#: yadisk.YaDisk.is_public_file yadisk.YaDisk.is_trash_dir
-#: yadisk.YaDisk.is_trash_file yadisk.YaDisk.listdir yadisk.YaDisk.make_session
-#: yadisk.YaDisk.mkdir yadisk.YaDisk.move yadisk.YaDisk.patch
-#: yadisk.YaDisk.public_exists yadisk.YaDisk.public_listdir
+#: yadisk.YaDisk.exists yadisk.YaDisk.get_auth_url yadisk.YaDisk.get_code_url
+#: yadisk.YaDisk.get_disk_info yadisk.YaDisk.get_download_link
+#: yadisk.YaDisk.get_files yadisk.YaDisk.get_last_uploaded
+#: yadisk.YaDisk.get_meta yadisk.YaDisk.get_operation_status
+#: yadisk.YaDisk.get_public_download_link yadisk.YaDisk.get_public_meta
+#: yadisk.YaDisk.get_public_resources yadisk.YaDisk.get_public_type
+#: yadisk.YaDisk.get_token yadisk.YaDisk.get_trash_meta
+#: yadisk.YaDisk.get_trash_type yadisk.YaDisk.get_type
+#: yadisk.YaDisk.get_upload_link yadisk.YaDisk.is_dir yadisk.YaDisk.is_file
+#: yadisk.YaDisk.is_public_dir yadisk.YaDisk.is_public_file
+#: yadisk.YaDisk.is_trash_dir yadisk.YaDisk.is_trash_file yadisk.YaDisk.listdir
+#: yadisk.YaDisk.make_session yadisk.YaDisk.mkdir yadisk.YaDisk.move
+#: yadisk.YaDisk.patch yadisk.YaDisk.public_exists yadisk.YaDisk.public_listdir
 #: yadisk.YaDisk.publish yadisk.YaDisk.refresh_token yadisk.YaDisk.remove
 #: yadisk.YaDisk.remove_trash yadisk.YaDisk.restore_trash
 #: yadisk.YaDisk.revoke_token yadisk.YaDisk.save_to_disk
@@ -130,9 +130,10 @@ msgstr ""
 msgid "application ID"
 msgstr "идентификатор приложения"
 
-#: ../../docstring of yadisk.YaDisk:4 yadisk.api.auth.RefreshTokenRequest:6
-#: yadisk.api.auth.RevokeTokenRequest:6 yadisk.functions.auth.get_token:5
-#: yadisk.functions.auth.refresh_token:6 yadisk.functions.auth.revoke_token:5
+#: ../../docstring of yadisk.YaDisk:4 yadisk.api.auth.GetTokenRequest:6
+#: yadisk.api.auth.RefreshTokenRequest:6 yadisk.api.auth.RevokeTokenRequest:6
+#: yadisk.functions.auth.get_token:5 yadisk.functions.auth.refresh_token:6
+#: yadisk.functions.auth.revoke_token:5
 msgid "application secret password"
 msgstr "пароль приложения"
 
@@ -413,16 +414,24 @@ msgstr "Получает URL для аутентификации для поль
 
 #: ../../docstring of yadisk.YaDisk.get_auth_url:3
 #: yadisk.functions.auth.get_auth_url:4
+msgid ""
+"response type (\"code\" to get the confirmation code or \"token\" to get "
+"the token automatically)"
+msgstr "тип ответа (\"code\", чтобы получить код подтверждения или \"token\", "
+"чтобы получить токен автоматически)"
+
+#: ../../docstring of yadisk.YaDisk.get_auth_url:4 yadisk.YaDisk.get_code_url:4
+#: yadisk.functions.auth.get_auth_url:5 yadisk.functions.auth.get_code_url:5
 msgid "unique device ID, must be between 6 and 50 characters"
 msgstr "уникальный идентификатор устройства, от 6 до 50 символов"
 
-#: ../../docstring of yadisk.YaDisk.get_auth_url:4
-#: yadisk.functions.auth.get_auth_url:5
+#: ../../docstring of yadisk.YaDisk.get_auth_url:5 yadisk.YaDisk.get_code_url:5
+#: yadisk.functions.auth.get_auth_url:6 yadisk.functions.auth.get_code_url:6
 msgid "device name, should not be longer than 100 characters"
 msgstr "имя устройства, не более 100 символов"
 
-#: ../../docstring of yadisk.YaDisk.get_auth_url:5
-#: yadisk.functions.auth.get_auth_url:6
+#: ../../docstring of yadisk.YaDisk.get_auth_url:6 yadisk.YaDisk.get_code_url:6
+#: yadisk.functions.auth.get_auth_url:7 yadisk.functions.auth.get_code_url:7
 msgid ""
 "indicates whether to use lightweight layout, values other than \"popup\" "
 "are ignored"
@@ -430,23 +439,24 @@ msgstr ""
 "указывает использовать облегчённую вёрстку, обрабатывает только "
 "\"popup\", остальные значения игнорируются"
 
-#: ../../docstring of yadisk.YaDisk.get_auth_url:6
-#: yadisk.functions.auth.get_auth_url:7
+#: ../../docstring of yadisk.YaDisk.get_auth_url:7 yadisk.YaDisk.get_code_url:7
+#: yadisk.functions.auth.get_auth_url:8 yadisk.functions.auth.get_code_url:8
 msgid "username or email for the account the token is being requested for"
 msgstr "username или email аккаунта, для которого будет получен токен"
 
-#: ../../docstring of yadisk.YaDisk.get_auth_url:7
-#: yadisk.functions.auth.get_auth_url:8
+#: ../../docstring of yadisk.YaDisk.get_auth_url:8 yadisk.YaDisk.get_code_url:8
+#: yadisk.functions.auth.get_auth_url:9 yadisk.functions.auth.get_code_url:9
 msgid "list of permissions for the application"
 msgstr "список разрешений для приложения"
 
-#: ../../docstring of yadisk.YaDisk.get_auth_url:8
-#: yadisk.functions.auth.get_auth_url:9
+#: ../../docstring of yadisk.YaDisk.get_auth_url:9 yadisk.YaDisk.get_code_url:9
+#: yadisk.functions.auth.get_auth_url:10 yadisk.functions.auth.get_code_url:10
 msgid "list of optional permissions for the application"
 msgstr "список опциональных разрешений для приложения"
 
-#: ../../docstring of yadisk.YaDisk.get_auth_url:9
-#: yadisk.functions.auth.get_auth_url:10
+#: ../../docstring of yadisk.YaDisk.get_auth_url:10
+#: yadisk.YaDisk.get_code_url:10 yadisk.functions.auth.get_auth_url:11
+#: yadisk.functions.auth.get_code_url:11
 msgid ""
 "if True, user will be required to confirm access to the account even if "
 "the user has already granted access for the application"
@@ -454,8 +464,9 @@ msgstr ""
 "Если `True`, пользователь должен будет разрешить доступ к аккаунту, даже "
 "если он уже это сделал до этого"
 
-#: ../../docstring of yadisk.YaDisk.get_auth_url:11
-#: yadisk.functions.auth.get_auth_url:12
+#: ../../docstring of yadisk.YaDisk.get_auth_url:12
+#: yadisk.YaDisk.get_code_url:12 yadisk.functions.auth.get_auth_url:13
+#: yadisk.functions.auth.get_code_url:13
 msgid ""
 "The state string, which Yandex.OAuth returns without any changes (<= 1024"
 " characters)"
@@ -463,9 +474,9 @@ msgstr ""
 "Строка состояния, которую Яндекс.OAuth возвращает без изменений (<= 1024 "
 "символов)"
 
-#: ../../docstring of yadisk.YaDisk.get_auth_url:13
-#: yadisk.YaDisk.get_code_url:4 yadisk.functions.auth.get_auth_url:14
-#: yadisk.functions.auth.get_code_url:6
+#: ../../docstring of yadisk.YaDisk.get_auth_url:14
+#: yadisk.YaDisk.get_code_url:14 yadisk.functions.auth.get_auth_url:15
+#: yadisk.functions.auth.get_code_url:15
 msgid "authentication URL"
 msgstr "URL для аутентификации"
 
@@ -721,7 +732,7 @@ msgid "confirmation code"
 msgstr "код подтверждения"
 
 #: ../../docstring of yadisk.YaDisk.get_token:4
-#: yadisk.api.auth.GetTokenRequest:6 yadisk.functions.auth.get_token:6
+#: yadisk.api.auth.GetTokenRequest:7 yadisk.functions.auth.get_token:6
 msgid "unique device ID (between 6 and 50 characters)"
 msgstr "уникальный идентификатор устройства (между 6 и 50 символами)"
 
@@ -1953,3 +1964,4 @@ msgstr "Запрос для получения статуса операции."
 #: ../../docstring of yadisk.api.operations.GetOperationStatusRequest:4
 msgid "operation ID or link"
 msgstr "идентификатор операции или ссылка на нее"
+
