@@ -16,6 +16,14 @@ Almost all methods of `YaDisk` (the ones that accept `*args` and `**kwargs`) acc
 
 This also applies to low-level functions and API request objects as well.
 
+Exceptions
+##########
+
+Aside from the exceptions listed below, API requests can also raise exceptions in `requests`.
+
+.. automodule:: yadisk.exceptions
+   :members:
+
 Objects
 #######
 
