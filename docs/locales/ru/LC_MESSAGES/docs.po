@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-21 18:35+0500\n"
+"POT-Creation-Date: 2017-10-22 17:02+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1194,10 +1194,45 @@ msgid "This also applies to low-level functions and API request objects as well.
 msgstr "Это так же применяется для низкоуровневых функций и объектов запросов API."
 
 #: ../../docs.rst:20
+msgid "Settings"
+msgstr "Настройки"
+
+#: ../../docs.rst:22
+msgid ""
+"**DEFAULT_TIMEOUT** - `tuple` of 2 numbers (`int` or float`), default "
+"timeout for requests."
+msgstr "**DEFAULT_TIMEOUT** - `tuple` из 2-х чисел (`int` или `float`), стандартный таймаут "
+"для запросов."
+
+#: ../../docs.rst:23
+msgid "First number is the connect timeout, the second one is the read timeout."
+msgstr "Первое число - это таймаут соединения, второе - таймаут чтения."
+
+#: ../../docs.rst:24
+msgid "**DEFAULT_N_RETRIES** - `int`, default number of retries"
+msgstr "**DEFAULT_N_RETRIES** - `int`, максимальное число повторных попыток запроса по умолчанию"
+
+#: ../../docs.rst:25
+msgid "**DEFAULT_RETRY_INTERVAL** - `float`, default retry interval"
+msgstr "**DEFAULT_RETRY_DELAY** - `float`, стандартная задержка между повторными попытками"
+
+#: ../../docs.rst:26
+msgid ""
+"**DEFAULT_UPLOAD_TIMEOUT** - analogous to `DEFAULT_TIMEOUT` but for "
+"`upload` function"
+msgstr "**DEFAULT_UPLOAD_TIMEOUT** - аналогично `DEFAULT_TIMEOUT`, но для функции `upload`"
+
+#: ../../docs.rst:27
+msgid ""
+"**DEFAULT_UPLOAD_RETRY_INTERVAL** - analogous to `DEFAULT_RETRY_INTERVAL`"
+" but for `upload` function"
+msgstr "**DEFAULT_UPLOAD_RETRY_INTERVAL** - аналогично `DEFAULT_RETRY_INTERVAL`, но для функции `upload`"
+
+#: ../../docs.rst:30
 msgid "Exceptions"
 msgstr "Исключения"
 
-#: ../../docs.rst:22
+#: ../../docs.rst:32
 msgid ""
 "Aside from the exceptions listed below, API requests can also raise "
 "exceptions in `requests`."
@@ -1239,7 +1274,7 @@ msgstr "Вызывается, когда папка уже существует.
 msgid "Thrown when the requested path already exists."
 msgstr "Вызывается, когда запрашиваемый путь уже существует."
 
-#: ../../docs.rst:28
+#: ../../docs.rst:38
 msgid "Objects"
 msgstr "Объекты"
 
@@ -1781,11 +1816,11 @@ msgstr "`LinkObject`, ссылка на операцию"
 msgid "`dict`, other information about the operation"
 msgstr "`dict`, другая информация об операции"
 
-#: ../../docs.rst:51
+#: ../../docs.rst:61
 msgid "Low-level API"
 msgstr "Низкоуровневый API"
 
-#: ../../docs.rst:54
+#: ../../docs.rst:64
 msgid "Functions"
 msgstr "Функции"
 
@@ -1808,7 +1843,7 @@ msgstr "`bool`, определяет может ли путь назначени
 msgid "`PublicResourcesList`"
 msgstr ""
 
-#: ../../docs.rst:69
+#: ../../docs.rst:79
 msgid "API request objects"
 msgstr "Объекты запросов к API"
 
@@ -1833,18 +1868,23 @@ msgid "maximum number of retries"
 msgstr "максимальное число повторных попыток запроса"
 
 #: ../../docstring of yadisk.api.APIRequest:7
+#, fuzzy
+msgid "delay between retries in seconds"
+msgstr "`float`, задержка между повторными попытками в секундах (`float`)"
+
+#: ../../docstring of yadisk.api.APIRequest:8
 msgid "other parameters for session.send()"
 msgstr "другие параметры для session.send()"
 
-#: ../../docstring of yadisk.api.APIRequest:9
+#: ../../docstring of yadisk.api.APIRequest:10
 msgid "`str`, request URL"
 msgstr "`str`, URL запроса"
 
-#: ../../docstring of yadisk.api.APIRequest:10
+#: ../../docstring of yadisk.api.APIRequest:11
 msgid "`str`, request method"
 msgstr "`str`, метод запроса"
 
-#: ../../docstring of yadisk.api.APIRequest:11
+#: ../../docstring of yadisk.api.APIRequest:12
 msgid ""
 "`str`, Content-Type header (\"application/x-www-form-urlencoded\" by "
 "default)"
@@ -1852,23 +1892,23 @@ msgstr ""
 "`str`, заголовок Content-Type (\"application/x-www-form-urlencoded\" по "
 "умолчанию)"
 
-#: ../../docstring of yadisk.api.APIRequest:12
+#: ../../docstring of yadisk.api.APIRequest:13
 msgid "`float` or `tuple`, request timeout"
 msgstr "`float` или `tuple`, таймаут запроса"
 
-#: ../../docstring of yadisk.api.APIRequest:13
+#: ../../docstring of yadisk.api.APIRequest:14
 msgid "`int`, maximum number of retries"
 msgstr "`int`, максимальное число повторных попыток запроса"
 
-#: ../../docstring of yadisk.api.APIRequest:14
+#: ../../docstring of yadisk.api.APIRequest:15
 msgid "`list`-like, list of response codes that indicate request's success"
 msgstr "`list`-подобный, список кодов ответов, означающих успех запроса"
 
-#: ../../docstring of yadisk.api.APIRequest:15
+#: ../../docstring of yadisk.api.APIRequest:16
 msgid "`list`-like, list of response codes that trigger a retry"
 msgstr "`list`-подобный, cписок кодов ответа, вызывающих повторный запрос"
 
-#: ../../docstring of yadisk.api.APIRequest:16
+#: ../../docstring of yadisk.api.APIRequest:17
 msgid "`float`, delay between retries in seconds"
 msgstr "`float`, задержка между повторными попытками в секундах (`float`)"
 
@@ -2012,3 +2052,29 @@ msgstr "Запрос для получения статуса операции."
 msgid "operation ID or link"
 msgstr "идентификатор операции или ссылка на нее"
 
+#~ msgid ""
+#~ "`tuple` of 2 numbers (`int` or "
+#~ "float`), default timeout for requests. "
+#~ "First number is the connect timeout, "
+#~ "the second one is the read "
+#~ "timeout."
+#~ msgstr ""
+#~ "`tuple` из 2-х чисел (`int` или "
+#~ "`float`), стандартный таймаут для "
+#~ "запросов.Первое число - это таймаут "
+#~ "соединения, второе - таймаут чтения."
+
+#~ msgid "`int`, default number of retries"
+#~ msgstr "`int`, стандартное число повторных попыток запроса"
+
+#~ msgid "`float`, default retry interval"
+#~ msgstr "`float`, стандартный интервал повторных попыток"
+
+#~ msgid "analogous to `DEFAULT_TIMEOUT` but for `upload` function"
+#~ msgstr "аналогично `DEFAULT_TIMEOUT`, но для функции `upload`"
+
+#~ msgid "var DEFAULT_UPLOAD_RETRY_INTERVAL"
+#~ msgstr "`float`, стандартный интервал повторных попыток"
+
+#~ msgid "analogous to `DEFAULT_RETRY_INTERVAL` but for `upload` function"
+#~ msgstr "аналогично `DEFAULT_RETRY_INTERVAL`, но для функции `upload`"

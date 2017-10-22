@@ -13,6 +13,8 @@ from ..api import GetPublicResourcesRequest, PatchRequest, FilesRequest
 from ..api import LastUploadedRequest, UploadURLRequest, GetPublicDownloadLinkRequest
 from ..exceptions import DiskNotFoundError
 
+from .. import settings
+
 __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_type",
            "get_upload_link", "is_dir", "is_file", "listdir", "mkdir", "remove",
            "upload", "get_trash_meta", "trash_exists", "restore_trash", "move",
@@ -289,7 +291,8 @@ def remove(session, path, *args, **kwargs):
 
     return request.process()
 
-def upload(session, file_or_path, dst_path, overwrite=False, fields=None, *args, **kwargs):
+def upload(session, file_or_path, dst_path, overwrite=False, fields=None,
+           timeout=None, retry_interval=None, *args, **kwargs):
     """
         Upload a file to disk.
 
@@ -303,12 +306,16 @@ def upload(session, file_or_path, dst_path, overwrite=False, fields=None, *args,
         :returns: `True` if the upload succeeded, `False` otherwise
     """
 
-    link = get_upload_link(session, dst_path, overwrite=overwrite, fields=fields, *args, **kwargs)
+    if timeout is None:
+        timeout = settings.DEFAULT_UPLOAD_TIMEOUT
 
-    kwargs = dict(kwargs)
-    kwargs.setdefault("timeout", (APIRequest.timeout[0], 60))
-    n_retries = kwargs.get("n_retries", APIRequest.n_retries)
-    retry_interval = kwargs.get("retry_interval", 3.0)
+    if retry_interval is None:
+        retry_interval = settings.DEFAULT_UPLOAD_RETRY_INTERVAL
+
+    link = get_upload_link(session, dst_path, overwrite=overwrite, fields=fields,
+                           timeout=timeout, retry_interval=retry_interval, *args, **kwargs)
+
+    n_retries = kwargs.get("n_retries", settings.DEFAULT_N_RETRIES)
 
     if isinstance(file_or_path, (str, bytes)):
         file = open(file_or_path, "rb")
@@ -327,7 +334,8 @@ def upload(session, file_or_path, dst_path, overwrite=False, fields=None, *args,
                 time.sleep(retry_interval)
 
             try:
-                response = requests.put(link, data=file, stream=True, *args, **kwargs)
+                response = requests.put(link, data=file, stream=True, timeout=timeout,
+                                        retry_interval=retry_interval, *args, **kwargs)
             except requests.exceptions.RequestException as e:
                 if i == n_retries:
                     raise e
