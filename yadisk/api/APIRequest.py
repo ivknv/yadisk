@@ -8,6 +8,8 @@ import requests
 from ..exceptions import *
 from ..objects import ErrorObject
 
+from .. import settings
+
 EXCEPTION_MAP = {i.error_type: i for i in (UnauthorizedError,
                                            DiskNotFoundError,
                                            PathNotFoundError,
@@ -22,6 +24,7 @@ class APIRequest(object):
         :param args: `dict` of arguments, that will be passed to `process_args`
         :param timeout: request timeout
         :param n_retries: maximum number of retries
+        :param retry_interval: delay between retries in seconds
         :param send_args, send_kwargs: other parameters for session.send()
 
         :ivar url: `str`, request URL
@@ -37,24 +40,35 @@ class APIRequest(object):
     url = None
     method = None
     content_type = "application/x-www-form-urlencoded"
-    timeout = (10, 15)
-    n_retries = 3
+    timeout = None 
+    n_retries = None
     success_codes = {200}
     retry_codes = {500, 502, 503, 504}
-    retry_interval = 0.0
+    retry_interval = None
 
-    def __init__(self, session, args, timeout=None, n_retries=None, *send_args, **send_kwargs):
+    def __init__(self, session, args, timeout=None, n_retries=None, retry_interval=None,
+                 *send_args, **send_kwargs):
         if timeout is None:
             timeout = self.timeout
+        if timeout is None:
+            timeout = settings.DEFAULT_TIMEOUT
 
         if n_retries is None:
             n_retries = self.n_retries
+        if n_retries is None:
+            n_retries = settings.DEFAULT_N_RETRIES
+
+        if retry_interval is None:
+            retry_interval = self.retry_interval
+        if retry_interval is None:
+            retry_interval = settings.DEFAULT_RETRY_INTERVAL
 
         self.session = session
         self.args = args
         self.send_args, self.send_kwargs = send_args, send_kwargs
         self.timeout = timeout
         self.n_retries = n_retries
+        self.retry_interval = retry_interval
         self.request = None
         self.response = None
         self.data = {}
@@ -80,6 +94,7 @@ class APIRequest(object):
            
            :returns: `requests.Response` (`self.response`)
         """
+
         for i in range(self.n_retries + 1):
             if i > 0:
                 if not self.on_retry():
