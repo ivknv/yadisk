@@ -216,6 +216,9 @@ def is_file(session, path, *args, **kwargs):
         return False
 
 def _listdir(get_meta_function, session, path, *args, **kwargs):
+    kwargs = dict(kwargs)
+    kwargs.setdefault("limit", 10000)
+
     result = get_meta_function(session, path, *args, **kwargs)
 
     if result.type == "file":
