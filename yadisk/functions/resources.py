@@ -59,7 +59,7 @@ def download(session, src_path, file_or_path, *args, **kwargs):
 
     link = get_download_link(session, src_path, *args, **kwargs)
 
-    n_retries = kwargs.get("n_retries", APIRequest.n_retries)
+    n_retries = kwargs.get("n_retries") or settings.DEFAULT_N_RETRIES
 
     if isinstance(file_or_path, (str, bytes)):
         file = open(file_or_path, "wb")
@@ -224,8 +224,8 @@ def _listdir(get_meta_function, session, path, *args, **kwargs):
     for child in result.embedded.items:
         yield child
 
-    offset = result.embedded.offset
     limit = result.embedded.limit
+    offset = result.embedded.offset + limit
     total = result.embedded.total
 
     while offset + limit < total:
@@ -306,16 +306,14 @@ def upload(session, file_or_path, dst_path, overwrite=False, fields=None,
         :returns: `True` if the upload succeeded, `False` otherwise
     """
 
-    if timeout is None:
-        timeout = settings.DEFAULT_UPLOAD_TIMEOUT
+    timeout = timeout or settings.DEFAULT_UPLOAD_TIMEOUT
 
-    if retry_interval is None:
-        retry_interval = settings.DEFAULT_UPLOAD_RETRY_INTERVAL
+    retry_interval = retry_interval or settings.DEFAULT_UPLOAD_RETRY_INTERVAL
 
     link = get_upload_link(session, dst_path, overwrite=overwrite, fields=fields,
                            timeout=timeout, retry_interval=retry_interval, *args, **kwargs)
 
-    n_retries = kwargs.get("n_retries", settings.DEFAULT_N_RETRIES)
+    n_retries = kwargs.get("n_retries") or settings.DEFAULT_N_RETRIES
 
     if isinstance(file_or_path, (str, bytes)):
         file = open(file_or_path, "rb")
@@ -334,8 +332,7 @@ def upload(session, file_or_path, dst_path, overwrite=False, fields=None,
                 time.sleep(retry_interval)
 
             try:
-                response = requests.put(link, data=file, stream=True, timeout=timeout,
-                                        retry_interval=retry_interval, *args, **kwargs)
+                response = requests.put(link, data=file, stream=True, timeout=timeout, *args, **kwargs)
             except requests.exceptions.RequestException as e:
                 if i == n_retries:
                     raise e
