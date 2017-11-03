@@ -8,6 +8,8 @@ from .APIRequest import APIRequest
 from ..objects import LinkObject, PublicResourcesListObject, TrashResourceObject
 from ..objects import FilesResourceListObject, LastUploadedResourceListObject
 from ..objects import ResourceObject, ResourceUploadLinkObject, PublicResourceObject
+from ..objects import OperationLinkObject
+from ..common import is_operation_link
 
 __all__ = ["GetPublicResourcesRequest", "UnpublishRequest", "GetDownloadLinkRequest",
            "GetTrashRequest", "RestoreTrashRequest", "DeleteTrashRequest",
@@ -190,6 +192,9 @@ class RestoreTrashRequest(APIRequest):
             self.params["fields"] = ",".join(fields)
 
     def process_json(self, js):
+        if is_operation_link(js.get("href", "")):
+            return OperationLinkObject(js)
+
         return LinkObject(js)
 
 class DeleteTrashRequest(APIRequest):
@@ -217,7 +222,7 @@ class DeleteTrashRequest(APIRequest):
             self.params["fields"] = ",".join(fields)
 
     def process_json(self, js):
-        return LinkObject(js)
+        return OperationLinkObject(js)
 
 class LastUploadedRequest(APIRequest):
     """
@@ -298,6 +303,9 @@ class CopyRequest(APIRequest):
             self.params["fields"] = ",".join(fields)
 
     def process_json(self, js):
+        if is_operation_link(js["href"]):
+            return OperationLinkObject(js)
+
         return LinkObject(js)
 
 class GetMetaRequest(APIRequest):
@@ -456,7 +464,7 @@ class UploadURLRequest(APIRequest):
             self.params["fields"] = ",".join(fields)
 
     def process_json(self, js):
-        return LinkObject(js)
+        return OperationLinkObject(js)
 
 class DeleteRequest(APIRequest):
     """
@@ -487,7 +495,7 @@ class DeleteRequest(APIRequest):
 
     def process_json(self, js):
         if js is not None:
-            return LinkObject(js)
+            return OperationLinkObject(js)
 
 class SaveToDiskRequest(APIRequest):
     """
@@ -528,6 +536,9 @@ class SaveToDiskRequest(APIRequest):
             self.params["fields"] = ",".join(fields)
 
     def process_json(self, js):
+        if is_operation_link(js.get("href", "")):
+            return OperationLinkObject(js)
+
         return LinkObject(js)
 
 class GetPublicMetaRequest(APIRequest):

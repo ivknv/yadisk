@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-22 17:19+0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2017-11-03 23:57+0500\n"
+"PO-Revision-Date: 2017-11-04 00:11+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -110,6 +110,7 @@ msgstr "Реализует доступ к REST API Яндекс.Диска"
 #: yadisk.objects.resources.FilesResourceListObject
 #: yadisk.objects.resources.LastUploadedResourceListObject
 #: yadisk.objects.resources.LinkObject
+#: yadisk.objects.resources.OperationLinkObject
 #: yadisk.objects.resources.PublicResourceListObject
 #: yadisk.objects.resources.PublicResourceObject
 #: yadisk.objects.resources.PublicResourcesListObject
@@ -152,6 +153,7 @@ msgstr "токен"
 #: yadisk.objects.resources.FilesResourceListObject
 #: yadisk.objects.resources.LastUploadedResourceListObject
 #: yadisk.objects.resources.LinkObject
+#: yadisk.objects.resources.OperationLinkObject
 #: yadisk.objects.resources.PublicResourceListObject
 #: yadisk.objects.resources.PublicResourceObject
 #: yadisk.objects.resources.PublicResourcesListObject
@@ -266,12 +268,13 @@ msgid "source path"
 msgstr "исходный путь"
 
 #: ../../docstring of yadisk.YaDisk.copy:6 yadisk.YaDisk.get_upload_link:3
-#: yadisk.YaDisk.move:4 yadisk.YaDisk.upload:4 yadisk.YaDisk.upload_url:4
-#: yadisk.api.resources.CopyRequest:5 yadisk.api.resources.MoveRequest:5
+#: yadisk.YaDisk.move:4 yadisk.YaDisk.restore_trash:5 yadisk.YaDisk.upload:4
+#: yadisk.YaDisk.upload_url:4 yadisk.api.resources.CopyRequest:5
+#: yadisk.api.resources.MoveRequest:5
 #: yadisk.api.resources.RestoreTrashRequest:5
 #: yadisk.api.resources.UploadURLRequest:5 yadisk.functions.resources.copy:7
 #: yadisk.functions.resources.get_upload_link:4
-#: yadisk.functions.resources.move:5 yadisk.functions.resources.restore_trash:5
+#: yadisk.functions.resources.move:5 yadisk.functions.resources.restore_trash:6
 #: yadisk.functions.resources.upload:5 yadisk.functions.resources.upload_url:5
 msgid "destination path"
 msgstr "путь назначения"
@@ -294,8 +297,9 @@ msgstr ""
 #: yadisk.YaDisk.mkdir:4 yadisk.YaDisk.move:6 yadisk.YaDisk.patch:5
 #: yadisk.YaDisk.public_listdir:9 yadisk.YaDisk.publish:4
 #: yadisk.YaDisk.remove:6 yadisk.YaDisk.remove_trash:4
-#: yadisk.YaDisk.save_to_disk:8 yadisk.YaDisk.trash_listdir:8
-#: yadisk.YaDisk.unpublish:4 yadisk.YaDisk.upload:7 yadisk.YaDisk.upload_url:6
+#: yadisk.YaDisk.restore_trash:7 yadisk.YaDisk.save_to_disk:8
+#: yadisk.YaDisk.trash_listdir:8 yadisk.YaDisk.unpublish:4
+#: yadisk.YaDisk.upload:7 yadisk.YaDisk.upload_url:6
 #: yadisk.api.disk.DiskInfoRequest:4
 #: yadisk.api.operations.GetOperationStatusRequest:5
 #: yadisk.api.resources.CopyRequest:8 yadisk.api.resources.DeleteRequest:7
@@ -330,7 +334,7 @@ msgstr ""
 #: yadisk.functions.resources.public_listdir:9
 #: yadisk.functions.resources.publish:5 yadisk.functions.resources.remove:7
 #: yadisk.functions.resources.remove_trash:5
-#: yadisk.functions.resources.restore_trash:7
+#: yadisk.functions.resources.restore_trash:8
 #: yadisk.functions.resources.save_to_disk:9
 #: yadisk.functions.resources.trash_listdir:9
 #: yadisk.functions.resources.unpublish:5 yadisk.functions.resources.upload:8
@@ -338,15 +342,12 @@ msgstr ""
 msgid "list of keys to be included in the response"
 msgstr "список ключей, которые будут включены в ответ"
 
-#: ../../docstring of yadisk.YaDisk.copy:11 yadisk.YaDisk.mkdir:6
-#: yadisk.YaDisk.move:8 yadisk.YaDisk.restore_trash:5
+#: ../../docstring of yadisk.YaDisk.copy:11 yadisk.YaDisk.restore_trash:9
 #: yadisk.YaDisk.save_to_disk:10 yadisk.functions.resources.copy:12
-#: yadisk.functions.resources.mkdir:7 yadisk.functions.resources.move:9
-#: yadisk.functions.resources.restore_trash:9
+#: yadisk.functions.resources.restore_trash:10
 #: yadisk.functions.resources.save_to_disk:11
-#: yadisk.functions.resources.unpublish:7
-msgid "`LinkObject`"
-msgstr ""
+msgid "`LinkObject` or `OperationLinkObject`"
+msgstr "`LinkObject` или `OperationLinkObject`"
 
 #: ../../docstring of yadisk.YaDisk.download:1
 #: yadisk.functions.resources.download:1
@@ -869,7 +870,7 @@ msgstr "Проверяет, является ли `public_key` публично�
 #: yadisk.functions.resources.public_listdir:3
 #: yadisk.functions.resources.publish:3 yadisk.functions.resources.remove:3
 #: yadisk.functions.resources.remove_trash:3
-#: yadisk.functions.resources.restore_trash:3
+#: yadisk.functions.resources.restore_trash:4
 #: yadisk.functions.resources.save_to_disk:5
 #: yadisk.functions.resources.trash_exists:3
 #: yadisk.functions.resources.trash_listdir:3
@@ -941,6 +942,12 @@ msgstr "Создаёт новую папку."
 #: yadisk.functions.resources.mkdir:4
 msgid "path to the directory to be created"
 msgstr "путь к папке, подлежащей созданию"
+
+#: ../../docstring of yadisk.YaDisk.mkdir:6 yadisk.YaDisk.move:8
+#: yadisk.functions.resources.mkdir:7 yadisk.functions.resources.move:9
+#: yadisk.functions.resources.unpublish:7
+msgid "`LinkObject`"
+msgstr ""
 
 #: ../../docstring of yadisk.YaDisk.move:1 yadisk.functions.resources.move:1
 msgid "Move `src_path` to `dst_path`."
@@ -1020,12 +1027,11 @@ msgstr ""
 "перемещён в корзину"
 
 #: ../../docstring of yadisk.YaDisk.remove:8 yadisk.YaDisk.remove_trash:6
-#: yadisk.functions.resources.remove:9
 #: yadisk.functions.resources.remove_trash:7
 msgid ""
-"`LinkObject` if the operation is performed asynchronously, `None` "
-"otherwise"
-msgstr "`LinkObject`, если операция выполняется асинхронно, иначе `None`"
+"`OperationLinkObject` if the operation is performed asynchronously, "
+"`None` otherwise"
+msgstr "`OperationLinkObject`, если операция выполняется асинхронно, иначе `None`"
 
 #: ../../docstring of yadisk.YaDisk.remove_trash:1
 #: yadisk.functions.resources.remove_trash:1
@@ -1040,12 +1046,20 @@ msgstr "путь к ресурсу корзины, подлежащий удал
 
 #: ../../docstring of yadisk.YaDisk.restore_trash:1
 #: yadisk.functions.resources.restore_trash:1
-msgid "Restore a trash resource."
-msgstr "Восстанавливает ресурс корзины."
+msgid ""
+"Restore a trash resource. Returns a link to the newly created resource or"
+" a link to the asynchronous operation."
+msgstr "Восстанавливает ресурс корзины. Возвращает ссылку на новый ресурс или ссылку на асинхронную операцию."
 
-#: ../../docstring of yadisk.YaDisk.restore_trash:3
+#: ../../docstring of yadisk.YaDisk.restore_trash:4
 msgid "path to the trash resource to restore"
 msgstr "путь к ресурсу корзины, подлежащий удалению"
+
+#: ../../docstring of yadisk.YaDisk.restore_trash:6
+#: yadisk.api.resources.RestoreTrashRequest:6
+#: yadisk.functions.resources.restore_trash:7
+msgid "`bool`, determines whether the destination can be overwritten"
+msgstr "`bool`, определяет может ли путь назначения быть перезаписан"
 
 #: ../../docstring of yadisk.YaDisk.revoke_token:1
 #: yadisk.functions.auth.revoke_token:1
@@ -1156,8 +1170,8 @@ msgstr "`bool`, запретить делать перенаправления"
 
 #: ../../docstring of yadisk.YaDisk.upload_url:8
 #: yadisk.functions.resources.upload_url:9
-msgid "`LinkObject`, link to the asynchronous operation"
-msgstr "`LinkObject`, ссылка на асинхронную операцию"
+msgid "`OperationLinkObject`, link to the asynchronous operation"
+msgstr "`OperationLinkObject`, ссылка на асинхронную операцию"
 
 #: ../../docs.rst:8
 msgid "General parameters"
@@ -1201,7 +1215,9 @@ msgstr "Настройки"
 msgid ""
 "The following settings can be accessed and changed at runtime in "
 "`yadisk.settings` module:"
-msgstr "Следующие настройки в модуле `yadisk.settings` могут быть получены и изменены:"
+msgstr ""
+"Следующие настройки в модуле `yadisk.settings` могут быть получены и "
+"изменены:"
 
 #: ../../docs.rst:24
 msgid ""
@@ -1210,7 +1226,8 @@ msgid ""
 " is the read timeout."
 msgstr ""
 "**DEFAULT_TIMEOUT** - `tuple` из 2-х чисел (`int` или `float`), "
-"стандартный таймаут для запросов. Первое число - это таймаут соединения, второе - таймаут чтения."
+"стандартный таймаут для запросов. Первое число - это таймаут соединения, "
+"второе - таймаут чтения."
 
 #: ../../docs.rst:25
 msgid "**DEFAULT_N_RETRIES** - `int`, default number of retries"
@@ -1312,6 +1329,7 @@ msgstr ""
 #: yadisk.objects.resources.FilesResourceListObject:3
 #: yadisk.objects.resources.LastUploadedResourceListObject:3
 #: yadisk.objects.resources.LinkObject:3
+#: yadisk.objects.resources.OperationLinkObject:3
 #: yadisk.objects.resources.PublicResourceListObject:3
 #: yadisk.objects.resources.PublicResourceObject:3
 #: yadisk.objects.resources.PublicResourcesListObject:3
@@ -1569,19 +1587,26 @@ msgid "Link object."
 msgstr "Объект ссылки."
 
 #: ../../docstring of yadisk.objects.resources.LinkObject:5
+#: yadisk.objects.resources.OperationLinkObject:5
 #: yadisk.objects.resources.ResourceUploadLinkObject:6
 msgid "`str`, link URL"
 msgstr "`str`, URL ссылки"
 
 #: ../../docstring of yadisk.objects.resources.LinkObject:6
+#: yadisk.objects.resources.OperationLinkObject:6
 #: yadisk.objects.resources.ResourceUploadLinkObject:7
 msgid "`str`, HTTP method"
 msgstr "`str`, HTTP метод"
 
 #: ../../docstring of yadisk.objects.resources.LinkObject:7
+#: yadisk.objects.resources.OperationLinkObject:7
 #: yadisk.objects.resources.ResourceUploadLinkObject:8
 msgid "`bool`, tells whether the URL is templated"
 msgstr "`bool`, признак шаблонизированного URL"
+
+#: ../../docstring of yadisk.objects.resources.OperationLinkObject:1
+msgid "Operation link object."
+msgstr "Объект ссылки на операцию."
 
 #: ../../docstring of yadisk.objects.resources.PublicResourceListObject:1
 #: yadisk.objects.resources.PublicResourcesListObject:1
@@ -1840,15 +1865,16 @@ msgstr "Функции"
 msgid "token to revoke"
 msgstr "токен, подлежащий отзыву"
 
+#: ../../docstring of yadisk.functions.resources.remove:9
+msgid ""
+"`LinkObject` if the operation is performed asynchronously, `None` "
+"otherwise"
+msgstr "`LinkObject`, если операция выполняется асинхронно, иначе `None`"
+
 #: ../../docstring of yadisk.api.resources.RestoreTrashRequest:4
-#: yadisk.functions.resources.restore_trash:4
+#: yadisk.functions.resources.restore_trash:5
 msgid "path to the trash resource to be restored"
 msgstr "путь к восстанавливаему ресурсу"
-
-#: ../../docstring of yadisk.api.resources.RestoreTrashRequest:6
-#: yadisk.functions.resources.restore_trash:6
-msgid "`bool`, determines whether the destination can be overwritten"
-msgstr "`bool`, определяет может ли путь назначения быть перезаписан"
 
 #: ../../docstring of yadisk.api.resources.GetPublicResourcesRequest:11
 #: yadisk.functions.resources.get_public_resources:11
@@ -2095,4 +2121,7 @@ msgstr "идентификатор операции или ссылка на н�
 #~ "the second one is the read "
 #~ "timeout."
 #~ msgstr "Первое число - это таймаут соединения, второе - таймаут чтения."
+
+#~ msgid "Restore a trash resource."
+#~ msgstr "Восстанавливает ресурс корзины."
 
