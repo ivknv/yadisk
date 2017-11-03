@@ -3,7 +3,7 @@
 
 import datetime
 
-__all__ = ["typed_list", "yandex_date"]
+__all__ = ["typed_list", "yandex_date", "is_operation_link"]
 
 def typed_list(datatype):
     def list_factory(iterable=None):
@@ -16,3 +16,6 @@ def typed_list(datatype):
 
 def yandex_date(string):
     return datetime.datetime.strptime(string[:-3] + string[-2:], "%Y-%m-%dT%H:%M:%S%z")
+
+def is_operation_link(link):
+    return link.startswith("https://cloud-api.yandex.net/v1/disk/operations/")

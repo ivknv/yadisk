@@ -37,7 +37,7 @@ def copy(session, src_path, dst_path, *args, **kwargs):
                           otherwise, an error will be raised
         :param fields: list of keys to be included in the response
 
-        :returns: `LinkObject`
+        :returns: `LinkObject` or `OperationLinkObject`
     """
 
     request = CopyRequest(session, src_path, dst_path, *args, **kwargs)
@@ -388,6 +388,7 @@ def trash_exists(session, path, *args, **kwargs):
 def restore_trash(session, path, *args, **kwargs):
     """
         Restore a trash resource.
+        Returns a link to the newly created resource or a link to the asynchronous operation.
 
         :param session: an instance of `requests.Session` with prepared headers
         :param path: path to the trash resource to be restored
@@ -395,7 +396,7 @@ def restore_trash(session, path, *args, **kwargs):
         :param overwrite: `bool`, determines whether the destination can be overwritten
         :param fields: list of keys to be included in the response
 
-        :returns: `LinkObject`
+        :returns: `LinkObject` or `OperationLinkObject`
     """
 
     request = RestoreTrashRequest(session, path, *args, **kwargs)
@@ -429,7 +430,7 @@ def remove_trash(session, path, *args, **kwargs):
         :param path: path to the trash resource to be deleted
         :param fields: list of keys to be included in the response
 
-        :returns: `LinkObject` if the operation is performed asynchronously, `None` otherwise
+        :returns: `OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
     """
 
     request = DeleteTrashRequest(session, path, *args, **kwargs)
@@ -481,7 +482,7 @@ def save_to_disk(session, public_key, *args, **kwargs):
         :param save_path: path to the destination directory (downloads directory by default)
         :param fields: list of keys to be included in the response
 
-        :returns: `LinkObject`
+        :returns: `LinkObject` or `OperationLinkObject`
     """
 
     request = SaveToDiskRequest(session, public_key, *args, **kwargs)
@@ -745,7 +746,7 @@ def upload_url(session, url, path, *args, **kwargs):
         :param disable_redirects: `bool`, forbid redirects
         :param fields: list of keys to be included in the response
 
-        :returns: `LinkObject`, link to the asynchronous operation
+        :returns: `OperationLinkObject`, link to the asynchronous operation
     """
 
     request = UploadURLRequest(session, url, path, *args, **kwargs)

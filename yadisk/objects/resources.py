@@ -6,10 +6,10 @@ from .disk import UserObject
 from ..common import typed_list, yandex_date
 
 __all__ = ["CommentIDsObject", "EXIFObject", "FilesResourceListObject",
-           "LastUploadedResourceListObject", "LinkObject", "PublicResourcesListObject",
-           "ResourceListObject", "ResourceObject", "ResourceUploadLinkObject",
-           "ShareInfoObject", "PublicResourceObject", "PublicResourceListObject",
-           "TrashResourceObject", "TrashResourceListObject"]
+           "LastUploadedResourceListObject", "LinkObject", "OperationLinkObject",
+           "PublicResourcesListObject", "ResourceListObject", "ResourceObject",
+           "ResourceUploadLinkObject", "ShareInfoObject", "PublicResourceObject",
+           "PublicResourceListObject", "TrashResourceObject", "TrashResourceListObject"]
 
 class CommentIDsObject(YaDiskObject):
     """
@@ -91,6 +91,19 @@ class LinkObject(YaDiskObject):
                                      "templated": bool})
 
         self.import_fields(link)
+
+class OperationLinkObject(LinkObject):
+    """
+        Operation link object.
+
+        :param link: `dict` or `None`
+
+        :ivar href: `str`, link URL
+        :ivar method: `str`, HTTP method
+        :ivar templated: `bool`, tells whether the URL is templated
+    """
+
+    pass
 
 class PublicResourcesListObject(YaDiskObject):
     """

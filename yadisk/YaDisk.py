@@ -268,7 +268,7 @@ class YaDisk(object):
                                 otherwise, it will be just moved to the trash
             :param fields: list of keys to be included in the response
 
-            :returns: `LinkObject` if the operation is performed asynchronously, `None` otherwise
+            :returns: `OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
         return functions.remove(self.make_session(), path, *args, **kwargs)
@@ -347,7 +347,7 @@ class YaDisk(object):
                               otherwise, an error will be raised
             :param fields: list of keys to be included in the response
 
-            :returns: `LinkObject`
+            :returns: `LinkObject` or `OperationLinkObject`
         """
 
         return functions.copy(self.make_session(), src_path, dst_path, *args, **kwargs)
@@ -355,10 +355,14 @@ class YaDisk(object):
     def restore_trash(self, path, *args, **kwargs):
         """
             Restore a trash resource.
+            Returns a link to the newly created resource or a link to the asynchronous operation.
 
             :param path: path to the trash resource to restore
+            :param dst_path: destination path
+            :param overwrite: `bool`, determines whether the destination can be overwritten
+            :param fields: list of keys to be included in the response
 
-            :returns: `LinkObject`
+            :returns: `LinkObject` or `OperationLinkObject`
         """
 
         return functions.restore_trash(self.make_session(), path, *args, **kwargs)
@@ -384,7 +388,7 @@ class YaDisk(object):
             :param path: path to the trash resource to be deleted
             :param fields: list of keys to be included in the response
 
-            :returns: `LinkObject` if the operation is performed asynchronously, `None` otherwise
+            :returns: `OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
         return functions.remove_trash(self.make_session(), path, *args, **kwargs)
@@ -424,7 +428,7 @@ class YaDisk(object):
             :param save_path: path to the destination directory (downloads directory by default)
             :param fields: list of keys to be included in the response
 
-            :returns: `LinkObject`
+            :returns: `LinkObject` or `OperationLinkObject`
         """
 
         return functions.save_to_disk(self.make_session(), public_key, *args, **kwargs)
@@ -622,7 +626,7 @@ class YaDisk(object):
             :param disable_redirects: `bool`, forbid redirects
             :param fields: list of keys to be included in the response
 
-            :returns: `LinkObject`, link to the asynchronous operation
+            :returns: `OperationLinkObject`, link to the asynchronous operation
         """
 
         return functions.upload_url(self.make_session(), url, path, *args, **kwargs)
