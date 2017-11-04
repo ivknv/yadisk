@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-19 17:12+0500\n"
+"POT-Creation-Date: 2017-11-04 13:16+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,15 +29,10 @@ msgstr "YaDisk - это библиотека-клиент REST API Яндекс.
 msgid "Installation"
 msgstr "Установка"
 
-#: ../../intro.rst:9
-msgid "First, you need to have `requests` installed."
-msgstr "Для начала, должен быть установлен `requests`."
-
-#: ../../intro.rst:15
+#: ../../intro.rst:13
 msgid "or"
 msgstr "или"
 
-#: ../../intro.rst:22
+#: ../../intro.rst:20
 msgid "Examples"
 msgstr "Примеры"
-
