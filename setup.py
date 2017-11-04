@@ -20,6 +20,7 @@ setup(name="yadisk",
       author_email="rvan.mega@gmail.com",
       license="GPLv3",
       python_requires=">=3",
+      install_requires=["requests"],
       url="https://github.com/ivknv/yadisk",
       classifiers=[
           "Development Status :: 4 - Beta",
