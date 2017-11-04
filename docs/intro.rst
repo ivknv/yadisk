@@ -6,11 +6,9 @@ YaDisk is a Yandex.Disk REST API client library.
 Installation
 ************
 
-First, you need to have `requests` installed.
-
 .. code:: bash
 
-    pip install yadisk requests
+    pip install yadisk
 
 or
 
