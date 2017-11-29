@@ -228,16 +228,17 @@ def _listdir(get_meta_function, session, path, *args, **kwargs):
         yield child
 
     limit = result.embedded.limit
-    offset = result.embedded.offset + limit
+    offset = result.embedded.offset
     total = result.embedded.total
 
     while offset + limit < total:
-        result = get_meta_function(session, path, *args, offset=offset, limit=limit, **kwargs)
+        offset += limit
+        kwargs["offset"] = offset
+        result = get_meta_function(session, path, *args, **kwargs)
 
         for child in result.embedded.items:
             yield child
 
-        offset += limit
         limit = result.embedded.limit
         total = result.embedded.total
 
