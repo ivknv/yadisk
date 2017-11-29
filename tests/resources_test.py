@@ -34,6 +34,23 @@ class ResourcesTestCase(TestCase):
 
         self.assertEqual(result, names)
 
+    def test_listdir_with_limits(self):
+        names = ["dir1", "dir2", "dir3"]
+
+        for name in names:
+            path = posixpath.join(self.path, name)
+
+            self.yadisk.mkdir(path)
+
+        result = [i.name for i in self.yadisk.listdir(self.path, limit=1)]
+
+        for name in names:
+            path = posixpath.join(self.path, name)
+
+            self.yadisk.remove(path, permanently=True)
+
+        self.assertEqual(result, names)
+
     def test_mkdir_and_exists(self):
         names = ["dir1", "dir2"]
 
