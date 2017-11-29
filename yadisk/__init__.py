@@ -5,4 +5,4 @@
 from . import functions
 from .YaDisk import *
 
-__version__ = "1.0.7"
+__version__ = "1.0.8"
