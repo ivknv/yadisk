@@ -5,7 +5,7 @@ __all__ = ["YaDiskError", "UnknownYaDiskError", "UnauthorizedError",
            "DiskNotFoundError", "PathNotFoundError", "DirectoryExistsError",
            "PathExistsError"]
 
-class YaDiskError(BaseException):
+class YaDiskError(Exception):
     """
         Base class for all exceptions in this library.
 
@@ -13,7 +13,7 @@ class YaDiskError(BaseException):
     """
 
     def __init__(self, error_type=None, msg=""):
-        BaseException.__init__(self, msg)
+        Exception.__init__(self, msg)
 
         self.error_type = error_type
 
