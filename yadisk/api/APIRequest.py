@@ -125,7 +125,7 @@ class APIRequest(object):
 
     def process_error(self, js):
         if js is None:
-            return UnknownYaDiskError("Unknown Yandex.Disk error")
+            return UnknownYaDiskError("Unknown Yandex.Disk error", self.response)
 
         error = ErrorObject(js)
         exc = EXCEPTION_MAP.get(error.error,

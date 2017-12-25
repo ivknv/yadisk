@@ -20,10 +20,14 @@ class YaDiskError(Exception):
 class UnknownYaDiskError(YaDiskError):
     """
         Thrown when the request failed but the response does not contain any error info.
+
+        :ivar response: an instance of `requests.Response`
     """
 
-    def __init__(self, msg=""):
+    def __init__(self, msg="", response=None):
         YaDiskError.__init__(self, None, msg)
+
+        self.response = response
 
 class UnauthorizedError(YaDiskError):
     """Thrown when the application is not authorized."""
