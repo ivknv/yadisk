@@ -83,10 +83,16 @@ class YaDiskObject(object):
 
         if source_dict is not None:
             for field in self.FIELDS:
-                self[field] = source_dict.get(field)
+                try:
+                    self[field] = source_dict[field]
+                except KeyError:
+                    pass
 
-            for field in self.ALIASES:
-                self[field] = source_dict.get(field)
+            for alias, field in self.ALIASES.items():
+                try:
+                    self[field] = source_dict[alias]
+                except KeyError:
+                    pass
 
     def __setattr__(self, attr, value):
         if attr in ("FIELDS", "FIELD_TYPES", "ALIASES"):
@@ -127,5 +133,5 @@ class YaDiskObject(object):
     def __len__(self):
         return len(self.FIELDS)
 
-    def __repr__(self, initial_indent_size=0):
+    def __repr__(self):
         return "<%s%r>" % (self.__class__.__name__, self.FIELDS)
