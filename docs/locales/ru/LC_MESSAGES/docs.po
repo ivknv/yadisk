@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-03 23:57+0500\n"
-"PO-Revision-Date: 2017-11-04 00:11+0500\n"
+"POT-Creation-Date: 2017-12-25 20:08+0500\n"
+"PO-Revision-Date: 2017-12-25 20:16+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -143,8 +143,9 @@ msgid "application token"
 msgstr "токен"
 
 #: ../../docstring of yadisk.YaDisk yadisk.api.APIRequest
-#: yadisk.exceptions.YaDiskError yadisk.objects.ErrorObject
-#: yadisk.objects.auth.TokenObject yadisk.objects.auth.TokenRevokeStatusObject
+#: yadisk.exceptions.UnknownYaDiskError yadisk.exceptions.YaDiskError
+#: yadisk.objects.ErrorObject yadisk.objects.auth.TokenObject
+#: yadisk.objects.auth.TokenRevokeStatusObject
 #: yadisk.objects.disk.DiskInfoObject yadisk.objects.disk.SystemFoldersObject
 #: yadisk.objects.disk.UserObject
 #: yadisk.objects.operations.OperationStatusObject
@@ -1049,7 +1050,9 @@ msgstr "путь к ресурсу корзины, подлежащий удал
 msgid ""
 "Restore a trash resource. Returns a link to the newly created resource or"
 " a link to the asynchronous operation."
-msgstr "Восстанавливает ресурс корзины. Возвращает ссылку на новый ресурс или ссылку на асинхронную операцию."
+msgstr ""
+"Восстанавливает ресурс корзины. Возвращает ссылку на новый ресурс или "
+"ссылку на асинхронную операцию."
 
 #: ../../docstring of yadisk.YaDisk.restore_trash:4
 msgid "path to the trash resource to restore"
@@ -1282,6 +1285,10 @@ msgid ""
 "Thrown when the request failed but the response does not contain any "
 "error info."
 msgstr "Вызывается когда запрос не удался, но не содержит информации об ошибке."
+
+#: ../../docstring of yadisk.exceptions.UnknownYaDiskError:3
+msgid "an instance of `requests.Response`"
+msgstr "объект `requests.Response`"
 
 #: ../../docstring of yadisk.exceptions.UnauthorizedError:1
 msgid "Thrown when the application is not authorized."
