@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-25 20:08+0500\n"
-"PO-Revision-Date: 2017-12-25 20:16+0500\n"
+"POT-Creation-Date: 2017-12-26 16:47+0500\n"
+"PO-Revision-Date: 2017-12-26 16:53+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -45,9 +45,9 @@ msgstr "Реализует доступ к REST API Яндекс.Диска"
 #: yadisk.YaDisk.revoke_token yadisk.YaDisk.save_to_disk
 #: yadisk.YaDisk.trash_exists yadisk.YaDisk.trash_listdir
 #: yadisk.YaDisk.unpublish yadisk.YaDisk.upload yadisk.YaDisk.upload_url
-#: yadisk.api.APIRequest yadisk.api.auth.GetTokenRequest
-#: yadisk.api.auth.RefreshTokenRequest yadisk.api.auth.RevokeTokenRequest
-#: yadisk.api.disk.DiskInfoRequest
+#: yadisk.api.APIRequest yadisk.api.APIRequest.process_json
+#: yadisk.api.auth.GetTokenRequest yadisk.api.auth.RefreshTokenRequest
+#: yadisk.api.auth.RevokeTokenRequest yadisk.api.disk.DiskInfoRequest
 #: yadisk.api.operations.GetOperationStatusRequest
 #: yadisk.api.resources.CopyRequest yadisk.api.resources.DeleteRequest
 #: yadisk.api.resources.DeleteTrashRequest yadisk.api.resources.FilesRequest
@@ -143,9 +143,8 @@ msgid "application token"
 msgstr "токен"
 
 #: ../../docstring of yadisk.YaDisk yadisk.api.APIRequest
-#: yadisk.exceptions.UnknownYaDiskError yadisk.exceptions.YaDiskError
-#: yadisk.objects.ErrorObject yadisk.objects.auth.TokenObject
-#: yadisk.objects.auth.TokenRevokeStatusObject
+#: yadisk.exceptions.YaDiskError yadisk.objects.ErrorObject
+#: yadisk.objects.auth.TokenObject yadisk.objects.auth.TokenRevokeStatusObject
 #: yadisk.objects.disk.DiskInfoObject yadisk.objects.disk.SystemFoldersObject
 #: yadisk.objects.disk.UserObject
 #: yadisk.objects.operations.OperationStatusObject
@@ -208,6 +207,7 @@ msgstr "токен, подлежащий проверке, то же самое,
 #: yadisk.YaDisk.revoke_token yadisk.YaDisk.save_to_disk
 #: yadisk.YaDisk.trash_exists yadisk.YaDisk.trash_listdir
 #: yadisk.YaDisk.unpublish yadisk.YaDisk.upload yadisk.YaDisk.upload_url
+#: yadisk.api.APIRequest.process yadisk.api.APIRequest.process_json
 #: yadisk.api.APIRequest.send yadisk.api.resources.GetPublicResourcesRequest
 #: yadisk.functions.auth.check_token yadisk.functions.auth.get_auth_url
 #: yadisk.functions.auth.get_code_url yadisk.functions.auth.get_token
@@ -1280,35 +1280,89 @@ msgstr "Базовый класс для всех исключений в это
 msgid "`str`, unique error code as returned by API"
 msgstr "`str`, уникальный код ошибки, полученный от API"
 
+#: ../../docstring of yadisk.exceptions.YaDiskError:4
+msgid "an instance of `requests.Response`"
+msgstr "объект `requests.Response`"
+
 #: ../../docstring of yadisk.exceptions.UnknownYaDiskError:1
 msgid ""
 "Thrown when the request failed but the response does not contain any "
 "error info."
-msgstr "Вызывается когда запрос не удался, но не содержит информации об ошибке."
+msgstr "Вызывается, когда запрос не удался, но не содержит информации об ошибке."
 
-#: ../../docstring of yadisk.exceptions.UnknownYaDiskError:3
-msgid "an instance of `requests.Response`"
-msgstr "объект `requests.Response`"
+#: ../../docstring of yadisk.exceptions.BadRequestError:1
+msgid "Thrown when the server returns code 400."
+msgstr "Вызывается, когда сервер вернул код 400."
 
 #: ../../docstring of yadisk.exceptions.UnauthorizedError:1
-msgid "Thrown when the application is not authorized."
-msgstr "Вызывается, когда приложение не авторизовано."
+msgid "Thrown when the server returns code 401."
+msgstr "Вызывается, когда сервер вернул код 401."
 
-#: ../../docstring of yadisk.exceptions.DiskNotFoundError:1
+#: ../../docstring of yadisk.exceptions.ForbiddenError:1
+msgid "Thrown when the server returns code 403."
+msgstr "Вызывается, когда сервер вернул код 403."
+
+#: ../../docstring of yadisk.exceptions.NotFoundError:1
+msgid "Thrown when the server returns code 404."
+msgstr "Вызывается, когда сервер вернул код 404."
+
+#: ../../docstring of yadisk.exceptions.NotAcceptableError:1
+msgid "Thrown when the server returns code 406."
+msgstr "Вызывается, когда сервер вернул код 406."
+
+#: ../../docstring of yadisk.exceptions.ConflictError:1
+msgid "Thrown when the server returns code 409."
+msgstr "Вызывается, когда сервер вернул код 409."
+
+#: ../../docstring of yadisk.exceptions.UnsupportedMediaError:1
+msgid "Thrown when the server returns code 415."
+msgstr "Вызывается, когда сервер вернул код 415."
+
+#: ../../docstring of yadisk.exceptions.LockedError:1
+msgid "Thrown when the server returns code 423."
+msgstr "Вызывается, когда сервер вернул код 423."
+
+#: ../../docstring of yadisk.exceptions.TooManyRequestsError:1
+msgid "Thrown when the server returns code 429."
+msgstr "Вызывается, когда сервер вернул код 429."
+
+#: ../../docstring of yadisk.exceptions.InternalServerError:1
+msgid "Thrown when the server returns code 500."
+msgstr "Вызывается, когда сервер вернул код 500."
+
+#: ../../docstring of yadisk.exceptions.UnavailableError:1
+msgid "Thrown when the server returns code 503."
+msgstr "Вызывается, когда сервер вернул код 503."
+
+#: ../../docstring of yadisk.exceptions.InsufficientStorageError:1
+msgid "Thrown when the server returns code 509."
+msgstr "Вызывается, когда сервер вернул код 509."
+
+#: ../../docstring of yadisk.exceptions.PathNotFoundError:1
 msgid "Thrown when the requested path does not exist."
 msgstr "Вызывается, когда запрашиваемый путь не существует."
 
-#: ../../docstring of yadisk.exceptions.PathNotFoundError:1
-msgid "Thrown by `mkdir` when the parent directory doesn't exist."
-msgstr "Вызывается `mkdir`, когда родительская папка не существует."
+#: ../../docstring of yadisk.exceptions.ParentNotFoundError:1
+msgid "Thrown by `mkdir`, `upload`, etc. when the parent directory doesn't exist."
+msgstr ""
+"Вызывается `mkdir`, `upload` и т.д. когда родительская папка не "
+"существует."
+
+#: ../../docstring of yadisk.exceptions.PathExistsError:1
+msgid "Thrown when the requested path already exists."
+msgstr "Вызывается, когда запрашиваемый путь уже существует."
 
 #: ../../docstring of yadisk.exceptions.DirectoryExistsError:1
 msgid "Thrown when the directory already exists."
 msgstr "Вызывается, когда папка уже существует."
 
-#: ../../docstring of yadisk.exceptions.PathExistsError:1
-msgid "Thrown when the requested path already exists."
-msgstr "Вызывается, когда запрашиваемый путь уже существует."
+#: ../../docstring of yadisk.exceptions.FieldValidationError:1
+msgid "Thrown when the request contains fields with invalid data."
+msgstr "Вызывается, когда запрос содежит поля с некорректными данными."
+
+#: ../../docstring of yadisk.exceptions.ResourceIsLockedError:1
+msgid "Thrown when the resource is locked by another operation."
+msgstr "Вызывается, когда запрашиваемый ресурс заблокирован другой операцией."
 
 #: ../../docs.rst:39
 msgid "Objects"
@@ -1893,8 +1947,8 @@ msgid "API request objects"
 msgstr "Объекты запросов к API"
 
 #: ../../docstring of yadisk.api.APIRequest:1
-msgid "Base class for all API requests"
-msgstr "Базовый класс для всех объектов запросов к REST API"
+msgid "Base class for all API requests."
+msgstr "Базовый класс для всех объектов запросов к REST API."
 
 #: ../../docstring of yadisk.api.APIRequest:3
 msgid "an instance of `requests.Session`"
@@ -1961,8 +2015,24 @@ msgid "Prepare the request"
 msgstr "Готовит запрос"
 
 #: ../../docstring of yadisk.api.APIRequest.process:1
-msgid "Process the response"
-msgstr "Обрабатывает ответ"
+msgid "Process the response."
+msgstr "Обрабатывает ответ."
+
+#: ../../docstring of yadisk.api.APIRequest.process:3
+msgid "depends on `self.process_json()`"
+msgstr "зависит от `self.process_json()`"
+
+#: ../../docstring of yadisk.api.APIRequest.process_json:1
+msgid "Process the JSON response."
+msgstr "Обрабатывает JSON ответ."
+
+#: ../../docstring of yadisk.api.APIRequest.process_json:3
+msgid "`dict`, JSON response"
+msgstr "`dict`, JSON ответ"
+
+#: ../../docstring of yadisk.api.APIRequest.process_json:5
+msgid "processed response, can be anything"
+msgstr "обработанный ответ, может быть что угодно"
 
 #: ../../docstring of yadisk.api.APIRequest.send:1
 msgid "Actually send the request"
@@ -2131,4 +2201,7 @@ msgstr "идентификатор операции или ссылка на н�
 
 #~ msgid "Restore a trash resource."
 #~ msgstr "Восстанавливает ресурс корзины."
+
+#~ msgid "Thrown when the application is not authorized."
+#~ msgstr "Вызывается, когда приложение не авторизовано."
 

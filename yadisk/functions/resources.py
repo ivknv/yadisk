@@ -11,7 +11,7 @@ from ..api import RestoreTrashRequest, MoveRequest, DeleteTrashRequest
 from ..api import PublishRequest, UnpublishRequest, SaveToDiskRequest, GetPublicMetaRequest
 from ..api import GetPublicResourcesRequest, PatchRequest, FilesRequest
 from ..api import LastUploadedRequest, UploadURLRequest, GetPublicDownloadLinkRequest
-from ..exceptions import DiskNotFoundError
+from ..exceptions import PathNotFoundError
 
 from .. import settings
 
@@ -102,7 +102,7 @@ def _exists(get_meta_function, *args, **kwargs):
         get_meta_function(*args, limit=0, **kwargs)
 
         return True
-    except DiskNotFoundError:
+    except PathNotFoundError:
         return False
 
 def exists(session, path, *args, **kwargs):
@@ -197,7 +197,7 @@ def is_dir(session, path, *args, **kwargs):
 
     try:
         return get_type(session, path, *args, **kwargs) == "dir"
-    except DiskNotFoundError:
+    except PathNotFoundError:
         return False
 
 def is_file(session, path, *args, **kwargs):
@@ -212,7 +212,7 @@ def is_file(session, path, *args, **kwargs):
 
     try:
         return get_type(session, path, *args, **kwargs) == "file"
-    except DiskNotFoundError:
+    except PathNotFoundError:
         return False
 
 def _listdir(get_meta_function, session, path, *args, **kwargs):
@@ -565,7 +565,7 @@ def is_public_dir(session, public_key, *args, **kwargs):
 
     try:
         return get_public_type(session, public_key, *args, **kwargs) == "dir"
-    except DiskNotFoundError:
+    except PathNotFoundError:
         return False
 
 def is_public_file(session, public_key, *args, **kwargs):
@@ -580,7 +580,7 @@ def is_public_file(session, public_key, *args, **kwargs):
 
     try:
         return get_public_type(session, public_key, *args, **kwargs) == "file"
-    except DiskNotFoundError:
+    except PathNotFoundError:
         return False
 
 def trash_listdir(session, path, *args, **kwargs):
@@ -624,7 +624,7 @@ def is_trash_dir(session, path, *args, **kwargs):
 
     try:
         return get_trash_type(session, path, *args, **kwargs) == "dir"
-    except DiskNotFoundError:
+    except PathNotFoundError:
         return False
 
 def is_trash_file(session, path, *args, **kwargs):
@@ -639,7 +639,7 @@ def is_trash_file(session, path, *args, **kwargs):
 
     try:
         return get_trash_type(session, path, *args, **kwargs) == "file"
-    except DiskNotFoundError:
+    except PathNotFoundError:
         return False
 
 def get_public_resources(session, *args, **kwargs):

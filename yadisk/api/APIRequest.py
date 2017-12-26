@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from collections import defaultdict
 import time
 
 import requests
@@ -10,15 +11,28 @@ from ..objects import ErrorObject
 
 from .. import settings
 
-EXCEPTION_MAP = {i.error_type: i for i in (UnauthorizedError,
-                                           DiskNotFoundError,
-                                           PathNotFoundError,
-                                           DirectoryExistsError,
-                                           PathExistsError)}
+EXCEPTION_MAP = {400: defaultdict(lambda: BadRequestError,
+                                  {"FieldValidationError": FieldValidationError}),
+                 401: defaultdict(lambda: UnauthorizedError),
+                 403: defaultdict(lambda: ForbiddenError),
+                 404: defaultdict(lambda: NotFoundError,
+                                  {"DiskNotFoundError": PathNotFoundError}),
+                 406: defaultdict(lambda: NotAcceptableError),
+                 409: defaultdict(lambda: ConflictError,
+                                  {"DiskPathDoesntExistsError": ParentNotFoundError,
+                                   "DiskPathPointsToExistentDirectoryError": DirectoryExistsError,
+                                   "DiskResourceAlreadyExistsError": PathExistsError}),
+                 415: defaultdict(lambda: UnsupportedMediaError),
+                 423: defaultdict(lambda: LockedError,
+                                  {"DiskResourceLockedError": ResourceIsLockedError}),
+                 429: defaultdict(lambda: TooManyRequests),
+                 500: defaultdict(lambda: InternalServerError),
+                 503: defaultdict(lambda: UnavailableError),
+                 509: defaultdict(lambda: InsufficientStorageError)}
 
 class APIRequest(object):
     """
-        Base class for all API requests
+        Base class for all API requests.
 
         :param session: an instance of `requests.Session`
         :param args: `dict` of arguments, that will be passed to `process_args`
@@ -121,23 +135,36 @@ class APIRequest(object):
         return True
 
     def process_json(self, js):
+        """
+            Process the JSON response.
+
+            :param js: `dict`, JSON response
+
+            :returns: processed response, can be anything
+        """
+
         raise NotImplementedError
 
     def process_error(self, js):
-        if js is None:
+        exceptions = EXCEPTION_MAP.get(self.response.status_code)
+
+        if exceptions is None:
             return UnknownYaDiskError("Unknown Yandex.Disk error", self.response)
 
         error = ErrorObject(js)
-        exc = EXCEPTION_MAP.get(error.error,
-                                lambda msg: YaDiskError(error.error, msg))
+        exc = exceptions[error.error]
 
         msg = error.message or "<empty>"
         desc = error.description or "<empty>"
         
-        return exc("%s: %s (%s)" % (error.error, msg, desc))
+        return exc(error.error, "%s: %s (%s)" % (error.error, msg, desc), self.response)
 
     def process(self):
-        """Process the response"""
+        """
+            Process the response.
+
+            :returns: depends on `self.process_json()`
+        """
 
         success = self.response.status_code in self.success_codes
 
