@@ -465,7 +465,6 @@ class YaDisk(object):
         """
             Get contents of a public directory.
 
-            :param session: an instance of `requests.Session` with prepared headers
             :param public_key: public key or public URL of the resource
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
@@ -493,7 +492,6 @@ class YaDisk(object):
         """
             Check whether `public_key` is a public directory.
 
-            :param session: an instance of `requests.Session` with prepared headers
             :param public_key: public key or public URL of the resource
 
             :returns: `True` if `public_key` is a directory, `False` otherwise (even if it doesn't exist)
