@@ -30,14 +30,14 @@ def copy(session, src_path, dst_path, *args, **kwargs):
         If the operation is performed asynchronously, returns the link to the operation,
         otherwise, returns the link to the newly created resource.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param src_path: source path
         :param dst_path: destination path
         :param overwrite: if `True` the destination path can be overwritten,
                           otherwise, an error will be raised
         :param fields: list of keys to be included in the response
 
-        :returns: `LinkObject` or `OperationLinkObject`
+        :returns: :any:`LinkObject` or :any:`OperationLinkObject`
     """
 
     request = CopyRequest(session, src_path, dst_path, *args, **kwargs)
@@ -50,7 +50,7 @@ def download(session, src_path, file_or_path, *args, **kwargs):
     """
         Download the file.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param src_path: source path
         :param path_or_file: destination path or file-like object
 
@@ -109,7 +109,7 @@ def exists(session, path, *args, **kwargs):
     """
         Check whether `path` exists.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource
 
         :returns: `bool`
@@ -121,7 +121,7 @@ def get_download_link(session, path, *args, **kwargs):
     """
         Get a download link for a file (or a directory).
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource
         :param fields: list of keys to be included in the response
 
@@ -137,7 +137,7 @@ def get_meta(session, *args, **kwargs):
     """
         Get meta information about a file/directory.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource
         :param limit: number of children resources to be included in the response
         :param offset: number of children resources to be skipped in the response
@@ -145,7 +145,7 @@ def get_meta(session, *args, **kwargs):
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
 
-        :returns: `ResourceObject`
+        :returns: :any:`ResourceObject`
     """
 
     request = GetMetaRequest(session, *args, **kwargs)
@@ -160,7 +160,7 @@ def get_type(session, path, *args, **kwargs):
     """
         Get resource type.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource
 
         :returns: "file" or "dir"
@@ -172,7 +172,7 @@ def get_upload_link(session, path, *args, **kwargs):
     """
         Get a link to upload the file using the PUT request.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: destination path
         :param overwrite: `bool`, determines whether to overwrite the destination
         :param fields: list of keys to be included in the response
@@ -189,7 +189,7 @@ def is_dir(session, path, *args, **kwargs):
     """
         Check whether `path` is a directory.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource
 
         :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
@@ -204,7 +204,7 @@ def is_file(session, path, *args, **kwargs):
     """
         Check whether `path` is a file.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource
 
         :returns: `True` if `path` is a file, `False` otherwise (even if it doesn't exist)
@@ -246,7 +246,7 @@ def listdir(session, path, *args, **kwargs):
     """
         Get contents of `path`.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the directory
         :param limit: number of children resources to be included in the response
         :param offset: number of children resources to be skipped in the response
@@ -254,7 +254,7 @@ def listdir(session, path, *args, **kwargs):
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
 
-        :returns: generator of `ResourceObject`
+        :returns: generator of :any:`ResourceObject`
     """
 
     return _listdir(get_meta, session, path, *args, **kwargs)
@@ -263,11 +263,11 @@ def mkdir(session, path, *args, **kwargs):
     """
         Create a new directory.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the directory to be created
         :param fields: list of keys to be included in the response
 
-        :returns: `LinkObject`
+        :returns: :any:`LinkObject`
     """
 
     request = MkdirRequest(session, path, *args, **kwargs)
@@ -280,13 +280,13 @@ def remove(session, path, *args, **kwargs):
     """
         Remove the resource.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource to be removed
         :param permanently: if `True`, the resource will be removed permanently,
                             otherwise, it will be just moved to the trash
         :param fields: list of keys to be included in the response
 
-        :returns: `LinkObject` if the operation is performed asynchronously, `None` otherwise
+        :returns: :any:`LinkObject` if the operation is performed asynchronously, `None` otherwise
     """
 
     request = DeleteRequest(session, path, *args, **kwargs)
@@ -300,7 +300,7 @@ def upload(session, file_or_path, dst_path, overwrite=False, fields=None,
     """
         Upload a file to disk.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path_or_file: path or file-like object to be uploaded
         :param dst_path: destination path
         :param overwrite: if `True`, the resource will be overwritten if it already exists,
@@ -357,7 +357,7 @@ def get_trash_meta(session, path, *args, **kwargs):
     """
         Get meta information about a trash resource.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the trash resource
         :param limit: number of children resources to be included in the response
         :param offset: number of children resources to be skipped in the response
@@ -365,7 +365,7 @@ def get_trash_meta(session, path, *args, **kwargs):
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
 
-        :returns: `TrashResourceObject`
+        :returns: :any:`TrashResourceObject`
     """
 
     request = GetTrashRequest(session, path, *args, **kwargs)
@@ -378,7 +378,7 @@ def trash_exists(session, path, *args, **kwargs):
     """
         Check whether the trash resource at `path` exists.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the trash resource
 
         :returns: `bool`
@@ -391,13 +391,13 @@ def restore_trash(session, path, *args, **kwargs):
         Restore a trash resource.
         Returns a link to the newly created resource or a link to the asynchronous operation.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the trash resource to be restored
         :param dst_path: destination path
         :param overwrite: `bool`, determines whether the destination can be overwritten
         :param fields: list of keys to be included in the response
 
-        :returns: `LinkObject` or `OperationLinkObject`
+        :returns: :any:`LinkObject` or :any:`OperationLinkObject`
     """
 
     request = RestoreTrashRequest(session, path, *args, **kwargs)
@@ -409,13 +409,13 @@ def move(session, src_path, dst_path, *args, **kwargs):
     """
         Move `src_path` to `dst_path`.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param src_path: source path to be moved
         :param dst_path: destination path
         :param overwrite: `bool`, determines whether to overwrite the destination
         :param fields: list of keys to be included in the response
 
-        :returns: `LinkObject`
+        :returns: :any:`LinkObject`
     """
 
     request = MoveRequest(session, src_path, dst_path, *args, **kwargs)
@@ -427,11 +427,11 @@ def remove_trash(session, path, *args, **kwargs):
     """
         Remove a trash resource.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the trash resource to be deleted
         :param fields: list of keys to be included in the response
 
-        :returns: `OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
+        :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
     """
 
     request = DeleteTrashRequest(session, path, *args, **kwargs)
@@ -443,11 +443,11 @@ def publish(session, path, *args, **kwargs):
     """
         Make a resource public.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource to be published
         :param fields: list of keys to be included in the response
 
-        :returns: `LinkObject`, link to the resource
+        :returns: :any:`LinkObject`, link to the resource
     """
 
     request = PublishRequest(session, path, *args, **kwargs)
@@ -459,11 +459,11 @@ def unpublish(session, path, *args, **kwargs):
     """
         Make a public resource private.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource to be unpublished
         :param fields: list of keys to be included in the response
 
-        :returns: `LinkObject`
+        :returns: :any:`LinkObject`
     """
 
     request = UnpublishRequest(session, path, *args, **kwargs)
@@ -477,13 +477,13 @@ def save_to_disk(session, public_key, *args, **kwargs):
         Returns the link to the operation if it's performed asynchronously,
         or a link to the resource otherwise.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
         :param name: filename of the saved resource
         :param save_path: path to the destination directory (downloads directory by default)
         :param fields: list of keys to be included in the response
 
-        :returns: `LinkObject` or `OperationLinkObject`
+        :returns: :any:`LinkObject` or :any:`OperationLinkObject`
     """
 
     request = SaveToDiskRequest(session, public_key, *args, **kwargs)
@@ -495,7 +495,7 @@ def get_public_meta(session, public_key, *args, **kwargs):
     """
         Get meta-information about a public resource.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
         :param offset: offset from the beginning of the list of nested resources
         :param limit: maximum number of nested elements to be included in the list
@@ -504,7 +504,7 @@ def get_public_meta(session, public_key, *args, **kwargs):
         :param preview_crop: `bool`, allow preview crop
         :param fields: list of keys to be included in the response
 
-        :returns: `PublicResourceObject`
+        :returns: :any:`PublicResourceObject`
     """
 
     request = GetPublicMetaRequest(session, public_key, *args, **kwargs)
@@ -516,7 +516,7 @@ def public_exists(session, public_key, *args, **kwargs):
     """
         Check whether the public resource exists.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
 
         :returns: `bool`
@@ -528,7 +528,7 @@ def public_listdir(session, public_key, *args, **kwargs):
     """
         Get contents of a public directory.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
         :param limit: number of children resources to be included in the response
         :param offset: number of children resources to be skipped in the response
@@ -536,7 +536,7 @@ def public_listdir(session, public_key, *args, **kwargs):
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
 
-        :returns: generator of `PublicResourceObject`
+        :returns: generator of :any:`PublicResourceObject`
     """
 
     return _listdir(get_public_meta, session, public_key, *args, **kwargs)
@@ -545,7 +545,7 @@ def get_public_type(session, public_key, *args, **kwargs):
     """
         Get public resource type.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
 
         :returns: "file" or "dir"
@@ -557,7 +557,7 @@ def is_public_dir(session, public_key, *args, **kwargs):
     """
         Check whether `public_key` is a public directory.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
 
         :returns: `True` if `public_key` is a directory, `False` otherwise (even if it doesn't exist)
@@ -572,7 +572,7 @@ def is_public_file(session, public_key, *args, **kwargs):
     """
         Check whether `public_key` is a public file.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
 
         :returns: `True` if `public_key` is a file, `False` otherwise (even if it doesn't exist)
@@ -587,7 +587,7 @@ def trash_listdir(session, path, *args, **kwargs):
     """
         Get contents of a trash resource.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the directory in the trash bin
         :param limit: number of children resources to be included in the response
         :param offset: number of children resources to be skipped in the response
@@ -595,7 +595,7 @@ def trash_listdir(session, path, *args, **kwargs):
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
 
-        :returns: generator of `TrashResourceObject`
+        :returns: generator of :any:`TrashResourceObject`
     """
 
     return _listdir(get_trash_meta, session, path, *args, **kwargs)
@@ -604,7 +604,7 @@ def get_trash_type(session, path, *args, **kwargs):
     """
         Get trash resource type.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the trash resource
 
         :returns: "file" or "dir"
@@ -616,7 +616,7 @@ def is_trash_dir(session, path, *args, **kwargs):
     """
         Check whether `path` is a trash directory.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the trash resource
 
         :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
@@ -631,7 +631,7 @@ def is_trash_file(session, path, *args, **kwargs):
     """
         Check whether `path` is a trash file.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the trash resource
 
         :returns: `True` if `path` is a file, `False` otherwise (even if it doesn't exist)
@@ -646,7 +646,7 @@ def get_public_resources(session, *args, **kwargs):
     """
         Get a list of public resources.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param offset: offset from the beginning of the list
         :param limit: maximum number of elements in the list
         :param preview_size: size of the file preview
@@ -654,7 +654,7 @@ def get_public_resources(session, *args, **kwargs):
         :param type: filter based on type of resources ("file" or "dir")
         :param fields: list of keys to be included in the response
 
-        :returns: `PublicResourcesList`
+        :returns: :any:`PublicResourcesListObject`
     """
 
     request = GetPublicResourcesRequest(session, *args, **kwargs)
@@ -666,12 +666,12 @@ def patch(session, path, properties, *args, **kwargs):
     """
         Update custom properties of a resource.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource
         :param properties: `dict`, custom properties to update
         :param fields: list of keys to be included in the response
 
-        :returns: `ResourceObject`
+        :returns: :any:`ResourceObject`
     """
 
     request = PatchRequest(session, path, properties, *args, **kwargs)
@@ -683,13 +683,13 @@ def get_files(session, *args, **kwargs):
     """
         Get a flat list of all files (that doesn't include directories).
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param offset: offset from the beginning of the list
         :param limit: number of list elements to be included
         :param media_type: type of files to include in the list
         :param sort: sort type
 
-        :returns: generator of `ResourceObject`
+        :returns: generator of :any:`ResourceObject`
     """
 
     if kwargs.get("limit") is not None:
@@ -721,14 +721,14 @@ def get_last_uploaded(session, *args, **kwargs):
     """
         Get the list of latest uploaded files sorted by upload date.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param limit: maximum number of elements in the list
         :param media_type: type of files to include in the list
         :param preview_size: size of the file preview
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
 
-        :returns: generator of `LastUploadedResourceListObject`
+        :returns: generator of :any:`LastUploadedResourceListObject`
     """
 
     request = LastUploadedRequest(session, *args, **kwargs)
@@ -741,13 +741,13 @@ def upload_url(session, url, path, *args, **kwargs):
     """
         Upload a file from URL.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param url: source URL
         :param path: destination path
         :param disable_redirects: `bool`, forbid redirects
         :param fields: list of keys to be included in the response
 
-        :returns: `OperationLinkObject`, link to the asynchronous operation
+        :returns: :any:`OperationLinkObject`, link to the asynchronous operation
     """
 
     request = UploadURLRequest(session, url, path, *args, **kwargs)
@@ -759,7 +759,7 @@ def get_public_download_link(session, public_key, *args, **kwargs):
     """
         Get a download link for a public resource.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
         :param fields: list of keys to be included in the response
 
@@ -775,7 +775,7 @@ def download_public(session, public_key, file_or_path, *args, **kwargs):
     """
         Download the public resource.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
         :param path_or_file: destination path or file-like object
 

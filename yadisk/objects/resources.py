@@ -33,7 +33,7 @@ class EXIFObject(YaDiskObject):
 
         :param exif: `dict` or `None`
 
-        :ivar date_time: `datetime.datetime`, capture date
+        :ivar date_time: :any:`datetime.datetime`, capture date
     """
 
     def __init__(self, exif=None):
@@ -47,7 +47,7 @@ class FilesResourceListObject(YaDiskObject):
 
         :param files_resource_list: `dict` or `None`
 
-        :ivar items: `list`, flat list of files (`ResourceObject`)
+        :ivar items: `list`, flat list of files (:any:`ResourceObject`)
         :ivar limit: `int`, maximum number of elements in the list
         :ivar offset: `int`, offset from the beginning of the list
     """
@@ -65,7 +65,7 @@ class LastUploadedResourceListObject(YaDiskObject):
 
         :param last_uploaded_resources_list: `dict` or `None`
 
-        :ivar items: `list`, list of resources (`ResourceObject`)
+        :ivar items: `list`, list of resources (:any:`ResourceObject`)
         :ivar limit: `int`, maximum number of elements in the list
     """
 
@@ -111,7 +111,7 @@ class PublicResourcesListObject(YaDiskObject):
 
         :param public_resources_list: `dict` or `None`
 
-        :ivar items: `list`, list of public resources (`PublicResourceObject`)
+        :ivar items: `list`, list of public resources (:any:`PublicResourceObject`)
         :ivar type: `str`, resource type to filter by
         :ivar limit: `int`, maximum number of elements in the list
         :ivar offset: `int`, offset from the beginning of the list
@@ -135,19 +135,19 @@ class ResourceObject(YaDiskObject):
         :ivar public_key: `str`, public resource key
         :ivar sha256: `str`, SHA256 hash
         :ivar md5: `str`, MD5 hash
-        :ivar embedded: `ResourceListObject`, list of nested resources
+        :ivar embedded: :any:`ResourceListObject`, list of nested resources
         :ivar name: `str`, filename
-        :ivar exif: `EXIFObject`, EXIF metadata
+        :ivar exif: :any:`EXIFObject`, EXIF metadata
         :ivar resource_id: `str`, resource ID
         :ivar custom_properties: `dict`, custom resource properties
         :ivar public_url: `str`, public URL
-        :ivar share: `ShareInfoObject`, shared folder information
-        :ivar modified: `datetime.datetime`, date of last modification
-        :ivar created: `datetime.datetime`, date of creation
+        :ivar share: :any:`ShareInfoObject`, shared folder information
+        :ivar modified: :any:`datetime.datetime`, date of last modification
+        :ivar created: :any:`datetime.datetime`, date of creation
         :ivar mime_type: `str`, MIME type
         :ivar path: `str`, path to the resource
         :ivar preview: `str`, file preview URL
-        :ivar comment_ids: `CommentIDsObject`, comment IDs
+        :ivar comment_ids: :any:`CommentIDsObject`, comment IDs
         :ivar type: `str`, type ("file" or "dir")
         :ivar media_type: `str`, file type as determined by Yandex.Disk
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
@@ -184,7 +184,7 @@ class ResourceListObject(YaDiskObject):
         :param resource_list: `dict` or `None`
 
         :ivar sort: `str`, sort type
-        :ivar items: `list`, list of resources (`ResourceObject`)
+        :ivar items: `list`, list of resources (:any:`ResourceObject`)
         :ivar limit: `int`, maximum number of elements in the list
         :ivar offset: `int`, offset from the beginning of the list
         :ivar path: `str`, path to the directory that contains the elements of the list
@@ -244,24 +244,24 @@ class PublicResourceObject(ResourceObject):
         :ivar public_key: `str`, public resource key
         :ivar sha256: `str`, SHA256 hash
         :ivar md5: `str`, MD5 hash
-        :ivar embedded: `PublicResourceObject`, list of nested resources
+        :ivar embedded: :any:`PublicResourceObject`, list of nested resources
         :ivar name: `str`, filename
-        :ivar exif: `EXIFObject`, EXIF metadata
+        :ivar exif: :any:`EXIFObject`, EXIF metadata
         :ivar resource_id: `str`, resource ID
         :ivar custom_properties: `dict`, custom resource properties
         :ivar public_url: `str`, public URL
-        :ivar share: `ShareInfoObject`, shared folder information
-        :ivar modified: `datetime.datetime`, date of last modification
-        :ivar created: `datetime.datetime`, date of creation
+        :ivar share: :any:`ShareInfoObject`, shared folder information
+        :ivar modified: :any:`datetime.datetime`, date of last modification
+        :ivar created: :any:`datetime.datetime`, date of creation
         :ivar mime_type: `str`, MIME type
         :ivar path: `str`, path to the resource
         :ivar preview: `str`, file preview URL
-        :ivar comment_ids: `CommentIDsObject`, comment IDs
+        :ivar comment_ids: :any:`CommentIDsObject`, comment IDs
         :ivar type: `str`, type ("file" or "dir")
         :ivar media_type: `str`, file type as determined by Yandex.Disk
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
         :ivar view_count: `int`, number of times the public resource was viewed
-        :ivar owner: `UserObject`, owner of the public resource
+        :ivar owner: :any:`UserObject`, owner of the public resource
     """
 
     def __init__(self, public_resource=None):
@@ -279,7 +279,7 @@ class PublicResourceListObject(ResourceListObject):
         :param public_resource_list: `dict` or `None`
 
         :ivar sort: `str`, sort type
-        :ivar items: `list`, list of resources (`ResourceObject`)
+        :ivar items: `list`, list of resources (:any:`ResourceObject`)
         :ivar limit: `int`, maximum number of elements in the list
         :ivar offset: `int`, offset from the beginning of the list
         :ivar path: `str`, path to the directory that contains the elements of the list
@@ -303,24 +303,24 @@ class TrashResourceObject(ResourceObject):
         :ivar public_key: `str`, public resource key
         :ivar sha256: `str`, SHA256 hash
         :ivar md5: `str`, MD5 hash
-        :ivar embedded: `TrashResourceList`, list of nested resources
+        :ivar embedded: :any:`TrashResourceListObject`, list of nested resources
         :ivar name: `str`, filename
-        :ivar exif: `EXIFObject`, EXIF metadata
+        :ivar exif: :any:`EXIFObject`, EXIF metadata
         :ivar resource_id: `str`, resource ID
         :ivar custom_properties: `dict`, custom resource properties
         :ivar public_url: `str`, public URL
-        :ivar share: `ShareInfoObject`, shared folder information
-        :ivar modified: `datetime.datetime`, date of last modification
-        :ivar created: `datetime.datetime`, date of creation
+        :ivar share: :any:`ShareInfoObject`, shared folder information
+        :ivar modified: :any:`datetime.datetime`, date of last modification
+        :ivar created: :any:`datetime.datetime`, date of creation
         :ivar mime_type: `str`, MIME type
         :ivar path: `str`, path to the resource
         :ivar preview: `str`, file preview URL
-        :ivar comment_ids: `CommentIDsObject`, comment IDs
+        :ivar comment_ids: :any:`CommentIDsObject`, comment IDs
         :ivar type: `str`, type ("file" or "dir")
         :ivar media_type: `str`, file type as determined by Yandex.Disk
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
         :ivar origin_path: `str`, original path
-        :ivar deleted: `datetime.datetime`, date of deletion
+        :ivar deleted: :any:`datetime.datetime`, date of deletion
     """
 
     def __init__(self, trash_resource=None):
@@ -337,7 +337,7 @@ class TrashResourceListObject(ResourceListObject):
         :param trash_resource_list: `dict` or `None`
 
         :ivar sort: `str`, sort type
-        :ivar items: `list`, list of resources (`TrashResourceObject`)
+        :ivar items: `list`, list of resources (:any:`TrashResourceObject`)
         :ivar limit: `int`, maximum number of elements in the list
         :ivar offset: `int`, offset from the beginning of the list
         :ivar path: `str`, path to the directory that contains the elements of the list

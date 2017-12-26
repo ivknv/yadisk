@@ -34,7 +34,7 @@ class APIRequest(object):
     """
         Base class for all API requests.
 
-        :param session: an instance of `requests.Session`
+        :param session: an instance of :any:`requests.Session`
         :param args: `dict` of arguments, that will be passed to `process_args`
         :param timeout: request timeout
         :param n_retries: maximum number of retries
@@ -106,7 +106,7 @@ class APIRequest(object):
         """
             Actually send the request
            
-           :returns: `requests.Response` (`self.response`)
+           :returns: :any:`requests.Response` (`self.response`)
         """
 
         for i in range(self.n_retries + 1):

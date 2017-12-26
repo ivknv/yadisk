@@ -10,7 +10,7 @@ class DiskInfoRequest(APIRequest):
     """
         A request to get disk information.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param fields: list of keys to be included in the response
     """
 

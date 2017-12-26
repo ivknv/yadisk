@@ -22,7 +22,7 @@ class GetPublicResourcesRequest(APIRequest):
     """
         A request to get a list of public resources.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param offset: offset from the beginning of the list
         :param limit: maximum number of elements in the list
         :param preview_size: size of the file preview
@@ -30,7 +30,7 @@ class GetPublicResourcesRequest(APIRequest):
         :param type: filter based on type of resources ("file" or "dir")
         :param fields: list of keys to be included in the response
 
-        :returns: `PublicResourcesList`
+        :returns: :any:`PublicResourcesListObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources/public"
@@ -68,7 +68,7 @@ class UnpublishRequest(APIRequest):
     """
         A request to make a public resource private.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource to be unpublished
         :param fields: list of keys to be included in the response
     """
@@ -93,7 +93,7 @@ class GetDownloadLinkRequest(APIRequest):
     """
         A request to get a download link to a resource.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource to be downloaded
         :param fields: list of keys to be included in the response
     """
@@ -163,7 +163,7 @@ class RestoreTrashRequest(APIRequest):
     """
         A request to restore trash.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the trash resource to be restored
         :param dst_path: destination path
         :param overwrite: `bool`, determines whether the destination can be overwritten
@@ -201,7 +201,7 @@ class DeleteTrashRequest(APIRequest):
     """
         A request to delete a trash resource.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the trash resource to be deleted
         :param fields: list of keys to be included in the response
     """
@@ -228,7 +228,7 @@ class LastUploadedRequest(APIRequest):
     """
         A request to get the list of latest uploaded files sorted by upload date.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param limit: maximum number of elements in the list
         :param media_type: type of files to include in the list
         :param preview_size: size of the file preview
@@ -275,7 +275,7 @@ class CopyRequest(APIRequest):
     """
         A request to copy a file or a directory.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param src_path: source path
         :param dst_path: destination path
         :param overwrite: if `True` the destination path can be overwritten,
@@ -312,7 +312,7 @@ class GetMetaRequest(APIRequest):
     """
         A request to get meta-information about a resource.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource
         :param limit: number of children resources to be included in the response
         :param offset: number of children resources to be skipped in the response
@@ -359,7 +359,7 @@ class GetUploadLinkRequest(APIRequest):
     """
         A request to get an upload link.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to be uploaded at
         :param overwrite: `bool`, determines whether to overwrite the destination
         :param fields: list of keys to be included in the response
@@ -412,7 +412,7 @@ class PublishRequest(APIRequest):
     """
         A request to make a resource public.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource to be published
         :param fields: list of keys to be included in the response
     """
@@ -437,7 +437,7 @@ class UploadURLRequest(APIRequest):
     """
         A request to upload a file from URL.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param url: source URL
         :param path: destination path
         :param disable_redirects: `bool`, forbid redirects
@@ -470,7 +470,7 @@ class DeleteRequest(APIRequest):
     """
         A request to delete a file or a directory.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource to be removed
         :param permanently: if `True`, the resource will be removed permanently,
                             otherwise, it will be just moved to the trash
@@ -501,7 +501,7 @@ class SaveToDiskRequest(APIRequest):
     """
         A request to save a public resource to the disk.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
         :param name: filename of the saved resource
         :param save_path: path to the destination directory (downloads directory by default)
@@ -545,7 +545,7 @@ class GetPublicMetaRequest(APIRequest):
     """
         A request to get meta-information about a public resource.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
         :param offset: offset from the beginning of the list of nested resources
         :param limit: maximum number of nested elements to be included in the list
@@ -598,7 +598,7 @@ class GetPublicDownloadLinkRequest(APIRequest):
     """
         A request to get a download link for a public resource.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
         :param fields: list of keys to be included in the response
     """
@@ -623,7 +623,7 @@ class MoveRequest(APIRequest):
     """
         A request to move a resource.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param src_path: source path to be moved
         :param dst_path: destination path
         :param overwrite: `bool`, determines whether to overwrite the destination
@@ -656,7 +656,7 @@ class FilesRequest(APIRequest):
     """
         A request to get a flat list of all files (that doesn't include directories).
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param offset: offset from the beginning of the list
         :param limit: number of list elements to be included
         :param media_type: type of files to include in the list
@@ -709,7 +709,7 @@ class PatchRequest(APIRequest):
     """
         A request to update custom properties of a resource.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource
         :param properties: `dict`, custom properties to update
         :param fields: list of keys to be included in the response
