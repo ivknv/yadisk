@@ -15,7 +15,7 @@ class GetOperationStatusRequest(APIRequest):
     """
         A request to get operation status.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param operation_id: operation ID or link
         :param fields: list of keys to be included in the response
     """

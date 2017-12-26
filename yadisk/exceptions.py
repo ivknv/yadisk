@@ -14,7 +14,7 @@ class YaDiskError(Exception):
         Base class for all exceptions in this library.
 
         :ivar error_type: `str`, unique error code as returned by API
-        :ivar response: an instance of `requests.Response`
+        :ivar response: an instance of :any:`requests.Response`
     """
 
     def __init__(self, error_type=None, msg="", response=None):

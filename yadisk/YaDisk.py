@@ -9,7 +9,7 @@ __all__ = ["YaDisk"]
 
 class YaDisk(object):
     """
-        Implements access to Yandex.Disk REST API
+        Implements access to Yandex.Disk REST API.
 
         :param id: application ID
         :param secret: application secret password
@@ -27,10 +27,10 @@ class YaDisk(object):
 
     def make_session(self, token=None):
         """
-            Prepares `requests.Session` object with headers needed for API.
+            Prepares :any:`requests.Session` object with headers needed for API.
             
             :param token: application token, equivalent to `self.token` if `None`
-            :returns: `requests.Session`
+            :returns: :any:`requests.Session`
         """
 
         if token is None:
@@ -90,7 +90,7 @@ class YaDisk(object):
             :param code: confirmation code
             :param device_id: unique device ID (between 6 and 50 characters)
 
-            :returns: `TokenObject`
+            :returns: :any:`TokenObject`
         """
 
         return functions.get_token(code, self.id, self.secret, *args, **kwargs)
@@ -101,7 +101,7 @@ class YaDisk(object):
 
             :param refresh_token: the refresh token that was receieved with the token
 
-            :returns: `TokenObject`
+            :returns: :any:`TokenObject`
         """
 
         return functions.refresh_token(self.make_session(), refresh_token, self.id, self.secret, *args, **kwargs)
@@ -112,7 +112,7 @@ class YaDisk(object):
 
             :param token: token to revoke, equivalent to `self.token` if `None`
 
-            :returns: `TokenRevokeStatusObject`
+            :returns: :any:`TokenRevokeStatusObject`
         """
 
         if token is None:
@@ -126,7 +126,7 @@ class YaDisk(object):
 
             :param fields: list of keys to be included in the response
 
-            :returns: `DiskInfoObject`
+            :returns: :any:`DiskInfoObject`
         """
 
         return functions.get_disk_info(self.make_session(), *args, **kwargs)
@@ -142,7 +142,7 @@ class YaDisk(object):
             :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param fields: list of keys to be included in the response
 
-            :returns: `ResourceObject`
+            :returns: :any:`ResourceObject`
         """
 
         return functions.get_meta(self.make_session(), path, *args, **kwargs)
@@ -202,7 +202,7 @@ class YaDisk(object):
             :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param fields: list of keys to be included in the response
 
-            :returns: generator of `ResourceObject`
+            :returns: generator of :any:`ResourceObject`
         """
 
         return functions.listdir(self.make_session(), path, *args, **kwargs)
@@ -268,7 +268,7 @@ class YaDisk(object):
                                 otherwise, it will be just moved to the trash
             :param fields: list of keys to be included in the response
 
-            :returns: `OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
+            :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
         return functions.remove(self.make_session(), path, *args, **kwargs)
@@ -280,7 +280,7 @@ class YaDisk(object):
             :param path: path to the directory to be created
             :param fields: list of keys to be included in the response
 
-            :returns: `LinkObject`
+            :returns: :any:`LinkObject`
         """
 
         return functions.mkdir(self.make_session(), path, *args, **kwargs)
@@ -307,7 +307,7 @@ class YaDisk(object):
             :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param fields: list of keys to be included in the response
 
-            :returns: `TrashResourceObject`
+            :returns: :any:`TrashResourceObject`
         """
 
         return functions.get_trash_meta(self.make_session(), path, *args, **kwargs)
@@ -347,7 +347,7 @@ class YaDisk(object):
                               otherwise, an error will be raised
             :param fields: list of keys to be included in the response
 
-            :returns: `LinkObject` or `OperationLinkObject`
+            :returns: :any:`LinkObject` or :any:`OperationLinkObject`
         """
 
         return functions.copy(self.make_session(), src_path, dst_path, *args, **kwargs)
@@ -362,7 +362,7 @@ class YaDisk(object):
             :param overwrite: `bool`, determines whether the destination can be overwritten
             :param fields: list of keys to be included in the response
 
-            :returns: `LinkObject` or `OperationLinkObject`
+            :returns: :any:`LinkObject` or :any:`OperationLinkObject`
         """
 
         return functions.restore_trash(self.make_session(), path, *args, **kwargs)
@@ -376,7 +376,7 @@ class YaDisk(object):
             :param overwrite: `bool`, determines whether to overwrite the destination
             :param fields: list of keys to be included in the response
 
-            :returns: `LinkObject`
+            :returns: :any:`LinkObject`
         """
 
         return functions.move(self.make_session(), src_path, dst_path, *args, **kwargs)
@@ -388,7 +388,7 @@ class YaDisk(object):
             :param path: path to the trash resource to be deleted
             :param fields: list of keys to be included in the response
 
-            :returns: `OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
+            :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
         return functions.remove_trash(self.make_session(), path, *args, **kwargs)
@@ -400,7 +400,7 @@ class YaDisk(object):
             :param path: path to the resource to be published
             :param fields: list of keys to be included in the response
 
-            :returns: `LinkObject`, link to the resource
+            :returns: :any:`LinkObject`, link to the resource
         """
 
         return functions.publish(self.make_session(), path, *args, **kwargs)
@@ -412,7 +412,7 @@ class YaDisk(object):
             :param path: path to the resource to be unpublished
             :param fields: list of keys to be included in the response
 
-            :returns: `LinkObject`, link to the resource
+            :returns: :any:`LinkObject`, link to the resource
         """
 
         return functions.unpublish(self.make_session(), path, *args, **kwargs)
@@ -428,7 +428,7 @@ class YaDisk(object):
             :param save_path: path to the destination directory (downloads directory by default)
             :param fields: list of keys to be included in the response
 
-            :returns: `LinkObject` or `OperationLinkObject`
+            :returns: :any:`LinkObject` or :any:`OperationLinkObject`
         """
 
         return functions.save_to_disk(self.make_session(), public_key, *args, **kwargs)
@@ -445,7 +445,7 @@ class YaDisk(object):
             :param preview_crop: `bool`, allow preview crop
             :param fields: list of keys to be included in the response
 
-            :returns: `PublicResourceObject`
+            :returns: :any:`PublicResourceObject`
         """
 
         return functions.get_public_meta(self.make_session(), public_key, *args, **kwargs)
@@ -472,7 +472,7 @@ class YaDisk(object):
             :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param fields: list of keys to be included in the response
 
-            :returns: generator of `PublicResourceObject`
+            :returns: generator of :any:`PublicResourceObject`
         """
 
         return functions.public_listdir(self.make_session(), public_key, *args, **kwargs)
@@ -521,7 +521,7 @@ class YaDisk(object):
             :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param fields: list of keys to be included in the response
 
-            :returns: generator of `TrashResourceObject`
+            :returns: generator of :any:`TrashResourceObject`
         """
 
         return functions.trash_listdir(self.make_session(), path, *args, **kwargs)
@@ -569,6 +569,8 @@ class YaDisk(object):
             :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param type: filter based on type of resources ("file" or "dir")
             :param fields: list of keys to be included in the response
+
+            :returns: :any:`PublicResourcesListObject`
         """
 
         return functions.get_public_resources(self.make_session(), *args, **kwargs)
@@ -581,7 +583,7 @@ class YaDisk(object):
             :param properties: `dict`, custom properties to update
             :param fields: list of keys to be included in the response
 
-            :returns: `ResourceObject`
+            :returns: :any:`ResourceObject`
         """
 
         return functions.patch(self.make_session(), path, properties, *args, **kwargs)
@@ -595,7 +597,7 @@ class YaDisk(object):
             :param media_type: type of files to include in the list
             :param sort: sort type
 
-            :returns: generator of `ResourceObject`
+            :returns: generator of :any:`ResourceObject`
         """
 
         return functions.get_files(self.make_session(), *args, **kwargs)
@@ -610,7 +612,7 @@ class YaDisk(object):
             :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param fields: list of keys to be included in the response
 
-            :returns: generator of `LastUploadedResourceListObject`
+            :returns: generator of :any:`LastUploadedResourceListObject`
         """
 
         return functions.get_last_uploaded(self.make_session(), *args, **kwargs)
@@ -624,7 +626,7 @@ class YaDisk(object):
             :param disable_redirects: `bool`, forbid redirects
             :param fields: list of keys to be included in the response
 
-            :returns: `OperationLinkObject`, link to the asynchronous operation
+            :returns: :any:`OperationLinkObject`, link to the asynchronous operation
         """
 
         return functions.upload_url(self.make_session(), url, path, *args, **kwargs)

@@ -15,7 +15,7 @@ class OperationStatusObject(YaDiskObject):
         :ivar type: `str`, type of the operation
         :ivar status: `str`, status of the operation
         :ivar operation_id: `str`, ID of the operation
-        :ivar link: `LinkObject`, link to the operation
+        :ivar link: :any:`LinkObject`, link to the operation
         :ivar data: `dict`, other information about the operation
     """
 

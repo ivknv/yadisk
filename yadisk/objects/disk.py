@@ -16,8 +16,8 @@ class DiskInfoObject(YaDiskObject):
         :ivar trash_size: `int`, amount of space used by trash (bytes), part of `used_space`
         :ivar is_paid: `bool`, tells if the account is paid or not
         :ivar used_space: `int`, amount of space used (bytes)
-        :ivar system_folders: `SystemFoldersObject`, paths to the system folders
-        :ivar user: `UserObject`, owner of the disk
+        :ivar system_folders: :any:`SystemFoldersObject`, paths to the system folders
+        :ivar user: :any:`UserObject`, owner of the disk
         :ivar revision: `int`, current revision of Yandex.Disk
     """
 

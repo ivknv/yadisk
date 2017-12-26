@@ -19,7 +19,7 @@ def check_token(session, *args, **kwargs):
     """
         Check whether the token is valid.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
 
         :returns: `bool`
     """
@@ -109,7 +109,7 @@ def get_token(code, client_id, client_secret, *args, **kwargs):
         :param client_secret: application secret password
         :param device_id: unique device ID (between 6 and 50 characters)
 
-        :returns: `TokenObject`
+        :returns: :any:`TokenObject`
     """
 
     session = requests.Session()
@@ -122,12 +122,12 @@ def refresh_token(session, refresh_token, client_id, client_secret, *args, **kwa
     """
         Refresh an existing token.
 
-        :param session: an instance of `requests.Session` with prepared headers
+        :param session: an instance of :any:`requests.Session` with prepared headers
         :param refresh_token: the refresh token that was receieved with the token
         :param client_id: application ID
         :param client_secret: application secret password
 
-        :returns: `TokenObject`
+        :returns: :any:`TokenObject`
     """
 
     request = RefreshTokenRequest(session, refresh_token, client_id, client_secret, *args, **kwargs)
@@ -143,7 +143,7 @@ def revoke_token(token, client_id, client_secret, *args, **kwargs):
         :param client_id: application ID
         :param client_secret: application secret password
 
-        :returns: `TokenRevokeStatusObject`
+        :returns: :any:`TokenRevokeStatusObject`
     """
 
     session = requests.Session()
