@@ -415,7 +415,7 @@ def move(session, src_path, dst_path, *args, **kwargs):
         :param overwrite: `bool`, determines whether to overwrite the destination
         :param fields: list of keys to be included in the response
 
-        :returns: :any:`LinkObject`
+        :returns: :any:`LinkObject` or :any:`OperationLinkObject`
     """
 
     request = MoveRequest(session, src_path, dst_path, *args, **kwargs)
