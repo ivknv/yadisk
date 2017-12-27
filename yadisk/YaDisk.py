@@ -266,6 +266,7 @@ class YaDisk(object):
             :param path: path to the resource to be removed
             :param permanently: if `True`, the resource will be removed permanently,
                                 otherwise, it will be just moved to the trash
+            :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
 
             :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
@@ -345,6 +346,7 @@ class YaDisk(object):
             :param dst_path: destination path
             :param overwrite: if `True` the destination path can be overwritten,
                               otherwise, an error will be raised
+            :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
 
             :returns: :any:`LinkObject` or :any:`OperationLinkObject`
@@ -360,6 +362,7 @@ class YaDisk(object):
             :param path: path to the trash resource to restore
             :param dst_path: destination path
             :param overwrite: `bool`, determines whether the destination can be overwritten
+            :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
 
             :returns: :any:`LinkObject` or :any:`OperationLinkObject`
@@ -374,6 +377,7 @@ class YaDisk(object):
             :param src_path: source path to be moved
             :param dst_path: destination path
             :param overwrite: `bool`, determines whether to overwrite the destination
+            :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
 
             :returns: :any:`OperationLinkObject` or :any:`LinkObject`
@@ -386,6 +390,7 @@ class YaDisk(object):
             Remove a trash resource.
 
             :param path: path to the trash resource to be deleted
+            :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
 
             :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
@@ -426,6 +431,7 @@ class YaDisk(object):
             :param public_key: public key or public URL of the resource
             :param name: filename of the saved resource
             :param save_path: path to the destination directory (downloads directory by default)
+            :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
 
             :returns: :any:`LinkObject` or :any:`OperationLinkObject`
