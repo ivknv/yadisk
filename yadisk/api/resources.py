@@ -71,6 +71,8 @@ class UnpublishRequest(APIRequest):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource to be unpublished
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`LinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources/unpublish"
@@ -96,6 +98,8 @@ class GetDownloadLinkRequest(APIRequest):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource to be downloaded
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`LinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources/download"
@@ -124,6 +128,8 @@ class GetTrashRequest(APIRequest):
         :param preview_size: size of the file preview
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`TrashResourceObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/trash/resources"
@@ -168,6 +174,8 @@ class RestoreTrashRequest(APIRequest):
         :param dst_path: destination path
         :param overwrite: `bool`, determines whether the destination can be overwritten
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`LinkObject` or :any:`OperationLinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/trash/resources/restore"
@@ -204,6 +212,8 @@ class DeleteTrashRequest(APIRequest):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the trash resource to be deleted
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`OperationLinkObject` or `None`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/trash/resources"
@@ -234,6 +244,8 @@ class LastUploadedRequest(APIRequest):
         :param preview_size: size of the file preview
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`LastUploadedResourceListObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources/last-uploaded"
@@ -281,6 +293,8 @@ class CopyRequest(APIRequest):
         :param overwrite: if `True` the destination path can be overwritten,
                           otherwise, an error will be raised
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`LinkObject` or :any:`OperationLinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources/copy"
@@ -319,6 +333,8 @@ class GetMetaRequest(APIRequest):
         :param preview_size: size of the file preview
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`ResourceObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources"
@@ -363,6 +379,8 @@ class GetUploadLinkRequest(APIRequest):
         :param path: path to be uploaded at
         :param overwrite: `bool`, determines whether to overwrite the destination
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`ResourceUploadLinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources/upload"
@@ -389,6 +407,8 @@ class MkdirRequest(APIRequest):
 
         :param path: path to the directory to be created
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`LinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources"
@@ -415,6 +435,8 @@ class PublishRequest(APIRequest):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource to be published
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`LinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources/publish"
@@ -442,6 +464,8 @@ class UploadURLRequest(APIRequest):
         :param path: destination path
         :param disable_redirects: `bool`, forbid redirects
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`OperationLinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources/upload"
@@ -475,6 +499,8 @@ class DeleteRequest(APIRequest):
         :param permanently: if `True`, the resource will be removed permanently,
                             otherwise, it will be just moved to the trash
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`OperationLinkObject` or `None`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources"
@@ -494,8 +520,7 @@ class DeleteRequest(APIRequest):
             self.params["fields"] = ",".join(fields)
 
     def process_json(self, js):
-        if js is not None:
-            return OperationLinkObject(js)
+        return OperationLinkObject(js)
 
 class SaveToDiskRequest(APIRequest):
     """
@@ -506,6 +531,8 @@ class SaveToDiskRequest(APIRequest):
         :param name: filename of the saved resource
         :param save_path: path to the destination directory (downloads directory by default)
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`LinkObject` or :any:`OperationLinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/public/resources/save-to-disk"
@@ -553,6 +580,8 @@ class GetPublicMetaRequest(APIRequest):
         :param preview_size: file preview size
         :param preview_crop: `bool`, allow preview crop
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`PublicResourceObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/public/resources"
@@ -601,6 +630,8 @@ class GetPublicDownloadLinkRequest(APIRequest):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`LinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/public/resources/download"
@@ -628,6 +659,8 @@ class MoveRequest(APIRequest):
         :param dst_path: destination path
         :param overwrite: `bool`, determines whether to overwrite the destination
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`OperationLinkObject` or :any:`LinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources/move"
@@ -650,6 +683,9 @@ class MoveRequest(APIRequest):
             self.params["fields"] = ",".join(fields)
 
     def process_json(self, js):
+        if is_operation_link(js.get("href", "")):
+            return OperationLinkObject(js)
+
         return LinkObject(js)
 
 class FilesRequest(APIRequest):
@@ -661,6 +697,8 @@ class FilesRequest(APIRequest):
         :param limit: number of list elements to be included
         :param media_type: type of files to include in the list
         :param sort: sort type
+
+        :returns: :any:`FilesResourceListObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources/files"
@@ -713,6 +751,8 @@ class PatchRequest(APIRequest):
         :param path: path to the resource
         :param properties: `dict`, custom properties to update
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`ResourceObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources"

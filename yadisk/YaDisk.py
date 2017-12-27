@@ -376,7 +376,7 @@ class YaDisk(object):
             :param overwrite: `bool`, determines whether to overwrite the destination
             :param fields: list of keys to be included in the response
 
-            :returns: :any:`LinkObject`
+            :returns: :any:`OperationLinkObject` or :any:`LinkObject`
         """
 
         return functions.move(self.make_session(), src_path, dst_path, *args, **kwargs)

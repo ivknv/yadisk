@@ -12,6 +12,8 @@ class DiskInfoRequest(APIRequest):
 
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`DiskInfoObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk"

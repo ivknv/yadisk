@@ -18,6 +18,8 @@ class GetOperationStatusRequest(APIRequest):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param operation_id: operation ID or link
         :param fields: list of keys to be included in the response
+
+        :returns: :any:`OperationStatusObject`
     """
 
     method = "GET"

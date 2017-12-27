@@ -14,6 +14,8 @@ class RefreshTokenRequest(APIRequest):
         :param refresh_token: the refresh token that was received with the original token
         :param client_id: application ID
         :param client_secret: application secret password
+
+        :returns: :any:`TokenObject`
     """
 
     url = "https://oauth.yandex.ru/token"
@@ -41,6 +43,8 @@ class RevokeTokenRequest(APIRequest):
         :param token: the token to be revoked
         :param client_id: application ID
         :param client_secret: application secret password
+
+        :returns: :any:`TokenRevokeStatusObject`
     """
 
     url = "https://oauth.yandex.ru/revoke_token"
@@ -68,6 +72,8 @@ class GetTokenRequest(APIRequest):
         :param client_id: application ID
         :param client_secret: application secret password
         :param device_id: unique device ID (between 6 and 50 characters)
+
+        :returns: :any:`TokenObject`
     """
 
     url = "https://oauth.yandex.ru/token"
