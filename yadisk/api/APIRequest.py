@@ -25,7 +25,7 @@ EXCEPTION_MAP = {400: defaultdict(lambda: BadRequestError,
                  415: defaultdict(lambda: UnsupportedMediaError),
                  423: defaultdict(lambda: LockedError,
                                   {"DiskResourceLockedError": ResourceIsLockedError}),
-                 429: defaultdict(lambda: TooManyRequests),
+                 429: defaultdict(lambda: TooManyRequestsError),
                  500: defaultdict(lambda: InternalServerError),
                  503: defaultdict(lambda: UnavailableError),
                  509: defaultdict(lambda: InsufficientStorageError)}
