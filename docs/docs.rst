@@ -1,3 +1,4 @@
+
 Documentation
 =============
 
@@ -34,6 +35,7 @@ Aside from the exceptions listed below, API requests can also raise exceptions i
 
 .. automodule:: yadisk.exceptions
    :members:
+   :show-inheritance:
 
 Objects
 #######
@@ -45,18 +47,23 @@ Objects
 
    .. autoclass:: ErrorObject
       :members:
+      :show-inheritance:
 
 .. automodule:: yadisk.objects.auth
    :members:
+   :show-inheritance:
 
 .. automodule:: yadisk.objects.disk
    :members:
+   :show-inheritance:
 
 .. automodule:: yadisk.objects.resources
    :members:
+   :show-inheritance:
 
 .. automodule:: yadisk.objects.operations
    :members:
+   :show-inheritance:
 
 Low-level API
 #############
@@ -86,12 +93,16 @@ API request objects
 
 .. automodule:: yadisk.api.auth
    :members:
+   :show-inheritance:
 
 .. automodule:: yadisk.api.disk
    :members:
+   :show-inheritance:
 
 .. automodule:: yadisk.api.resources
    :members:
+   :show-inheritance:
 
 .. automodule:: yadisk.api.operations
    :members:
+   :show-inheritance:

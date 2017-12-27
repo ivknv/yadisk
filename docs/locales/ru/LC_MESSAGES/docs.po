@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-27 15:22+0500\n"
+"POT-Creation-Date: 2017-12-27 16:04+0500\n"
 "PO-Revision-Date: 2017-12-27 15:24+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.1\n"
 
-#: ../../docs.rst:2
+#: ../../docs.rst:3
 msgid "Documentation"
 msgstr "Документация"
 
@@ -1172,11 +1172,11 @@ msgstr "`bool`, запретить делать перенаправления"
 msgid ":any:`OperationLinkObject`, link to the asynchronous operation"
 msgstr ":any:`OperationLinkObject`, ссылка на асинхронную операцию"
 
-#: ../../docs.rst:8
+#: ../../docs.rst:9
 msgid "General parameters"
 msgstr "Общие параметры"
 
-#: ../../docs.rst:10
+#: ../../docs.rst:11
 msgid ""
 "Almost all methods of `YaDisk` (the ones that accept `*args` and "
 "`**kwargs`) accept some additional arguments:"
@@ -1184,17 +1184,17 @@ msgstr ""
 "Почти все методы `YaDisk` (те, которые принимают `*args` и `**kwargs`) "
 "принимают некоторые дополнительные параметры:"
 
-#: ../../docs.rst:12
+#: ../../docs.rst:13
 msgid "**n_retries** - `int`, maximum number of retries for a request"
 msgstr "**n_retries** - `int`, максимальное число повторных попыток запроса"
 
-#: ../../docs.rst:13
+#: ../../docs.rst:14
 msgid "**retry_delay** - `float`, delay between retries (in seconds)"
 msgstr ""
 "**retry_delay** - `float`, задержка между повторными попытками (в "
 "секундах)"
 
-#: ../../docs.rst:15
+#: ../../docs.rst:16
 msgid ""
 "`requests` parameters like `timeout`, `proxies`, etc. are also accepted "
 "(see `requests.request()`)."
@@ -1202,15 +1202,15 @@ msgstr ""
 "Параметры `requests`, такие как `timeout`, `proxies` и подобные так же "
 "принимаются (см. `requests.request()`)."
 
-#: ../../docs.rst:17
+#: ../../docs.rst:18
 msgid "This also applies to low-level functions and API request objects as well."
 msgstr "Это так же применяется для низкоуровневых функций и объектов запросов API."
 
-#: ../../docs.rst:20
+#: ../../docs.rst:21
 msgid "Settings"
 msgstr "Настройки"
 
-#: ../../docs.rst:22
+#: ../../docs.rst:23
 msgid ""
 "The following settings can be accessed and changed at runtime in "
 "`yadisk.settings` module:"
@@ -1218,7 +1218,7 @@ msgstr ""
 "Следующие настройки в модуле `yadisk.settings` могут быть получены и "
 "изменены:"
 
-#: ../../docs.rst:24
+#: ../../docs.rst:25
 msgid ""
 "**DEFAULT_TIMEOUT** - `tuple` of 2 numbers (`int` or float`), default "
 "timeout for requests. First number is the connect timeout, the second one"
@@ -1228,19 +1228,19 @@ msgstr ""
 "стандартный таймаут для запросов. Первое число - это таймаут соединения, "
 "второе - таймаут чтения."
 
-#: ../../docs.rst:25
+#: ../../docs.rst:26
 msgid "**DEFAULT_N_RETRIES** - `int`, default number of retries"
 msgstr ""
 "**DEFAULT_N_RETRIES** - `int`, максимальное число повторных попыток "
 "запроса по умолчанию"
 
-#: ../../docs.rst:26
+#: ../../docs.rst:27
 msgid "**DEFAULT_RETRY_INTERVAL** - `float`, default retry interval"
 msgstr ""
 "**DEFAULT_RETRY_DELAY** - `float`, стандартная задержка между повторными "
 "попытками"
 
-#: ../../docs.rst:27
+#: ../../docs.rst:28
 msgid ""
 "**DEFAULT_UPLOAD_TIMEOUT** - analogous to `DEFAULT_TIMEOUT` but for "
 "`upload` function"
@@ -1248,7 +1248,7 @@ msgstr ""
 "**DEFAULT_UPLOAD_TIMEOUT** - аналогично `DEFAULT_TIMEOUT`, но для функции"
 " `upload`"
 
-#: ../../docs.rst:28
+#: ../../docs.rst:29
 msgid ""
 "**DEFAULT_UPLOAD_RETRY_INTERVAL** - analogous to `DEFAULT_RETRY_INTERVAL`"
 " but for `upload` function"
@@ -1256,17 +1256,21 @@ msgstr ""
 "**DEFAULT_UPLOAD_RETRY_INTERVAL** - аналогично `DEFAULT_RETRY_INTERVAL`, "
 "но для функции `upload`"
 
-#: ../../docs.rst:31
+#: ../../docs.rst:32
 msgid "Exceptions"
 msgstr "Исключения"
 
-#: ../../docs.rst:33
+#: ../../docs.rst:34
 msgid ""
 "Aside from the exceptions listed below, API requests can also raise "
 "exceptions in `requests`."
 msgstr ""
 "Кроме исключений, перечисленных ниже, запросы к API могут также вызвать "
 "исключения `requests`."
+
+#: ../../docstring of yadisk.exceptions.YaDiskError:1
+msgid "Bases: :class:`Exception`"
+msgstr ""
 
 #: ../../docstring of yadisk.exceptions.YaDiskError:1
 msgid "Base class for all exceptions in this library."
@@ -1279,6 +1283,18 @@ msgstr "`str`, уникальный код ошибки, полученный о
 #: ../../docstring of yadisk.exceptions.YaDiskError:4
 msgid "an instance of :any:`requests.Response`"
 msgstr "объект :any:`requests.Response`"
+
+#: ../../docstring of yadisk.exceptions.BadRequestError:1
+#: yadisk.exceptions.ConflictError:1 yadisk.exceptions.ForbiddenError:1
+#: yadisk.exceptions.InsufficientStorageError:1
+#: yadisk.exceptions.InternalServerError:1 yadisk.exceptions.LockedError:1
+#: yadisk.exceptions.NotAcceptableError:1 yadisk.exceptions.NotFoundError:1
+#: yadisk.exceptions.TooManyRequestsError:1
+#: yadisk.exceptions.UnauthorizedError:1 yadisk.exceptions.UnavailableError:1
+#: yadisk.exceptions.UnknownYaDiskError:1
+#: yadisk.exceptions.UnsupportedMediaError:1
+msgid "Bases: :class:`yadisk.exceptions.YaDiskError`"
+msgstr ""
 
 #: ../../docstring of yadisk.exceptions.UnknownYaDiskError:1
 msgid ""
@@ -1335,8 +1351,17 @@ msgid "Thrown when the server returns code 509."
 msgstr "Вызывается, когда сервер вернул код 509."
 
 #: ../../docstring of yadisk.exceptions.PathNotFoundError:1
+msgid "Bases: :class:`yadisk.exceptions.NotFoundError`"
+msgstr ""
+
+#: ../../docstring of yadisk.exceptions.PathNotFoundError:1
 msgid "Thrown when the requested path does not exist."
 msgstr "Вызывается, когда запрашиваемый путь не существует."
+
+#: ../../docstring of yadisk.exceptions.ParentNotFoundError:1
+#: yadisk.exceptions.PathExistsError:1
+msgid "Bases: :class:`yadisk.exceptions.ConflictError`"
+msgstr ""
 
 #: ../../docstring of yadisk.exceptions.ParentNotFoundError:1
 msgid "Thrown by `mkdir`, `upload`, etc. when the parent directory doesn't exist."
@@ -1349,18 +1374,30 @@ msgid "Thrown when the requested path already exists."
 msgstr "Вызывается, когда запрашиваемый путь уже существует."
 
 #: ../../docstring of yadisk.exceptions.DirectoryExistsError:1
+msgid "Bases: :class:`yadisk.exceptions.PathExistsError`"
+msgstr ""
+
+#: ../../docstring of yadisk.exceptions.DirectoryExistsError:1
 msgid "Thrown when the directory already exists."
 msgstr "Вызывается, когда папка уже существует."
+
+#: ../../docstring of yadisk.exceptions.FieldValidationError:1
+msgid "Bases: :class:`yadisk.exceptions.BadRequestError`"
+msgstr ""
 
 #: ../../docstring of yadisk.exceptions.FieldValidationError:1
 msgid "Thrown when the request contains fields with invalid data."
 msgstr "Вызывается, когда запрос содежит поля с некорректными данными."
 
 #: ../../docstring of yadisk.exceptions.ResourceIsLockedError:1
+msgid "Bases: :class:`yadisk.exceptions.LockedError`"
+msgstr ""
+
+#: ../../docstring of yadisk.exceptions.ResourceIsLockedError:1
 msgid "Thrown when the resource is locked by another operation."
 msgstr "Вызывается, когда запрашиваемый ресурс заблокирован другой операцией."
 
-#: ../../docs.rst:39
+#: ../../docs.rst:41
 msgid "Objects"
 msgstr "Объекты"
 
@@ -1446,6 +1483,24 @@ msgstr "Задаёт типы полей объекта"
 #: ../../docstring of yadisk.objects.YaDiskObject.set_field_types:3
 msgid "`dict`, where keys are the field names and values are types (or factories)"
 msgstr "`dict`, где ключи - это наименования полей, а значения - это типы"
+
+#: ../../docstring of yadisk.objects.ErrorObject:1
+#: yadisk.objects.auth.TokenObject:1
+#: yadisk.objects.auth.TokenRevokeStatusObject:1
+#: yadisk.objects.disk.DiskInfoObject:1
+#: yadisk.objects.disk.SystemFoldersObject:1 yadisk.objects.disk.UserObject:1
+#: yadisk.objects.operations.OperationStatusObject:1
+#: yadisk.objects.resources.CommentIDsObject:1
+#: yadisk.objects.resources.EXIFObject:1
+#: yadisk.objects.resources.FilesResourceListObject:1
+#: yadisk.objects.resources.LastUploadedResourceListObject:1
+#: yadisk.objects.resources.LinkObject:1
+#: yadisk.objects.resources.PublicResourcesListObject:1
+#: yadisk.objects.resources.ResourceListObject:1
+#: yadisk.objects.resources.ResourceObject:1
+#: yadisk.objects.resources.ShareInfoObject:1
+msgid "Bases: :class:`yadisk.objects.YaDiskObject.YaDiskObject`"
+msgstr ""
 
 #: ../../docstring of yadisk.objects.ErrorObject:1
 msgid "Mirrors Yandex.Disk REST API error object."
@@ -1662,6 +1717,11 @@ msgid "`bool`, tells whether the URL is templated"
 msgstr "`bool`, признак шаблонизированного URL"
 
 #: ../../docstring of yadisk.objects.resources.OperationLinkObject:1
+#: yadisk.objects.resources.ResourceUploadLinkObject:1
+msgid "Bases: :class:`yadisk.objects.resources.LinkObject`"
+msgstr ""
+
+#: ../../docstring of yadisk.objects.resources.OperationLinkObject:1
 msgid "Operation link object."
 msgstr "Объект ссылки на операцию."
 
@@ -1847,6 +1907,11 @@ msgid "`str`, access rights"
 msgstr "`str`, права доступа"
 
 #: ../../docstring of yadisk.objects.resources.PublicResourceObject:1
+#: yadisk.objects.resources.TrashResourceObject:1
+msgid "Bases: :class:`yadisk.objects.resources.ResourceObject`"
+msgstr ""
+
+#: ../../docstring of yadisk.objects.resources.PublicResourceObject:1
 msgid "Public resource object."
 msgstr "Объект публичного ресурса."
 
@@ -1861,6 +1926,11 @@ msgstr "`int`, количество просмотров публичного р
 #: ../../docstring of yadisk.objects.resources.PublicResourceObject:26
 msgid ":any:`UserObject`, owner of the public resource"
 msgstr ":any:`UserObject`, владелец публичного ресурса"
+
+#: ../../docstring of yadisk.objects.resources.PublicResourceListObject:1
+#: yadisk.objects.resources.TrashResourceListObject:1
+msgid "Bases: :class:`yadisk.objects.resources.ResourceListObject`"
+msgstr ""
 
 #: ../../docstring of yadisk.objects.resources.PublicResourceListObject:11
 msgid "`str`, public key of the resource"
@@ -1910,11 +1980,11 @@ msgstr ":any:`LinkObject`, ссылка на операцию"
 msgid "`dict`, other information about the operation"
 msgstr "`dict`, другая информация об операции"
 
-#: ../../docs.rst:62
+#: ../../docs.rst:69
 msgid "Low-level API"
 msgstr "Низкоуровневый API"
 
-#: ../../docs.rst:65
+#: ../../docs.rst:72
 msgid "Functions"
 msgstr "Функции"
 
@@ -1990,7 +2060,7 @@ msgstr ":any:`LinkObject`, если операция выполняется ас
 msgid "path to the trash resource to be restored"
 msgstr "путь к восстанавливаему ресурсу"
 
-#: ../../docs.rst:80
+#: ../../docs.rst:87
 msgid "API request objects"
 msgstr "Объекты запросов к API"
 
@@ -2088,6 +2158,30 @@ msgstr "Отправляет запрос"
 
 #: ../../docstring of yadisk.api.APIRequest.send:3
 msgid ":any:`requests.Response` (`self.response`)"
+msgstr ""
+
+#: ../../docstring of yadisk.api.auth.GetTokenRequest:1
+#: yadisk.api.auth.RefreshTokenRequest:1 yadisk.api.auth.RevokeTokenRequest:1
+#: yadisk.api.disk.DiskInfoRequest:1
+#: yadisk.api.operations.GetOperationStatusRequest:1
+#: yadisk.api.resources.CopyRequest:1 yadisk.api.resources.DeleteRequest:1
+#: yadisk.api.resources.DeleteTrashRequest:1
+#: yadisk.api.resources.FilesRequest:1
+#: yadisk.api.resources.GetDownloadLinkRequest:1
+#: yadisk.api.resources.GetMetaRequest:1
+#: yadisk.api.resources.GetPublicDownloadLinkRequest:1
+#: yadisk.api.resources.GetPublicMetaRequest:1
+#: yadisk.api.resources.GetPublicResourcesRequest:1
+#: yadisk.api.resources.GetTrashRequest:1
+#: yadisk.api.resources.GetUploadLinkRequest:1
+#: yadisk.api.resources.LastUploadedRequest:1
+#: yadisk.api.resources.MkdirRequest:1 yadisk.api.resources.MoveRequest:1
+#: yadisk.api.resources.PatchRequest:1 yadisk.api.resources.PublishRequest:1
+#: yadisk.api.resources.RestoreTrashRequest:1
+#: yadisk.api.resources.SaveToDiskRequest:1
+#: yadisk.api.resources.UnpublishRequest:1
+#: yadisk.api.resources.UploadURLRequest:1
+msgid "Bases: :class:`yadisk.api.APIRequest.APIRequest`"
 msgstr ""
 
 #: ../../docstring of yadisk.api.auth.RefreshTokenRequest:1
@@ -2313,4 +2407,10 @@ msgstr ""
 
 #~ msgid ":any:`TrashResourceList`, list of nested resources"
 #~ msgstr "`TrashResourceList`, список вложенных ресурсов"
+
+#~ msgid ""
+#~ "Exception.with_traceback(tb) -- set "
+#~ "self.__traceback__ to tb and return "
+#~ "self."
+#~ msgstr ""
 
