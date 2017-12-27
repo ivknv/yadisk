@@ -564,7 +564,7 @@ class SaveToDiskRequest(APIRequest):
                                             "force_async": force_async,
                                             "fields":      fields}, *args, **kwargs)
 
-    def process_args(self, public_key, name, path, save_path, fields):
+    def process_args(self, public_key, name, path, save_path, force_async, fields):
         self.params["public_key"] = public_key
         
         if name is not None:
