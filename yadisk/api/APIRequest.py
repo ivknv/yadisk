@@ -157,7 +157,7 @@ class APIRequest(object):
         msg = error.message or "<empty>"
         desc = error.description or "<empty>"
         
-        return exc(error.error, "%s: %s (%s)" % (error.error, msg, desc), self.response)
+        return exc(error.error, "%s (%s / %s)" % (msg, desc, error.error), self.response)
 
     def process(self):
         """
