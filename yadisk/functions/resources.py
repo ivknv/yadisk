@@ -35,6 +35,7 @@ def copy(session, src_path, dst_path, *args, **kwargs):
         :param dst_path: destination path
         :param overwrite: if `True` the destination path can be overwritten,
                           otherwise, an error will be raised
+        :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
 
         :returns: :any:`LinkObject` or :any:`OperationLinkObject`
@@ -284,6 +285,7 @@ def remove(session, path, *args, **kwargs):
         :param path: path to the resource to be removed
         :param permanently: if `True`, the resource will be removed permanently,
                             otherwise, it will be just moved to the trash
+        :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
 
         :returns: :any:`LinkObject` if the operation is performed asynchronously, `None` otherwise
@@ -395,6 +397,7 @@ def restore_trash(session, path, *args, **kwargs):
         :param path: path to the trash resource to be restored
         :param dst_path: destination path
         :param overwrite: `bool`, determines whether the destination can be overwritten
+        :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
 
         :returns: :any:`LinkObject` or :any:`OperationLinkObject`
@@ -413,6 +416,7 @@ def move(session, src_path, dst_path, *args, **kwargs):
         :param src_path: source path to be moved
         :param dst_path: destination path
         :param overwrite: `bool`, determines whether to overwrite the destination
+        :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
 
         :returns: :any:`LinkObject` or :any:`OperationLinkObject`
@@ -429,6 +433,7 @@ def remove_trash(session, path, *args, **kwargs):
 
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the trash resource to be deleted
+        :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
 
         :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
@@ -481,6 +486,7 @@ def save_to_disk(session, public_key, *args, **kwargs):
         :param public_key: public key or public URL of the resource
         :param name: filename of the saved resource
         :param save_path: path to the destination directory (downloads directory by default)
+        :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
 
         :returns: :any:`LinkObject` or :any:`OperationLinkObject`

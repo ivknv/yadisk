@@ -172,6 +172,7 @@ class RestoreTrashRequest(APIRequest):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the trash resource to be restored
         :param dst_path: destination path
+        :param force_async: forces the operation to be executed asynchronously
         :param overwrite: `bool`, determines whether the destination can be overwritten
         :param fields: list of keys to be included in the response
 
@@ -182,16 +183,18 @@ class RestoreTrashRequest(APIRequest):
     method = "PUT"
     success_codes = {201, 202}
 
-    def __init__(self, session, path, dst_path=None, overwrite=False, fields=None,
-                 *args, **kwargs):
-        APIRequest.__init__(self, session, {"path":      path,
-                                            "dst_path":  dst_path,
-                                            "overwrite": overwrite,
-                                            "fields":    fields}, *args, **kwargs)
+    def __init__(self, session, path, dst_path=None, force_async=False,
+                 overwrite=False, fields=None, *args, **kwargs):
+        APIRequest.__init__(self, session, {"path":        path,
+                                            "dst_path":    dst_path,
+                                            "overwrite":   overwrite,
+                                            "force_async": force_async,
+                                            "fields":      fields}, *args, **kwargs)
 
-    def process_args(self, path, dst_path, overwrite, fields):
+    def process_args(self, path, dst_path, force_async, overwrite, fields):
         self.params["path"] = path
         self.params["overwrite"] = "true" if overwrite else "false"
+        self.params["force_async"] = "true" if force_async else "false"
 
         if dst_path is not None:
             self.params["name"] = dst_path
@@ -211,6 +214,7 @@ class DeleteTrashRequest(APIRequest):
 
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the trash resource to be deleted
+        :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
 
         :returns: :any:`OperationLinkObject` or `None`
@@ -220,13 +224,17 @@ class DeleteTrashRequest(APIRequest):
     method = "DELETE"
     success_codes = {202, 204}
 
-    def __init__(self, session, path=None, fields=None, *args, **kwargs):
-        APIRequest.__init__(self, session, {"path":   path,
-                                            "fields": fields}, *args, **kwargs)
+    def __init__(self, session, path=None, force_async=False, fields=None,
+                 *args, **kwargs):
+        APIRequest.__init__(self, session, {"path":        path,
+                                            "force_async": force_async,
+                                            "fields":      fields}, *args, **kwargs)
 
-    def process_args(self, path, fields):
+    def process_args(self, path, force_async, fields):
         if path is not None:
             self.params["path"] = path
+
+        self.params["force_async"] = "true" if force_async else "false"
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)
@@ -292,6 +300,7 @@ class CopyRequest(APIRequest):
         :param dst_path: destination path
         :param overwrite: if `True` the destination path can be overwritten,
                           otherwise, an error will be raised
+        :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
 
         :returns: :any:`LinkObject` or :any:`OperationLinkObject`
@@ -302,16 +311,18 @@ class CopyRequest(APIRequest):
     success_codes = {201, 202}
 
     def __init__(self, session, src_path, dst_path, overwrite=False,
-                 fields=None, *args, **kwargs):
-        APIRequest.__init__(self, session, {"src_path":  src_path,
-                                            "dst_path":  dst_path,
-                                            "overwrite": overwrite,
-                                            "fields":    fields}, *args, **kwargs)
+                 force_async=False, fields=None, *args, **kwargs):
+        APIRequest.__init__(self, session, {"src_path":    src_path,
+                                            "dst_path":    dst_path,
+                                            "overwrite":   overwrite,
+                                            "force_async": force_async,
+                                            "fields":      fields}, *args, **kwargs)
 
-    def process_args(self, src_path, dst_path, overwrite, fields):
+    def process_args(self, src_path, dst_path, overwrite, force_async, fields):
         self.params["from"] = src_path
         self.params["path"] = dst_path
         self.params["overwrite"] = "true" if overwrite else "false"
+        self.params["force_async"] = "true" if force_async else "false"
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)
@@ -498,6 +509,7 @@ class DeleteRequest(APIRequest):
         :param path: path to the resource to be removed
         :param permanently: if `True`, the resource will be removed permanently,
                             otherwise, it will be just moved to the trash
+        :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
 
         :returns: :any:`OperationLinkObject` or `None`
@@ -507,14 +519,17 @@ class DeleteRequest(APIRequest):
     method = "DELETE"
     success_codes = {202, 204}
 
-    def __init__(self, session, path, permanently=False, fields=None, *args, **kwargs):
+    def __init__(self, session, path, permanently=False, force_async=False,
+                 fields=None, *args, **kwargs):
         APIRequest.__init__(self, session, {"path":        path,
                                             "permanently": permanently,
+                                            "force_async": force_async,
                                             "fields":      fields}, *args, **kwargs)
 
-    def process_args(self, path, permanently, fields):
+    def process_args(self, path, permanently, force_async, fields):
         self.params["path"] = path
         self.params["permanently"] = "true" if permanently else "false"
+        self.params["force_async"] = "true" if force_async else "false"
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)
@@ -530,6 +545,7 @@ class SaveToDiskRequest(APIRequest):
         :param public_key: public key or public URL of the resource
         :param name: filename of the saved resource
         :param save_path: path to the destination directory (downloads directory by default)
+        :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
 
         :returns: :any:`LinkObject` or :any:`OperationLinkObject`
@@ -539,13 +555,14 @@ class SaveToDiskRequest(APIRequest):
     method = "POST"
     success_codes = {201, 202}
 
-    def __init__(self, session, public_key, name=None, path=None,
-                 save_path=None, fields=None, *args, **kwargs):
-        APIRequest.__init__(self, session, {"public_key": public_key,
-                                            "name":       name,
-                                            "path":       path,
-                                            "save_path":  save_path,
-                                            "fields":     fields}, *args, **kwargs)
+    def __init__(self, session, public_key, name=None, path=None, save_path=None,
+                 force_async=False, fields=None, *args, **kwargs):
+        APIRequest.__init__(self, session, {"public_key":  public_key,
+                                            "name":        name,
+                                            "path":        path,
+                                            "save_path":   save_path,
+                                            "force_async": force_async,
+                                            "fields":      fields}, *args, **kwargs)
 
     def process_args(self, public_key, name, path, save_path, fields):
         self.params["public_key"] = public_key
@@ -558,6 +575,8 @@ class SaveToDiskRequest(APIRequest):
 
         if save_path is not None:
             self.params["save_path"] = save_path
+
+        self.params["force_async"] = "true" if force_async else "false"
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)
@@ -657,6 +676,7 @@ class MoveRequest(APIRequest):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param src_path: source path to be moved
         :param dst_path: destination path
+        :param force_async: forces the operation to be executed asynchronously
         :param overwrite: `bool`, determines whether to overwrite the destination
         :param fields: list of keys to be included in the response
 
@@ -667,17 +687,19 @@ class MoveRequest(APIRequest):
     method = "POST"
     success_codes = {201, 202}
 
-    def __init__(self, session, src_path, dst_path, overwrite=False, fields=None,
-                 *args, **kwargs):
-        APIRequest.__init__(self, session, {"src_path":  src_path,
-                                            "dst_path":  dst_path,
-                                            "overwrite": overwrite,
-                                            "fields":    fields}, *args, **kwargs)
+    def __init__(self, session, src_path, dst_path, force_async=False,
+                 overwrite=False, fields=None, *args, **kwargs):
+        APIRequest.__init__(self, session, {"src_path":    src_path,
+                                            "dst_path":    dst_path,
+                                            "force_async": force_async,
+                                            "overwrite":   overwrite,
+                                            "fields":      fields}, *args, **kwargs)
 
-    def process_args(self, src_path, dst_path, overwrite, fields):
+    def process_args(self, src_path, dst_path, force_async, overwrite, fields):
         self.params["from"] = src_path
         self.params["path"] = dst_path
         self.params["overwrite"] = "true" if overwrite else "false"
+        self.params["force_async"] = "true" if force_async else "false"
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)
