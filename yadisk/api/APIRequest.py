@@ -11,6 +11,8 @@ from ..objects import ErrorObject
 
 from .. import settings
 
+__all__ = ["APIRequest"]
+
 EXCEPTION_MAP = {400: defaultdict(lambda: BadRequestError,
                                   {"FieldValidationError": FieldValidationError}),
                  401: defaultdict(lambda: UnauthorizedError),
