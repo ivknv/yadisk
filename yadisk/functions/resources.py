@@ -58,9 +58,15 @@ def download(session, src_path, file_or_path, *args, **kwargs):
         :returns: `True` if the download succeeded, `False` otherwise
     """
 
+    kwargs = dict(kwargs)
+
     link = get_download_link(session, src_path, *args, **kwargs)
 
     n_retries = kwargs.get("n_retries") or settings.DEFAULT_N_RETRIES
+    retry_interval = kwargs.get("retry_interval") or settings.DEFAULT_RETRY_INTERVAL
+
+    kwargs.pop("n_retries", None)
+    kwargs.pop("retry_interval", None)
 
     if isinstance(file_or_path, (str, bytes)):
         file = open(file_or_path, "wb")
@@ -73,6 +79,9 @@ def download(session, src_path, file_or_path, *args, **kwargs):
 
     try:
         for i in range(n_retries + 1):
+            if i > 0:
+                time.sleep(retry_interval)
+
             file.seek(file_position)
 
             try:
@@ -297,8 +306,7 @@ def remove(session, path, *args, **kwargs):
 
     return request.process()
 
-def upload(session, file_or_path, dst_path, overwrite=False, fields=None,
-           timeout=None, retry_interval=None, *args, **kwargs):
+def upload(session, file_or_path, dst_path, overwrite=False, fields=None, *args, **kwargs):
     """
         Upload a file to disk.
 
@@ -312,14 +320,19 @@ def upload(session, file_or_path, dst_path, overwrite=False, fields=None,
         :returns: `True` if the upload succeeded, `False` otherwise
     """
 
-    timeout = timeout or settings.DEFAULT_UPLOAD_TIMEOUT
+    kwargs = dict(kwargs)
 
-    retry_interval = retry_interval or settings.DEFAULT_UPLOAD_RETRY_INTERVAL
-
-    link = get_upload_link(session, dst_path, overwrite=overwrite, fields=fields,
-                           timeout=timeout, retry_interval=retry_interval, *args, **kwargs)
-
+    timeout = kwargs.get("timeout") or settings.DEFAULT_UPLOAD_TIMEOUT
+    retry_interval = kwargs.get("retry_interval") or settings.DEFAULT_UPLOAD_RETRY_INTERVAL
     n_retries = kwargs.get("n_retries") or settings.DEFAULT_N_RETRIES
+
+    kwargs["timeout"] = timeout
+    kwargs["retry_interval"] = retry_interval
+    kwargs["n_retries"] = n_retries
+
+    link = get_upload_link(session, dst_path,
+                           overwrite=overwrite,
+                           fields=fields, *args, **kwargs)
 
     if isinstance(file_or_path, (str, bytes)):
         file = open(file_or_path, "rb")
@@ -330,6 +343,10 @@ def upload(session, file_or_path, dst_path, overwrite=False, fields=None,
 
     file_position = file.tell()
 
+    kwargs.pop("n_retries", None)
+    kwargs.pop("retry_interval", None)
+    kwargs.setdefault("stream", True)
+
     try:
         for i in range(n_retries + 1):
             file.seek(file_position)
@@ -338,7 +355,7 @@ def upload(session, file_or_path, dst_path, overwrite=False, fields=None,
                 time.sleep(retry_interval)
 
             try:
-                response = requests.put(link, data=file, stream=True, timeout=timeout, *args, **kwargs)
+                response = requests.put(link, data=file, *args, **kwargs)
             except requests.exceptions.RequestException as e:
                 if i == n_retries:
                     raise e
@@ -788,9 +805,15 @@ def download_public(session, public_key, file_or_path, *args, **kwargs):
         :returns: `True` if the download succeeded, `False` otherwise
     """
 
+    kwargs = dict(kwargs)
+
     link = get_public_download_link(session, public_key, *args, **kwargs)
 
-    n_retries = kwargs.get("n_retries", APIRequest.n_retries)
+    n_retries = kwargs.pop("n_retries", None) or settings.DEFAULT_N_RETRIES
+    retry_interval = kwargs.pop("retry_interval", None) or settings.DEFAULT_RETRY_INTERVAL
+    timeout = kwargs.get("timeout") or settings.DEFAULT_TIMEOUT
+
+    kwargs["timeout"] = timeout
 
     if isinstance(file_or_path, (str, bytes)):
         file = open(file_or_path, "wb")
@@ -803,6 +826,9 @@ def download_public(session, public_key, file_or_path, *args, **kwargs):
 
     try:
         for i in range(n_retries + 1):
+            if i > 0:
+                time.sleep(retry_interval)
+
             file.seek(file_position)
 
             try:
