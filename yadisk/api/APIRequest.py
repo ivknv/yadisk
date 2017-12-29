@@ -41,7 +41,7 @@ class APIRequest(object):
         :param timeout: request timeout
         :param n_retries: maximum number of retries
         :param retry_interval: delay between retries in seconds
-        :param send_args, send_kwargs: other parameters for session.send()
+        :param kwargs: other parameters for session.send()
 
         :ivar url: `str`, request URL
         :ivar method: `str`, request method
@@ -62,12 +62,19 @@ class APIRequest(object):
     retry_codes = {500, 502, 503, 504}
     retry_interval = None
 
-    def __init__(self, session, args, timeout=None, n_retries=None, retry_interval=None,
-                 *send_args, **send_kwargs):
+    def __init__(self, session, args, **kwargs):
+        kwargs = dict(kwargs)
+
+        timeout = kwargs.get("timeout")
+        n_retries = kwargs.pop("n_retries", None)
+        retry_interval = kwargs.pop("retry_interval", None)
+
         if timeout is None:
             timeout = self.timeout
         if timeout is None:
             timeout = settings.DEFAULT_TIMEOUT
+
+        kwargs["timeout"] = timeout
 
         if n_retries is None:
             n_retries = self.n_retries
@@ -81,7 +88,7 @@ class APIRequest(object):
 
         self.session = session
         self.args = args
-        self.send_args, self.send_kwargs = send_args, send_kwargs
+        self.send_kwargs = kwargs
         self.timeout = timeout
         self.n_retries = n_retries
         self.retry_interval = retry_interval
@@ -119,7 +126,7 @@ class APIRequest(object):
                 time.sleep(self.retry_interval)
 
             try:
-                self.response = self.session.send(self.request, *self.send_args, timeout=self.timeout, **self.send_kwargs)
+                self.response = self.session.send(self.request, **self.send_kwargs)
             except requests.exceptions.RequestException as e:
                 if i == self.n_retries:
                     raise e

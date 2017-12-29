@@ -65,8 +65,9 @@ def download(session, src_path, file_or_path, *args, **kwargs):
     n_retries = kwargs.get("n_retries") or settings.DEFAULT_N_RETRIES
     retry_interval = kwargs.get("retry_interval") or settings.DEFAULT_RETRY_INTERVAL
 
-    kwargs.pop("n_retries", None)
-    kwargs.pop("retry_interval", None)
+    # requests.get() doesn't accept these parameters
+    for k in ("n_retries", "retry_interval", "fields"):
+        kwargs.pop(k, None)
 
     if isinstance(file_or_path, (str, bytes)):
         file = open(file_or_path, "wb")
@@ -85,7 +86,7 @@ def download(session, src_path, file_or_path, *args, **kwargs):
             file.seek(file_position)
 
             try:
-                response = requests.get(link, data=file, *args, **kwargs)
+                response = requests.get(link, data=file, **kwargs)
 
                 for chunk in response.iter_content(chunk_size=8192):
                     if chunk:
@@ -306,7 +307,7 @@ def remove(session, path, *args, **kwargs):
 
     return request.process()
 
-def upload(session, file_or_path, dst_path, overwrite=False, fields=None, *args, **kwargs):
+def upload(session, file_or_path, dst_path, *args, **kwargs):
     """
         Upload a file to disk.
 
@@ -315,7 +316,6 @@ def upload(session, file_or_path, dst_path, overwrite=False, fields=None, *args,
         :param dst_path: destination path
         :param overwrite: if `True`, the resource will be overwritten if it already exists,
                           an error will be raised otherwise
-        :param fields: list of keys to be included in the response
 
         :returns: `True` if the upload succeeded, `False` otherwise
     """
@@ -330,9 +330,7 @@ def upload(session, file_or_path, dst_path, overwrite=False, fields=None, *args,
     kwargs["retry_interval"] = retry_interval
     kwargs["n_retries"] = n_retries
 
-    link = get_upload_link(session, dst_path,
-                           overwrite=overwrite,
-                           fields=fields, *args, **kwargs)
+    link = get_upload_link(session, dst_path, *args, **kwargs)
 
     if isinstance(file_or_path, (str, bytes)):
         file = open(file_or_path, "rb")
@@ -343,8 +341,10 @@ def upload(session, file_or_path, dst_path, overwrite=False, fields=None, *args,
 
     file_position = file.tell()
 
-    kwargs.pop("n_retries", None)
-    kwargs.pop("retry_interval", None)
+    # requests.put() doesn't accept these parameters
+    for k in ("n_retries", "retry_interval", "overwrite", "fields"):
+        kwargs.pop(k, None)
+
     kwargs.setdefault("stream", True)
 
     try:
@@ -355,7 +355,7 @@ def upload(session, file_or_path, dst_path, overwrite=False, fields=None, *args,
                 time.sleep(retry_interval)
 
             try:
-                response = requests.put(link, data=file, *args, **kwargs)
+                response = requests.put(link, data=file, **kwargs)
             except requests.exceptions.RequestException as e:
                 if i == n_retries:
                     raise e
@@ -832,7 +832,7 @@ def download_public(session, public_key, file_or_path, *args, **kwargs):
             file.seek(file_position)
 
             try:
-                response = requests.get(link, data=file, *args, **kwargs)
+                response = requests.get(link, data=file, **kwargs)
 
                 for chunk in response.iter_content(chunk_size=8192):
                     if chunk:
