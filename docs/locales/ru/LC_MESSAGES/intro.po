@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-04 13:16+0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2018-01-05 22:41+0500\n"
+"PO-Revision-Date: 2018-01-05 22:45+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -36,3 +36,20 @@ msgstr "или"
 #: ../../intro.rst:20
 msgid "Examples"
 msgstr "Примеры"
+
+#: ../../intro.rst:54
+msgid "Receiving token with confirmation code"
+msgstr "Получение токена через код подтверждения"
+
+#: ../../intro.rst:82
+msgid "Recursive upload"
+msgstr "Рекурсивная загрузка файлов"
+
+#: ../../intro.rst:115
+msgid "Setting custom properties of files"
+msgstr "Задание пользовательских свойств файлов"
+
+#: ../../intro.rst:142
+msgid "Emptying the trash bin"
+msgstr "Очищение корзины"
+
