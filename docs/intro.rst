@@ -143,6 +143,7 @@ Emptying the trash bin
 
 .. code:: python
 
+    import sys
     import time
     import yadisk
 
