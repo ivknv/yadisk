@@ -62,8 +62,15 @@ def download(session, src_path, file_or_path, *args, **kwargs):
 
     link = get_download_link(session, src_path, *args, **kwargs)
 
-    n_retries = kwargs.get("n_retries") or settings.DEFAULT_N_RETRIES
-    retry_interval = kwargs.get("retry_interval") or settings.DEFAULT_RETRY_INTERVAL
+    n_retries = kwargs.get("n_retries")
+
+    if n_retries is None:
+        n_retries = settings.DEFAULT_N_RETRIES
+
+    retry_interval = kwargs.get("retry_interval")
+
+    if retry_interval is None:
+        retry_interval = settings.DEFAULT_RETRY_INTERVAL
 
     # requests.get() doesn't accept these parameters
     for k in ("n_retries", "retry_interval", "fields"):
@@ -322,9 +329,20 @@ def upload(session, file_or_path, dst_path, *args, **kwargs):
 
     kwargs = dict(kwargs)
 
-    timeout = kwargs.get("timeout") or settings.DEFAULT_UPLOAD_TIMEOUT
-    retry_interval = kwargs.get("retry_interval") or settings.DEFAULT_UPLOAD_RETRY_INTERVAL
-    n_retries = kwargs.get("n_retries") or settings.DEFAULT_N_RETRIES
+    timeout = kwargs.get("timeout")
+
+    if timeout is None:
+        timeout = settings.DEFAULT_UPLOAD_TIMEOUT
+
+    retry_interval = kwargs.get("retry_interval")
+
+    if retry_interval is None:
+        retry_interval = settings.DEFAULT_UPLOAD_RETRY_INTERVAL
+
+    n_retries = kwargs.get("n_retries")
+
+    if n_retries is None:
+        n_retries = settings.DEFAULT_N_RETRIES
 
     kwargs["timeout"] = timeout
     kwargs["retry_interval"] = retry_interval
@@ -809,9 +827,20 @@ def download_public(session, public_key, file_or_path, *args, **kwargs):
 
     link = get_public_download_link(session, public_key, *args, **kwargs)
 
-    n_retries = kwargs.pop("n_retries", None) or settings.DEFAULT_N_RETRIES
-    retry_interval = kwargs.pop("retry_interval", None) or settings.DEFAULT_RETRY_INTERVAL
-    timeout = kwargs.get("timeout") or settings.DEFAULT_TIMEOUT
+    n_retries = kwargs.pop("n_retries", None)
+
+    if n_retries is None:
+        n_retries = settings.DEFAULT_N_RETRIES
+
+    retry_interval = kwargs.pop("retry_interval", None)
+
+    if retry_interval is None:
+        retry_interval = settings.DEFAULT_RETRY_INTERVAL
+
+    timeout = kwargs.get("timeout")
+
+    if timeout is None:
+        timeout = settings.DEFAULT_TIMEOUT
 
     kwargs["timeout"] = timeout
 
