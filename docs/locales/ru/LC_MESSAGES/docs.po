@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-27 16:04+0500\n"
-"PO-Revision-Date: 2017-12-27 15:24+0500\n"
+"POT-Creation-Date: 2018-01-14 00:16+0500\n"
+"PO-Revision-Date: 2018-01-14 13:08+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -62,10 +62,11 @@ msgstr "Реализует доступ к REST API Яндекс.Диска."
 #: yadisk.api.resources.MoveRequest yadisk.api.resources.PatchRequest
 #: yadisk.api.resources.PublishRequest yadisk.api.resources.RestoreTrashRequest
 #: yadisk.api.resources.SaveToDiskRequest yadisk.api.resources.UnpublishRequest
-#: yadisk.api.resources.UploadURLRequest yadisk.functions.auth.check_token
-#: yadisk.functions.auth.get_auth_url yadisk.functions.auth.get_code_url
-#: yadisk.functions.auth.get_token yadisk.functions.auth.refresh_token
-#: yadisk.functions.auth.revoke_token yadisk.functions.disk.get_disk_info
+#: yadisk.api.resources.UploadURLRequest yadisk.exceptions.YaDiskError
+#: yadisk.functions.auth.check_token yadisk.functions.auth.get_auth_url
+#: yadisk.functions.auth.get_code_url yadisk.functions.auth.get_token
+#: yadisk.functions.auth.refresh_token yadisk.functions.auth.revoke_token
+#: yadisk.functions.disk.get_disk_info
 #: yadisk.functions.operations.get_operation_status
 #: yadisk.functions.resources.copy yadisk.functions.resources.download
 #: yadisk.functions.resources.download_public yadisk.functions.resources.exists
@@ -119,7 +120,8 @@ msgstr "Реализует доступ к REST API Яндекс.Диска."
 #: yadisk.objects.resources.ResourceUploadLinkObject
 #: yadisk.objects.resources.ShareInfoObject
 #: yadisk.objects.resources.TrashResourceListObject
-#: yadisk.objects.resources.TrashResourceObject
+#: yadisk.objects.resources.TrashResourceObject yadisk.utils.auto_retry
+#: yadisk.utils.get_exception
 msgid "Parameters"
 msgstr ""
 
@@ -231,7 +233,7 @@ msgstr "токен, подлежащий проверке, то же самое,
 #: yadisk.functions.auth.revoke_token yadisk.functions.disk.get_disk_info
 #: yadisk.functions.operations.get_operation_status
 #: yadisk.functions.resources.copy yadisk.functions.resources.download
-#: yadisk.functions.resources.download_public yadisk.functions.resources.exists
+#: yadisk.functions.resources.exists
 #: yadisk.functions.resources.get_download_link
 #: yadisk.functions.resources.get_files
 #: yadisk.functions.resources.get_last_uploaded
@@ -257,7 +259,8 @@ msgstr "токен, подлежащий проверке, то же самое,
 #: yadisk.functions.resources.trash_exists
 #: yadisk.functions.resources.trash_listdir
 #: yadisk.functions.resources.unpublish yadisk.functions.resources.upload
-#: yadisk.functions.resources.upload_url
+#: yadisk.functions.resources.upload_url yadisk.utils.auto_retry
+#: yadisk.utils.get_exception
 msgid "Returns"
 msgstr ""
 
@@ -368,7 +371,7 @@ msgstr "заставляет выполнять операцию асинхро�
 #: yadisk.functions.resources.restore_trash:9
 #: yadisk.functions.resources.save_to_disk:10
 #: yadisk.functions.resources.trash_listdir:9
-#: yadisk.functions.resources.unpublish:5 yadisk.functions.resources.upload:8
+#: yadisk.functions.resources.unpublish:5
 #: yadisk.functions.resources.upload_url:7
 msgid "list of keys to be included in the response"
 msgstr "список ключей, которые будут включены в ответ"
@@ -396,7 +399,6 @@ msgstr "путь назначения или файл-подобный объе�
 
 #: ../../docstring of yadisk.YaDisk.download:6 yadisk.YaDisk.download_public:6
 #: yadisk.functions.resources.download:7
-#: yadisk.functions.resources.download_public:7
 msgid "`True` if the download succeeded, `False` otherwise"
 msgstr "`True`, если скачивание удалось, `False`, иначе"
 
@@ -1146,7 +1148,7 @@ msgstr ""
 "ошибка"
 
 #: ../../docstring of yadisk.YaDisk.upload:9
-#: yadisk.functions.resources.upload:10
+#: yadisk.functions.resources.upload:9
 msgid "`True` if the upload succeeded, `False` otherwise"
 msgstr "`True`, если загрузка удалась, `False` иначе"
 
@@ -1277,23 +1279,43 @@ msgid "Base class for all exceptions in this library."
 msgstr "Базовый класс для всех исключений в этой библиотеке."
 
 #: ../../docstring of yadisk.exceptions.YaDiskError:3
+#: yadisk.exceptions.YaDiskError:6
 msgid "`str`, unique error code as returned by API"
 msgstr "`str`, уникальный код ошибки, полученный от API"
 
 #: ../../docstring of yadisk.exceptions.YaDiskError:4
+#: yadisk.exceptions.YaDiskError:8 yadisk.utils.get_exception:3
 msgid "an instance of :any:`requests.Response`"
 msgstr "объект :any:`requests.Response`"
 
+#: ../../docstring of yadisk.exceptions.YaDiskError:7
+msgid "`str`, exception message"
+msgstr "`str`, сообщение исключения"
+
 #: ../../docstring of yadisk.exceptions.BadRequestError:1
 #: yadisk.exceptions.ConflictError:1 yadisk.exceptions.ForbiddenError:1
-#: yadisk.exceptions.InsufficientStorageError:1
-#: yadisk.exceptions.InternalServerError:1 yadisk.exceptions.LockedError:1
+#: yadisk.exceptions.InsufficientStorageError:1 yadisk.exceptions.LockedError:1
 #: yadisk.exceptions.NotAcceptableError:1 yadisk.exceptions.NotFoundError:1
+#: yadisk.exceptions.RetriableYaDiskError:1
 #: yadisk.exceptions.TooManyRequestsError:1
-#: yadisk.exceptions.UnauthorizedError:1 yadisk.exceptions.UnavailableError:1
-#: yadisk.exceptions.UnknownYaDiskError:1
+#: yadisk.exceptions.UnauthorizedError:1
 #: yadisk.exceptions.UnsupportedMediaError:1
 msgid "Bases: :class:`yadisk.exceptions.YaDiskError`"
+msgstr ""
+
+#: ../../docstring of yadisk.exceptions.RetriableYaDiskError:1
+msgid ""
+"Thrown when there was an error but it would make sense to retry the "
+"request."
+msgstr ""
+"Вызывается в случае, если произошла ошибка, но имеет смысл повторить "
+"запрос."
+
+#: ../../docstring of yadisk.exceptions.BadGatewayError:1
+#: yadisk.exceptions.GatewayTimeoutError:1
+#: yadisk.exceptions.InternalServerError:1 yadisk.exceptions.UnavailableError:1
+#: yadisk.exceptions.UnknownYaDiskError:1
+msgid "Bases: :class:`yadisk.exceptions.RetriableYaDiskError`"
 msgstr ""
 
 #: ../../docstring of yadisk.exceptions.UnknownYaDiskError:1
@@ -1342,9 +1364,17 @@ msgstr "Вызывается, когда сервер вернул код 429."
 msgid "Thrown when the server returns code 500."
 msgstr "Вызывается, когда сервер вернул код 500."
 
+#: ../../docstring of yadisk.exceptions.BadGatewayError:1
+msgid "Thrown when the server returns code 502"
+msgstr "Вызывается, когда сервер вернул код 502."
+
 #: ../../docstring of yadisk.exceptions.UnavailableError:1
 msgid "Thrown when the server returns code 503."
 msgstr "Вызывается, когда сервер вернул код 503."
+
+#: ../../docstring of yadisk.exceptions.GatewayTimeoutError:1
+msgid "Thrown when the server returns code 504"
+msgstr "Вызывается, когда сервер вернул код 504."
 
 #: ../../docstring of yadisk.exceptions.InsufficientStorageError:1
 msgid "Thrown when the server returns code 509."
@@ -1985,6 +2015,48 @@ msgid "Low-level API"
 msgstr "Низкоуровневый API"
 
 #: ../../docs.rst:72
+msgid "Utilities"
+msgstr "Вспомогательные средства"
+
+#: ../../docstring of yadisk.utils.get_exception:1
+msgid ""
+"Get an exception instance based on response, assuming the request has "
+"failed."
+msgstr ""
+"Возвращает объект исключения, основываясь на ответе (подразумевается что "
+"запрос не удался)."
+
+#: ../../docstring of yadisk.utils.get_exception:5
+msgid "an exception instance, subclass of :any:`YaDiskError`"
+msgstr "Объект исключения, подкласс :any:`YaDiskError`"
+
+#: ../../docstring of yadisk.utils.auto_retry:1
+msgid ""
+"Attempt to perform a request with automatic retries. A retry is triggered"
+" by :any:`requests.exceptions.RequestException` or "
+":any:`RetriableYaDiskError`."
+msgstr ""
+"Выполняет запрос с автоматическими повторными попытками. Повторная "
+"попытка может быть вызвана :any:`requests.RequestException` или "
+":any:`RetriableYaDiskError`."
+
+#: ../../docstring of yadisk.utils.auto_retry:4
+msgid "function to run, must not require any arguments"
+msgstr "Функция, подлежащая исполнению, не должна требовать аргументов"
+
+#: ../../docstring of yadisk.api.APIRequest:14 yadisk.utils.auto_retry:5
+msgid "`int`, maximum number of retries"
+msgstr "`int`, максимальное число повторных попыток запроса"
+
+#: ../../docstring of yadisk.utils.auto_retry:6
+msgid "`int` or `float`, delay between retries (in seconds)"
+msgstr "`int` или `float`, задержка между повторными попытками в секундах"
+
+#: ../../docstring of yadisk.utils.auto_retry:8
+msgid "return value of func()"
+msgstr "Значение, возвращаемое func()"
+
+#: ../../docs.rst:78
 msgid "Functions"
 msgstr "Функции"
 
@@ -2060,7 +2132,7 @@ msgstr ":any:`LinkObject`, если операция выполняется ас
 msgid "path to the trash resource to be restored"
 msgstr "путь к восстанавливаему ресурсу"
 
-#: ../../docs.rst:87
+#: ../../docs.rst:93
 msgid "API request objects"
 msgstr "Объекты запросов к API"
 
@@ -2112,19 +2184,11 @@ msgstr ""
 msgid "`float` or `tuple`, request timeout"
 msgstr "`float` или `tuple`, таймаут запроса"
 
-#: ../../docstring of yadisk.api.APIRequest:14
-msgid "`int`, maximum number of retries"
-msgstr "`int`, максимальное число повторных попыток запроса"
-
 #: ../../docstring of yadisk.api.APIRequest:15
 msgid "`list`-like, list of response codes that indicate request's success"
 msgstr "`list`-подобный, список кодов ответов, означающих успех запроса"
 
 #: ../../docstring of yadisk.api.APIRequest:16
-msgid "`list`-like, list of response codes that trigger a retry"
-msgstr "`list`-подобный, cписок кодов ответа, вызывающих повторный запрос"
-
-#: ../../docstring of yadisk.api.APIRequest:17
 msgid "`float`, delay between retries in seconds"
 msgstr "`float`, задержка между повторными попытками в секундах (`float`)"
 
@@ -2413,4 +2477,7 @@ msgstr ""
 #~ "self.__traceback__ to tb and return "
 #~ "self."
 #~ msgstr ""
+
+#~ msgid "`list`-like, list of response codes that trigger a retry"
+#~ msgstr "`list`-подобный, cписок кодов ответа, вызывающих повторный запрос"
 

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # pylint: disable=wildcard-import
-from . import functions
+from . import api, functions, objects, exceptions, utils
 from .YaDisk import *
 
 __version__ = "1.1.1"

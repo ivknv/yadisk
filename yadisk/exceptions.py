@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-__all__ = ["YaDiskError", "UnknownYaDiskError", "BadRequestError",
-           "UnauthorizedError", "ForbiddenError", "NotFoundError",
-           "NotAcceptableError", "ConflictError", "UnsupportedMediaError",
-           "LockedError", "TooManyRequestsError", "InternalServerError",
-           "UnavailableError", "InsufficientStorageError", "PathNotFoundError",
+__all__ = ["YaDiskError", "RetriableYaDiskError", "UnknownYaDiskError",
+           "BadRequestError", "UnauthorizedError", "ForbiddenError",
+           "NotFoundError", "NotAcceptableError", "ConflictError",
+           "UnsupportedMediaError", "LockedError", "TooManyRequestsError",
+           "InternalServerError", "BadGatewayError", "UnavailableError",
+           "GatewayTimeoutError", "InsufficientStorageError", "PathNotFoundError",
            "ParentNotFoundError", "PathExistsError", "DirectoryExistsError",
            "FieldValidationError", "ResourceIsLockedError"]
 
@@ -15,6 +16,10 @@ class YaDiskError(Exception):
 
         :ivar error_type: `str`, unique error code as returned by API
         :ivar response: an instance of :any:`requests.Response`
+
+        :param error_type: `str`, unique error code as returned by API
+        :param msg: `str`, exception message
+        :param response: an instance of :any:`requests.Response`
     """
 
     def __init__(self, error_type=None, msg="", response=None):
@@ -23,11 +28,15 @@ class YaDiskError(Exception):
         self.error_type = error_type
         self.response = response
 
-class UnknownYaDiskError(YaDiskError):
+class RetriableYaDiskError(YaDiskError):
+    """Thrown when there was an error but it would make sense to retry the request."""
+    pass
+
+class UnknownYaDiskError(RetriableYaDiskError):
     """Thrown when the request failed but the response does not contain any error info."""
 
     def __init__(self, msg="", response=None):
-        YaDiskError.__init__(self, None, msg, response)
+        RetriableYaDiskError.__init__(self, None, msg, response)
 
 class BadRequestError(YaDiskError):
     """Thrown when the server returns code 400."""
@@ -65,12 +74,20 @@ class TooManyRequestsError(YaDiskError):
     """Thrown when the server returns code 429."""
     pass
 
-class InternalServerError(YaDiskError):
+class InternalServerError(RetriableYaDiskError):
     """Thrown when the server returns code 500."""
     pass
 
-class UnavailableError(YaDiskError):
+class BadGatewayError(RetriableYaDiskError):
+    """Thrown when the server returns code 502"""
+    pass
+
+class UnavailableError(RetriableYaDiskError):
     """Thrown when the server returns code 503."""
+    pass
+
+class GatewayTimeoutError(RetriableYaDiskError):
+    """Thrown when the server returns code 504"""
     pass
 
 class InsufficientStorageError(YaDiskError):

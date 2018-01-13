@@ -68,6 +68,12 @@ Objects
 Low-level API
 #############
 
+Utilities
+*********
+
+.. automodule:: yadisk.utils
+   :members:
+
 Functions
 *********
 

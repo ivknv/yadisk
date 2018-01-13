@@ -1,36 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from collections import defaultdict
-import time
-
 import requests
 
-from ..exceptions import *
-from ..objects import ErrorObject
-
+from ..utils import auto_retry, get_exception
 from .. import settings
 
 __all__ = ["APIRequest"]
-
-EXCEPTION_MAP = {400: defaultdict(lambda: BadRequestError,
-                                  {"FieldValidationError": FieldValidationError}),
-                 401: defaultdict(lambda: UnauthorizedError),
-                 403: defaultdict(lambda: ForbiddenError),
-                 404: defaultdict(lambda: NotFoundError,
-                                  {"DiskNotFoundError": PathNotFoundError}),
-                 406: defaultdict(lambda: NotAcceptableError),
-                 409: defaultdict(lambda: ConflictError,
-                                  {"DiskPathDoesntExistsError": ParentNotFoundError,
-                                   "DiskPathPointsToExistentDirectoryError": DirectoryExistsError,
-                                   "DiskResourceAlreadyExistsError": PathExistsError}),
-                 415: defaultdict(lambda: UnsupportedMediaError),
-                 423: defaultdict(lambda: LockedError,
-                                  {"DiskResourceLockedError": ResourceIsLockedError}),
-                 429: defaultdict(lambda: TooManyRequestsError),
-                 500: defaultdict(lambda: InternalServerError),
-                 503: defaultdict(lambda: UnavailableError),
-                 509: defaultdict(lambda: InsufficientStorageError)}
 
 class APIRequest(object):
     """
@@ -49,7 +25,6 @@ class APIRequest(object):
         :ivar timeout: `float` or `tuple`, request timeout
         :ivar n_retries: `int`, maximum number of retries
         :ivar success_codes: `list`-like, list of response codes that indicate request's success
-        :ivar retry_codes: `list`-like, list of response codes that trigger a retry
         :ivar retry_interval: `float`, delay between retries in seconds
     """
 
@@ -59,7 +34,6 @@ class APIRequest(object):
     timeout = None 
     n_retries = None
     success_codes = {200}
-    retry_codes = {500, 502, 503, 504}
     retry_interval = None
 
     def __init__(self, session, args, **kwargs):
@@ -111,6 +85,9 @@ class APIRequest(object):
         r.headers["Content-Type"] = self.content_type
         self.request = self.session.prepare_request(r)
 
+    def _attempt(self):
+        self.response = self.session.send(self.request, **self.send_kwargs)
+
     def send(self):
         """
             Actually send the request
@@ -118,30 +95,9 @@ class APIRequest(object):
            :returns: :any:`requests.Response` (`self.response`)
         """
 
-        for i in range(self.n_retries + 1):
-            if i > 0:
-                if not self.on_retry():
-                    break
-
-                time.sleep(self.retry_interval)
-
-            try:
-                self.response = self.session.send(self.request, **self.send_kwargs)
-            except requests.exceptions.RequestException as e:
-                if i == self.n_retries:
-                    raise e
-
-                continue
-
-            if self.response.status_code in self.retry_codes:
-                continue
-
-            break
+        auto_retry(self._attempt, self.n_retries, self.retry_interval)
 
         return self.response
-
-    def on_retry(self):
-        return True
 
     def process_json(self, js):
         """
@@ -154,20 +110,6 @@ class APIRequest(object):
 
         raise NotImplementedError
 
-    def process_error(self, js):
-        exceptions = EXCEPTION_MAP.get(self.response.status_code)
-
-        if exceptions is None:
-            return UnknownYaDiskError("Unknown Yandex.Disk error", self.response)
-
-        error = ErrorObject(js)
-        exc = exceptions[error.error]
-
-        msg = error.message or "<empty>"
-        desc = error.description or "<empty>"
-        
-        return exc(error.error, "%s (%s / %s)" % (msg, desc, error.error), self.response)
-
     def process(self):
         """
             Process the response.
@@ -177,12 +119,13 @@ class APIRequest(object):
 
         success = self.response.status_code in self.success_codes
 
+        if not success:
+            raise get_exception(self.response)
+
         try:
             result = self.response.json()
         except (ValueError, RuntimeError):
             result = None
-
-        if not success:
-            raise self.process_error(result)
-        elif result is not None:
+        
+        if result is not None:
             return self.process_json(result)

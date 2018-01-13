@@ -1,17 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import time
-
 import requests
 
-from ..api import CopyRequest, GetDownloadLinkRequest, GetMetaRequest, APIRequest
+from ..api import CopyRequest, GetDownloadLinkRequest, GetMetaRequest
 from ..api import GetUploadLinkRequest, MkdirRequest, DeleteRequest, GetTrashRequest
 from ..api import RestoreTrashRequest, MoveRequest, DeleteTrashRequest
 from ..api import PublishRequest, UnpublishRequest, SaveToDiskRequest, GetPublicMetaRequest
 from ..api import GetPublicResourcesRequest, PatchRequest, FilesRequest
 from ..api import LastUploadedRequest, UploadURLRequest, GetPublicDownloadLinkRequest
 from ..exceptions import PathNotFoundError
+from ..utils import auto_retry, get_exception
 
 from .. import settings
 
@@ -85,35 +84,23 @@ def download(session, src_path, file_or_path, *args, **kwargs):
 
     file_position = file.tell()
 
+    def attempt():
+        file.seek(file_position)
+
+        response = requests.get(link, data=file, **kwargs)
+
+        for chunk in response.iter_content(chunk_size=8192):
+            if chunk:
+                file.write(chunk)
+
+        if response.status_code != 200:
+            raise get_exception(response)
+
     try:
-        for i in range(n_retries + 1):
-            if i > 0:
-                time.sleep(retry_interval)
-
-            file.seek(file_position)
-
-            try:
-                response = requests.get(link, data=file, **kwargs)
-
-                for chunk in response.iter_content(chunk_size=8192):
-                    if chunk:
-                        file.write(chunk)
-
-            except requests.exceptions.RequestException as e:
-                if i == n_retries:
-                    raise e
-
-                continue
-
-            if response.status_code in APIRequest.retry_codes:
-                continue
-
-            break
+        auto_retry(attempt, n_retries, retry_interval)
     finally:
         if close_file:
             file.close()
-
-    return response.status_code == 200
 
 def _exists(get_meta_function, *args, **kwargs):
     try:
@@ -365,30 +352,19 @@ def upload(session, file_or_path, dst_path, *args, **kwargs):
 
     kwargs.setdefault("stream", True)
 
+    def attempt():
+        file.seek(file_position)
+
+        response = requests.put(link, data=file, **kwargs)
+
+        if response.status_code != 201:
+            raise get_exception(response)
+
     try:
-        for i in range(n_retries + 1):
-            file.seek(file_position)
-
-            if i > 0:
-                time.sleep(retry_interval)
-
-            try:
-                response = requests.put(link, data=file, **kwargs)
-            except requests.exceptions.RequestException as e:
-                if i == n_retries:
-                    raise e
-
-                continue
-
-            if response.status_code in APIRequest.retry_codes:
-                continue
-
-            break
+        auto_retry(attempt, n_retries, retry_interval)
     finally:
         if close_file:
             file.close()
-
-    return response.status_code == 201
 
 def get_trash_meta(session, path, *args, **kwargs):
     """
@@ -819,8 +795,6 @@ def download_public(session, public_key, file_or_path, *args, **kwargs):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
         :param path_or_file: destination path or file-like object
-
-        :returns: `True` if the download succeeded, `False` otherwise
     """
 
     kwargs = dict(kwargs)
@@ -853,32 +827,20 @@ def download_public(session, public_key, file_or_path, *args, **kwargs):
 
     file_position = file.tell()
 
+    def attempt():
+        file.seek(file_position)
+
+        response = requests.get(link, data=file, **kwargs)
+
+        for chunk in response.iter_content(chunk_size=8192):
+            if chunk:
+                file.write(chunk)
+
+        if response.status_code != 200:
+            raise get_exception(response)
+
     try:
-        for i in range(n_retries + 1):
-            if i > 0:
-                time.sleep(retry_interval)
-
-            file.seek(file_position)
-
-            try:
-                response = requests.get(link, data=file, **kwargs)
-
-                for chunk in response.iter_content(chunk_size=8192):
-                    if chunk:
-                        file.write(chunk)
-
-            except requests.exceptions.RequestException as e:
-                if i == n_retries:
-                    raise e
-
-                continue
-
-            if response.status_code in APIRequest.retry_codes:
-                continue
-
-            break
+        auto_retry(attempt, n_retries, retry_interval)
     finally:
         if close_file:
             file.close()
-
-    return response.status_code == 200

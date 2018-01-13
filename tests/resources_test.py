@@ -72,7 +72,7 @@ class ResourcesTestCase(TestCase):
         path = posixpath.join(self.path, "zeroes.txt")
 
         self.yadisk.upload(buf1, path, overwrite=True, n_retries=3)
-        self.assertTrue(self.yadisk.download(path, buf2, n_retries=3))
+        self.yadisk.download(path, buf2, n_retries=3)
         self.yadisk.remove(path, permanently=True)
 
         buf1.seek(0)
