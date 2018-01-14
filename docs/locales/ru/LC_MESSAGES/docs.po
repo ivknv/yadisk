@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-01-14 13:27+0500\n"
-"PO-Revision-Date: 2018-01-14 13:30+0500\n"
+"PO-Revision-Date: 2018-01-14 13:37+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1577,7 +1577,7 @@ msgstr "`int`, количество времени, на которое выда
 
 #: ../../docstring of yadisk.objects.auth.TokenRevokeStatusObject:1
 msgid "Result of token revocation request."
-msgstr "Результат запроса по отзыве токена."
+msgstr "Результат запроса по отзыву токена."
 
 #: ../../docstring of yadisk.objects.auth.TokenRevokeStatusObject:5
 #: yadisk.objects.operations.OperationStatusObject:6
@@ -2029,9 +2029,7 @@ msgstr "Вспомогательные средства"
 msgid ""
 "Get an exception instance based on response, assuming the request has "
 "failed."
-msgstr ""
-"Возвращает объект исключения, основываясь на ответе (подразумевается что "
-"запрос не удался)."
+msgstr "Возвращает объект исключения, основываясь на ответе (подразумевается, что запрос не удался)."
 
 #: ../../docstring of yadisk.utils.get_exception:5
 msgid "an exception instance, subclass of :any:`YaDiskError`"
@@ -2197,7 +2195,7 @@ msgstr "`list`-подобный, список кодов ответов, озн�
 
 #: ../../docstring of yadisk.api.APIRequest:16
 msgid "`float`, delay between retries in seconds"
-msgstr "`float`, задержка между повторными попытками в секундах (`float`)"
+msgstr "`float`, задержка между повторными попытками в секундах"
 
 #: ../../docstring of yadisk.api.APIRequest.prepare:1
 msgid "Prepare the request"
