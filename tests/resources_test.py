@@ -10,7 +10,10 @@ from io import BytesIO
 
 from . import config
 
-import yadisk.objects
+import yadisk.settings
+
+yadisk.settings.DEFAULT_N_RETRIES = 50
+yadisk.settings.DEFAULT_UPLOAD_N_RETRIES = 50
 
 original_send = requests.Session.send
 
@@ -18,7 +21,7 @@ def patched_send(self, *args, **kwargs):
     response = original_send(self, *args, **kwargs)
 
     # Fake a random server error
-    #if random.randint(1, 250) == 1:
+    #if random.randint(1, 5) == 1:
     #    response.status_code = 500
 
     return response
@@ -87,8 +90,8 @@ class ResourcesTestCase(TestCase):
 
         path = posixpath.join(self.path, "zeroes.txt")
 
-        self.yadisk.upload(buf1, path, overwrite=True, n_retries=3)
-        self.yadisk.download(path, buf2, n_retries=3)
+        self.yadisk.upload(buf1, path, overwrite=True, n_retries=50)
+        self.yadisk.download(path, buf2, n_retries=50)
         self.yadisk.remove(path, permanently=True)
 
         buf1.seek(0)

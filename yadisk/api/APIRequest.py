@@ -88,6 +88,11 @@ class APIRequest(object):
     def _attempt(self):
         self.response = self.session.send(self.request, **self.send_kwargs)
 
+        success = self.response.status_code in self.success_codes
+
+        if not success:
+            raise get_exception(self.response)
+
     def send(self):
         """
             Actually send the request
@@ -116,11 +121,6 @@ class APIRequest(object):
 
             :returns: depends on `self.process_json()`
         """
-
-        success = self.response.status_code in self.success_codes
-
-        if not success:
-            raise get_exception(self.response)
 
         try:
             result = self.response.json()
