@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import requests
+import random
+
 import posixpath
 from unittest import TestCase
 from io import BytesIO
@@ -8,6 +11,19 @@ from io import BytesIO
 from . import config
 
 import yadisk.objects
+
+original_send = requests.Session.send
+
+def patched_send(self, *args, **kwargs):
+    response = original_send(self, *args, **kwargs)
+
+    # Fake a random server error
+    #if random.randint(1, 250) == 1:
+    #    response.status_code = 500
+
+    return response
+
+requests.Session.send = patched_send
 
 class ResourcesTestCase(TestCase):
     def setUp(self):
