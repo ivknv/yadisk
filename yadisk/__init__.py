@@ -5,4 +5,4 @@
 from . import api, functions, objects, exceptions, utils
 from .YaDisk import *
 
-__version__ = "1.2.0"
+__version__ = "1.2.1"
