@@ -9,7 +9,7 @@ from ..api import RestoreTrashRequest, MoveRequest, DeleteTrashRequest
 from ..api import PublishRequest, UnpublishRequest, SaveToDiskRequest, GetPublicMetaRequest
 from ..api import GetPublicResourcesRequest, PatchRequest, FilesRequest
 from ..api import LastUploadedRequest, UploadURLRequest, GetPublicDownloadLinkRequest
-from ..exceptions import PathNotFoundError
+from ..exceptions import WrongResourceTypeError, PathNotFoundError
 from ..utils import auto_retry, get_exception
 
 from .. import settings
@@ -227,7 +227,7 @@ def _listdir(get_meta_function, session, path, *args, **kwargs):
     result = get_meta_function(session, path, *args, **kwargs)
 
     if result.type == "file":
-        raise NotADirectoryError("%r is a file" % (path,))
+        raise WrongResourceTypeError("%r is a file" % (path,))
 
     for child in result.embedded.items:
         yield child

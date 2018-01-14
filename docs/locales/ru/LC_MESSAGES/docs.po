@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-14 00:16+0500\n"
-"PO-Revision-Date: 2018-01-14 13:08+0500\n"
+"POT-Creation-Date: 2018-01-14 13:27+0500\n"
+"PO-Revision-Date: 2018-01-14 13:30+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1300,6 +1300,7 @@ msgstr "`str`, сообщение исключения"
 #: yadisk.exceptions.TooManyRequestsError:1
 #: yadisk.exceptions.UnauthorizedError:1
 #: yadisk.exceptions.UnsupportedMediaError:1
+#: yadisk.exceptions.WrongResourceTypeError:1
 msgid "Bases: :class:`yadisk.exceptions.YaDiskError`"
 msgstr ""
 
@@ -1323,6 +1324,12 @@ msgid ""
 "Thrown when the request failed but the response does not contain any "
 "error info."
 msgstr "Вызывается, когда запрос не удался, но не содержит информации об ошибке."
+
+#: ../../docstring of yadisk.exceptions.WrongResourceTypeError:1
+msgid ""
+"Thrown when the resource was expected to be of different type (e.g., file"
+" instead of directory)."
+msgstr "Вызывается, когда ожидался ресурс другого типа (например, файл вместо папки)."
 
 #: ../../docstring of yadisk.exceptions.BadRequestError:1
 msgid "Thrown when the server returns code 400."
