@@ -229,11 +229,9 @@ class YaDisk(object):
             :param overwrite: if `True`, the resource will be overwritten if it already exists,
                               an error will be raised otherwise
             :param fields: list of keys to be included in the response
-
-            :returns: `True` if the upload succeeded, `False` otherwise
         """
 
-        return functions.upload(self.make_session(), path_or_file, dst_path, *args, **kwargs)
+        functions.upload(self.make_session(), path_or_file, dst_path, *args, **kwargs)
 
     def get_download_link(self, path, *args, **kwargs):
         """
@@ -253,11 +251,9 @@ class YaDisk(object):
 
             :param src_path: source path
             :param path_or_file: destination path or file-like object
-
-            :returns: `True` if the download succeeded, `False` otherwise
         """
 
-        return functions.download(self.make_session(), src_path, path_or_file, *args, **kwargs)
+        functions.download(self.make_session(), src_path, path_or_file, *args, **kwargs)
 
     def remove(self, path, *args, **kwargs):
         """
@@ -655,8 +651,6 @@ class YaDisk(object):
 
             :param public_key: public key or public URL of the resource
             :param path_or_file: destination path or file-like object
-
-            :returns: `True` if the download succeeded, `False` otherwise
         """
 
-        return functions.download_public(self.make_session(), public_key, file_or_path, *args, **kwargs)
+        functions.download_public(self.make_session(), public_key, file_or_path, *args, **kwargs)

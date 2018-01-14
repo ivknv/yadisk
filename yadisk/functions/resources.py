@@ -53,8 +53,6 @@ def download(session, src_path, file_or_path, *args, **kwargs):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param src_path: source path
         :param path_or_file: destination path or file-like object
-
-        :returns: `True` if the download succeeded, `False` otherwise
     """
 
     kwargs = dict(kwargs)
@@ -310,8 +308,6 @@ def upload(session, file_or_path, dst_path, *args, **kwargs):
         :param dst_path: destination path
         :param overwrite: if `True`, the resource will be overwritten if it already exists,
                           an error will be raised otherwise
-
-        :returns: `True` if the upload succeeded, `False` otherwise
     """
 
     kwargs = dict(kwargs)

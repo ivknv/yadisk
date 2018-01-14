@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-14 13:27+0500\n"
+"POT-Creation-Date: 2018-01-14 14:01+0500\n"
 "PO-Revision-Date: 2018-01-14 13:37+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -190,8 +190,7 @@ msgid "token to check, equivalent to `self.token` if `None`"
 msgstr "токен, подлежащий проверке, то же самое, что `self.token` при `None`"
 
 #: ../../docstring of yadisk.YaDisk.check_token yadisk.YaDisk.copy
-#: yadisk.YaDisk.download yadisk.YaDisk.download_public yadisk.YaDisk.exists
-#: yadisk.YaDisk.get_auth_url yadisk.YaDisk.get_code_url
+#: yadisk.YaDisk.exists yadisk.YaDisk.get_auth_url yadisk.YaDisk.get_code_url
 #: yadisk.YaDisk.get_disk_info yadisk.YaDisk.get_download_link
 #: yadisk.YaDisk.get_files yadisk.YaDisk.get_last_uploaded
 #: yadisk.YaDisk.get_meta yadisk.YaDisk.get_operation_status
@@ -208,7 +207,7 @@ msgstr "токен, подлежащий проверке, то же самое,
 #: yadisk.YaDisk.remove_trash yadisk.YaDisk.restore_trash
 #: yadisk.YaDisk.revoke_token yadisk.YaDisk.save_to_disk
 #: yadisk.YaDisk.trash_exists yadisk.YaDisk.trash_listdir
-#: yadisk.YaDisk.unpublish yadisk.YaDisk.upload yadisk.YaDisk.upload_url
+#: yadisk.YaDisk.unpublish yadisk.YaDisk.upload_url
 #: yadisk.api.APIRequest.process yadisk.api.APIRequest.process_json
 #: yadisk.api.APIRequest.send yadisk.api.auth.GetTokenRequest
 #: yadisk.api.auth.RefreshTokenRequest yadisk.api.auth.RevokeTokenRequest
@@ -232,8 +231,7 @@ msgstr "токен, подлежащий проверке, то же самое,
 #: yadisk.functions.auth.get_token yadisk.functions.auth.refresh_token
 #: yadisk.functions.auth.revoke_token yadisk.functions.disk.get_disk_info
 #: yadisk.functions.operations.get_operation_status
-#: yadisk.functions.resources.copy yadisk.functions.resources.download
-#: yadisk.functions.resources.exists
+#: yadisk.functions.resources.copy yadisk.functions.resources.exists
 #: yadisk.functions.resources.get_download_link
 #: yadisk.functions.resources.get_files
 #: yadisk.functions.resources.get_last_uploaded
@@ -258,9 +256,8 @@ msgstr "токен, подлежащий проверке, то же самое,
 #: yadisk.functions.resources.save_to_disk
 #: yadisk.functions.resources.trash_exists
 #: yadisk.functions.resources.trash_listdir
-#: yadisk.functions.resources.unpublish yadisk.functions.resources.upload
-#: yadisk.functions.resources.upload_url yadisk.utils.auto_retry
-#: yadisk.utils.get_exception
+#: yadisk.functions.resources.unpublish yadisk.functions.resources.upload_url
+#: yadisk.utils.auto_retry yadisk.utils.get_exception
 msgid "Returns"
 msgstr ""
 
@@ -396,11 +393,6 @@ msgstr "Скачивает файл."
 #: yadisk.functions.resources.download_public:5
 msgid "destination path or file-like object"
 msgstr "путь назначения или файл-подобный объект"
-
-#: ../../docstring of yadisk.YaDisk.download:6 yadisk.YaDisk.download_public:6
-#: yadisk.functions.resources.download:7
-msgid "`True` if the download succeeded, `False` otherwise"
-msgstr "`True`, если скачивание удалось, `False`, иначе"
 
 #: ../../docstring of yadisk.YaDisk.download_public:1
 #: yadisk.functions.resources.download_public:1
@@ -1147,11 +1139,6 @@ msgstr ""
 "если `True`, путь назначения может быть перезаписан, иначе будет вызвана "
 "ошибка"
 
-#: ../../docstring of yadisk.YaDisk.upload:9
-#: yadisk.functions.resources.upload:9
-msgid "`True` if the upload succeeded, `False` otherwise"
-msgstr "`True`, если загрузка удалась, `False` иначе"
-
 #: ../../docstring of yadisk.YaDisk.upload_url:1
 #: yadisk.functions.resources.upload_url:1
 msgid "Upload a file from URL."
@@ -1329,7 +1316,9 @@ msgstr "Вызывается, когда запрос не удался, но н
 msgid ""
 "Thrown when the resource was expected to be of different type (e.g., file"
 " instead of directory)."
-msgstr "Вызывается, когда ожидался ресурс другого типа (например, файл вместо папки)."
+msgstr ""
+"Вызывается, когда ожидался ресурс другого типа (например, файл вместо "
+"папки)."
 
 #: ../../docstring of yadisk.exceptions.BadRequestError:1
 msgid "Thrown when the server returns code 400."
@@ -2029,7 +2018,9 @@ msgstr "Вспомогательные средства"
 msgid ""
 "Get an exception instance based on response, assuming the request has "
 "failed."
-msgstr "Возвращает объект исключения, основываясь на ответе (подразумевается, что запрос не удался)."
+msgstr ""
+"Возвращает объект исключения, основываясь на ответе (подразумевается, что"
+" запрос не удался)."
 
 #: ../../docstring of yadisk.utils.get_exception:5
 msgid "an exception instance, subclass of :any:`YaDiskError`"
@@ -2485,4 +2476,10 @@ msgstr ""
 
 #~ msgid "`list`-like, list of response codes that trigger a retry"
 #~ msgstr "`list`-подобный, cписок кодов ответа, вызывающих повторный запрос"
+
+#~ msgid "`True` if the download succeeded, `False` otherwise"
+#~ msgstr "`True`, если скачивание удалось, `False`, иначе"
+
+#~ msgid "`True` if the upload succeeded, `False` otherwise"
+#~ msgstr "`True`, если загрузка удалась, `False` иначе"
 
