@@ -118,11 +118,10 @@ def get_token(code, client_id, client_secret, *args, **kwargs):
 
     return request.process()
 
-def refresh_token(session, refresh_token, client_id, client_secret, *args, **kwargs):
+def refresh_token(refresh_token, client_id, client_secret, *args, **kwargs):
     """
         Refresh an existing token.
 
-        :param session: an instance of :any:`requests.Session` with prepared headers
         :param refresh_token: the refresh token that was receieved with the token
         :param client_id: application ID
         :param client_secret: application secret password
@@ -130,6 +129,7 @@ def refresh_token(session, refresh_token, client_id, client_secret, *args, **kwa
         :returns: :any:`TokenObject`
     """
 
+    session = requests.Session()
     request = RefreshTokenRequest(session, refresh_token, client_id, client_secret, *args, **kwargs)
     request.send()
 

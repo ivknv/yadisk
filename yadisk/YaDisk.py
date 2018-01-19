@@ -104,7 +104,7 @@ class YaDisk(object):
             :returns: :any:`TokenObject`
         """
 
-        return functions.refresh_token(self.make_session(), refresh_token, self.id, self.secret, *args, **kwargs)
+        return functions.refresh_token(refresh_token, self.id, self.secret, *args, **kwargs)
 
     def revoke_token(self, token=None, *args, **kwargs):
         """
