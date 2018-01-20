@@ -122,7 +122,7 @@ def refresh_token(refresh_token, client_id, client_secret, *args, **kwargs):
     """
         Refresh an existing token.
 
-        :param refresh_token: the refresh token that was receieved with the token
+        :param refresh_token: the refresh token that was received with the token
         :param client_id: application ID
         :param client_secret: application secret password
 

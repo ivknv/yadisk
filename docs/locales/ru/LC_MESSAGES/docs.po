@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-14 14:01+0500\n"
-"PO-Revision-Date: 2018-01-14 13:37+0500\n"
+"POT-Creation-Date: 2018-01-20 15:41+0500\n"
+"PO-Revision-Date: 2018-01-20 15:41+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -128,14 +128,14 @@ msgstr ""
 #: ../../docstring of yadisk.YaDisk:3 yadisk.api.auth.GetTokenRequest:5
 #: yadisk.api.auth.RefreshTokenRequest:5 yadisk.api.auth.RevokeTokenRequest:5
 #: yadisk.functions.auth.get_auth_url:3 yadisk.functions.auth.get_code_url:4
-#: yadisk.functions.auth.get_token:4 yadisk.functions.auth.refresh_token:5
+#: yadisk.functions.auth.get_token:4 yadisk.functions.auth.refresh_token:4
 #: yadisk.functions.auth.revoke_token:4
 msgid "application ID"
 msgstr "идентификатор приложения"
 
 #: ../../docstring of yadisk.YaDisk:4 yadisk.api.auth.GetTokenRequest:6
 #: yadisk.api.auth.RefreshTokenRequest:6 yadisk.api.auth.RevokeTokenRequest:6
-#: yadisk.functions.auth.get_token:5 yadisk.functions.auth.refresh_token:6
+#: yadisk.functions.auth.get_token:5 yadisk.functions.auth.refresh_token:5
 #: yadisk.functions.auth.revoke_token:5
 msgid "application secret password"
 msgstr "пароль приложения"
@@ -776,7 +776,7 @@ msgstr "уникальный идентификатор устройства (м
 
 #: ../../docstring of yadisk.YaDisk.get_token:6 yadisk.YaDisk.refresh_token:5
 #: yadisk.api.auth.GetTokenRequest:9 yadisk.api.auth.RefreshTokenRequest:8
-#: yadisk.functions.auth.get_token:8 yadisk.functions.auth.refresh_token:8
+#: yadisk.functions.auth.get_token:8 yadisk.functions.auth.refresh_token:7
 msgid ":any:`TokenObject`"
 msgstr ""
 
@@ -992,8 +992,8 @@ msgid "Refresh an existing token."
 msgstr "Обновляет существующий токен."
 
 #: ../../docstring of yadisk.YaDisk.refresh_token:3
-#: yadisk.functions.auth.refresh_token:4
-msgid "the refresh token that was receieved with the token"
+#: yadisk.functions.auth.refresh_token:3
+msgid "the refresh token that was received with the token"
 msgstr "refresh-токен, полученный вместе с токеном"
 
 #: ../../docstring of yadisk.YaDisk.remove:1
@@ -2076,7 +2076,7 @@ msgstr "Функции"
 #: yadisk.api.resources.SaveToDiskRequest:3
 #: yadisk.api.resources.UnpublishRequest:3
 #: yadisk.api.resources.UploadURLRequest:3 yadisk.functions.auth.check_token:3
-#: yadisk.functions.auth.refresh_token:3 yadisk.functions.disk.get_disk_info:3
+#: yadisk.functions.disk.get_disk_info:3
 #: yadisk.functions.operations.get_operation_status:3
 #: yadisk.functions.resources.copy:5 yadisk.functions.resources.download:3
 #: yadisk.functions.resources.download_public:3

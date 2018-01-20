@@ -99,7 +99,7 @@ class YaDisk(object):
         """
             Refresh an existing token.
 
-            :param refresh_token: the refresh token that was receieved with the token
+            :param refresh_token: the refresh token that was received with the token
 
             :returns: :any:`TokenObject`
         """
