@@ -18,11 +18,11 @@ yadisk.settings.DEFAULT_UPLOAD_N_RETRIES = 50
 original_send = requests.Session.send
 
 def patched_send(self, *args, **kwargs):
-    response = original_send(self, *args, **kwargs)
-
     # Fake a random server error
-    #if random.randint(1, 5) == 1:
-    #    response.status_code = 500
+    if random.randint(1, 5) == 1:
+        raise yadisk.exceptions.InternalServerError()
+
+    response = original_send(self, *args, **kwargs)
 
     return response
 
