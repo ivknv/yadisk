@@ -32,7 +32,7 @@ class WrongResourceTypeError(YaDiskError):
     """Thrown when the resource was expected to be of different type (e.g., file instead of directory)."""
 
     def __init__(self, msg=""):
-        YaDiskError.__init__(None, msg, None)
+        YaDiskError.__init__(self, None, msg, None)
 
 class RetriableYaDiskError(YaDiskError):
     """Thrown when there was an error but it would make sense to retry the request."""

@@ -53,6 +53,20 @@ class ResourcesTestCase(TestCase):
 
         self.assertEqual(result, names)
 
+    def test_listdir_on_file(self):
+        buf = BytesIO()
+        buf.write(b"0" * 1000)
+        buf.seek(0)
+
+        path = posixpath.join(self.path, "zeroes.txt")
+
+        self.yadisk.upload(buf, path)
+
+        with self.assertRaises(yadisk.exceptions.WrongResourceTypeError):
+            list(self.yadisk.listdir(path))
+
+        self.yadisk.remove(path)
+
     def test_listdir_with_limits(self):
         names = ["dir1", "dir2", "dir3"]
 
