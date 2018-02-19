@@ -21,7 +21,7 @@ class TokenObject(YaDiskObject):
         YaDiskObject.__init__(self, {"access_token":  str,
                                      "refresh_token": str,
                                      "token_type":    str,
-                                     "exprires_in":   int})
+                                     "expires_in":    int})
 
         self.import_fields(token)
 
