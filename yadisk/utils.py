@@ -82,7 +82,7 @@ def auto_retry(func, n_retries=None, retry_interval=None):
         try:
             return func()
         except (requests.exceptions.RequestException, RetriableYaDiskError) as e:
-            if i == n_retries - 1:
+            if i == n_retries:
                 raise e
 
         if retry_interval:
