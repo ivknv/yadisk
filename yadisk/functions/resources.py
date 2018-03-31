@@ -57,6 +57,8 @@ def download(session, src_path, file_or_path, *args, **kwargs):
         :param path_or_file: destination path or file-like object
     """
 
+    kwargs = dict(kwargs)
+
     n_retries = kwargs.get("n_retries")
 
     if n_retries is None:
@@ -66,6 +68,13 @@ def download(session, src_path, file_or_path, *args, **kwargs):
 
     if retry_interval is None:
         retry_interval = settings.DEFAULT_RETRY_INTERVAL
+
+    timeout = kwargs.get("timeout")
+
+    if timeout is None:
+        timeout = settings.DEFAULT_TIMEOUT
+
+    kwargs["timeout"] = timeout
 
     def attempt():
         temp_kwargs = dict(kwargs)
