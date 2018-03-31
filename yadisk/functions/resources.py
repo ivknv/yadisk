@@ -57,10 +57,6 @@ def download(session, src_path, file_or_path, *args, **kwargs):
         :param path_or_file: destination path or file-like object
     """
 
-    kwargs = dict(kwargs)
-
-    link = get_download_link(session, src_path, *args, **kwargs)
-
     n_retries = kwargs.get("n_retries")
 
     if n_retries is None:
@@ -71,37 +67,45 @@ def download(session, src_path, file_or_path, *args, **kwargs):
     if retry_interval is None:
         retry_interval = settings.DEFAULT_RETRY_INTERVAL
 
-    # requests.get() doesn't accept these parameters
-    for k in ("n_retries", "retry_interval", "fields"):
-        kwargs.pop(k, None)
+    def attempt():
+        temp_kwargs = dict(kwargs)
+        temp_kwargs["n_retries"] = 0
+        temp_kwargs["retry_interval"] = 0.0
+        link = get_download_link(session, src_path, *args, **temp_kwargs)
 
-    kwargs.setdefault("stream", True)
+        # requests.get() doesn't accept these parameters
+        for k in ("n_retries", "retry_interval", "fields"):
+            temp_kwargs.pop(k, None)
 
-    if isinstance(file_or_path, (str, bytes)):
-        file = open(file_or_path, "wb")
-        close_file = True
-    else:
-        file = file_or_path
+        temp_kwargs.setdefault("stream", True)
+
+        file = None
         close_file = False
 
-    file_position = file.tell()
+        try:
+            if isinstance(file_or_path, (str, bytes)):
+                close_file = True
+                file = open(file_or_path, "wb")
+            else:
+                close_file = False
+                file = file_or_path
 
-    def attempt():
-        file.seek(file_position)
+            file_position = file.tell()
 
-        with contextlib.closing(requests.get(link, data=file, **kwargs)) as response:
-            for chunk in response.iter_content(chunk_size=8192):
-                if chunk:
-                    file.write(chunk)
+            file.seek(file_position)
 
-            if response.status_code != 200:
-                raise get_exception(response)
+            with contextlib.closing(requests.get(link, data=file, **temp_kwargs)) as response:
+                for chunk in response.iter_content(chunk_size=8192):
+                    if chunk:
+                        file.write(chunk)
 
-    try:
-        auto_retry(attempt, n_retries, retry_interval)
-    finally:
-        if close_file:
-            file.close()
+                if response.status_code != 200:
+                    raise get_exception(response)
+        finally:
+            if close_file and file is not None:
+                file.close()
+
+    auto_retry(attempt, n_retries, retry_interval)
 
 def _exists(get_meta_function, *args, **kwargs):
     try:
@@ -331,38 +335,43 @@ def upload(session, file_or_path, dst_path, *args, **kwargs):
         n_retries = settings.DEFAULT_N_RETRIES
 
     kwargs["timeout"] = timeout
-    kwargs["retry_interval"] = retry_interval
-    kwargs["n_retries"] = n_retries
-
-    link = get_upload_link(session, dst_path, *args, **kwargs)
-
-    if isinstance(file_or_path, (str, bytes)):
-        file = open(file_or_path, "rb")
-        close_file = True
-    else:
-        file = file_or_path
-        close_file = False
-
-    file_position = file.tell()
-
-    # requests.put() doesn't accept these parameters
-    for k in ("n_retries", "retry_interval", "overwrite", "fields"):
-        kwargs.pop(k, None)
-
-    kwargs.setdefault("stream", True)
 
     def attempt():
-        file.seek(file_position)
+        temp_kwargs = dict(kwargs)
+        temp_kwargs["n_retries"] = 0
+        temp_kwargs["retry_interval"] = 0.0
 
-        with contextlib.closing(requests.put(link, data=file, **kwargs)) as response:
-            if response.status_code != 201:
-                raise get_exception(response)
+        link = get_upload_link(session, dst_path, *args, **temp_kwargs)
 
-    try:
-        auto_retry(attempt, n_retries, retry_interval)
-    finally:
-        if close_file:
-            file.close()
+        file = None
+        close_file = False
+
+        try:
+            if isinstance(file_or_path, (str, bytes)):
+                close_file = True
+                file = open(file_or_path, "rb")
+            else:
+                close_file = False
+                file = file_or_path
+
+            file_position = file.tell()
+
+            # requests.put() doesn't accept these parameters
+            for k in ("n_retries", "retry_interval", "overwrite", "fields"):
+                temp_kwargs.pop(k, None)
+
+            temp_kwargs.setdefault("stream", True)
+
+            file.seek(file_position)
+
+            with contextlib.closing(requests.put(link, data=file, **temp_kwargs)) as response:
+                if response.status_code != 201:
+                    raise get_exception(response)
+        finally:
+            if close_file and file is not None:
+                file.close()
+
+    auto_retry(attempt, n_retries, retry_interval)
 
 def get_trash_meta(session, path, *args, **kwargs):
     """
@@ -795,10 +804,6 @@ def download_public(session, public_key, file_or_path, *args, **kwargs):
         :param path_or_file: destination path or file-like object
     """
 
-    kwargs = dict(kwargs)
-
-    link = get_public_download_link(session, public_key, *args, **kwargs)
-
     n_retries = kwargs.pop("n_retries", None)
 
     if n_retries is None:
@@ -809,36 +814,48 @@ def download_public(session, public_key, file_or_path, *args, **kwargs):
     if retry_interval is None:
         retry_interval = settings.DEFAULT_RETRY_INTERVAL
 
-    timeout = kwargs.get("timeout")
+    def attempt():
+        temp_kwargs = dict(kwargs)
+        temp_kwargs["n_retries"] = 0
+        temp_kwargs["retry_interval"] = 0.0
 
-    if timeout is None:
-        timeout = settings.DEFAULT_TIMEOUT
+        link = get_public_download_link(session, public_key, *args, **temp_kwargs)
 
-    kwargs["timeout"] = timeout
-    kwargs.setdefault("stream", True)
+        temp_kwargs.pop("n_retries", None)
+        temp_kwargs.pop("retry_interval", None)
 
-    if isinstance(file_or_path, (str, bytes)):
-        file = open(file_or_path, "wb")
-        close_file = True
-    else:
-        file = file_or_path
+        timeout = temp_kwargs.get("timeout")
+
+        if timeout is None:
+            timeout = settings.DEFAULT_TIMEOUT
+
+        temp_kwargs["timeout"] = timeout
+        temp_kwargs.setdefault("stream", True)
+
+        file = None
         close_file = False
 
-    file_position = file.tell()
+        try:
+            if isinstance(file_or_path, (str, bytes)):
+                close_file = True
+                file = open(file_or_path, "wb")
+            else:
+                close_file = False
+                file = file_or_path
 
-    def attempt():
-        file.seek(file_position)
+            file_position = file.tell()
 
-        with contextlib.closing(requests.get(link, data=file, **kwargs)) as response:
-            for chunk in response.iter_content(chunk_size=8192):
-                if chunk:
-                    file.write(chunk)
+            file.seek(file_position)
 
-            if response.status_code != 200:
-                raise get_exception(response)
+            with contextlib.closing(requests.get(link, data=file, **temp_kwargs)) as response:
+                for chunk in response.iter_content(chunk_size=8192):
+                    if chunk:
+                        file.write(chunk)
 
-    try:
-        auto_retry(attempt, n_retries, retry_interval)
-    finally:
-        if close_file:
-            file.close()
+                if response.status_code != 200:
+                    raise get_exception(response)
+        finally:
+            if close_file and file is not None:
+                file.close()
+
+    auto_retry(attempt, n_retries, retry_interval)
