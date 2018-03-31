@@ -28,7 +28,9 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 
     import yadisk
 
-    y = yadisk.YaDisk("<id-приложения>", "<secret-приложения>", "<токен>")
+    y = yadisk.YaDisk(token="<токен>")
+    # или
+    # y = yadisk.YaDisk("<id-приложения>", "<secret-приложения>", "<токен>")
 
     # Проверяет, валиден ли токен
     print(y.check_token())

@@ -28,7 +28,9 @@ Examples
 
     import yadisk
 
-    y = yadisk.YaDisk("<application-id>", "<application-secret>", "<token>")
+    y = yadisk.YaDisk(token="<token>")
+    # or
+    # y = yadisk.YaDisk("<application-id>", "<application-secret>", "<token>")
 
     # Check if the token is valid
     print(y.check_token())
