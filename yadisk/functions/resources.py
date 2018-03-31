@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import contextlib
+
 import requests
 
 from ..api import CopyRequest, GetDownloadLinkRequest, GetMetaRequest
@@ -85,14 +87,13 @@ def download(session, src_path, file_or_path, *args, **kwargs):
     def attempt():
         file.seek(file_position)
 
-        response = requests.get(link, data=file, **kwargs)
+        with contextlib.closing(requests.get(link, data=file, **kwargs)) as response:
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:
+                    file.write(chunk)
 
-        for chunk in response.iter_content(chunk_size=8192):
-            if chunk:
-                file.write(chunk)
-
-        if response.status_code != 200:
-            raise get_exception(response)
+            if response.status_code != 200:
+                raise get_exception(response)
 
     try:
         auto_retry(attempt, n_retries, retry_interval)
@@ -351,10 +352,9 @@ def upload(session, file_or_path, dst_path, *args, **kwargs):
     def attempt():
         file.seek(file_position)
 
-        response = requests.put(link, data=file, **kwargs)
-
-        if response.status_code != 201:
-            raise get_exception(response)
+        with contextlib.closing(requests.put(link, data=file, **kwargs)) as response:
+            if response.status_code != 201:
+                raise get_exception(response)
 
     try:
         auto_retry(attempt, n_retries, retry_interval)
@@ -826,14 +826,13 @@ def download_public(session, public_key, file_or_path, *args, **kwargs):
     def attempt():
         file.seek(file_position)
 
-        response = requests.get(link, data=file, **kwargs)
+        with contextlib.closing(requests.get(link, data=file, **kwargs)) as response:
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:
+                    file.write(chunk)
 
-        for chunk in response.iter_content(chunk_size=8192):
-            if chunk:
-                file.write(chunk)
-
-        if response.status_code != 200:
-            raise get_exception(response)
+            if response.status_code != 200:
+                raise get_exception(response)
 
     try:
         auto_retry(attempt, n_retries, retry_interval)
