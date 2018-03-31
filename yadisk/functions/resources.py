@@ -75,6 +75,8 @@ def download(session, src_path, file_or_path, *args, **kwargs):
     for k in ("n_retries", "retry_interval", "fields"):
         kwargs.pop(k, None)
 
+    kwargs.setdefault("stream", True)
+
     if isinstance(file_or_path, (str, bytes)):
         file = open(file_or_path, "wb")
         close_file = True
@@ -813,6 +815,7 @@ def download_public(session, public_key, file_or_path, *args, **kwargs):
         timeout = settings.DEFAULT_TIMEOUT
 
     kwargs["timeout"] = timeout
+    kwargs.setdefault("stream", True)
 
     if isinstance(file_or_path, (str, bytes)):
         file = open(file_or_path, "wb")
