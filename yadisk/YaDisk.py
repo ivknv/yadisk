@@ -52,6 +52,11 @@ class YaDisk(object):
 
         self._get_session = _get_session
 
+    def clear_session_cache(self):
+        """Clears the session cache. Unused sessions will be closed."""
+
+        self._get_session.cache_clear()
+
     def make_session(self, token=None):
         """
             Prepares :any:`requests.Session` object with headers needed for API.
