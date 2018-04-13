@@ -103,7 +103,7 @@ def download(session, src_path, file_or_path, *args, **kwargs):
 
             file.seek(file_position)
 
-            with contextlib.closing(requests.get(link, data=file, **temp_kwargs)) as response:
+            with contextlib.closing(session.get(link, data=file, **temp_kwargs)) as response:
                 for chunk in response.iter_content(chunk_size=8192):
                     if chunk:
                         file.write(chunk)
@@ -373,7 +373,7 @@ def upload(session, file_or_path, dst_path, *args, **kwargs):
 
             file.seek(file_position)
 
-            with contextlib.closing(requests.put(link, data=file, **temp_kwargs)) as response:
+            with contextlib.closing(session.put(link, data=file, **temp_kwargs)) as response:
                 if response.status_code != 201:
                     raise get_exception(response)
         finally:
@@ -856,7 +856,7 @@ def download_public(session, public_key, file_or_path, *args, **kwargs):
 
             file.seek(file_position)
 
-            with contextlib.closing(requests.get(link, data=file, **temp_kwargs)) as response:
+            with contextlib.closing(session.get(link, data=file, **temp_kwargs)) as response:
                 for chunk in response.iter_content(chunk_size=8192):
                     if chunk:
                         file.write(chunk)
