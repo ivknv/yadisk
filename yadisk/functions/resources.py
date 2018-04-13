@@ -82,11 +82,17 @@ def download(session, src_path, file_or_path, *args, **kwargs):
         temp_kwargs["retry_interval"] = 0.0
         link = get_download_link(session, src_path, *args, **temp_kwargs)
 
-        # requests.get() doesn't accept these parameters
+        # session.get() doesn't accept these parameters
         for k in ("n_retries", "retry_interval", "fields"):
             temp_kwargs.pop(k, None)
 
         temp_kwargs.setdefault("stream", True)
+
+        # Disable keep-alive by default, since the download server is random
+        try:
+            temp_kwargs["headers"].setdefault("Connection", "close")
+        except KeyError:
+            temp_kwargs["headers"] = {"Connection": "close"}
 
         file = None
         close_file = False
@@ -365,11 +371,17 @@ def upload(session, file_or_path, dst_path, *args, **kwargs):
 
             file_position = file.tell()
 
-            # requests.put() doesn't accept these parameters
+            # session.put() doesn't accept these parameters
             for k in ("n_retries", "retry_interval", "overwrite", "fields"):
                 temp_kwargs.pop(k, None)
 
             temp_kwargs.setdefault("stream", True)
+
+            # Disable keep-alive by default, since the upload server is random
+            try:
+                temp_kwargs["headers"].setdefault("Connection", "close")
+            except KeyError:
+                temp_kwargs["headers"] = {"Connection": "close"}
 
             file.seek(file_position)
 
@@ -840,6 +852,12 @@ def download_public(session, public_key, file_or_path, *args, **kwargs):
 
         temp_kwargs["timeout"] = timeout
         temp_kwargs.setdefault("stream", True)
+
+        # Disable keep-alive by default, since the download server is random
+        try:
+            temp_kwargs["headers"].setdefault("Connection", "close")
+        except KeyError:
+            temp_kwargs["headers"] = {"Connection": "close"}
 
         file = None
         close_file = False
