@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-20 15:41+0500\n"
+"POT-Creation-Date: 2018-04-13 16:59+0500\n"
 "PO-Revision-Date: 2018-01-20 15:41+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.5.1\n"
+"Generated-By: Babel 2.5.3\n"
 
 #: ../../docs.rst:3
 msgid "Documentation"
@@ -196,13 +196,14 @@ msgstr "токен, подлежащий проверке, то же самое,
 #: yadisk.YaDisk.get_meta yadisk.YaDisk.get_operation_status
 #: yadisk.YaDisk.get_public_download_link yadisk.YaDisk.get_public_meta
 #: yadisk.YaDisk.get_public_resources yadisk.YaDisk.get_public_type
-#: yadisk.YaDisk.get_token yadisk.YaDisk.get_trash_meta
-#: yadisk.YaDisk.get_trash_type yadisk.YaDisk.get_type
-#: yadisk.YaDisk.get_upload_link yadisk.YaDisk.is_dir yadisk.YaDisk.is_file
-#: yadisk.YaDisk.is_public_dir yadisk.YaDisk.is_public_file
-#: yadisk.YaDisk.is_trash_dir yadisk.YaDisk.is_trash_file yadisk.YaDisk.listdir
-#: yadisk.YaDisk.make_session yadisk.YaDisk.mkdir yadisk.YaDisk.move
-#: yadisk.YaDisk.patch yadisk.YaDisk.public_exists yadisk.YaDisk.public_listdir
+#: yadisk.YaDisk.get_session yadisk.YaDisk.get_token
+#: yadisk.YaDisk.get_trash_meta yadisk.YaDisk.get_trash_type
+#: yadisk.YaDisk.get_type yadisk.YaDisk.get_upload_link yadisk.YaDisk.is_dir
+#: yadisk.YaDisk.is_file yadisk.YaDisk.is_public_dir
+#: yadisk.YaDisk.is_public_file yadisk.YaDisk.is_trash_dir
+#: yadisk.YaDisk.is_trash_file yadisk.YaDisk.listdir yadisk.YaDisk.make_session
+#: yadisk.YaDisk.mkdir yadisk.YaDisk.move yadisk.YaDisk.patch
+#: yadisk.YaDisk.public_exists yadisk.YaDisk.public_listdir
 #: yadisk.YaDisk.publish yadisk.YaDisk.refresh_token yadisk.YaDisk.remove
 #: yadisk.YaDisk.remove_trash yadisk.YaDisk.restore_trash
 #: yadisk.YaDisk.revoke_token yadisk.YaDisk.save_to_disk
@@ -268,6 +269,10 @@ msgstr ""
 #: yadisk.functions.resources.trash_exists:6
 msgid "`bool`"
 msgstr ""
+
+#: ../../docstring of yadisk.YaDisk.clear_session_cache:1
+msgid "Clears the session cache. Unused sessions will be closed."
+msgstr "Очищает кэш сессий. Неиспользуемые сессии будут закрыты."
 
 #: ../../docstring of yadisk.YaDisk.copy:1 yadisk.functions.resources.copy:1
 msgid ""
@@ -758,6 +763,14 @@ msgstr "Получает тип публичного ресурса."
 #: yadisk.functions.resources.get_type:6
 msgid "\"file\" or \"dir\""
 msgstr "\"file\" или \"dir\""
+
+#: ../../docstring of yadisk.YaDisk.get_session:1
+msgid "Like :any:`YaDisk.make_session` but wrapped in :any:`functools.lru_cache`."
+msgstr "То же, что и :any:`YaDisk.make_session`, но с обёрткой :any:`functools.lru_cache`."
+
+#: ../../docstring of yadisk.YaDisk.get_session:3
+msgid ":any:`requests.Session`, different instances for different threads"
+msgstr ":any:`requests.Session`, отдельные объекты для разных потоков"
 
 #: ../../docstring of yadisk.YaDisk.get_token:1
 #: yadisk.functions.auth.get_token:1
