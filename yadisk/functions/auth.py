@@ -112,11 +112,11 @@ def get_token(code, client_id, client_secret, *args, **kwargs):
         :returns: :any:`TokenObject`
     """
 
-    session = requests.Session()
-    request = GetTokenRequest(session, code, client_id, client_secret, *args, **kwargs)
-    request.send()
+    with requests.Session() as session:
+        request = GetTokenRequest(session, code, client_id, client_secret, *args, **kwargs)
+        request.send()
 
-    return request.process()
+        return request.process()
 
 def refresh_token(refresh_token, client_id, client_secret, *args, **kwargs):
     """
@@ -129,11 +129,11 @@ def refresh_token(refresh_token, client_id, client_secret, *args, **kwargs):
         :returns: :any:`TokenObject`
     """
 
-    session = requests.Session()
-    request = RefreshTokenRequest(session, refresh_token, client_id, client_secret, *args, **kwargs)
-    request.send()
+    with requests.Session() as session:
+        request = RefreshTokenRequest(session, refresh_token, client_id, client_secret, *args, **kwargs)
+        request.send()
 
-    return request.process()
+        return request.process()
 
 def revoke_token(token, client_id, client_secret, *args, **kwargs):
     """
@@ -146,9 +146,8 @@ def revoke_token(token, client_id, client_secret, *args, **kwargs):
         :returns: :any:`TokenRevokeStatusObject`
     """
 
-    session = requests.Session()
-    request = RevokeTokenRequest(session, token, client_id, client_secret, *args, **kwargs)
+    with requests.Session() as session:
+        request = RevokeTokenRequest(session, token, client_id, client_secret, *args, **kwargs)
+        request.send()
 
-    request.send()
-
-    return request.process()
+        return request.process()
