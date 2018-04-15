@@ -3,8 +3,6 @@
 
 import contextlib
 
-import requests
-
 from ..api import CopyRequest, GetDownloadLinkRequest, GetMetaRequest
 from ..api import GetUploadLinkRequest, MkdirRequest, DeleteRequest, GetTrashRequest
 from ..api import RestoreTrashRequest, MoveRequest, DeleteTrashRequest
@@ -76,36 +74,36 @@ def download(session, src_path, file_or_path, *args, **kwargs):
 
     kwargs["timeout"] = timeout
 
-    def attempt():
-        temp_kwargs = dict(kwargs)
-        temp_kwargs["n_retries"] = 0
-        temp_kwargs["retry_interval"] = 0.0
-        link = get_download_link(session, src_path, *args, **temp_kwargs)
+    file = None
+    close_file = False
 
-        # session.get() doesn't accept these parameters
-        for k in ("n_retries", "retry_interval", "fields"):
-            temp_kwargs.pop(k, None)
+    try:
+        if isinstance(file_or_path, (str, bytes)):
+            close_file = True
+            file = open(file_or_path, "wb")
+        else:
+            close_file = False
+            file = file_or_path
 
-        temp_kwargs.setdefault("stream", True)
+        file_position = file.tell()
 
-        # Disable keep-alive by default, since the download server is random
-        try:
-            temp_kwargs["headers"].setdefault("Connection", "close")
-        except KeyError:
-            temp_kwargs["headers"] = {"Connection": "close"}
+        def attempt():
+            temp_kwargs = dict(kwargs)
+            temp_kwargs["n_retries"] = 0
+            temp_kwargs["retry_interval"] = 0.0
+            link = get_download_link(session, src_path, *args, **temp_kwargs)
 
-        file = None
-        close_file = False
+            # session.get() doesn't accept these parameters
+            for k in ("n_retries", "retry_interval", "fields"):
+                temp_kwargs.pop(k, None)
 
-        try:
-            if isinstance(file_or_path, (str, bytes)):
-                close_file = True
-                file = open(file_or_path, "wb")
-            else:
-                close_file = False
-                file = file_or_path
+            temp_kwargs.setdefault("stream", True)
 
-            file_position = file.tell()
+            # Disable keep-alive by default, since the download server is random
+            try:
+                temp_kwargs["headers"].setdefault("Connection", "close")
+            except KeyError:
+                temp_kwargs["headers"] = {"Connection": "close"}
 
             file.seek(file_position)
 
@@ -116,11 +114,11 @@ def download(session, src_path, file_or_path, *args, **kwargs):
 
                 if response.status_code != 200:
                     raise get_exception(response)
-        finally:
-            if close_file and file is not None:
-                file.close()
 
-    auto_retry(attempt, n_retries, retry_interval)
+        auto_retry(attempt, n_retries, retry_interval)
+    finally:
+        if close_file and file is not None:
+            file.close()
 
 def _exists(get_meta_function, *args, **kwargs):
     try:
@@ -351,25 +349,25 @@ def upload(session, file_or_path, dst_path, *args, **kwargs):
 
     kwargs["timeout"] = timeout
 
-    def attempt():
-        temp_kwargs = dict(kwargs)
-        temp_kwargs["n_retries"] = 0
-        temp_kwargs["retry_interval"] = 0.0
+    file = None
+    close_file = False
 
-        link = get_upload_link(session, dst_path, *args, **temp_kwargs)
+    try:
+        if isinstance(file_or_path, (str, bytes)):
+            close_file = True
+            file = open(file_or_path, "rb")
+        else:
+            close_file = False
+            file = file_or_path
 
-        file = None
-        close_file = False
+        file_position = file.tell()
 
-        try:
-            if isinstance(file_or_path, (str, bytes)):
-                close_file = True
-                file = open(file_or_path, "rb")
-            else:
-                close_file = False
-                file = file_or_path
+        def attempt():
+            temp_kwargs = dict(kwargs)
+            temp_kwargs["n_retries"] = 0
+            temp_kwargs["retry_interval"] = 0.0
 
-            file_position = file.tell()
+            link = get_upload_link(session, dst_path, *args, **temp_kwargs)
 
             # session.put() doesn't accept these parameters
             for k in ("n_retries", "retry_interval", "overwrite", "fields"):
@@ -388,11 +386,11 @@ def upload(session, file_or_path, dst_path, *args, **kwargs):
             with contextlib.closing(session.put(link, data=file, **temp_kwargs)) as response:
                 if response.status_code != 201:
                     raise get_exception(response)
-        finally:
-            if close_file and file is not None:
-                file.close()
 
-    auto_retry(attempt, n_retries, retry_interval)
+        auto_retry(attempt, n_retries, retry_interval)
+    finally:
+        if close_file and file is not None:
+            file.close()
 
 def get_trash_meta(session, path, *args, **kwargs):
     """
@@ -835,42 +833,42 @@ def download_public(session, public_key, file_or_path, *args, **kwargs):
     if retry_interval is None:
         retry_interval = settings.DEFAULT_RETRY_INTERVAL
 
-    def attempt():
-        temp_kwargs = dict(kwargs)
-        temp_kwargs["n_retries"] = 0
-        temp_kwargs["retry_interval"] = 0.0
+    file = None
+    close_file = False
 
-        link = get_public_download_link(session, public_key, *args, **temp_kwargs)
+    try:
+        if isinstance(file_or_path, (str, bytes)):
+            close_file = True
+            file = open(file_or_path, "wb")
+        else:
+            close_file = False
+            file = file_or_path
 
-        temp_kwargs.pop("n_retries", None)
-        temp_kwargs.pop("retry_interval", None)
+        file_position = file.tell()
 
-        timeout = temp_kwargs.get("timeout")
+        def attempt():
+            temp_kwargs = dict(kwargs)
+            temp_kwargs["n_retries"] = 0
+            temp_kwargs["retry_interval"] = 0.0
 
-        if timeout is None:
-            timeout = settings.DEFAULT_TIMEOUT
+            link = get_public_download_link(session, public_key, *args, **temp_kwargs)
 
-        temp_kwargs["timeout"] = timeout
-        temp_kwargs.setdefault("stream", True)
+            temp_kwargs.pop("n_retries", None)
+            temp_kwargs.pop("retry_interval", None)
 
-        # Disable keep-alive by default, since the download server is random
-        try:
-            temp_kwargs["headers"].setdefault("Connection", "close")
-        except KeyError:
-            temp_kwargs["headers"] = {"Connection": "close"}
+            timeout = temp_kwargs.get("timeout")
 
-        file = None
-        close_file = False
+            if timeout is None:
+                timeout = settings.DEFAULT_TIMEOUT
 
-        try:
-            if isinstance(file_or_path, (str, bytes)):
-                close_file = True
-                file = open(file_or_path, "wb")
-            else:
-                close_file = False
-                file = file_or_path
+            temp_kwargs["timeout"] = timeout
+            temp_kwargs.setdefault("stream", True)
 
-            file_position = file.tell()
+            # Disable keep-alive by default, since the download server is random
+            try:
+                temp_kwargs["headers"].setdefault("Connection", "close")
+            except KeyError:
+                temp_kwargs["headers"] = {"Connection": "close"}
 
             file.seek(file_position)
 
@@ -881,8 +879,8 @@ def download_public(session, public_key, file_or_path, *args, **kwargs):
 
                 if response.status_code != 200:
                     raise get_exception(response)
-        finally:
-            if close_file and file is not None:
-                file.close()
 
-    auto_retry(attempt, n_retries, retry_interval)
+        auto_retry(attempt, n_retries, retry_interval)
+    finally:
+        if close_file and file is not None:
+            file.close()
