@@ -160,7 +160,9 @@ class GetTrashRequest(APIRequest):
             self.params["preview_crop"] = preview_crop
 
         if fields is not None:
-            self.params["fields"] = ",".join(fields)
+            sub_map = {"embedded": "_embedded"}
+
+            self.params["fields"] = ",".join(sub_map.get(f, f) for f in fields)
 
     def process_json(self, js):
         return TrashResourceObject(js)
@@ -377,7 +379,9 @@ class GetMetaRequest(APIRequest):
             self.params["preview_crop"] = "true" if preview_crop else "false"
 
         if fields is not None:
-            self.params["fields"] = ",".join(fields)
+            sub_map = {"embedded": "_embedded"}
+
+            self.params["fields"] = ",".join(sub_map.get(f, f) for f in fields)
 
     def process_json(self, js):
         return ResourceObject(js)
@@ -637,7 +641,10 @@ class GetPublicMetaRequest(APIRequest):
             self.params["preview_crop"] = preview_crop
 
         if fields is not None:
-            self.params["fields"] = ",".join(fields)
+            sub_map = {"embedded": "_embedded",
+                       "view_count": "views_count"}
+
+            self.params["fields"] = ",".join(sub_map.get(f, f) for f in fields)
 
     def process_json(self, js):
         return PublicResourceObject(js)
@@ -796,7 +803,9 @@ class PatchRequest(APIRequest):
         self.data["body"] = json.dumps({"custom_properties": properties}).encode("utf8")
 
         if fields is not None:
-            self.params["fields"] = ",".join(fields)
+            sub_map = {"embedded": "_embedded"}
+
+            self.params["fields"] = ",".join(sub_map.get(f, f) for f in fields)
 
     def process_json(self, js):
         return ResourceObject(js)
