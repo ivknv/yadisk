@@ -290,7 +290,7 @@ class PublicResourceListObject(ResourceListObject):
     def __init__(self, public_resource_list=None):
         ResourceListObject.__init__(self)
         self.set_field_type("public_key", str)
-        self.set_field_type("embedded", typed_list(PublicResourceObject))
+        self.set_field_type("items", typed_list(PublicResourceObject))
         self.import_fields(public_resource_list)
 
 class TrashResourceObject(ResourceObject):
@@ -346,5 +346,5 @@ class TrashResourceListObject(ResourceListObject):
 
     def __init__(self, trash_resource_list=None):
         ResourceListObject.__init__(self)
-        self.set_field_type("embedded", typed_list(TrashResourceObject))
+        self.set_field_type("items", typed_list(TrashResourceObject))
         self.import_fields(trash_resource_list)
