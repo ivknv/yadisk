@@ -8,6 +8,9 @@ from .. import settings
 
 __all__ = ["APIRequest"]
 
+# For cases when None can't be used
+UNDEFINED = object()
+
 class APIRequest(object):
     """
         Base class for all API requests.
@@ -31,7 +34,7 @@ class APIRequest(object):
     url = None
     method = None
     content_type = "application/x-www-form-urlencoded"
-    timeout = None 
+    timeout = UNDEFINED
     n_retries = None
     success_codes = {200}
     retry_interval = None
@@ -39,13 +42,15 @@ class APIRequest(object):
     def __init__(self, session, args, **kwargs):
         kwargs = dict(kwargs)
 
-        timeout = kwargs.get("timeout")
         n_retries = kwargs.pop("n_retries", None)
         retry_interval = kwargs.pop("retry_interval", None)
 
-        if timeout is None:
+        try:
+            timeout = kwargs["timeout"]
+        except KeyError:
             timeout = self.timeout
-        if timeout is None:
+
+        if timeout is UNDEFINED:
             timeout = settings.DEFAULT_TIMEOUT
 
         kwargs["timeout"] = timeout

@@ -67,9 +67,9 @@ def download(session, src_path, file_or_path, *args, **kwargs):
     if retry_interval is None:
         retry_interval = settings.DEFAULT_RETRY_INTERVAL
 
-    timeout = kwargs.get("timeout")
-
-    if timeout is None:
+    try:
+        timeout = kwargs["timeout"]
+    except KeyError:
         timeout = settings.DEFAULT_TIMEOUT
 
     kwargs["timeout"] = timeout
@@ -332,9 +332,9 @@ def upload(session, file_or_path, dst_path, *args, **kwargs):
 
     kwargs = dict(kwargs)
 
-    timeout = kwargs.get("timeout")
-
-    if timeout is None:
+    try:
+        timeout = kwargs["timeout"]
+    except KeyError:
         timeout = settings.DEFAULT_UPLOAD_TIMEOUT
 
     retry_interval = kwargs.get("retry_interval")
@@ -856,9 +856,9 @@ def download_public(session, public_key, file_or_path, *args, **kwargs):
             temp_kwargs.pop("n_retries", None)
             temp_kwargs.pop("retry_interval", None)
 
-            timeout = temp_kwargs.get("timeout")
-
-            if timeout is None:
+            try:
+                timeout = temp_kwargs["timeout"]
+            except KeyError:
                 timeout = settings.DEFAULT_TIMEOUT
 
             temp_kwargs["timeout"] = timeout
