@@ -9,7 +9,7 @@ from .. import settings
 __all__ = ["APIRequest"]
 
 # For cases when None can't be used
-UNDEFINED = object()
+_DEFAULT_TIMEOUT = object()
 
 class APIRequest(object):
     """
@@ -18,6 +18,7 @@ class APIRequest(object):
         :param session: an instance of :any:`requests.Session`
         :param args: `dict` of arguments, that will be passed to `process_args`
         :param timeout: request timeout
+        :param headers: additional request headers
         :param n_retries: maximum number of retries
         :param retry_interval: delay between retries in seconds
         :param kwargs: other parameters for session.send()
@@ -34,7 +35,7 @@ class APIRequest(object):
     url = None
     method = None
     content_type = "application/x-www-form-urlencoded"
-    timeout = UNDEFINED
+    timeout = _DEFAULT_TIMEOUT
     n_retries = None
     success_codes = {200}
     retry_interval = None
@@ -44,13 +45,14 @@ class APIRequest(object):
 
         n_retries = kwargs.pop("n_retries", None)
         retry_interval = kwargs.pop("retry_interval", None)
+        headers = kwargs.pop("headers", {})
 
         try:
             timeout = kwargs["timeout"]
         except KeyError:
             timeout = self.timeout
 
-        if timeout is UNDEFINED:
+        if timeout is _DEFAULT_TIMEOUT:
             timeout = settings.DEFAULT_TIMEOUT
 
         kwargs["timeout"] = timeout
@@ -71,6 +73,7 @@ class APIRequest(object):
         self.timeout = timeout
         self.n_retries = n_retries
         self.retry_interval = retry_interval
+        self.headers = headers
         self.request = None
         self.response = None
         self.data = {}
@@ -88,6 +91,7 @@ class APIRequest(object):
         r = requests.Request(self.method, self.url,
                              data=self.data, params=self.params)
         r.headers["Content-Type"] = self.content_type
+        r.headers.update(self.headers)
         self.request = self.session.prepare_request(r)
 
     def _attempt(self):
