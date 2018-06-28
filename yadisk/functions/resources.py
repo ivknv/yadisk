@@ -107,7 +107,7 @@ def download(session, src_path, file_or_path, *args, **kwargs):
 
             file.seek(file_position)
 
-            with contextlib.closing(session.get(link, data=file, **temp_kwargs)) as response:
+            with contextlib.closing(session.get(link, **temp_kwargs)) as response:
                 for chunk in response.iter_content(chunk_size=8192):
                     if chunk:
                         file.write(chunk)
@@ -872,7 +872,7 @@ def download_public(session, public_key, file_or_path, *args, **kwargs):
 
             file.seek(file_position)
 
-            with contextlib.closing(session.get(link, data=file, **temp_kwargs)) as response:
+            with contextlib.closing(session.get(link, **temp_kwargs)) as response:
                 for chunk in response.iter_content(chunk_size=8192):
                     if chunk:
                         file.write(chunk)

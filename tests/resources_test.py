@@ -3,6 +3,7 @@
 
 import requests
 import random
+import tempfile
 
 import posixpath
 from unittest import TestCase
@@ -97,7 +98,8 @@ class ResourcesTestCase(TestCase):
             self.assertFalse(self.yadisk.exists(path))
 
     def test_upload_and_download(self):
-        buf1, buf2 = BytesIO(), BytesIO()
+        buf1 = BytesIO()
+        buf2 = tempfile.NamedTemporaryFile("w+b")
 
         buf1.write(b"0" * 1024**2)
         buf1.seek(0)
@@ -105,7 +107,7 @@ class ResourcesTestCase(TestCase):
         path = posixpath.join(self.path, "zeroes.txt")
 
         self.yadisk.upload(buf1, path, overwrite=True, n_retries=50)
-        self.yadisk.download(path, buf2, n_retries=50)
+        self.yadisk.download(path, buf2.name, n_retries=50)
         self.yadisk.remove(path, permanently=True)
 
         buf1.seek(0)
