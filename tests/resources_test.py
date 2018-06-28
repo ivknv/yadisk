@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import requests
 import random
 import tempfile
@@ -8,8 +9,6 @@ import tempfile
 import posixpath
 from unittest import TestCase
 from io import BytesIO
-
-from . import config
 
 import yadisk.settings
 
@@ -29,10 +28,19 @@ def patched_send(self, *args, **kwargs):
 
 requests.Session.send = patched_send
 
+if not os.environ.get("PYTHON_YADISK_APP_TOKEN"):
+    raise ValueError("Environment variable PYTHON_YADISK_APP_TOKEN must be set")
+
+if not os.environ.get("PYTHON_YADISK_TEST_ROOT"):
+    raise ValueError("Environment variable PYTHON_YADISK_TEST_ROOT must be set")
+
 class ResourcesTestCase(TestCase):
     def setUp(self):
-        self.yadisk = yadisk.YaDisk(config.ID, config.SECRET, config.TOKEN)
-        self.path = config.PATH
+        self.yadisk = yadisk.YaDisk(os.environ.get("PYTHON_YADISK_APP_ID"),
+                                    os.environ.get("PYTHON_YADISK_APP_SECRET"),
+                                    os.environ.get("PYTHON_YADISK_APP_TOKEN"))
+
+        self.path = os.environ.get("PYTHON_YADISK_TEST_ROOT")
 
     def test_get_meta(self):
        self.assertIsInstance(self.yadisk.get_meta(self.path), yadisk.objects.ResourceObject)
