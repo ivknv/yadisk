@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 __all__ = ["DEFAULT_TIMEOUT", "DEFAULT_N_RETRIES", "DEFAULT_UPLOAD_TIMEOUT",
