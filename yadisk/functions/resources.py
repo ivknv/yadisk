@@ -168,6 +168,7 @@ def get_meta(session, path, **kwargs):
         :param offset: number of children resources to be skipped in the response
         :param preview_size: size of the file preview
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+        :param sort: `str`, field to be used as a key to sort children resources
         :param fields: list of keys to be included in the response
 
         :returns: :any:`ResourceObject`
@@ -407,6 +408,7 @@ def get_trash_meta(session, path, **kwargs):
         :param offset: number of children resources to be skipped in the response
         :param preview_size: size of the file preview
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+        :param sort: `str`, field to be used as a key to sort children resources
         :param fields: list of keys to be included in the response
 
         :returns: :any:`TrashResourceObject`
@@ -551,7 +553,7 @@ def get_public_meta(session, public_key, **kwargs):
         :param public_key: public key or public URL of the resource
         :param offset: offset from the beginning of the list of nested resources
         :param limit: maximum number of nested elements to be included in the list
-        :param sort: key to sort by
+        :param sort: `str`, field to be used as a key to sort children resources
         :param preview_size: file preview size
         :param preview_crop: `bool`, allow preview crop
         :param fields: list of keys to be included in the response
@@ -739,7 +741,10 @@ def get_files(session, **kwargs):
         :param offset: offset from the beginning of the list
         :param limit: number of list elements to be included
         :param media_type: type of files to include in the list
-        :param sort: sort type
+        :param sort: `str`, field to be used as a key to sort children resources
+        :param preview_size: size of the file preview
+        :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+        :param fields: list of keys to be included in the response
 
         :returns: generator of :any:`ResourceObject`
     """

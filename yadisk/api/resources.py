@@ -126,6 +126,7 @@ class GetTrashRequest(APIRequest):
         :param offset: number of children resources to be skipped in the response
         :param preview_size: size of the file preview
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+        :param sort: `str`, field to be used as a key to sort children resources
         :param fields: list of keys to be included in the response
 
         :returns: :any:`TrashResourceObject`
@@ -344,6 +345,7 @@ class GetMetaRequest(APIRequest):
         :param offset: number of children resources to be skipped in the response
         :param preview_size: size of the file preview
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+        :param sort: `str`, field to be used as a key to sort children resources
         :param fields: list of keys to be included in the response
 
         :returns: :any:`ResourceObject`
@@ -353,16 +355,19 @@ class GetMetaRequest(APIRequest):
     method = "GET"
 
     def __init__(self, session, path, limit=None, offset=None,
-                 preview_size=None, preview_crop=None, fields=None, **kwargs):
+                 preview_size=None, preview_crop=None, sort=None,
+                 fields=None, **kwargs):
         APIRequest.__init__(self, session,
                             {"path":         path,
                              "limit":        limit,
                              "offset":       offset,
                              "preview_size": preview_size,
                              "preview_crop": preview_crop,
+                             "sort":         sort,
                              "fields":       fields}, **kwargs)
 
-    def process_args(self, path, limit, offset, preview_size, preview_crop, fields):
+    def process_args(self, path, limit, offset, preview_size,
+                     preview_crop, sort, fields):
         self.params["path"] = path
 
         if limit is not None:
@@ -376,6 +381,9 @@ class GetMetaRequest(APIRequest):
 
         if preview_crop is not None:
             self.params["preview_crop"] = "true" if preview_crop else "false"
+
+        if sort is not None:
+            self.params["sort"] = sort
 
         if fields is not None:
             sub_map = {"embedded": "_embedded"}
@@ -599,7 +607,7 @@ class GetPublicMetaRequest(APIRequest):
         :param public_key: public key or public URL of the resource
         :param offset: offset from the beginning of the list of nested resources
         :param limit: maximum number of nested elements to be included in the list
-        :param sort: key to sort by
+        :param sort: `str`, field to be used as a key to sort children resources
         :param preview_size: file preview size
         :param preview_crop: `bool`, allow preview crop
         :param fields: list of keys to be included in the response
@@ -725,7 +733,10 @@ class FilesRequest(APIRequest):
         :param offset: offset from the beginning of the list
         :param limit: number of list elements to be included
         :param media_type: type of files to include in the list
-        :param sort: sort type
+        :param sort: `str`, field to be used as a key to sort children resources
+        :param preview_size: size of the file preview
+        :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+        :param fields: list of keys to be included in the response
 
         :returns: :any:`FilesResourceListObject`
     """

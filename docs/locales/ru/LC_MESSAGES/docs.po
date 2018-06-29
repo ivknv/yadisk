@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-29 20:15+0500\n"
+"POT-Creation-Date: 2018-06-29 21:52+0500\n"
 "PO-Revision-Date: 2018-01-20 15:41+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -387,10 +387,11 @@ msgid "forces the operation to be executed asynchronously"
 msgstr "заставляет выполнять операцию асинхронно"
 
 #: of yadisk.YaDisk.copy:10 yadisk.YaDisk.get_disk_info:3
-#: yadisk.YaDisk.get_download_link:4 yadisk.YaDisk.get_last_uploaded:7
-#: yadisk.YaDisk.get_meta:8 yadisk.YaDisk.get_operation_status:4
+#: yadisk.YaDisk.get_download_link:4 yadisk.YaDisk.get_files:9
+#: yadisk.YaDisk.get_last_uploaded:7 yadisk.YaDisk.get_meta:9
+#: yadisk.YaDisk.get_operation_status:4
 #: yadisk.YaDisk.get_public_download_link:4 yadisk.YaDisk.get_public_meta:9
-#: yadisk.YaDisk.get_public_resources:8 yadisk.YaDisk.get_trash_meta:8
+#: yadisk.YaDisk.get_public_resources:8 yadisk.YaDisk.get_trash_meta:9
 #: yadisk.YaDisk.get_upload_link:5 yadisk.YaDisk.listdir:8
 #: yadisk.YaDisk.mkdir:4 yadisk.YaDisk.move:7 yadisk.YaDisk.patch:5
 #: yadisk.YaDisk.public_listdir:8 yadisk.YaDisk.publish:4
@@ -402,12 +403,13 @@ msgstr "заставляет выполнять операцию асинхро�
 #: yadisk.api.operations.GetOperationStatusRequest:5
 #: yadisk.api.resources.CopyRequest:9 yadisk.api.resources.DeleteRequest:8
 #: yadisk.api.resources.DeleteTrashRequest:6
+#: yadisk.api.resources.FilesRequest:10
 #: yadisk.api.resources.GetDownloadLinkRequest:5
-#: yadisk.api.resources.GetMetaRequest:9
+#: yadisk.api.resources.GetMetaRequest:10
 #: yadisk.api.resources.GetPublicDownloadLinkRequest:5
 #: yadisk.api.resources.GetPublicMetaRequest:10
 #: yadisk.api.resources.GetPublicResourcesRequest:9
-#: yadisk.api.resources.GetTrashRequest:8
+#: yadisk.api.resources.GetTrashRequest:9
 #: yadisk.api.resources.GetUploadLinkRequest:6
 #: yadisk.api.resources.LastUploadedRequest:8
 #: yadisk.api.resources.MkdirRequest:4 yadisk.api.resources.MoveRequest:8
@@ -420,12 +422,13 @@ msgstr "заставляет выполнять операцию асинхро�
 #: yadisk.functions.operations.get_operation_status:5
 #: yadisk.functions.resources.copy:11
 #: yadisk.functions.resources.get_download_link:5
+#: yadisk.functions.resources.get_files:10
 #: yadisk.functions.resources.get_last_uploaded:8
-#: yadisk.functions.resources.get_meta:9
+#: yadisk.functions.resources.get_meta:10
 #: yadisk.functions.resources.get_public_download_link:5
 #: yadisk.functions.resources.get_public_meta:10
 #: yadisk.functions.resources.get_public_resources:9
-#: yadisk.functions.resources.get_trash_meta:9
+#: yadisk.functions.resources.get_trash_meta:10
 #: yadisk.functions.resources.get_upload_link:6
 #: yadisk.functions.resources.listdir:9 yadisk.functions.resources.mkdir:5
 #: yadisk.functions.resources.move:8 yadisk.functions.resources.patch:6
@@ -629,13 +632,58 @@ msgstr "максимальное количество элементов спи�
 msgid "type of files to include in the list"
 msgstr "тип файлов, которые будут включены в список"
 
-#: of yadisk.YaDisk.get_files:6 yadisk.api.resources.FilesRequest:7
-#: yadisk.functions.resources.get_files:7
-msgid "sort type"
-msgstr "тип сортировки"
+#: of yadisk.YaDisk.get_files:6 yadisk.YaDisk.get_meta:8
+#: yadisk.YaDisk.get_public_meta:6 yadisk.YaDisk.get_trash_meta:8
+#: yadisk.api.resources.FilesRequest:7 yadisk.api.resources.GetMetaRequest:9
+#: yadisk.api.resources.GetPublicMetaRequest:7
+#: yadisk.api.resources.GetTrashRequest:8
+#: yadisk.functions.resources.get_files:7 yadisk.functions.resources.get_meta:9
+#: yadisk.functions.resources.get_public_meta:7
+#: yadisk.functions.resources.get_trash_meta:9
+msgid "`str`, field to be used as a key to sort children resources"
+msgstr "`str`, поле использумое для сортировки вложенных ресурсов"
 
-#: of yadisk.YaDisk.get_files:8 yadisk.YaDisk.listdir:10
-#: yadisk.functions.resources.get_files:9 yadisk.functions.resources.listdir:11
+#: of yadisk.YaDisk.get_files:7 yadisk.YaDisk.get_last_uploaded:5
+#: yadisk.YaDisk.get_meta:6 yadisk.YaDisk.get_public_resources:5
+#: yadisk.YaDisk.get_trash_meta:6 yadisk.YaDisk.listdir:6
+#: yadisk.YaDisk.public_listdir:6 yadisk.YaDisk.trash_listdir:6
+#: yadisk.api.resources.FilesRequest:8 yadisk.api.resources.GetMetaRequest:7
+#: yadisk.api.resources.GetPublicResourcesRequest:6
+#: yadisk.api.resources.GetTrashRequest:6
+#: yadisk.api.resources.LastUploadedRequest:6
+#: yadisk.functions.resources.get_files:8
+#: yadisk.functions.resources.get_last_uploaded:6
+#: yadisk.functions.resources.get_meta:7
+#: yadisk.functions.resources.get_public_resources:6
+#: yadisk.functions.resources.get_trash_meta:7
+#: yadisk.functions.resources.listdir:7
+#: yadisk.functions.resources.public_listdir:7
+#: yadisk.functions.resources.trash_listdir:7
+msgid "size of the file preview"
+msgstr "размер превью файла"
+
+#: of yadisk.YaDisk.get_files:8 yadisk.YaDisk.get_last_uploaded:6
+#: yadisk.YaDisk.get_meta:7 yadisk.YaDisk.get_public_resources:6
+#: yadisk.YaDisk.get_trash_meta:7 yadisk.YaDisk.listdir:7
+#: yadisk.YaDisk.public_listdir:7 yadisk.YaDisk.trash_listdir:7
+#: yadisk.api.resources.FilesRequest:9 yadisk.api.resources.GetMetaRequest:8
+#: yadisk.api.resources.GetPublicResourcesRequest:7
+#: yadisk.api.resources.GetTrashRequest:7
+#: yadisk.api.resources.LastUploadedRequest:7
+#: yadisk.functions.resources.get_files:9
+#: yadisk.functions.resources.get_last_uploaded:7
+#: yadisk.functions.resources.get_meta:8
+#: yadisk.functions.resources.get_public_resources:7
+#: yadisk.functions.resources.get_trash_meta:8
+#: yadisk.functions.resources.listdir:8
+#: yadisk.functions.resources.public_listdir:8
+#: yadisk.functions.resources.trash_listdir:8
+msgid "`bool`, cut the preview to the size specified in the `preview_size`"
+msgstr "`bool`, обрезает превью согласно размеру, заданному в `preview_size`"
+
+#: of yadisk.YaDisk.get_files:11 yadisk.YaDisk.listdir:10
+#: yadisk.functions.resources.get_files:12
+#: yadisk.functions.resources.listdir:11
 msgid "generator of :any:`ResourceObject`"
 msgstr "генератор :any:`ResourceObject`"
 
@@ -653,40 +701,6 @@ msgstr ""
 #: yadisk.functions.resources.get_public_resources:5
 msgid "maximum number of elements in the list"
 msgstr "максимальное число элементов в списке"
-
-#: of yadisk.YaDisk.get_last_uploaded:5 yadisk.YaDisk.get_meta:6
-#: yadisk.YaDisk.get_public_resources:5 yadisk.YaDisk.get_trash_meta:6
-#: yadisk.YaDisk.listdir:6 yadisk.YaDisk.public_listdir:6
-#: yadisk.YaDisk.trash_listdir:6 yadisk.api.resources.GetMetaRequest:7
-#: yadisk.api.resources.GetPublicResourcesRequest:6
-#: yadisk.api.resources.GetTrashRequest:6
-#: yadisk.api.resources.LastUploadedRequest:6
-#: yadisk.functions.resources.get_last_uploaded:6
-#: yadisk.functions.resources.get_meta:7
-#: yadisk.functions.resources.get_public_resources:6
-#: yadisk.functions.resources.get_trash_meta:7
-#: yadisk.functions.resources.listdir:7
-#: yadisk.functions.resources.public_listdir:7
-#: yadisk.functions.resources.trash_listdir:7
-msgid "size of the file preview"
-msgstr "размер превью файла"
-
-#: of yadisk.YaDisk.get_last_uploaded:6 yadisk.YaDisk.get_meta:7
-#: yadisk.YaDisk.get_public_resources:6 yadisk.YaDisk.get_trash_meta:7
-#: yadisk.YaDisk.listdir:7 yadisk.YaDisk.public_listdir:7
-#: yadisk.YaDisk.trash_listdir:7 yadisk.api.resources.GetMetaRequest:8
-#: yadisk.api.resources.GetPublicResourcesRequest:7
-#: yadisk.api.resources.GetTrashRequest:7
-#: yadisk.api.resources.LastUploadedRequest:7
-#: yadisk.functions.resources.get_last_uploaded:7
-#: yadisk.functions.resources.get_meta:8
-#: yadisk.functions.resources.get_public_resources:7
-#: yadisk.functions.resources.get_trash_meta:8
-#: yadisk.functions.resources.listdir:8
-#: yadisk.functions.resources.public_listdir:8
-#: yadisk.functions.resources.trash_listdir:8
-msgid "`bool`, cut the preview to the size specified in the `preview_size`"
-msgstr "`bool`, обрезает превью согласно размеру, заданному в `preview_size`"
 
 #: of yadisk.YaDisk.get_last_uploaded:9
 #: yadisk.functions.resources.get_last_uploaded:10
@@ -719,9 +733,9 @@ msgstr "количество ресурсов в папке, которые бу
 msgid "number of children resources to be skipped in the response"
 msgstr "количество ресурсов в папке, которые будут пропущены"
 
-#: of yadisk.YaDisk.get_meta:10 yadisk.YaDisk.patch:7
-#: yadisk.api.resources.GetMetaRequest:11 yadisk.api.resources.PatchRequest:8
-#: yadisk.functions.resources.get_meta:11 yadisk.functions.resources.patch:8
+#: of yadisk.YaDisk.get_meta:11 yadisk.YaDisk.patch:7
+#: yadisk.api.resources.GetMetaRequest:12 yadisk.api.resources.PatchRequest:8
+#: yadisk.functions.resources.get_meta:12 yadisk.functions.resources.patch:8
 msgid ":any:`ResourceObject`"
 msgstr ""
 
@@ -756,12 +770,6 @@ msgstr "отступ от начала списка вложенных ресу�
 #: yadisk.functions.resources.get_public_meta:6
 msgid "maximum number of nested elements to be included in the list"
 msgstr "максимальное количество элементов списка вложенных ресурсов"
-
-#: of yadisk.YaDisk.get_public_meta:6
-#: yadisk.api.resources.GetPublicMetaRequest:7
-#: yadisk.functions.resources.get_public_meta:7
-msgid "key to sort by"
-msgstr "ключ по которму сортировать"
 
 #: of yadisk.YaDisk.get_public_meta:7
 #: yadisk.api.resources.GetPublicMetaRequest:8
@@ -856,8 +864,8 @@ msgstr "Получает мета-информацию о ресурсе кор�
 msgid "path to the trash resource"
 msgstr "путь к ресурсу корзины"
 
-#: of yadisk.YaDisk.get_trash_meta:10 yadisk.api.resources.GetTrashRequest:10
-#: yadisk.functions.resources.get_trash_meta:11
+#: of yadisk.YaDisk.get_trash_meta:11 yadisk.api.resources.GetTrashRequest:11
+#: yadisk.functions.resources.get_trash_meta:12
 msgid ":any:`TrashResourceObject`"
 msgstr ""
 
@@ -2476,7 +2484,7 @@ msgid ""
 "directories)."
 msgstr "Запрос для получения плоского списка всех файлов."
 
-#: of yadisk.api.resources.FilesRequest:9
+#: of yadisk.api.resources.FilesRequest:12
 msgid ":any:`FilesResourceListObject`"
 msgstr ""
 
@@ -2591,4 +2599,10 @@ msgstr ""
 
 #~ msgid "Bases: :class:`yadisk.api.APIRequest.APIRequest`"
 #~ msgstr ""
+
+#~ msgid "sort type"
+#~ msgstr "тип сортировки"
+
+#~ msgid "key to sort by"
+#~ msgstr "ключ по которму сортировать"
 
