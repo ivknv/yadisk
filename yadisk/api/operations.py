@@ -6,7 +6,7 @@ try:
 except ImportError:
     from urlparse import urlparse, parse_qs
 
-from .APIRequest import APIRequest
+from .api_request import APIRequest
 from ..objects import OperationStatusObject
 
 __all__ = ["GetOperationStatusRequest"]

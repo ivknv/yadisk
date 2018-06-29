@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # pylint: disable=wildcard-import
-from .APIRequest import *
+from .api_request import *
 from .disk import *
 from .resources import *
 from .operations import *

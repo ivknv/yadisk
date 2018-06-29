@@ -4,7 +4,7 @@
 import collections
 import json
 
-from .APIRequest import APIRequest
+from .api_request import APIRequest
 from ..objects import LinkObject, PublicResourcesListObject, TrashResourceObject
 from ..objects import FilesResourceListObject, LastUploadedResourceListObject
 from ..objects import ResourceObject, ResourceUploadLinkObject, PublicResourceObject

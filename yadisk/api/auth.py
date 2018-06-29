@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from .APIRequest import APIRequest
+from .api_request import APIRequest
 from ..objects import TokenObject, TokenRevokeStatusObject
 
 __all__ = ["RefreshTokenRequest", "RevokeTokenRequest", "GetTokenRequest"]

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from .YaDiskObject import YaDiskObject
+from .yadisk_object import YaDiskObject
 from .disk import UserObject
 from ..common import typed_list, yandex_date
 
