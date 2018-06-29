@@ -4,7 +4,7 @@ from ..api import DiskInfoRequest
 
 __all__ = ["get_disk_info"]
 
-def get_disk_info(session, *args, **kwargs):
+def get_disk_info(session, **kwargs):
     """
         Get disk information.
 
@@ -14,7 +14,7 @@ def get_disk_info(session, *args, **kwargs):
         :returns: :any:`DiskInfoObject`
     """
 
-    request = DiskInfoRequest(session, *args, **kwargs)
+    request = DiskInfoRequest(session, **kwargs)
     request.send()
 
     return request.process()

@@ -14,7 +14,7 @@ from ..exceptions import UnauthorizedError
 __all__ = ["check_token", "get_auth_url", "get_code_url", "get_token",
            "refresh_token", "revoke_token"]
 
-def check_token(session, *args, **kwargs):
+def check_token(session, **kwargs):
     """
         Check whether the token is valid.
 
@@ -24,14 +24,12 @@ def check_token(session, *args, **kwargs):
     """
 
     try:
-        get_disk_info(session, *args, **kwargs)
+        get_disk_info(session, **kwargs)
         return True
     except UnauthorizedError:
         return False
 
-def get_auth_url(client_id, type="code", device_id=None, device_name=None, display="popup",
-                 login_hint=None, scope=None, optional_scope=None, force_confirm=True,
-                 state=None):
+def get_auth_url(client_id, **kwargs):
     """
         Get authentication URL for the user to go to.
 
@@ -49,6 +47,16 @@ def get_auth_url(client_id, type="code", device_id=None, device_name=None, displ
 
         :returns: authentication URL
     """
+
+    type           = kwargs.get("type")
+    device_id      = kwargs.get("device_id")
+    device_name    = kwargs.get("device_name")
+    display        = kwargs.get("display", "popup")
+    login_hint     = kwargs.get("login_hint")
+    scope          = kwargs.get("scope")
+    optional_scope = kwargs.get("optional_scope")
+    force_confirm  = kwargs.get("force_confirm", True)
+    state          = kwargs.get("state")
 
     if type not in {"code", "token"}:
         raise ValueError("type must be either 'code' or 'token'")
@@ -78,7 +86,7 @@ def get_auth_url(client_id, type="code", device_id=None, device_name=None, displ
 
     return "https://oauth.yandex.ru/authorize?" + urlencode(params)
 
-def get_code_url(client_id, *args, **kwargs):
+def get_code_url(client_id, **kwargs):
     """
         Get the URL for the user to get the confirmation code.
         The confirmation code can later be used to get the token.
@@ -97,9 +105,12 @@ def get_code_url(client_id, *args, **kwargs):
         :returns: authentication URL
     """
 
-    return get_auth_url(client_id, type="code", *args, **kwargs)
+    kwargs = dict(kwargs)
+    kwargs["type"] = "code"
 
-def get_token(code, client_id, client_secret, *args, **kwargs):
+    return get_auth_url(client_id, **kwargs)
+
+def get_token(code, client_id, client_secret, **kwargs):
     """
         Get a new token.
 
@@ -112,12 +123,12 @@ def get_token(code, client_id, client_secret, *args, **kwargs):
     """
 
     with requests.Session() as session:
-        request = GetTokenRequest(session, code, client_id, client_secret, *args, **kwargs)
+        request = GetTokenRequest(session, code, client_id, client_secret, **kwargs)
         request.send()
 
         return request.process()
 
-def refresh_token(refresh_token, client_id, client_secret, *args, **kwargs):
+def refresh_token(refresh_token, client_id, client_secret, **kwargs):
     """
         Refresh an existing token.
 
@@ -129,12 +140,13 @@ def refresh_token(refresh_token, client_id, client_secret, *args, **kwargs):
     """
 
     with requests.Session() as session:
-        request = RefreshTokenRequest(session, refresh_token, client_id, client_secret, *args, **kwargs)
+        request = RefreshTokenRequest(session, refresh_token,
+                                      client_id, client_secret, **kwargs)
         request.send()
 
         return request.process()
 
-def revoke_token(token, client_id, client_secret, *args, **kwargs):
+def revoke_token(token, client_id, client_secret, **kwargs):
     """
         Revoke the token.
 
@@ -146,7 +158,8 @@ def revoke_token(token, client_id, client_secret, *args, **kwargs):
     """
 
     with requests.Session() as session:
-        request = RevokeTokenRequest(session, token, client_id, client_secret, *args, **kwargs)
+        request = RevokeTokenRequest(session, token,
+                                     client_id, client_secret, **kwargs)
         request.send()
 
         return request.process()

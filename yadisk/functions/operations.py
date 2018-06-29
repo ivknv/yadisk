@@ -4,7 +4,7 @@ from ..api import GetOperationStatusRequest
 
 __all__ = ["get_operation_status"]
 
-def get_operation_status(session, operation_id, *args, **kwargs):
+def get_operation_status(session, operation_id, **kwargs):
     """
         Get operation status.
 
@@ -15,7 +15,7 @@ def get_operation_status(session, operation_id, *args, **kwargs):
         :returns: `str`
     """
 
-    request = GetOperationStatusRequest(session, operation_id, *args, **kwargs)
+    request = GetOperationStatusRequest(session, operation_id, **kwargs)
     request.send()
 
     return request.process().status

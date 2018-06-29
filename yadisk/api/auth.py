@@ -20,10 +20,10 @@ class RefreshTokenRequest(APIRequest):
     url = "https://oauth.yandex.ru/token"
     method = "POST"
 
-    def __init__(self, session, refresh_token, client_id, client_secret, *args, **kwargs):
+    def __init__(self, session, refresh_token, client_id, client_secret, **kwargs):
         APIRequest.__init__(self, session, {"refresh_token": refresh_token,
                                             "client_id":     client_id,
-                                            "client_secret": client_secret}, *args, **kwargs)
+                                            "client_secret": client_secret}, **kwargs)
 
     def process_args(self, refresh_token, client_id, client_secret):
         self.data["grant_type"] = "refresh_token"
@@ -49,10 +49,10 @@ class RevokeTokenRequest(APIRequest):
     url = "https://oauth.yandex.ru/revoke_token"
     method = "POST"
 
-    def __init__(self, session, token, client_id, client_secret, *args, **kwargs):
+    def __init__(self, session, token, client_id, client_secret, **kwargs):
         APIRequest.__init__(self, session, {"token":         token,
                                             "client_id":     client_id,
-                                            "client_secret": client_secret}, *args, **kwargs)
+                                            "client_secret": client_secret}, **kwargs)
 
     def process_args(self, token, client_id, client_secret):
         self.data["access_token"] = token
@@ -79,12 +79,12 @@ class GetTokenRequest(APIRequest):
     method = "POST"
 
     def __init__(self, session, code, client_id, client_secret,
-                 device_id=None, device_name=None, *args, **kwargs):
+                 device_id=None, device_name=None, **kwargs):
         APIRequest.__init__(self, session, {"code":          code,
                                             "client_id":     client_id,
                                             "client_secret": client_secret,
                                             "device_id":     device_id,
-                                            "device_name":   device_name}, *args, **kwargs)
+                                            "device_name":   device_name}, **kwargs)
 
     def process_args(self, code, client_id, client_secret, device_id, device_name):
         self.data["grant_type"] = "authorization_code"

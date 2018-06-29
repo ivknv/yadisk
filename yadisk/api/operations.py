@@ -23,7 +23,7 @@ class GetOperationStatusRequest(APIRequest):
 
     method = "GET"
 
-    def __init__(self, session, operation_id, fields=None, *args, **kwargs):
+    def __init__(self, session, operation_id, fields=None, **kwargs):
         if operation_id.startswith("https://"):
             parsed_url = urlparse(operation_id)
             self.url = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path
@@ -36,7 +36,7 @@ class GetOperationStatusRequest(APIRequest):
         else:
             self.url = "https://cloud-api.yandex.net/v1/disk/operations/%s" % (operation_id,)
 
-        APIRequest.__init__(self, session, {"fields": fields}, *args, **kwargs)
+        APIRequest.__init__(self, session, {"fields": fields}, **kwargs)
 
     def process_args(self, fields):
         if fields is not None:

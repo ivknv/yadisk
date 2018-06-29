@@ -86,7 +86,7 @@ class YaDisk(object):
 
         return self._get_session(token, threading.get_ident())
 
-    def get_auth_url(self, *args, **kwargs):
+    def get_auth_url(self, **kwargs):
         """
             Get authentication URL for the user to go to.
 
@@ -104,9 +104,9 @@ class YaDisk(object):
             :returns: authentication URL
         """
 
-        return functions.get_auth_url(self.id, *args, **kwargs)
+        return functions.get_auth_url(self.id, **kwargs)
 
-    def get_code_url(self, *args, **kwargs):
+    def get_code_url(self, **kwargs):
         """
             Get the URL for the user to get the confirmation code.
             The confirmation code can later be used to get the token.
@@ -124,9 +124,9 @@ class YaDisk(object):
             :returns: authentication URL
         """
 
-        return functions.get_code_url(self.id, *args, **kwargs)
+        return functions.get_code_url(self.id, **kwargs)
 
-    def get_token(self, code, *args, **kwargs):
+    def get_token(self, code, **kwargs):
         """
             Get a new token.
 
@@ -136,9 +136,9 @@ class YaDisk(object):
             :returns: :any:`TokenObject`
         """
 
-        return functions.get_token(code, self.id, self.secret, *args, **kwargs)
+        return functions.get_token(code, self.id, self.secret, **kwargs)
 
-    def refresh_token(self, refresh_token, *args, **kwargs):
+    def refresh_token(self, refresh_token, **kwargs):
         """
             Refresh an existing token.
 
@@ -147,9 +147,10 @@ class YaDisk(object):
             :returns: :any:`TokenObject`
         """
 
-        return functions.refresh_token(refresh_token, self.id, self.secret, *args, **kwargs)
+        return functions.refresh_token(refresh_token, self.id, self.secret,
+                                       **kwargs)
 
-    def revoke_token(self, token=None, *args, **kwargs):
+    def revoke_token(self, token=None, **kwargs):
         """
             Revoke the token.
 
@@ -161,9 +162,9 @@ class YaDisk(object):
         if token is None:
             token = self.token
 
-        return functions.revoke_token(token, self.id, self.secret, *args, **kwargs)
+        return functions.revoke_token(token, self.id, self.secret, **kwargs)
 
-    def get_disk_info(self, *args, **kwargs):
+    def get_disk_info(self, **kwargs):
         """
             Get disk information.
 
@@ -172,9 +173,9 @@ class YaDisk(object):
             :returns: :any:`DiskInfoObject`
         """
 
-        return functions.get_disk_info(self.get_session(), *args, **kwargs)
+        return functions.get_disk_info(self.get_session(), **kwargs)
 
-    def get_meta(self, path, *args, **kwargs):
+    def get_meta(self, path, **kwargs):
         """
             Get meta information about a file/directory.
 
@@ -188,9 +189,9 @@ class YaDisk(object):
             :returns: :any:`ResourceObject`
         """
 
-        return functions.get_meta(self.get_session(), path, *args, **kwargs)
+        return functions.get_meta(self.get_session(), path, **kwargs)
 
-    def exists(self, path, *args, **kwargs):
+    def exists(self, path, **kwargs):
         """
             Check whether `path` exists.
 
@@ -199,9 +200,9 @@ class YaDisk(object):
             :returns: `bool`
         """
 
-        return functions.exists(self.get_session(), path, *args, **kwargs)
+        return functions.exists(self.get_session(), path, **kwargs)
 
-    def get_type(self, path, *args, **kwargs):
+    def get_type(self, path, **kwargs):
         """
             Get resource type.
 
@@ -210,9 +211,9 @@ class YaDisk(object):
             :returns: "file" or "dir"
         """
 
-        return functions.get_type(self.get_session(), path, *args, **kwargs)
+        return functions.get_type(self.get_session(), path, **kwargs)
 
-    def is_file(self, path, *args, **kwargs):
+    def is_file(self, path, **kwargs):
         """
             Check whether `path` is a file.
 
@@ -221,9 +222,9 @@ class YaDisk(object):
             :returns: `True` if `path` is a file, `False` otherwise (even if it doesn't exist)
         """
 
-        return functions.is_file(self.get_session(), path, *args, **kwargs)
+        return functions.is_file(self.get_session(), path, **kwargs)
 
-    def is_dir(self, path, *args, **kwargs):
+    def is_dir(self, path, **kwargs):
         """
             Check whether `path` is a directory.
 
@@ -232,9 +233,9 @@ class YaDisk(object):
             :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
         """
 
-        return functions.is_dir(self.get_session(), path, *args, **kwargs)
+        return functions.is_dir(self.get_session(), path, **kwargs)
 
-    def listdir(self, path, *args, **kwargs):
+    def listdir(self, path, **kwargs):
         """
             Get contents of `path`.
 
@@ -248,9 +249,9 @@ class YaDisk(object):
             :returns: generator of :any:`ResourceObject`
         """
 
-        return functions.listdir(self.get_session(), path, *args, **kwargs)
+        return functions.listdir(self.get_session(), path, **kwargs)
 
-    def get_upload_link(self, path, *args, **kwargs):
+    def get_upload_link(self, path, **kwargs):
         """
             Get a link to upload the file using the PUT request.
 
@@ -261,9 +262,9 @@ class YaDisk(object):
             :returns: `str`
         """
 
-        return functions.get_upload_link(self.get_session(), path, *args, **kwargs)
+        return functions.get_upload_link(self.get_session(), path, **kwargs)
 
-    def upload(self, path_or_file, dst_path, *args, **kwargs):
+    def upload(self, path_or_file, dst_path, **kwargs):
         """
             Upload a file to disk.
 
@@ -274,9 +275,9 @@ class YaDisk(object):
             :param fields: list of keys to be included in the response
         """
 
-        functions.upload(self.get_session(), path_or_file, dst_path, *args, **kwargs)
+        functions.upload(self.get_session(), path_or_file, dst_path, **kwargs)
 
-    def get_download_link(self, path, *args, **kwargs):
+    def get_download_link(self, path, **kwargs):
         """
             Get a download link for a file (or a directory).
 
@@ -286,9 +287,9 @@ class YaDisk(object):
             :returns: `str`
         """
 
-        return functions.get_download_link(self.get_session(), path, *args, **kwargs)
+        return functions.get_download_link(self.get_session(), path, **kwargs)
 
-    def download(self, src_path, path_or_file, *args, **kwargs):
+    def download(self, src_path, path_or_file, **kwargs):
         """
             Download the file.
 
@@ -296,9 +297,9 @@ class YaDisk(object):
             :param path_or_file: destination path or file-like object
         """
 
-        functions.download(self.get_session(), src_path, path_or_file, *args, **kwargs)
+        functions.download(self.get_session(), src_path, path_or_file, **kwargs)
 
-    def remove(self, path, *args, **kwargs):
+    def remove(self, path, **kwargs):
         """
             Remove the resource.
 
@@ -311,9 +312,9 @@ class YaDisk(object):
             :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
-        return functions.remove(self.get_session(), path, *args, **kwargs)
+        return functions.remove(self.get_session(), path, **kwargs)
 
-    def mkdir(self, path, *args, **kwargs):
+    def mkdir(self, path, **kwargs):
         """
             Create a new directory.
 
@@ -323,9 +324,9 @@ class YaDisk(object):
             :returns: :any:`LinkObject`
         """
 
-        return functions.mkdir(self.get_session(), path, *args, **kwargs)
+        return functions.mkdir(self.get_session(), path, **kwargs)
 
-    def check_token(self, token=None, *args, **kwargs):
+    def check_token(self, token=None, **kwargs):
         """
             Check whether the token is valid.
 
@@ -334,9 +335,9 @@ class YaDisk(object):
             :returns: `bool`
         """
 
-        return functions.check_token(self.get_session(token), *args, **kwargs)
+        return functions.check_token(self.get_session(token), **kwargs)
 
-    def get_trash_meta(self, path, *args, **kwargs):
+    def get_trash_meta(self, path, **kwargs):
         """
             Get meta information about a trash resource.
 
@@ -350,9 +351,9 @@ class YaDisk(object):
             :returns: :any:`TrashResourceObject`
         """
 
-        return functions.get_trash_meta(self.get_session(), path, *args, **kwargs)
+        return functions.get_trash_meta(self.get_session(), path, **kwargs)
 
-    def trash_exists(self, path, *args, **kwargs):
+    def trash_exists(self, path, **kwargs):
         """
             Check whether the trash resource at `path` exists.
 
@@ -361,9 +362,9 @@ class YaDisk(object):
             :returns: `bool`
         """
 
-        return functions.trash_exists(self.get_session(), path, *args, **kwargs)
+        return functions.trash_exists(self.get_session(), path, **kwargs)
 
-    def get_operation_status(self, operation_id, *args, **kwargs):
+    def get_operation_status(self, operation_id, **kwargs):
         """
             Get operation status.
 
@@ -373,9 +374,10 @@ class YaDisk(object):
             :returns: `str`
         """
 
-        return functions.get_operation_status(self.get_session(), operation_id, *args, **kwargs)
+        return functions.get_operation_status(self.get_session(), operation_id,
+                                              **kwargs)
 
-    def copy(self, src_path, dst_path, *args, **kwargs):
+    def copy(self, src_path, dst_path, **kwargs):
         """
             Copy `src_path` to `dst_path`.
             If the operation is performed asynchronously, returns the link to the operation,
@@ -391,9 +393,9 @@ class YaDisk(object):
             :returns: :any:`LinkObject` or :any:`OperationLinkObject`
         """
 
-        return functions.copy(self.get_session(), src_path, dst_path, *args, **kwargs)
+        return functions.copy(self.get_session(), src_path, dst_path, **kwargs)
 
-    def restore_trash(self, path, *args, **kwargs):
+    def restore_trash(self, path, dst_path=None, **kwargs):
         """
             Restore a trash resource.
             Returns a link to the newly created resource or a link to the asynchronous operation.
@@ -407,9 +409,9 @@ class YaDisk(object):
             :returns: :any:`LinkObject` or :any:`OperationLinkObject`
         """
 
-        return functions.restore_trash(self.get_session(), path, *args, **kwargs)
+        return functions.restore_trash(self.get_session(), path, dst_path, **kwargs)
 
-    def move(self, src_path, dst_path, *args, **kwargs):
+    def move(self, src_path, dst_path, **kwargs):
         """
             Move `src_path` to `dst_path`.
 
@@ -422,9 +424,9 @@ class YaDisk(object):
             :returns: :any:`OperationLinkObject` or :any:`LinkObject`
         """
 
-        return functions.move(self.get_session(), src_path, dst_path, *args, **kwargs)
+        return functions.move(self.get_session(), src_path, dst_path, **kwargs)
 
-    def remove_trash(self, path, *args, **kwargs):
+    def remove_trash(self, path, **kwargs):
         """
             Remove a trash resource.
 
@@ -435,9 +437,9 @@ class YaDisk(object):
             :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
-        return functions.remove_trash(self.get_session(), path, *args, **kwargs)
+        return functions.remove_trash(self.get_session(), path, **kwargs)
 
-    def publish(self, path, *args, **kwargs):
+    def publish(self, path, **kwargs):
         """
             Make a resource public.
 
@@ -447,9 +449,9 @@ class YaDisk(object):
             :returns: :any:`LinkObject`, link to the resource
         """
 
-        return functions.publish(self.get_session(), path, *args, **kwargs)
+        return functions.publish(self.get_session(), path, **kwargs)
 
-    def unpublish(self, path, *args, **kwargs):
+    def unpublish(self, path, **kwargs):
         """
             Make a public resource private.
 
@@ -459,9 +461,9 @@ class YaDisk(object):
             :returns: :any:`LinkObject`, link to the resource
         """
 
-        return functions.unpublish(self.get_session(), path, *args, **kwargs)
+        return functions.unpublish(self.get_session(), path, **kwargs)
 
-    def save_to_disk(self, public_key, *args, **kwargs):
+    def save_to_disk(self, public_key, **kwargs):
         """
             Saves a public resource to the disk.
             Returns the link to the operation if it's performed asynchronously,
@@ -469,6 +471,7 @@ class YaDisk(object):
 
             :param public_key: public key or public URL of the resource
             :param name: filename of the saved resource
+            :param path: path to the copied resource in the public folder
             :param save_path: path to the destination directory (downloads directory by default)
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
@@ -476,9 +479,9 @@ class YaDisk(object):
             :returns: :any:`LinkObject` or :any:`OperationLinkObject`
         """
 
-        return functions.save_to_disk(self.get_session(), public_key, *args, **kwargs)
+        return functions.save_to_disk(self.get_session(), public_key, **kwargs)
 
-    def get_public_meta(self, public_key, *args, **kwargs):
+    def get_public_meta(self, public_key, **kwargs):
         """
             Get meta-information about a public resource.
 
@@ -493,9 +496,9 @@ class YaDisk(object):
             :returns: :any:`PublicResourceObject`
         """
 
-        return functions.get_public_meta(self.get_session(), public_key, *args, **kwargs)
+        return functions.get_public_meta(self.get_session(), public_key, **kwargs)
 
-    def public_exists(self, public_key, *args, **kwargs):
+    def public_exists(self, public_key, **kwargs):
         """
             Check whether the public resource exists.
 
@@ -504,9 +507,9 @@ class YaDisk(object):
             :returns: `bool`
         """
 
-        return functions.public_exists(self.get_session(), public_key, *args, **kwargs)
+        return functions.public_exists(self.get_session(), public_key, **kwargs)
 
-    def public_listdir(self, public_key, *args, **kwargs):
+    def public_listdir(self, public_key, **kwargs):
         """
             Get contents of a public directory.
 
@@ -520,9 +523,9 @@ class YaDisk(object):
             :returns: generator of :any:`PublicResourceObject`
         """
 
-        return functions.public_listdir(self.get_session(), public_key, *args, **kwargs)
+        return functions.public_listdir(self.get_session(), public_key, **kwargs)
 
-    def get_public_type(self, public_key, *args, **kwargs):
+    def get_public_type(self, public_key, **kwargs):
         """
             Get public resource type.
 
@@ -531,9 +534,9 @@ class YaDisk(object):
             :returns: "file" or "dir"
         """
 
-        return functions.get_public_type(self.get_session(), public_key, *args, **kwargs)
+        return functions.get_public_type(self.get_session(), public_key, **kwargs)
 
-    def is_public_dir(self, public_key, *args, **kwargs):
+    def is_public_dir(self, public_key, **kwargs):
         """
             Check whether `public_key` is a public directory.
 
@@ -542,9 +545,9 @@ class YaDisk(object):
             :returns: `True` if `public_key` is a directory, `False` otherwise (even if it doesn't exist)
         """
 
-        return functions.is_public_dir(self.get_session(), public_key, *args, **kwargs)
+        return functions.is_public_dir(self.get_session(), public_key, **kwargs)
 
-    def is_public_file(self, public_key, *args, **kwargs):
+    def is_public_file(self, public_key, **kwargs):
         """
             Check whether `public_key` is a public file.
 
@@ -553,9 +556,9 @@ class YaDisk(object):
             :returns: `True` if `public_key` is a file, `False` otherwise (even if it doesn't exist)
         """
 
-        return functions.is_public_file(self.get_session(), public_key, *args, **kwargs)
+        return functions.is_public_file(self.get_session(), public_key, **kwargs)
 
-    def trash_listdir(self, path, *args, **kwargs):
+    def trash_listdir(self, path, **kwargs):
         """
             Get contents of a trash resource.
 
@@ -569,9 +572,9 @@ class YaDisk(object):
             :returns: generator of :any:`TrashResourceObject`
         """
 
-        return functions.trash_listdir(self.get_session(), path, *args, **kwargs)
+        return functions.trash_listdir(self.get_session(), path, **kwargs)
 
-    def get_trash_type(self, path, *args, **kwargs):
+    def get_trash_type(self, path, **kwargs):
         """
             Get trash resource type.
 
@@ -580,9 +583,9 @@ class YaDisk(object):
             :returns: "file" or "dir"
         """
 
-        return functions.get_trash_type(self.get_session(), path, *args, **kwargs)
+        return functions.get_trash_type(self.get_session(), path, **kwargs)
 
-    def is_trash_dir(self, path, *args, **kwargs):
+    def is_trash_dir(self, path, **kwargs):
         """
             Check whether `path` is a trash directory.
 
@@ -591,9 +594,9 @@ class YaDisk(object):
             :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
         """
 
-        return functions.is_trash_dir(self.get_session(), path, *args, **kwargs)
+        return functions.is_trash_dir(self.get_session(), path, **kwargs)
 
-    def is_trash_file(self, path, *args, **kwargs):
+    def is_trash_file(self, path, **kwargs):
         """
             Check whether `path` is a trash file.
 
@@ -602,9 +605,9 @@ class YaDisk(object):
             :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
         """
 
-        return functions.is_trash_file(self.get_session(), path, *args, **kwargs)
+        return functions.is_trash_file(self.get_session(), path, **kwargs)
 
-    def get_public_resources(self, *args, **kwargs):
+    def get_public_resources(self, **kwargs):
         """
             Get a list of public resources.
 
@@ -618,9 +621,9 @@ class YaDisk(object):
             :returns: :any:`PublicResourcesListObject`
         """
 
-        return functions.get_public_resources(self.get_session(), *args, **kwargs)
+        return functions.get_public_resources(self.get_session(), **kwargs)
 
-    def patch(self, path, properties, *args, **kwargs):
+    def patch(self, path, properties, **kwargs):
         """
             Update custom properties of a resource.
 
@@ -631,9 +634,9 @@ class YaDisk(object):
             :returns: :any:`ResourceObject`
         """
 
-        return functions.patch(self.get_session(), path, properties, *args, **kwargs)
+        return functions.patch(self.get_session(), path, properties, **kwargs)
 
-    def get_files(self, *args, **kwargs):
+    def get_files(self, **kwargs):
         """
             Get a flat list of all files (that doesn't include directories).
 
@@ -645,9 +648,9 @@ class YaDisk(object):
             :returns: generator of :any:`ResourceObject`
         """
 
-        return functions.get_files(self.get_session(), *args, **kwargs)
+        return functions.get_files(self.get_session(), **kwargs)
 
-    def get_last_uploaded(self, *args, **kwargs):
+    def get_last_uploaded(self, **kwargs):
         """
             Get the list of latest uploaded files sorted by upload date.
 
@@ -660,9 +663,9 @@ class YaDisk(object):
             :returns: generator of :any:`LastUploadedResourceListObject`
         """
 
-        return functions.get_last_uploaded(self.get_session(), *args, **kwargs)
+        return functions.get_last_uploaded(self.get_session(), **kwargs)
 
-    def upload_url(self, url, path, *args, **kwargs):
+    def upload_url(self, url, path, **kwargs):
         """
             Upload a file from URL.
 
@@ -674,9 +677,9 @@ class YaDisk(object):
             :returns: :any:`OperationLinkObject`, link to the asynchronous operation
         """
 
-        return functions.upload_url(self.get_session(), url, path, *args, **kwargs)
+        return functions.upload_url(self.get_session(), url, path, **kwargs)
 
-    def get_public_download_link(self, public_key, *args, **kwargs):
+    def get_public_download_link(self, public_key, **kwargs):
         """
             Get a download link for a public resource.
 
@@ -686,14 +689,16 @@ class YaDisk(object):
             :returns: `str`
         """
 
-        return functions.get_public_download_link(self.get_session(), public_key, *args, **kwargs)
+        return functions.get_public_download_link(self.get_session(),
+                                                  public_key, **kwargs)
 
-    def download_public(self, public_key, file_or_path, *args, **kwargs):
+    def download_public(self, public_key, file_or_path, **kwargs):
         """
             Download the public resource.
 
             :param public_key: public key or public URL of the resource
-            :param path_or_file: destination path or file-like object
+            :param file_or_path: destination path or file-like object
         """
 
-        functions.download_public(self.get_session(), public_key, file_or_path, *args, **kwargs)
+        functions.download_public(self.get_session(), public_key, file_or_path,
+                                  **kwargs)

@@ -36,13 +36,13 @@ class GetPublicResourcesRequest(APIRequest):
     method = "GET"
 
     def __init__(self, session, offset=0, limit=20, preview_size=None,
-                 preview_crop=None, type=None, fields=None, *args, **kwargs):
+                 preview_crop=None, type=None, fields=None, **kwargs):
         APIRequest.__init__(self, session, {"offset":       offset,
                                             "limit":        limit,
                                             "preview_size": preview_size,
                                             "preview_crop": preview_crop,
                                             "type":         type,
-                                            "fields":       fields}, *args, **kwargs)
+                                            "fields":       fields}, **kwargs)
 
     def process_args(self, offset, limit, preview_size, preview_crop, type, fields):
         self.params["offset"] = offset
@@ -77,9 +77,9 @@ class UnpublishRequest(APIRequest):
     url = "https://cloud-api.yandex.net/v1/disk/resources/unpublish"
     method = "PUT"
 
-    def __init__(self, session, path, fields=None, *args, **kwargs):
+    def __init__(self, session, path, fields=None, **kwargs):
         APIRequest.__init__(self, session, {"path":   path,
-                                            "fields": fields}, *args, **kwargs)
+                                            "fields": fields}, **kwargs)
 
     def process_args(self, path, fields):
         self.params["path"] = path
@@ -104,9 +104,9 @@ class GetDownloadLinkRequest(APIRequest):
     url = "https://cloud-api.yandex.net/v1/disk/resources/download"
     method = "GET"
 
-    def __init__(self, session, path, fields=None, *args, **kwargs):
+    def __init__(self, session, path, fields=None, **kwargs):
         APIRequest.__init__(self, session, {"path": path, "fields": fields},
-                            *args, **kwargs)
+                            **kwargs)
 
     def process_args(self, path, fields):
         self.params["path"] = path
@@ -135,14 +135,14 @@ class GetTrashRequest(APIRequest):
     method = "GET"
 
     def __init__(self, session, path=None, offset=0, limit=20, sort=None,
-                 preview_size=None, preview_crop=None, fields=None, *args, **kwargs):
+                 preview_size=None, preview_crop=None, fields=None, **kwargs):
         APIRequest.__init__(self, session, {"path":         path,
                                             "offset":       offset,
                                             "limit":        limit,
                                             "sort":         sort,
                                             "preview_size": preview_size,
                                             "preview_crop": preview_crop,
-                                            "fields":       fields}, *args, **kwargs)
+                                            "fields":       fields}, **kwargs)
 
     def process_args(self, path, offset, limit, sort, preview_size, preview_crop, fields):
         self.params["path"] = path
@@ -185,12 +185,12 @@ class RestoreTrashRequest(APIRequest):
     success_codes = {201, 202}
 
     def __init__(self, session, path, dst_path=None, force_async=False,
-                 overwrite=False, fields=None, *args, **kwargs):
+                 overwrite=False, fields=None, **kwargs):
         APIRequest.__init__(self, session, {"path":        path,
                                             "dst_path":    dst_path,
                                             "overwrite":   overwrite,
                                             "force_async": force_async,
-                                            "fields":      fields}, *args, **kwargs)
+                                            "fields":      fields}, **kwargs)
 
     def process_args(self, path, dst_path, force_async, overwrite, fields):
         self.params["path"] = path
@@ -226,10 +226,10 @@ class DeleteTrashRequest(APIRequest):
     success_codes = {202, 204}
 
     def __init__(self, session, path=None, force_async=False, fields=None,
-                 *args, **kwargs):
+                 **kwargs):
         APIRequest.__init__(self, session, {"path":        path,
                                             "force_async": force_async,
-                                            "fields":      fields}, *args, **kwargs)
+                                            "fields":      fields}, **kwargs)
 
     def process_args(self, path, force_async, fields):
         if path is not None:
@@ -261,12 +261,12 @@ class LastUploadedRequest(APIRequest):
     method = "GET"
 
     def __init__(self, session, limit=20, media_type=None, preview_size=None,
-                 preview_crop=None, fields=None, *args, **kwargs):
+                 preview_crop=None, fields=None, **kwargs):
         APIRequest.__init__(self, session, {"limit":        limit,
                                             "media_type":   media_type,
                                             "preview_size": preview_size,
                                             "preview_crop": preview_crop,
-                                            "fields":       fields}, *args, **kwargs)
+                                            "fields":       fields}, **kwargs)
 
     def process_args(self, limit, media_type, preview_size, preview_crop, fields):
         self.params["limit"] = limit
@@ -312,12 +312,12 @@ class CopyRequest(APIRequest):
     success_codes = {201, 202}
 
     def __init__(self, session, src_path, dst_path, overwrite=False,
-                 force_async=False, fields=None, *args, **kwargs):
+                 force_async=False, fields=None, **kwargs):
         APIRequest.__init__(self, session, {"src_path":    src_path,
                                             "dst_path":    dst_path,
                                             "overwrite":   overwrite,
                                             "force_async": force_async,
-                                            "fields":      fields}, *args, **kwargs)
+                                            "fields":      fields}, **kwargs)
 
     def process_args(self, src_path, dst_path, overwrite, force_async, fields):
         self.params["from"] = src_path
@@ -353,14 +353,14 @@ class GetMetaRequest(APIRequest):
     method = "GET"
 
     def __init__(self, session, path, limit=None, offset=None,
-                 preview_size=None, preview_crop=None, fields=None, *args, **kwargs):
+                 preview_size=None, preview_crop=None, fields=None, **kwargs):
         APIRequest.__init__(self, session,
                             {"path":         path,
                              "limit":        limit,
                              "offset":       offset,
                              "preview_size": preview_size,
                              "preview_crop": preview_crop,
-                             "fields":       fields}, *args, **kwargs)
+                             "fields":       fields}, **kwargs)
 
     def process_args(self, path, limit, offset, preview_size, preview_crop, fields):
         self.params["path"] = path
@@ -400,10 +400,10 @@ class GetUploadLinkRequest(APIRequest):
     url = "https://cloud-api.yandex.net/v1/disk/resources/upload"
     method = "GET"
 
-    def __init__(self, session, path, overwrite=False, fields=None, *args, **kwargs):
+    def __init__(self, session, path, overwrite=False, fields=None, **kwargs):
         APIRequest.__init__(self, session, {"path":      path,
                                             "overwrite": overwrite,
-                                            "fields":    fields}, *args, **kwargs)
+                                            "fields":    fields}, **kwargs)
 
     def process_args(self, path, overwrite, fields):
         self.params["path"] = path
@@ -429,9 +429,9 @@ class MkdirRequest(APIRequest):
     method = "PUT"
     success_codes = {201}
 
-    def __init__(self, session, path, fields=None, *args, **kwargs):
+    def __init__(self, session, path, fields=None, **kwargs):
         APIRequest.__init__(self, session, {"path": path, "fields": fields},
-                            *args, **kwargs)
+                            **kwargs)
 
     def process_args(self, path, fields):
         self.params["path"] = path
@@ -456,9 +456,9 @@ class PublishRequest(APIRequest):
     url = "https://cloud-api.yandex.net/v1/disk/resources/publish"
     method = "PUT"
 
-    def __init__(self, session, path, fields=None, *args, **kwargs):
+    def __init__(self, session, path, fields=None, **kwargs):
         APIRequest.__init__(self, session, {"path":   path,
-                                            "fields": fields}, *args, **kwargs)
+                                            "fields": fields}, **kwargs)
 
     def process_args(self, path, fields):
         self.params["path"] = path
@@ -487,11 +487,11 @@ class UploadURLRequest(APIRequest):
     success_codes = {202}
 
     def __init__(self, session, url, path, disable_redirects=False, fields=None,
-                 *args, **kwargs):
+                 **kwargs):
         APIRequest.__init__(self, session, {"url":               url,
                                             "path":              path,
                                             "disable_redirects": disable_redirects,
-                                            "fields":            fields}, *args, **kwargs)
+                                            "fields":            fields}, **kwargs)
 
     def process_args(self, url, path, disable_redirects, fields):
         self.params["url"] = url
@@ -523,11 +523,11 @@ class DeleteRequest(APIRequest):
     success_codes = {202, 204}
 
     def __init__(self, session, path, permanently=False, force_async=False,
-                 fields=None, *args, **kwargs):
+                 fields=None, **kwargs):
         APIRequest.__init__(self, session, {"path":        path,
                                             "permanently": permanently,
                                             "force_async": force_async,
-                                            "fields":      fields}, *args, **kwargs)
+                                            "fields":      fields}, **kwargs)
 
     def process_args(self, path, permanently, force_async, fields):
         self.params["path"] = path
@@ -547,6 +547,7 @@ class SaveToDiskRequest(APIRequest):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
         :param name: filename of the saved resource
+        :param path: path to the copied resource in the public folder
         :param save_path: path to the destination directory (downloads directory by default)
         :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
@@ -559,17 +560,17 @@ class SaveToDiskRequest(APIRequest):
     success_codes = {201, 202}
 
     def __init__(self, session, public_key, name=None, path=None, save_path=None,
-                 force_async=False, fields=None, *args, **kwargs):
+                 force_async=False, fields=None, **kwargs):
         APIRequest.__init__(self, session, {"public_key":  public_key,
                                             "name":        name,
                                             "path":        path,
                                             "save_path":   save_path,
                                             "force_async": force_async,
-                                            "fields":      fields}, *args, **kwargs)
+                                            "fields":      fields}, **kwargs)
 
     def process_args(self, public_key, name, path, save_path, force_async, fields):
         self.params["public_key"] = public_key
-        
+
         if name is not None:
             self.params["name"] = name
 
@@ -611,7 +612,7 @@ class GetPublicMetaRequest(APIRequest):
 
     def __init__(self, session, public_key, offset=0, limit=20, path=None,
                  sort=None, preview_size=None, preview_crop=None, fields=None,
-                 *args, **kwargs):
+                 **kwargs):
         APIRequest.__init__(self, session, {"public_key":   public_key,
                                             "offset":       offset,
                                             "limit":        limit,
@@ -619,14 +620,14 @@ class GetPublicMetaRequest(APIRequest):
                                             "sort":         sort,
                                             "preview_size": preview_size,
                                             "preview_crop": preview_crop,
-                                            "fields":       fields}, *args, **kwargs)
+                                            "fields":       fields}, **kwargs)
 
     def process_args(self, public_key, offset, limit, path,
                      sort, preview_size, preview_crop, fields):
         self.params["public_key"] = public_key
         self.params["offset"] = offset
         self.params["limit"] = limit
-        
+
         if path is not None:
             self.params["path"] = path
 
@@ -662,13 +663,13 @@ class GetPublicDownloadLinkRequest(APIRequest):
     url = "https://cloud-api.yandex.net/v1/disk/public/resources/download"
     method = "GET"
 
-    def __init__(self, session, public_key, fields=None, *args, **kwargs):
+    def __init__(self, session, public_key, fields=None, **kwargs):
         APIRequest.__init__(self, session, {"public_key": public_key,
-                                            "fields":     fields}, *args, **kwargs)
+                                            "fields":     fields}, **kwargs)
 
     def process_args(self, public_key, fields):
         self.params["public_key"] = public_key
-        
+
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
@@ -694,12 +695,12 @@ class MoveRequest(APIRequest):
     success_codes = {201, 202}
 
     def __init__(self, session, src_path, dst_path, force_async=False,
-                 overwrite=False, fields=None, *args, **kwargs):
+                 overwrite=False, fields=None, **kwargs):
         APIRequest.__init__(self, session, {"src_path":    src_path,
                                             "dst_path":    dst_path,
                                             "force_async": force_async,
                                             "overwrite":   overwrite,
-                                            "fields":      fields}, *args, **kwargs)
+                                            "fields":      fields}, **kwargs)
 
     def process_args(self, src_path, dst_path, force_async, overwrite, fields):
         self.params["from"] = src_path
@@ -734,14 +735,14 @@ class FilesRequest(APIRequest):
 
     def __init__(self, session, offset=0, limit=20, media_type=None,
                  preview_size=None, preview_crop=None, sort=None, fields=None,
-                 *args, **kwargs):
+                 **kwargs):
         APIRequest.__init__(self, session, {"offset":       offset,
                                             "limit":        limit,
                                             "media_type":   media_type,
                                             "sort":         sort,
                                             "preview_size": preview_size,
                                             "preview_crop": preview_crop,
-                                            "fields":       fields}, *args, **kwargs)
+                                            "fields":       fields}, **kwargs)
 
     def process_args(self, offset, limit, media_type, sort, preview_size, preview_crop, fields):
         self.params["offset"] = offset
@@ -787,10 +788,10 @@ class PatchRequest(APIRequest):
     method = "PATCH"
     content_type = "application/json"
 
-    def __init__(self, session, path, properties, fields=None, *args, **kwargs):
+    def __init__(self, session, path, properties, fields=None, **kwargs):
         APIRequest.__init__(self, session, {"path":       path,
                                             "properties": properties,
-                                            "fields":     fields}, *args, **kwargs)
+                                            "fields":     fields}, **kwargs)
     def prepare(self, *args, **kwargs):
         APIRequest.prepare(self, *args, **kwargs)
 

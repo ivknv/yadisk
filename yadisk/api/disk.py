@@ -18,8 +18,8 @@ class DiskInfoRequest(APIRequest):
     url = "https://cloud-api.yandex.net/v1/disk"
     method = "GET"
 
-    def __init__(self, session, fields=None, *args, **kwargs):
-        APIRequest.__init__(self, session, {"fields": fields}, *args, **kwargs)
+    def __init__(self, session, fields=None, **kwargs):
+        APIRequest.__init__(self, session, {"fields": fields}, **kwargs)
 
     def process_args(self, fields):
         if fields is not None:

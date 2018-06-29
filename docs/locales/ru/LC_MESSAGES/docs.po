@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2017, Ivan Konovalov
+# Copyright (C) 2018, Ivan Konovalov
 # This file is distributed under the same license as the YaDisk package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-28 20:32+0500\n"
+"POT-Creation-Date: 2018-06-29 20:15+0500\n"
 "PO-Revision-Date: 2018-01-20 15:41+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -374,15 +374,15 @@ msgstr ""
 
 #: of yadisk.YaDisk.copy:9 yadisk.YaDisk.move:6 yadisk.YaDisk.remove:6
 #: yadisk.YaDisk.remove_trash:4 yadisk.YaDisk.restore_trash:7
-#: yadisk.YaDisk.save_to_disk:8 yadisk.api.resources.CopyRequest:8
+#: yadisk.YaDisk.save_to_disk:9 yadisk.api.resources.CopyRequest:8
 #: yadisk.api.resources.DeleteRequest:7
 #: yadisk.api.resources.DeleteTrashRequest:5 yadisk.api.resources.MoveRequest:6
 #: yadisk.api.resources.RestoreTrashRequest:6
-#: yadisk.api.resources.SaveToDiskRequest:7 yadisk.functions.resources.copy:10
+#: yadisk.api.resources.SaveToDiskRequest:8 yadisk.functions.resources.copy:10
 #: yadisk.functions.resources.move:7 yadisk.functions.resources.remove:7
 #: yadisk.functions.resources.remove_trash:5
 #: yadisk.functions.resources.restore_trash:8
-#: yadisk.functions.resources.save_to_disk:9
+#: yadisk.functions.resources.save_to_disk:10
 msgid "forces the operation to be executed asynchronously"
 msgstr "заставляет выполнять операцию асинхронно"
 
@@ -395,7 +395,7 @@ msgstr "заставляет выполнять операцию асинхро�
 #: yadisk.YaDisk.mkdir:4 yadisk.YaDisk.move:7 yadisk.YaDisk.patch:5
 #: yadisk.YaDisk.public_listdir:8 yadisk.YaDisk.publish:4
 #: yadisk.YaDisk.remove:7 yadisk.YaDisk.remove_trash:5
-#: yadisk.YaDisk.restore_trash:8 yadisk.YaDisk.save_to_disk:9
+#: yadisk.YaDisk.restore_trash:8 yadisk.YaDisk.save_to_disk:10
 #: yadisk.YaDisk.trash_listdir:8 yadisk.YaDisk.unpublish:4
 #: yadisk.YaDisk.upload:7 yadisk.YaDisk.upload_url:6
 #: yadisk.api.disk.DiskInfoRequest:4
@@ -413,7 +413,7 @@ msgstr "заставляет выполнять операцию асинхро�
 #: yadisk.api.resources.MkdirRequest:4 yadisk.api.resources.MoveRequest:8
 #: yadisk.api.resources.PatchRequest:6 yadisk.api.resources.PublishRequest:5
 #: yadisk.api.resources.RestoreTrashRequest:8
-#: yadisk.api.resources.SaveToDiskRequest:8
+#: yadisk.api.resources.SaveToDiskRequest:9
 #: yadisk.api.resources.UnpublishRequest:5
 #: yadisk.api.resources.UploadURLRequest:7
 #: yadisk.functions.disk.get_disk_info:4
@@ -433,7 +433,7 @@ msgstr "заставляет выполнять операцию асинхро�
 #: yadisk.functions.resources.publish:5 yadisk.functions.resources.remove:8
 #: yadisk.functions.resources.remove_trash:6
 #: yadisk.functions.resources.restore_trash:9
-#: yadisk.functions.resources.save_to_disk:10
+#: yadisk.functions.resources.save_to_disk:11
 #: yadisk.functions.resources.trash_listdir:9
 #: yadisk.functions.resources.unpublish:5
 #: yadisk.functions.resources.upload_url:7
@@ -441,12 +441,12 @@ msgid "list of keys to be included in the response"
 msgstr "список ключей, которые будут включены в ответ"
 
 #: of yadisk.YaDisk.copy:12 yadisk.YaDisk.restore_trash:10
-#: yadisk.YaDisk.save_to_disk:11 yadisk.api.resources.CopyRequest:11
+#: yadisk.YaDisk.save_to_disk:12 yadisk.api.resources.CopyRequest:11
 #: yadisk.api.resources.RestoreTrashRequest:10
-#: yadisk.api.resources.SaveToDiskRequest:10 yadisk.functions.resources.copy:13
+#: yadisk.api.resources.SaveToDiskRequest:11 yadisk.functions.resources.copy:13
 #: yadisk.functions.resources.move:10
 #: yadisk.functions.resources.restore_trash:11
-#: yadisk.functions.resources.save_to_disk:12
+#: yadisk.functions.resources.save_to_disk:13
 msgid ":any:`LinkObject` or :any:`OperationLinkObject`"
 msgstr ":any:`LinkObject` или :any:`OperationLinkObject`"
 
@@ -1120,6 +1120,11 @@ msgstr "имя файла/папки, под которым будет сохр�
 
 #: of yadisk.YaDisk.save_to_disk:7 yadisk.api.resources.SaveToDiskRequest:6
 #: yadisk.functions.resources.save_to_disk:8
+msgid "path to the copied resource in the public folder"
+msgstr "путь к копируемому ресурсу в публичной папке"
+
+#: of yadisk.YaDisk.save_to_disk:8 yadisk.api.resources.SaveToDiskRequest:7
+#: yadisk.functions.resources.save_to_disk:9
 msgid "path to the destination directory (downloads directory by default)"
 msgstr "путь к папке назначения (загрузки по умолчанию)"
 
@@ -1545,7 +1550,7 @@ msgstr "`dict`, где ключи - это наименования полей, 
 #: yadisk.objects.resources.ResourceListObject:1
 #: yadisk.objects.resources.ResourceObject:1
 #: yadisk.objects.resources.ShareInfoObject:1
-msgid "Bases: :class:`yadisk.objects.YaDiskObject.YaDiskObject`"
+msgid "Bases: :class:`yadisk.objects.yadisk_object.YaDiskObject`"
 msgstr ""
 
 #: of yadisk.objects.ErrorObject:1
@@ -2339,7 +2344,7 @@ msgstr ""
 #: yadisk.api.resources.SaveToDiskRequest:1
 #: yadisk.api.resources.UnpublishRequest:1
 #: yadisk.api.resources.UploadURLRequest:1
-msgid "Bases: :class:`yadisk.api.APIRequest.APIRequest`"
+msgid "Bases: :class:`yadisk.api.api_request.APIRequest`"
 msgstr ""
 
 #: of yadisk.api.auth.RefreshTokenRequest:1
@@ -2580,4 +2585,10 @@ msgstr ""
 
 #~ msgid "`True` if the upload succeeded, `False` otherwise"
 #~ msgstr "`True`, если загрузка удалась, `False` иначе"
+
+#~ msgid "Bases: :class:`yadisk.objects.YaDiskObject.YaDiskObject`"
+#~ msgstr ""
+
+#~ msgid "Bases: :class:`yadisk.api.APIRequest.APIRequest`"
+#~ msgstr ""
 

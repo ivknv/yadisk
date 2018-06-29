@@ -22,7 +22,7 @@ __all__ = ["copy", "download", "exists", "get_download_link", "get_meta", "get_t
            "is_trash_file", "get_public_resources", "patch", "get_files",
            "get_last_uploaded", "upload_url", "get_public_download_link", "download_public"]
 
-def copy(session, src_path, dst_path, *args, **kwargs):
+def copy(session, src_path, dst_path, **kwargs):
     """
         Copy `src_path` to `dst_path`.
         If the operation is performed asynchronously, returns the link to the operation,
@@ -39,13 +39,13 @@ def copy(session, src_path, dst_path, *args, **kwargs):
         :returns: :any:`LinkObject` or :any:`OperationLinkObject`
     """
 
-    request = CopyRequest(session, src_path, dst_path, *args, **kwargs)
+    request = CopyRequest(session, src_path, dst_path, **kwargs)
 
     request.send()
 
     return request.process()
 
-def download(session, src_path, file_or_path, *args, **kwargs):
+def download(session, src_path, file_or_path, **kwargs):
     """
         Download the file.
 
@@ -90,7 +90,7 @@ def download(session, src_path, file_or_path, *args, **kwargs):
             temp_kwargs = dict(kwargs)
             temp_kwargs["n_retries"] = 0
             temp_kwargs["retry_interval"] = 0.0
-            link = get_download_link(session, src_path, *args, **temp_kwargs)
+            link = get_download_link(session, src_path, **temp_kwargs)
 
             # session.get() doesn't accept these parameters
             for k in ("n_retries", "retry_interval", "fields"):
@@ -120,14 +120,17 @@ def download(session, src_path, file_or_path, *args, **kwargs):
             file.close()
 
 def _exists(get_meta_function, *args, **kwargs):
+    kwargs = dict(kwargs)
+    kwargs["limit"] = 0
+
     try:
-        get_meta_function(*args, limit=0, **kwargs)
+        get_meta_function(*args, **kwargs)
 
         return True
     except PathNotFoundError:
         return False
 
-def exists(session, path, *args, **kwargs):
+def exists(session, path, **kwargs):
     """
         Check whether `path` exists.
 
@@ -137,9 +140,9 @@ def exists(session, path, *args, **kwargs):
         :returns: `bool`
     """
 
-    return _exists(get_meta, session, path, *args, **kwargs)
+    return _exists(get_meta, session, path, **kwargs)
 
-def get_download_link(session, path, *args, **kwargs):
+def get_download_link(session, path, **kwargs):
     """
         Get a download link for a file (or a directory).
 
@@ -150,12 +153,12 @@ def get_download_link(session, path, *args, **kwargs):
         :returns: `str`
     """
 
-    request = GetDownloadLinkRequest(session, path, *args, **kwargs)
+    request = GetDownloadLinkRequest(session, path, **kwargs)
     request.send()
 
     return request.process().href
 
-def get_meta(session, *args, **kwargs):
+def get_meta(session, path, **kwargs):
     """
         Get meta information about a file/directory.
 
@@ -170,15 +173,18 @@ def get_meta(session, *args, **kwargs):
         :returns: :any:`ResourceObject`
     """
 
-    request = GetMetaRequest(session, *args, **kwargs)
+    request = GetMetaRequest(session, path, **kwargs)
     request.send()
 
     return request.process()
 
 def _get_type(get_meta_function, session, *args, **kwargs):
-    return get_meta_function(session, *args, limit=0, **kwargs).type
+    kwargs = dict(kwargs)
+    kwargs["limit"] = 0
 
-def get_type(session, path, *args, **kwargs):
+    return get_meta_function(session, *args, **kwargs).type
+
+def get_type(session, path, **kwargs):
     """
         Get resource type.
 
@@ -188,9 +194,9 @@ def get_type(session, path, *args, **kwargs):
         :returns: "file" or "dir"
     """
 
-    return _get_type(get_meta, session, path, *args, **kwargs)
+    return _get_type(get_meta, session, path, **kwargs)
 
-def get_upload_link(session, path, *args, **kwargs):
+def get_upload_link(session, path, **kwargs):
     """
         Get a link to upload the file using the PUT request.
 
@@ -202,12 +208,12 @@ def get_upload_link(session, path, *args, **kwargs):
         :returns: `str`
     """
 
-    request = GetUploadLinkRequest(session, path, *args, **kwargs)
+    request = GetUploadLinkRequest(session, path, **kwargs)
     request.send()
 
     return request.process().href
 
-def is_dir(session, path, *args, **kwargs):
+def is_dir(session, path, **kwargs):
     """
         Check whether `path` is a directory.
 
@@ -218,11 +224,11 @@ def is_dir(session, path, *args, **kwargs):
     """
 
     try:
-        return get_type(session, path, *args, **kwargs) == "dir"
+        return get_type(session, path, **kwargs) == "dir"
     except PathNotFoundError:
         return False
 
-def is_file(session, path, *args, **kwargs):
+def is_file(session, path, **kwargs):
     """
         Check whether `path` is a file.
 
@@ -233,15 +239,15 @@ def is_file(session, path, *args, **kwargs):
     """
 
     try:
-        return get_type(session, path, *args, **kwargs) == "file"
+        return get_type(session, path, **kwargs) == "file"
     except PathNotFoundError:
         return False
 
-def _listdir(get_meta_function, session, path, *args, **kwargs):
+def _listdir(get_meta_function, session, path, **kwargs):
     kwargs = dict(kwargs)
     kwargs.setdefault("limit", 10000)
 
-    result = get_meta_function(session, path, *args, **kwargs)
+    result = get_meta_function(session, path, **kwargs)
 
     if result.type == "file":
         raise WrongResourceTypeError("%r is a file" % (path,))
@@ -256,7 +262,7 @@ def _listdir(get_meta_function, session, path, *args, **kwargs):
     while offset + limit < total:
         offset += limit
         kwargs["offset"] = offset
-        result = get_meta_function(session, path, *args, **kwargs)
+        result = get_meta_function(session, path, **kwargs)
 
         for child in result.embedded.items:
             yield child
@@ -264,7 +270,7 @@ def _listdir(get_meta_function, session, path, *args, **kwargs):
         limit = result.embedded.limit
         total = result.embedded.total
 
-def listdir(session, path, *args, **kwargs):
+def listdir(session, path, **kwargs):
     """
         Get contents of `path`.
 
@@ -279,9 +285,9 @@ def listdir(session, path, *args, **kwargs):
         :returns: generator of :any:`ResourceObject`
     """
 
-    return _listdir(get_meta, session, path, *args, **kwargs)
+    return _listdir(get_meta, session, path, **kwargs)
 
-def mkdir(session, path, *args, **kwargs):
+def mkdir(session, path, **kwargs):
     """
         Create a new directory.
 
@@ -292,13 +298,13 @@ def mkdir(session, path, *args, **kwargs):
         :returns: :any:`LinkObject`
     """
 
-    request = MkdirRequest(session, path, *args, **kwargs)
+    request = MkdirRequest(session, path, **kwargs)
 
     request.send()
 
     return request.process()
 
-def remove(session, path, *args, **kwargs):
+def remove(session, path, **kwargs):
     """
         Remove the resource.
 
@@ -312,18 +318,18 @@ def remove(session, path, *args, **kwargs):
         :returns: :any:`LinkObject` if the operation is performed asynchronously, `None` otherwise
     """
 
-    request = DeleteRequest(session, path, *args, **kwargs)
+    request = DeleteRequest(session, path, **kwargs)
 
     request.send()
 
     return request.process()
 
-def upload(session, file_or_path, dst_path, *args, **kwargs):
+def upload(session, file_or_path, dst_path, **kwargs):
     """
         Upload a file to disk.
 
         :param session: an instance of :any:`requests.Session` with prepared headers
-        :param path_or_file: path or file-like object to be uploaded
+        :param file_or_path: path or file-like object to be uploaded
         :param dst_path: destination path
         :param overwrite: if `True`, the resource will be overwritten if it already exists,
                           an error will be raised otherwise
@@ -366,7 +372,7 @@ def upload(session, file_or_path, dst_path, *args, **kwargs):
             temp_kwargs["n_retries"] = 0
             temp_kwargs["retry_interval"] = 0.0
 
-            link = get_upload_link(session, dst_path, *args, **temp_kwargs)
+            link = get_upload_link(session, dst_path, **temp_kwargs)
 
             # session.put() doesn't accept these parameters
             for k in ("n_retries", "retry_interval", "overwrite", "fields"):
@@ -391,7 +397,7 @@ def upload(session, file_or_path, dst_path, *args, **kwargs):
         if close_file and file is not None:
             file.close()
 
-def get_trash_meta(session, path, *args, **kwargs):
+def get_trash_meta(session, path, **kwargs):
     """
         Get meta information about a trash resource.
 
@@ -406,13 +412,13 @@ def get_trash_meta(session, path, *args, **kwargs):
         :returns: :any:`TrashResourceObject`
     """
 
-    request = GetTrashRequest(session, path, *args, **kwargs)
+    request = GetTrashRequest(session, path, **kwargs)
 
     request.send()
 
     return request.process()
 
-def trash_exists(session, path, *args, **kwargs):
+def trash_exists(session, path, **kwargs):
     """
         Check whether the trash resource at `path` exists.
 
@@ -422,9 +428,9 @@ def trash_exists(session, path, *args, **kwargs):
         :returns: `bool`
     """
 
-    return _exists(get_trash_meta, session, path, *args, **kwargs)
+    return _exists(get_trash_meta, session, path, **kwargs)
 
-def restore_trash(session, path, *args, **kwargs):
+def restore_trash(session, path, dst_path=None, **kwargs):
     """
         Restore a trash resource.
         Returns a link to the newly created resource or a link to the asynchronous operation.
@@ -439,12 +445,15 @@ def restore_trash(session, path, *args, **kwargs):
         :returns: :any:`LinkObject` or :any:`OperationLinkObject`
     """
 
-    request = RestoreTrashRequest(session, path, *args, **kwargs)
+    kwargs = dict(kwargs)
+    kwargs["dst_path"] = dst_path
+
+    request = RestoreTrashRequest(session, path, **kwargs)
     request.send()
 
     return request.process()
 
-def move(session, src_path, dst_path, *args, **kwargs):
+def move(session, src_path, dst_path, **kwargs):
     """
         Move `src_path` to `dst_path`.
 
@@ -458,12 +467,12 @@ def move(session, src_path, dst_path, *args, **kwargs):
         :returns: :any:`LinkObject` or :any:`OperationLinkObject`
     """
 
-    request = MoveRequest(session, src_path, dst_path, *args, **kwargs)
+    request = MoveRequest(session, src_path, dst_path, **kwargs)
     request.send()
 
     return request.process()
 
-def remove_trash(session, path, *args, **kwargs):
+def remove_trash(session, path, **kwargs):
     """
         Remove a trash resource.
 
@@ -475,12 +484,12 @@ def remove_trash(session, path, *args, **kwargs):
         :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
     """
 
-    request = DeleteTrashRequest(session, path, *args, **kwargs)
+    request = DeleteTrashRequest(session, path, **kwargs)
     request.send()
 
     return request.process()
 
-def publish(session, path, *args, **kwargs):
+def publish(session, path, **kwargs):
     """
         Make a resource public.
 
@@ -491,12 +500,12 @@ def publish(session, path, *args, **kwargs):
         :returns: :any:`LinkObject`, link to the resource
     """
 
-    request = PublishRequest(session, path, *args, **kwargs)
+    request = PublishRequest(session, path, **kwargs)
     request.send()
 
     return request.process()
 
-def unpublish(session, path, *args, **kwargs):
+def unpublish(session, path, **kwargs):
     """
         Make a public resource private.
 
@@ -507,12 +516,12 @@ def unpublish(session, path, *args, **kwargs):
         :returns: :any:`LinkObject`
     """
 
-    request = UnpublishRequest(session, path, *args, **kwargs)
+    request = UnpublishRequest(session, path, **kwargs)
     request.send()
 
     return request.process()
 
-def save_to_disk(session, public_key, *args, **kwargs):
+def save_to_disk(session, public_key, **kwargs):
     """
         Saves a public resource to the disk.
         Returns the link to the operation if it's performed asynchronously,
@@ -521,6 +530,7 @@ def save_to_disk(session, public_key, *args, **kwargs):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
         :param name: filename of the saved resource
+        :param path: path to the copied resource in the public folder
         :param save_path: path to the destination directory (downloads directory by default)
         :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
@@ -528,12 +538,12 @@ def save_to_disk(session, public_key, *args, **kwargs):
         :returns: :any:`LinkObject` or :any:`OperationLinkObject`
     """
 
-    request = SaveToDiskRequest(session, public_key, *args, **kwargs)
+    request = SaveToDiskRequest(session, public_key, **kwargs)
     request.send()
 
     return request.process()
 
-def get_public_meta(session, public_key, *args, **kwargs):
+def get_public_meta(session, public_key, **kwargs):
     """
         Get meta-information about a public resource.
 
@@ -549,12 +559,12 @@ def get_public_meta(session, public_key, *args, **kwargs):
         :returns: :any:`PublicResourceObject`
     """
 
-    request = GetPublicMetaRequest(session, public_key, *args, **kwargs)
+    request = GetPublicMetaRequest(session, public_key, **kwargs)
     request.send()
 
     return request.process()
 
-def public_exists(session, public_key, *args, **kwargs):
+def public_exists(session, public_key, **kwargs):
     """
         Check whether the public resource exists.
 
@@ -564,9 +574,9 @@ def public_exists(session, public_key, *args, **kwargs):
         :returns: `bool`
     """
 
-    return _exists(get_public_meta, session, public_key, *args, **kwargs)
+    return _exists(get_public_meta, session, public_key, **kwargs)
 
-def public_listdir(session, public_key, *args, **kwargs):
+def public_listdir(session, public_key, **kwargs):
     """
         Get contents of a public directory.
 
@@ -581,9 +591,9 @@ def public_listdir(session, public_key, *args, **kwargs):
         :returns: generator of :any:`PublicResourceObject`
     """
 
-    return _listdir(get_public_meta, session, public_key, *args, **kwargs)
+    return _listdir(get_public_meta, session, public_key, **kwargs)
 
-def get_public_type(session, public_key, *args, **kwargs):
+def get_public_type(session, public_key, **kwargs):
     """
         Get public resource type.
 
@@ -593,9 +603,9 @@ def get_public_type(session, public_key, *args, **kwargs):
         :returns: "file" or "dir"
     """
 
-    return _get_type(get_public_meta, session, public_key, *args, **kwargs)
+    return _get_type(get_public_meta, session, public_key, **kwargs)
 
-def is_public_dir(session, public_key, *args, **kwargs):
+def is_public_dir(session, public_key, **kwargs):
     """
         Check whether `public_key` is a public directory.
 
@@ -606,11 +616,11 @@ def is_public_dir(session, public_key, *args, **kwargs):
     """
 
     try:
-        return get_public_type(session, public_key, *args, **kwargs) == "dir"
+        return get_public_type(session, public_key, **kwargs) == "dir"
     except PathNotFoundError:
         return False
 
-def is_public_file(session, public_key, *args, **kwargs):
+def is_public_file(session, public_key, **kwargs):
     """
         Check whether `public_key` is a public file.
 
@@ -621,11 +631,11 @@ def is_public_file(session, public_key, *args, **kwargs):
     """
 
     try:
-        return get_public_type(session, public_key, *args, **kwargs) == "file"
+        return get_public_type(session, public_key, **kwargs) == "file"
     except PathNotFoundError:
         return False
 
-def trash_listdir(session, path, *args, **kwargs):
+def trash_listdir(session, path, **kwargs):
     """
         Get contents of a trash resource.
 
@@ -640,9 +650,9 @@ def trash_listdir(session, path, *args, **kwargs):
         :returns: generator of :any:`TrashResourceObject`
     """
 
-    return _listdir(get_trash_meta, session, path, *args, **kwargs)
+    return _listdir(get_trash_meta, session, path, **kwargs)
 
-def get_trash_type(session, path, *args, **kwargs):
+def get_trash_type(session, path, **kwargs):
     """
         Get trash resource type.
 
@@ -652,9 +662,9 @@ def get_trash_type(session, path, *args, **kwargs):
         :returns: "file" or "dir"
     """
 
-    return _get_type(get_trash_meta, session, path, *args, **kwargs)
+    return _get_type(get_trash_meta, session, path, **kwargs)
 
-def is_trash_dir(session, path, *args, **kwargs):
+def is_trash_dir(session, path, **kwargs):
     """
         Check whether `path` is a trash directory.
 
@@ -665,11 +675,11 @@ def is_trash_dir(session, path, *args, **kwargs):
     """
 
     try:
-        return get_trash_type(session, path, *args, **kwargs) == "dir"
+        return get_trash_type(session, path, **kwargs) == "dir"
     except PathNotFoundError:
         return False
 
-def is_trash_file(session, path, *args, **kwargs):
+def is_trash_file(session, path, **kwargs):
     """
         Check whether `path` is a trash file.
 
@@ -680,11 +690,11 @@ def is_trash_file(session, path, *args, **kwargs):
     """
 
     try:
-        return get_trash_type(session, path, *args, **kwargs) == "file"
+        return get_trash_type(session, path, **kwargs) == "file"
     except PathNotFoundError:
         return False
 
-def get_public_resources(session, *args, **kwargs):
+def get_public_resources(session, **kwargs):
     """
         Get a list of public resources.
 
@@ -699,12 +709,12 @@ def get_public_resources(session, *args, **kwargs):
         :returns: :any:`PublicResourcesListObject`
     """
 
-    request = GetPublicResourcesRequest(session, *args, **kwargs)
+    request = GetPublicResourcesRequest(session, **kwargs)
     request.send()
 
     return request.process()
 
-def patch(session, path, properties, *args, **kwargs):
+def patch(session, path, properties, **kwargs):
     """
         Update custom properties of a resource.
 
@@ -716,12 +726,12 @@ def patch(session, path, properties, *args, **kwargs):
         :returns: :any:`ResourceObject`
     """
 
-    request = PatchRequest(session, path, properties, *args, **kwargs)
+    request = PatchRequest(session, path, properties, **kwargs)
     request.send()
 
     return request.process()
 
-def get_files(session, *args, **kwargs):
+def get_files(session, **kwargs):
     """
         Get a flat list of all files (that doesn't include directories).
 
@@ -735,7 +745,7 @@ def get_files(session, *args, **kwargs):
     """
 
     if kwargs.get("limit") is not None:
-        request = FilesRequest(session, *args, **kwargs)
+        request = FilesRequest(session, **kwargs)
         request.send()
 
         for i in request.process().items:
@@ -750,7 +760,7 @@ def get_files(session, *args, **kwargs):
 
     while True:
         counter = 0
-        for i in get_files(session, *args, **kwargs):
+        for i in get_files(session, **kwargs):
             counter += 1
             yield i
 
@@ -759,7 +769,7 @@ def get_files(session, *args, **kwargs):
 
         kwargs["offset"] += kwargs["limit"]
 
-def get_last_uploaded(session, *args, **kwargs):
+def get_last_uploaded(session, **kwargs):
     """
         Get the list of latest uploaded files sorted by upload date.
 
@@ -773,13 +783,13 @@ def get_last_uploaded(session, *args, **kwargs):
         :returns: generator of :any:`LastUploadedResourceListObject`
     """
 
-    request = LastUploadedRequest(session, *args, **kwargs)
+    request = LastUploadedRequest(session, **kwargs)
     request.send()
 
     for i in request.process().items:
         yield i
 
-def upload_url(session, url, path, *args, **kwargs):
+def upload_url(session, url, path, **kwargs):
     """
         Upload a file from URL.
 
@@ -792,12 +802,12 @@ def upload_url(session, url, path, *args, **kwargs):
         :returns: :any:`OperationLinkObject`, link to the asynchronous operation
     """
 
-    request = UploadURLRequest(session, url, path, *args, **kwargs)
+    request = UploadURLRequest(session, url, path, **kwargs)
     request.send()
 
     return request.process()
 
-def get_public_download_link(session, public_key, *args, **kwargs):
+def get_public_download_link(session, public_key, **kwargs):
     """
         Get a download link for a public resource.
 
@@ -808,12 +818,12 @@ def get_public_download_link(session, public_key, *args, **kwargs):
         :returns: `str`
     """
 
-    request = GetPublicDownloadLinkRequest(session, public_key, *args, **kwargs)
+    request = GetPublicDownloadLinkRequest(session, public_key, **kwargs)
     request.send()
 
     return request.process().href
 
-def download_public(session, public_key, file_or_path, *args, **kwargs):
+def download_public(session, public_key, file_or_path, **kwargs):
     """
         Download the public resource.
 
@@ -850,7 +860,7 @@ def download_public(session, public_key, file_or_path, *args, **kwargs):
             temp_kwargs["n_retries"] = 0
             temp_kwargs["retry_interval"] = 0.0
 
-            link = get_public_download_link(session, public_key, *args, **temp_kwargs)
+            link = get_public_download_link(session, public_key, **temp_kwargs)
 
             temp_kwargs.pop("n_retries", None)
             temp_kwargs.pop("retry_interval", None)
