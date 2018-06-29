@@ -17,6 +17,9 @@ __all__ = ["GetPublicResourcesRequest", "UnpublishRequest", "GetDownloadLinkRequ
            "SaveToDiskRequest", "GetPublicMetaRequest", "GetPublicDownloadLinkRequest",
            "MoveRequest", "FilesRequest", "PatchRequest"]
 
+def _substitute_keys(keys, sub_map):
+    return [".".join(sub_map.get(f, f) for f in k.split(".")) for k in keys]
+
 class GetPublicResourcesRequest(APIRequest):
     """
         A request to get a list of public resources.
@@ -162,7 +165,7 @@ class GetTrashRequest(APIRequest):
         if fields is not None:
             sub_map = {"embedded": "_embedded"}
 
-            self.params["fields"] = ",".join(sub_map.get(f, f) for f in fields)
+            self.params["fields"] = ",".join(_substitute_keys(fields, sub_map))
 
     def process_json(self, js):
         return TrashResourceObject(js)
@@ -388,7 +391,7 @@ class GetMetaRequest(APIRequest):
         if fields is not None:
             sub_map = {"embedded": "_embedded"}
 
-            self.params["fields"] = ",".join(sub_map.get(f, f) for f in fields)
+            self.params["fields"] = ",".join(_substitute_keys(fields, sub_map))
 
     def process_json(self, js):
         return ResourceObject(js)
@@ -652,7 +655,7 @@ class GetPublicMetaRequest(APIRequest):
             sub_map = {"embedded": "_embedded",
                        "view_count": "views_count"}
 
-            self.params["fields"] = ",".join(sub_map.get(f, f) for f in fields)
+            self.params["fields"] = ",".join(_substitute_keys(fields, sub_map))
 
     def process_json(self, js):
         return PublicResourceObject(js)
@@ -816,7 +819,7 @@ class PatchRequest(APIRequest):
         if fields is not None:
             sub_map = {"embedded": "_embedded"}
 
-            self.params["fields"] = ",".join(sub_map.get(f, f) for f in fields)
+            self.params["fields"] = ",".join(_substitute_keys(fields, sub_map))
 
     def process_json(self, js):
         return ResourceObject(js)
