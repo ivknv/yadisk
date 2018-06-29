@@ -35,6 +35,10 @@ def copy(session, src_path, dst_path, **kwargs):
                           otherwise, an error will be raised
         :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`LinkObject` or :any:`OperationLinkObject`
     """
@@ -52,6 +56,10 @@ def download(session, src_path, file_or_path, **kwargs):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param src_path: source path
         :param path_or_file: destination path or file-like object
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
     """
 
     kwargs = dict(kwargs)
@@ -136,6 +144,10 @@ def exists(session, path, **kwargs):
 
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: `bool`
     """
@@ -149,6 +161,10 @@ def get_download_link(session, path, **kwargs):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: `str`
     """
@@ -170,6 +186,10 @@ def get_meta(session, path, **kwargs):
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param sort: `str`, field to be used as a key to sort children resources
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`ResourceObject`
     """
@@ -191,6 +211,10 @@ def get_type(session, path, **kwargs):
 
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: "file" or "dir"
     """
@@ -205,6 +229,10 @@ def get_upload_link(session, path, **kwargs):
         :param path: destination path
         :param overwrite: `bool`, determines whether to overwrite the destination
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: `str`
     """
@@ -220,6 +248,10 @@ def is_dir(session, path, **kwargs):
 
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
     """
@@ -235,6 +267,10 @@ def is_file(session, path, **kwargs):
 
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: `True` if `path` is a file, `False` otherwise (even if it doesn't exist)
     """
@@ -282,6 +318,10 @@ def listdir(session, path, **kwargs):
         :param preview_size: size of the file preview
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: generator of :any:`ResourceObject`
     """
@@ -295,6 +335,10 @@ def mkdir(session, path, **kwargs):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the directory to be created
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`LinkObject`
     """
@@ -315,6 +359,10 @@ def remove(session, path, **kwargs):
                             otherwise, it will be just moved to the trash
         :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`LinkObject` if the operation is performed asynchronously, `None` otherwise
     """
@@ -334,6 +382,10 @@ def upload(session, file_or_path, dst_path, **kwargs):
         :param dst_path: destination path
         :param overwrite: if `True`, the resource will be overwritten if it already exists,
                           an error will be raised otherwise
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
     """
 
     kwargs = dict(kwargs)
@@ -410,6 +462,10 @@ def get_trash_meta(session, path, **kwargs):
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param sort: `str`, field to be used as a key to sort children resources
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`TrashResourceObject`
     """
@@ -426,6 +482,10 @@ def trash_exists(session, path, **kwargs):
 
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the trash resource
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: `bool`
     """
@@ -443,6 +503,10 @@ def restore_trash(session, path, dst_path=None, **kwargs):
         :param overwrite: `bool`, determines whether the destination can be overwritten
         :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`LinkObject` or :any:`OperationLinkObject`
     """
@@ -465,6 +529,10 @@ def move(session, src_path, dst_path, **kwargs):
         :param overwrite: `bool`, determines whether to overwrite the destination
         :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`LinkObject` or :any:`OperationLinkObject`
     """
@@ -482,6 +550,10 @@ def remove_trash(session, path, **kwargs):
         :param path: path to the trash resource to be deleted
         :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
     """
@@ -498,6 +570,10 @@ def publish(session, path, **kwargs):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource to be published
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`LinkObject`, link to the resource
     """
@@ -514,6 +590,10 @@ def unpublish(session, path, **kwargs):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the resource to be unpublished
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`LinkObject`
     """
@@ -536,6 +616,10 @@ def save_to_disk(session, public_key, **kwargs):
         :param save_path: path to the destination directory (downloads directory by default)
         :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`LinkObject` or :any:`OperationLinkObject`
     """
@@ -557,6 +641,10 @@ def get_public_meta(session, public_key, **kwargs):
         :param preview_size: file preview size
         :param preview_crop: `bool`, allow preview crop
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`PublicResourceObject`
     """
@@ -572,6 +660,10 @@ def public_exists(session, public_key, **kwargs):
 
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: `bool`
     """
@@ -589,6 +681,10 @@ def public_listdir(session, public_key, **kwargs):
         :param preview_size: size of the file preview
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: generator of :any:`PublicResourceObject`
     """
@@ -601,6 +697,10 @@ def get_public_type(session, public_key, **kwargs):
 
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: "file" or "dir"
     """
@@ -613,6 +713,10 @@ def is_public_dir(session, public_key, **kwargs):
 
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: `True` if `public_key` is a directory, `False` otherwise (even if it doesn't exist)
     """
@@ -628,6 +732,10 @@ def is_public_file(session, public_key, **kwargs):
 
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: `True` if `public_key` is a file, `False` otherwise (even if it doesn't exist)
     """
@@ -648,6 +756,10 @@ def trash_listdir(session, path, **kwargs):
         :param preview_size: size of the file preview
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: generator of :any:`TrashResourceObject`
     """
@@ -660,6 +772,10 @@ def get_trash_type(session, path, **kwargs):
 
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the trash resource
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: "file" or "dir"
     """
@@ -672,6 +788,10 @@ def is_trash_dir(session, path, **kwargs):
 
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the trash resource
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
     """
@@ -687,6 +807,10 @@ def is_trash_file(session, path, **kwargs):
 
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param path: path to the trash resource
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: `True` if `path` is a file, `False` otherwise (even if it doesn't exist)
     """
@@ -707,6 +831,10 @@ def get_public_resources(session, **kwargs):
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param type: filter based on type of resources ("file" or "dir")
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`PublicResourcesListObject`
     """
@@ -724,6 +852,10 @@ def patch(session, path, properties, **kwargs):
         :param path: path to the resource
         :param properties: `dict`, custom properties to update
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`ResourceObject`
     """
@@ -745,6 +877,10 @@ def get_files(session, **kwargs):
         :param preview_size: size of the file preview
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: generator of :any:`ResourceObject`
     """
@@ -784,6 +920,10 @@ def get_last_uploaded(session, **kwargs):
         :param preview_size: size of the file preview
         :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: generator of :any:`LastUploadedResourceListObject`
     """
@@ -803,6 +943,10 @@ def upload_url(session, url, path, **kwargs):
         :param path: destination path
         :param disable_redirects: `bool`, forbid redirects
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`OperationLinkObject`, link to the asynchronous operation
     """
@@ -819,6 +963,10 @@ def get_public_download_link(session, public_key, **kwargs):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: `str`
     """
@@ -835,6 +983,10 @@ def download_public(session, public_key, file_or_path, **kwargs):
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
         :param path_or_file: destination path or file-like object
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
     """
 
     n_retries = kwargs.pop("n_retries", None)

@@ -16,11 +16,11 @@ class APIRequest(object):
 
         :param session: an instance of :any:`requests.Session`
         :param args: `dict` of arguments, that will be passed to `process_args`
-        :param timeout: request timeout
-        :param headers: additional request headers
-        :param n_retries: maximum number of retries
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
         :param retry_interval: delay between retries in seconds
-        :param kwargs: other parameters for session.send()
+        :param kwargs: other arguments for :any:`requests.Session.send`
 
         :ivar url: `str`, request URL
         :ivar method: `str`, request method
@@ -45,6 +45,9 @@ class APIRequest(object):
         n_retries = kwargs.pop("n_retries", None)
         retry_interval = kwargs.pop("retry_interval", None)
         headers = kwargs.pop("headers", {})
+
+        if headers is None:
+            headers = {}
 
         try:
             timeout = kwargs["timeout"]

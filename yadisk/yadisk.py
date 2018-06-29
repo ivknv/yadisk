@@ -132,6 +132,10 @@ class YaDisk(object):
 
             :param code: confirmation code
             :param device_id: unique device ID (between 6 and 50 characters)
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`TokenObject`
         """
@@ -143,6 +147,10 @@ class YaDisk(object):
             Refresh an existing token.
 
             :param refresh_token: the refresh token that was received with the token
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`TokenObject`
         """
@@ -155,6 +163,10 @@ class YaDisk(object):
             Revoke the token.
 
             :param token: token to revoke, equivalent to `self.token` if `None`
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`TokenRevokeStatusObject`
         """
@@ -169,6 +181,10 @@ class YaDisk(object):
             Get disk information.
 
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`DiskInfoObject`
         """
@@ -186,6 +202,10 @@ class YaDisk(object):
             :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param sort: `str`, field to be used as a key to sort children resources
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`ResourceObject`
         """
@@ -197,6 +217,10 @@ class YaDisk(object):
             Check whether `path` exists.
 
             :param path: path to the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: `bool`
         """
@@ -208,6 +232,10 @@ class YaDisk(object):
             Get resource type.
 
             :param path: path to the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: "file" or "dir"
         """
@@ -219,6 +247,10 @@ class YaDisk(object):
             Check whether `path` is a file.
 
             :param path: path to the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: `True` if `path` is a file, `False` otherwise (even if it doesn't exist)
         """
@@ -230,6 +262,10 @@ class YaDisk(object):
             Check whether `path` is a directory.
 
             :param path: path to the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
         """
@@ -246,6 +282,10 @@ class YaDisk(object):
             :param preview_size: size of the file preview
             :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: generator of :any:`ResourceObject`
         """
@@ -259,6 +299,10 @@ class YaDisk(object):
             :param path: destination path
             :param overwrite: `bool`, determines whether to overwrite the destination
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: `str`
         """
@@ -274,6 +318,10 @@ class YaDisk(object):
             :param overwrite: if `True`, the resource will be overwritten if it already exists,
                               an error will be raised otherwise
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
         """
 
         functions.upload(self.get_session(), path_or_file, dst_path, **kwargs)
@@ -284,6 +332,10 @@ class YaDisk(object):
 
             :param path: path to the resource
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: `str`
         """
@@ -296,6 +348,10 @@ class YaDisk(object):
 
             :param src_path: source path
             :param path_or_file: destination path or file-like object
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
         """
 
         functions.download(self.get_session(), src_path, path_or_file, **kwargs)
@@ -309,6 +365,10 @@ class YaDisk(object):
                                 otherwise, it will be just moved to the trash
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
@@ -321,6 +381,10 @@ class YaDisk(object):
 
             :param path: path to the directory to be created
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`LinkObject`
         """
@@ -332,6 +396,10 @@ class YaDisk(object):
             Check whether the token is valid.
 
             :param token: token to check, equivalent to `self.token` if `None`
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: `bool`
         """
@@ -349,6 +417,10 @@ class YaDisk(object):
             :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param sort: `str`, field to be used as a key to sort children resources
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`TrashResourceObject`
         """
@@ -360,6 +432,10 @@ class YaDisk(object):
             Check whether the trash resource at `path` exists.
 
             :param path: path to the trash resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: `bool`
         """
@@ -372,6 +448,10 @@ class YaDisk(object):
 
             :param operation_id: ID of the operation or a link
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: `str`
         """
@@ -391,6 +471,10 @@ class YaDisk(object):
                               otherwise, an error will be raised
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`LinkObject` or :any:`OperationLinkObject`
         """
@@ -407,6 +491,10 @@ class YaDisk(object):
             :param overwrite: `bool`, determines whether the destination can be overwritten
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`LinkObject` or :any:`OperationLinkObject`
         """
@@ -422,6 +510,10 @@ class YaDisk(object):
             :param overwrite: `bool`, determines whether to overwrite the destination
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`OperationLinkObject` or :any:`LinkObject`
         """
@@ -435,6 +527,10 @@ class YaDisk(object):
             :param path: path to the trash resource to be deleted
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
@@ -447,6 +543,10 @@ class YaDisk(object):
 
             :param path: path to the resource to be published
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`LinkObject`, link to the resource
         """
@@ -459,6 +559,10 @@ class YaDisk(object):
 
             :param path: path to the resource to be unpublished
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`LinkObject`, link to the resource
         """
@@ -477,6 +581,10 @@ class YaDisk(object):
             :param save_path: path to the destination directory (downloads directory by default)
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`LinkObject` or :any:`OperationLinkObject`
         """
@@ -494,6 +602,10 @@ class YaDisk(object):
             :param preview_size: file preview size
             :param preview_crop: `bool`, allow preview crop
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`PublicResourceObject`
         """
@@ -505,6 +617,10 @@ class YaDisk(object):
             Check whether the public resource exists.
 
             :param public_key: public key or public URL of the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: `bool`
         """
@@ -521,6 +637,10 @@ class YaDisk(object):
             :param preview_size: size of the file preview
             :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: generator of :any:`PublicResourceObject`
         """
@@ -532,6 +652,10 @@ class YaDisk(object):
             Get public resource type.
 
             :param public_key: public key or public URL of the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: "file" or "dir"
         """
@@ -543,6 +667,10 @@ class YaDisk(object):
             Check whether `public_key` is a public directory.
 
             :param public_key: public key or public URL of the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: `True` if `public_key` is a directory, `False` otherwise (even if it doesn't exist)
         """
@@ -554,6 +682,10 @@ class YaDisk(object):
             Check whether `public_key` is a public file.
 
             :param public_key: public key or public URL of the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: `True` if `public_key` is a file, `False` otherwise (even if it doesn't exist)
         """
@@ -570,6 +702,10 @@ class YaDisk(object):
             :param preview_size: size of the file preview
             :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: generator of :any:`TrashResourceObject`
         """
@@ -581,6 +717,10 @@ class YaDisk(object):
             Get trash resource type.
 
             :param path: path to the trash resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: "file" or "dir"
         """
@@ -592,6 +732,10 @@ class YaDisk(object):
             Check whether `path` is a trash directory.
 
             :param path: path to the trash resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
         """
@@ -603,6 +747,10 @@ class YaDisk(object):
             Check whether `path` is a trash file.
 
             :param path: path to the trash resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
         """
@@ -619,6 +767,10 @@ class YaDisk(object):
             :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param type: filter based on type of resources ("file" or "dir")
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`PublicResourcesListObject`
         """
@@ -632,6 +784,10 @@ class YaDisk(object):
             :param path: path to the resource
             :param properties: `dict`, custom properties to update
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`ResourceObject`
         """
@@ -649,6 +805,10 @@ class YaDisk(object):
             :param preview_size: size of the file preview
             :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: generator of :any:`ResourceObject`
         """
@@ -664,6 +824,10 @@ class YaDisk(object):
             :param preview_size: size of the file preview
             :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: generator of :any:`LastUploadedResourceListObject`
         """
@@ -678,6 +842,10 @@ class YaDisk(object):
             :param path: destination path
             :param disable_redirects: `bool`, forbid redirects
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: :any:`OperationLinkObject`, link to the asynchronous operation
         """
@@ -690,6 +858,10 @@ class YaDisk(object):
 
             :param public_key: public key or public URL of the resource
             :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
             :returns: `str`
         """
@@ -703,6 +875,10 @@ class YaDisk(object):
 
             :param public_key: public key or public URL of the resource
             :param file_or_path: destination path or file-like object
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
         """
 
         functions.download_public(self.get_session(), public_key, file_or_path,

@@ -118,6 +118,10 @@ def get_token(code, client_id, client_secret, **kwargs):
         :param client_id: application ID
         :param client_secret: application secret password
         :param device_id: unique device ID (between 6 and 50 characters)
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`TokenObject`
     """
@@ -135,6 +139,10 @@ def refresh_token(refresh_token, client_id, client_secret, **kwargs):
         :param refresh_token: the refresh token that was received with the token
         :param client_id: application ID
         :param client_secret: application secret password
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`TokenObject`
     """
@@ -153,6 +161,10 @@ def revoke_token(token, client_id, client_secret, **kwargs):
         :param token: token to revoke
         :param client_id: application ID
         :param client_secret: application secret password
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`TokenRevokeStatusObject`
     """

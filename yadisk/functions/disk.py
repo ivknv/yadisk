@@ -10,6 +10,10 @@ def get_disk_info(session, **kwargs):
 
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param fields: list of keys to be included in the response
+        :param timeout: `float` or `tuple`, request timeout
+        :param headers: `dict` or `None`, additional request headers
+        :param n_retries: `int`, maximum number of retries
+        :param retry_interval: delay between retries in seconds
 
         :returns: :any:`DiskInfoObject`
     """
