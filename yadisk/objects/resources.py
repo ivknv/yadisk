@@ -130,6 +130,8 @@ class ResourceObject(YaDiskObject):
 
         :param resource: `dict` or `None`
 
+        :ivar antivirus_status: `str`, antivirus check status
+        :ivar file: `str`, download URL
         :ivar size: `int`, file size
         :ivar public_key: `str`, public resource key
         :ivar sha256: `str`, SHA256 hash
@@ -153,7 +155,9 @@ class ResourceObject(YaDiskObject):
     """
 
     def __init__(self, resource=None):
-        YaDiskObject.__init__(self, {"size":              int,
+        YaDiskObject.__init__(self, {"antivirus_status":  str,
+                                     "file":              str,
+                                     "size":              int,
                                      "public_key":        str,
                                      "sha256":            str,
                                      "embedded":          ResourceListObject,
@@ -239,6 +243,8 @@ class PublicResourceObject(ResourceObject):
 
         :param resource: `dict` or `None`
 
+        :ivar antivirus_status: `str`, antivirus check status
+        :ivar file: `str`, download URL
         :ivar size: `int`, file size
         :ivar public_key: `str`, public resource key
         :ivar sha256: `str`, SHA256 hash
@@ -298,6 +304,8 @@ class TrashResourceObject(ResourceObject):
 
         :param trash_resource: `dict` or `None`
 
+        :ivar antivirus_status: `str`, antivirus check status
+        :ivar file: `str`, download URL
         :ivar size: `int`, file size
         :ivar public_key: `str`, public resource key
         :ivar sha256: `str`, SHA256 hash

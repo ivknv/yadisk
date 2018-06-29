@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-29 21:52+0500\n"
+"POT-Creation-Date: 2018-06-29 22:14+0500\n"
 "PO-Revision-Date: 2018-01-20 15:41+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1826,118 +1826,130 @@ msgstr "Объект ресурса."
 #: of yadisk.objects.resources.PublicResourceObject:5
 #: yadisk.objects.resources.ResourceObject:5
 #: yadisk.objects.resources.TrashResourceObject:5
-msgid "`int`, file size"
-msgstr "`int`, размер файла"
+msgid "`str`, antivirus check status"
+msgstr "`str`, статус проверки антивирусом"
 
 #: of yadisk.objects.resources.PublicResourceObject:6
 #: yadisk.objects.resources.ResourceObject:6
 #: yadisk.objects.resources.TrashResourceObject:6
-msgid "`str`, public resource key"
-msgstr "`str`, публичный ключ"
+msgid "`str`, download URL"
+msgstr "`str`, URL для скачивания файла"
 
 #: of yadisk.objects.resources.PublicResourceObject:7
 #: yadisk.objects.resources.ResourceObject:7
 #: yadisk.objects.resources.TrashResourceObject:7
-msgid "`str`, SHA256 hash"
-msgstr "`str`, SHA256 хэш"
+msgid "`int`, file size"
+msgstr "`int`, размер файла"
 
 #: of yadisk.objects.resources.PublicResourceObject:8
 #: yadisk.objects.resources.ResourceObject:8
 #: yadisk.objects.resources.TrashResourceObject:8
-msgid "`str`, MD5 hash"
-msgstr "`str`, MD5 хэш"
+msgid "`str`, public resource key"
+msgstr "`str`, публичный ключ"
 
-#: of yadisk.objects.resources.ResourceObject:9
-msgid ":any:`ResourceListObject`, list of nested resources"
-msgstr ":any:`ResourceListObject`, список вложенных ресурсов"
+#: of yadisk.objects.resources.PublicResourceObject:9
+#: yadisk.objects.resources.ResourceObject:9
+#: yadisk.objects.resources.TrashResourceObject:9
+msgid "`str`, SHA256 hash"
+msgstr "`str`, SHA256 хэш"
 
 #: of yadisk.objects.resources.PublicResourceObject:10
 #: yadisk.objects.resources.ResourceObject:10
 #: yadisk.objects.resources.TrashResourceObject:10
-msgid "`str`, filename"
-msgstr "`str`, имя файла"
+msgid "`str`, MD5 hash"
+msgstr "`str`, MD5 хэш"
 
-#: of yadisk.objects.resources.PublicResourceObject:11
-#: yadisk.objects.resources.ResourceObject:11
-#: yadisk.objects.resources.TrashResourceObject:11
-msgid ":any:`EXIFObject`, EXIF metadata"
-msgstr ":any:`EXIFObject`, метаданные EXIF"
+#: of yadisk.objects.resources.ResourceObject:11
+msgid ":any:`ResourceListObject`, list of nested resources"
+msgstr ":any:`ResourceListObject`, список вложенных ресурсов"
 
 #: of yadisk.objects.resources.PublicResourceObject:12
 #: yadisk.objects.resources.ResourceObject:12
 #: yadisk.objects.resources.TrashResourceObject:12
-msgid "`str`, resource ID"
-msgstr "`str`, идентификатор ресурса"
+msgid "`str`, filename"
+msgstr "`str`, имя файла"
 
 #: of yadisk.objects.resources.PublicResourceObject:13
 #: yadisk.objects.resources.ResourceObject:13
 #: yadisk.objects.resources.TrashResourceObject:13
-msgid "`dict`, custom resource properties"
-msgstr "`dict`, пользовательские свойства ресурса"
+msgid ":any:`EXIFObject`, EXIF metadata"
+msgstr ":any:`EXIFObject`, метаданные EXIF"
 
 #: of yadisk.objects.resources.PublicResourceObject:14
 #: yadisk.objects.resources.ResourceObject:14
 #: yadisk.objects.resources.TrashResourceObject:14
-msgid "`str`, public URL"
-msgstr "`str`, публичный URL"
+msgid "`str`, resource ID"
+msgstr "`str`, идентификатор ресурса"
 
 #: of yadisk.objects.resources.PublicResourceObject:15
 #: yadisk.objects.resources.ResourceObject:15
 #: yadisk.objects.resources.TrashResourceObject:15
-msgid ":any:`ShareInfoObject`, shared folder information"
-msgstr ":any:`ShareInfoObject`, информация об общей папке"
+msgid "`dict`, custom resource properties"
+msgstr "`dict`, пользовательские свойства ресурса"
 
 #: of yadisk.objects.resources.PublicResourceObject:16
 #: yadisk.objects.resources.ResourceObject:16
 #: yadisk.objects.resources.TrashResourceObject:16
-msgid ":any:`datetime.datetime`, date of last modification"
-msgstr ":any:`datetime.datetime`, дата последнего изменения"
+msgid "`str`, public URL"
+msgstr "`str`, публичный URL"
 
 #: of yadisk.objects.resources.PublicResourceObject:17
 #: yadisk.objects.resources.ResourceObject:17
 #: yadisk.objects.resources.TrashResourceObject:17
-msgid ":any:`datetime.datetime`, date of creation"
-msgstr ":any:`datetime.datetime`, дата создания"
+msgid ":any:`ShareInfoObject`, shared folder information"
+msgstr ":any:`ShareInfoObject`, информация об общей папке"
 
 #: of yadisk.objects.resources.PublicResourceObject:18
 #: yadisk.objects.resources.ResourceObject:18
 #: yadisk.objects.resources.TrashResourceObject:18
-msgid "`str`, MIME type"
-msgstr "`str`, MIME-тип"
+msgid ":any:`datetime.datetime`, date of last modification"
+msgstr ":any:`datetime.datetime`, дата последнего изменения"
 
 #: of yadisk.objects.resources.PublicResourceObject:19
 #: yadisk.objects.resources.ResourceObject:19
 #: yadisk.objects.resources.TrashResourceObject:19
-msgid "`str`, path to the resource"
-msgstr "`str`, путь к ресурсу"
+msgid ":any:`datetime.datetime`, date of creation"
+msgstr ":any:`datetime.datetime`, дата создания"
 
 #: of yadisk.objects.resources.PublicResourceObject:20
 #: yadisk.objects.resources.ResourceObject:20
 #: yadisk.objects.resources.TrashResourceObject:20
-msgid "`str`, file preview URL"
-msgstr "`str`, URL превью файла"
+msgid "`str`, MIME type"
+msgstr "`str`, MIME-тип"
 
 #: of yadisk.objects.resources.PublicResourceObject:21
 #: yadisk.objects.resources.ResourceObject:21
 #: yadisk.objects.resources.TrashResourceObject:21
-msgid ":any:`CommentIDsObject`, comment IDs"
-msgstr ":any:`CommentIDsObject`, идентификаторы комментариев"
+msgid "`str`, path to the resource"
+msgstr "`str`, путь к ресурсу"
 
 #: of yadisk.objects.resources.PublicResourceObject:22
 #: yadisk.objects.resources.ResourceObject:22
 #: yadisk.objects.resources.TrashResourceObject:22
-msgid "`str`, type (\"file\" or \"dir\")"
-msgstr "`str`, тип (\"file\" или \"dir\")"
+msgid "`str`, file preview URL"
+msgstr "`str`, URL превью файла"
 
 #: of yadisk.objects.resources.PublicResourceObject:23
 #: yadisk.objects.resources.ResourceObject:23
 #: yadisk.objects.resources.TrashResourceObject:23
-msgid "`str`, file type as determined by Yandex.Disk"
-msgstr "`str`, тип файла, согласно Яндекс.Диску"
+msgid ":any:`CommentIDsObject`, comment IDs"
+msgstr ":any:`CommentIDsObject`, идентификаторы комментариев"
 
 #: of yadisk.objects.resources.PublicResourceObject:24
 #: yadisk.objects.resources.ResourceObject:24
 #: yadisk.objects.resources.TrashResourceObject:24
+msgid "`str`, type (\"file\" or \"dir\")"
+msgstr "`str`, тип (\"file\" или \"dir\")"
+
+#: of yadisk.objects.resources.PublicResourceObject:25
+#: yadisk.objects.resources.ResourceObject:25
+#: yadisk.objects.resources.TrashResourceObject:25
+msgid "`str`, file type as determined by Yandex.Disk"
+msgstr "`str`, тип файла, согласно Яндекс.Диску"
+
+#: of yadisk.objects.resources.PublicResourceObject:26
+#: yadisk.objects.resources.ResourceObject:26
+#: yadisk.objects.resources.TrashResourceObject:26
 msgid "`int`, Yandex.Disk revision at the time of last modification"
 msgstr "`int`, ревизия Яндекс.Диска на момент последнего изменения"
 
@@ -1974,15 +1986,15 @@ msgstr ""
 msgid "Public resource object."
 msgstr "Объект публичного ресурса."
 
-#: of yadisk.objects.resources.PublicResourceObject:9
+#: of yadisk.objects.resources.PublicResourceObject:11
 msgid ":any:`PublicResourceObject`, list of nested resources"
 msgstr ":any:`PublicResourceObject`, список вложенных ресурсов"
 
-#: of yadisk.objects.resources.PublicResourceObject:25
+#: of yadisk.objects.resources.PublicResourceObject:27
 msgid "`int`, number of times the public resource was viewed"
 msgstr "`int`, количество просмотров публичного ресурса"
 
-#: of yadisk.objects.resources.PublicResourceObject:26
+#: of yadisk.objects.resources.PublicResourceObject:28
 msgid ":any:`UserObject`, owner of the public resource"
 msgstr ":any:`UserObject`, владелец публичного ресурса"
 
@@ -1999,15 +2011,15 @@ msgstr "`str`, публичный ключ к ресурсу"
 msgid "Trash resource object."
 msgstr "Объект ресурса корзины."
 
-#: of yadisk.objects.resources.TrashResourceObject:9
+#: of yadisk.objects.resources.TrashResourceObject:11
 msgid ":any:`TrashResourceListObject`, list of nested resources"
 msgstr ":any:`ResourceListObject`, список вложенных ресурсов"
 
-#: of yadisk.objects.resources.TrashResourceObject:25
+#: of yadisk.objects.resources.TrashResourceObject:27
 msgid "`str`, original path"
 msgstr "`str`, оригинальный путь"
 
-#: of yadisk.objects.resources.TrashResourceObject:26
+#: of yadisk.objects.resources.TrashResourceObject:28
 msgid ":any:`datetime.datetime`, date of deletion"
 msgstr ":any:`datetime.datetime`, дата удаления"
 
