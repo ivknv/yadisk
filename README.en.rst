@@ -76,6 +76,17 @@ Examples
 Changelog
 *********
 
+.. _issue #2: https://github.com/ivknv/yadisk/issues/2
+
+* **Release 1.2.11 (2018-06-30)**
+
+  * Added the missing parameter :code:`sort` for :code:`get_meta()`
+  * Added :code:`file` and :code:`antivirus_status` attributes for :code:`ResourceObject`,
+    :code:`PublicResourceObject` and :code:`TrashResourceObject`
+  * Added :code:`headers` parameter
+  * Fixed a typo in :code:`download()` and :code:`download_public()` (`issue #2`_)
+  * Removed :code:`*args` parameter everywhere
+
 * **Release 1.2.10 (2018-06-14)**
 
   * Fixed :code:`timeout=None` behavior. :code:`None` is supposed to mean 'no timeout' but

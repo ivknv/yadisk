@@ -76,6 +76,17 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 История изменений
 *****************
 
+.. _issue #2: https://github.com/ivknv/yadisk/issues/2
+
+* **Release 1.2.11 (2018-06-30)**
+
+  * Добавлен недостающий параметр :code:`sort` для :code:`get_meta()`
+  * Добавлены аттрибуты :code:`file` и :code:`antivirus_status` для :code:`ResourceObject`,
+    :code:`PublicResourceObject` и :code:`TrashResourceObject`
+  * Добавлен параметр :code:`headers`
+  * Исправлена опечатка в :code:`download()` и :code:`download_public()` (`issue #2`_)
+  * Убран параметр :code:`*args`
+
 * **Release 1.2.10 (2018-06-14)**
 
   * Исправлено поведение :code:`timeout=None`. :code:`None` должен означать „без таймаута“,

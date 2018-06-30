@@ -1,6 +1,17 @@
 Changelog
 =========
 
+.. _issue #2: https://github.com/ivknv/yadisk/issues/2
+
+* **Release 1.2.11 (2018-06-30)**
+
+  * Added the missing parameter `sort` for `get_meta()`
+  * Added `file` and `antivirus_status` attributes for `ResourceObject`,
+    `PublicResourceObject` and `TrashResourceObject`
+  * Added `headers` parameter
+  * Fixed a typo in `download()` and `download_public()` (`issue #2`_)
+  * Removed `*args` parameter everywhere
+
 * **Release 1.2.10 (2018-06-14)**
 
   * Fixed `timeout=None` behavior. `None` is supposed to mean 'no timeout' but
