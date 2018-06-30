@@ -1,6 +1,22 @@
 YaDisk
 ======
 
+.. image:: https://img.shields.io/readthedocs/yadisk.svg
+   :alt: Read the Docs
+   :target: https://yadisk.readthedocs.io/en/latest/
+   
+.. image:: https://img.shields.io/pypi/v/yadisk.svg
+   :alt: PyPI
+   :target: https://pypi.org/project/yadisk
+   
+.. image:: https://img.shields.io/aur/version/python-yadisk.svg
+   :alt: AUR
+   :target: https://aur.archlinux.org/packages/python-yadisk
+   
+.. image:: https://img.shields.io/badge/Donate-PayPal-green.svg
+   :alt: Donate
+   :target: https://paypal.me/encryptandsync
+
 YaDisk is a Yandex.Disk REST API client library.
 
 .. _Read the Docs (EN): http://yadisk.readthedocs.io
@@ -58,7 +74,7 @@ Examples
     print(y.mkdir("/test-dir"))
 
 Changelog
-=========
+*********
 
 * **Release 1.2.10 (2018-06-14)**
 

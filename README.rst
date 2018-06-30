@@ -1,6 +1,22 @@
 YaDisk
 ======
 
+.. image:: https://img.shields.io/readthedocs/yadisk.svg
+   :alt: Read the Docs
+   :target: https://yadisk.readthedocs.io/en/latest/
+   
+.. image:: https://img.shields.io/pypi/v/yadisk.svg
+   :alt: PyPI
+   :target: https://pypi.org/project/yadisk
+   
+.. image:: https://img.shields.io/aur/version/python-yadisk.svg
+   :alt: AUR
+   :target: https://aur.archlinux.org/packages/python-yadisk
+   
+.. image:: https://img.shields.io/badge/Donate-PayPal-green.svg
+   :alt: Donate
+   :target: https://paypal.me/encryptandsync
+
 YaDisk - это библиотека-клиент REST API Яндекс.Диска.
 
 .. _Read the Docs (EN): http://yadisk.readthedocs.io
@@ -142,6 +158,7 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
   * Некоторые функции теперь возвращают :code:`OperationLinkObject`
 
 * **Release 1.0.5 (2017-10-29)**
+
   * Исправлен :code:`setup.py`, теперь исключает тесты
 
 * **Release 1.0.4 (2017-10-23)**
