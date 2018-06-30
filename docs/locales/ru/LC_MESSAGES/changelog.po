@@ -1,0 +1,287 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2018, Ivan Konovalov
+# This file is distributed under the same license as the YaDisk package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: YaDisk 1.2.10\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-06-30 00:29+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: ../../changelog.rst:2
+msgid "Changelog"
+msgstr "История изменений"
+
+#: ../../changelog.rst:4
+msgid "**Release 1.2.10 (2018-06-14)**"
+msgstr ""
+
+#: ../../changelog.rst:6
+msgid ""
+"Fixed `timeout=None` behavior. `None` is supposed to mean 'no timeout' "
+"but in the older versions it was synonymous with the default timeout."
+msgstr ""
+"Исправлено поведение `timeout=None`. `None` должен означать 'без "
+"таймаута', но в предыдущих версиях значение `None` было синонимично со стандартным "
+"таймаутом."
+
+#: ../../changelog.rst:9
+msgid "**Release 1.2.9 (2018-04-28)**"
+msgstr ""
+
+#: ../../changelog.rst:11
+msgid "Changed the license to LGPLv3 (see `COPYING` and `COPYING.lesser`)"
+msgstr "Изменена лицензия на LGPLv3 (см. `COPYING` и `COPYING.lesser`)"
+
+#: ../../changelog.rst:12
+msgid "Other package info updates"
+msgstr "Другие изменения информации о пакете"
+
+#: ../../changelog.rst:14
+msgid "**Release 1.2.8 (2018-04-17)**"
+msgstr ""
+
+#: ../../changelog.rst:16
+msgid ""
+"Fixed a couple of typos: `PublicResourceListObject.items` and "
+"`TrashResourceListObject.items` had wrong types"
+msgstr "Исправлено несколько опечаток: у `PublicResourceListObject.items` и "
+"`TrashResourceListObject.items` были неправильные типы данных"
+
+#: ../../changelog.rst:18
+msgid ""
+"Substitute field aliases in `fields` parameter when performing API requests"
+" (e.g. `embedded` -> `_embedded`)"
+msgstr "Псевдонимы полей в параметре `fields` заменяются при выполнении "
+"запросов API (например, `embedded` -> `_embedded`)"
+
+#: ../../changelog.rst:21
+msgid "**Release 1.2.7 (2018-04-15)**"
+msgstr ""
+
+#: ../../changelog.rst:23
+msgid "Fixed a file rewinding bug when uploading/downloading files after a retry"
+msgstr "Исправлен баг перемотки файла при загрузке/скачивании после повторной попытки"
+
+#: ../../changelog.rst:25
+msgid "**Release 1.2.6 (2018-04-13)**"
+msgstr ""
+
+#: ../../changelog.rst:27
+msgid ""
+"Now caching `requests` sessions so that open connections can be reused "
+"(which can significantly speed things up sometimes)"
+msgstr "Теперь объекты сессий `requests` кэшируются, чтобы их можно "
+"было переиспользовать (иногда может существенно ускорить выполнение запросов)"
+
+#: ../../changelog.rst:29
+msgid "Disable `keep-alive` when uploading/downloading files by default"
+msgstr "`keep-alive` отключается при загрузке/скачивании файлов по умолчанию"
+
+#: ../../changelog.rst:31
+msgid "**Release 1.2.5 (2018-03-31)**"
+msgstr ""
+
+#: ../../changelog.rst:33
+msgid ""
+"Fixed an off-by-one bug in `utils.auto_retry()` (which could sometimes "
+"result in `AttributeError`)"
+msgstr "Исправлен баг (ошибка на единицу) в `utils.auto_retry()` (иногда мог вызвать `AttributeError`)"
+
+#: ../../changelog.rst:35
+msgid ""
+"Retry the whole request for `upload()`, `download()` and "
+"`download_public()`"
+msgstr "Повторные попытки применяются для `upload()`, `download()` и `download_public()` целиком"
+
+#: ../../changelog.rst:36
+msgid "Set `stream=True` for `download()` and `download_public()`"
+msgstr "Задано `stream=True` для `download()` и `download_public()`"
+
+#: ../../changelog.rst:37
+msgid "Other minor fixes"
+msgstr "Другие мелкие исправления"
+
+#: ../../changelog.rst:39
+msgid "**Release 1.2.4 (2018-02-19)**"
+msgstr ""
+
+#: ../../changelog.rst:41
+msgid ""
+"Fixed `TokenObject` having `exprires_in` instead of `expires_in` (fixed a"
+" typo)"
+msgstr "Исправлена опечатка (`TokenObject.exprires_in` -> `TokenObject.expires_in`)"
+
+#: ../../changelog.rst:43
+msgid "**Release 1.2.3 (2018-01-20)**"
+msgstr ""
+
+#: ../../changelog.rst:45
+msgid "Fixed a `TypeError` when `WrongResourceTypeError` is raised"
+msgstr "Исправлено `TypeError` при вызове `WrongResourceTypeError`"
+
+#: ../../changelog.rst:47
+msgid "**Release 1.2.2 (2018-01-19)**"
+msgstr ""
+
+#: ../../changelog.rst:49
+msgid "`refresh_token()` no longer requires a valid or empty token."
+msgstr "`refresh_token()` больше не требует валидный или пустой токен."
+
+#: ../../changelog.rst:51
+msgid "**Release 1.2.1 (2018-01-14)**"
+msgstr ""
+
+#: ../../changelog.rst:53
+msgid "Fixed auto retries not working. Whoops."
+msgstr "Исправлена неработоспособность повторных попыток."
+
+#: ../../changelog.rst:55
+msgid "**Release 1.2.0 (2018-01-14)**"
+msgstr ""
+
+#: ../../changelog.rst:57
+msgid ""
+"Fixed passing `n_retries=0` to `upload()`, `download()` and "
+"`download_public()`"
+msgstr "Исправлено использование `n_retries=0` в `upload()`, `download()` и `download_public()`"
+
+#: ../../changelog.rst:59
+msgid ""
+"`upload()`, `download()` and `download_public()` no longer return "
+"anything (see the docs)"
+msgstr "`upload()`, `download()` и `download_public()` больше не возвращают ничего (см. документацию)"
+
+#: ../../changelog.rst:61
+msgid "Added `utils` module (see the docs)"
+msgstr "Добавлен модуль `utils` (см. документацию)"
+
+#: ../../changelog.rst:62
+msgid ""
+"Added `RetriableYaDiskError`, `WrongResourceTypeError`, `BadGatewayError`"
+" and `GatewayTimeoutError`"
+msgstr "Добавлены `RetriableYaDiskError`, `WrongResourceTypeError`, `BadGatewayError`"
+" и `GatewayTimeoutError`"
+
+#: ../../changelog.rst:64
+msgid ""
+"`listdir()` now raises `WrongResourceTypeError` instead of "
+"`NotADirectoryError`"
+msgstr "`listdir()` теперь вызывает `WrongResourceTypeError` вместо `NotADirectoryError`"
+
+#: ../../changelog.rst:67
+msgid "**Release 1.1.1 (2017-12-29)**"
+msgstr ""
+
+#: ../../changelog.rst:69
+msgid ""
+"Fixed argument handling in `upload()`, `download()` and "
+"`download_public()`. Previously, passing `n_retries` and `retry_interval`"
+" would raise an exception (`TypeError`)."
+msgstr "Исправлена обработка аргументов в `upload()`, `download()` и `download_public()`."
+" До этого использование `n_retries` и `retry_interval` вызывало исключение (`TypeError`)."
+
+#: ../../changelog.rst:72
+msgid "**Release 1.1.0 (2017-12-27)**"
+msgstr ""
+
+#: ../../changelog.rst:74
+msgid "Better exceptions (see the docs)"
+msgstr "Усовершенствованные исключения (см. документацию)"
+
+#: ../../changelog.rst:75
+msgid "Added support for `force_async` parameter"
+msgstr "Добавлена поддержка параметра `force_async`"
+
+#: ../../changelog.rst:76
+msgid "Minor bug fixes"
+msgstr "Мелкие исправления багов"
+
+#: ../../changelog.rst:78
+msgid "**Release 1.0.8 (2017-11-29)**"
+msgstr ""
+
+#: ../../changelog.rst:80
+msgid "Fixed yet another `listdir()` bug"
+msgstr "Исправлен ещё один баг в `listdir()`"
+
+#: ../../changelog.rst:82
+msgid "**Release 1.0.7 (2017-11-04)**"
+msgstr ""
+
+#: ../../changelog.rst:84
+msgid "Added `install_requires` argument to `setup.py`"
+msgstr "Добавлен `install_requires` в `setup.py`"
+
+#: ../../changelog.rst:86
+msgid "**Release 1.0.6 (2017-11-04)**"
+msgstr ""
+
+#: ../../changelog.rst:88
+msgid "Return `OperationLinkObject` in some functions"
+msgstr "Некоторые функции теперь возвращают `OperationLinkObject`"
+
+#: ../../changelog.rst:90
+msgid "**Release 1.0.5 (2017-10-29)**"
+msgstr ""
+
+#: ../../changelog.rst:92
+msgid "Fixed `setup.py` to exclude tests"
+msgstr "Исправлен `setup.py`, теперь исключает тесты"
+
+#: ../../changelog.rst:94
+msgid "**Release 1.0.4 (2017-10-23)**"
+msgstr ""
+
+#: ../../changelog.rst:96
+msgid "Fixed bugs in `upload`, `download` and `listdir` functions"
+msgstr "Исправлены баги в `upload`, `download` и `listdir`"
+
+#: ../../changelog.rst:97
+msgid "Set default `listdir` `limit` to `10000`"
+msgstr "Значение по-умолчанию `limit` в `listdir` установлено в `10000`"
+
+#: ../../changelog.rst:99
+msgid "**Release 1.0.3 (2017-10-22)**"
+msgstr ""
+
+#: ../../changelog.rst:101
+msgid "Added settings"
+msgstr "Добавлен модуль `settings`"
+
+#: ../../changelog.rst:103
+msgid "**Release 1.0.2 (2017-10-19)**"
+msgstr ""
+
+#: ../../changelog.rst:105
+msgid "Fixed `get_code_url` function (added missing parameters)"
+msgstr "Исправлена функция `get_code_url` (добавлены недостающие параметры)"
+
+#: ../../changelog.rst:107
+msgid "**Release 1.0.1 (2017-10-18)**"
+msgstr ""
+
+#: ../../changelog.rst:109
+msgid "Fixed a major bug in `GetTokenRequest` (added missing parameter)"
+msgstr "Исправлен серьёзный баг в `GetTokenRequest` (добавлен недостающий параметр)"
+
+#: ../../changelog.rst:111
+msgid "**Release 1.0.0 (2017-10-18)**"
+msgstr ""
+
+#: ../../changelog.rst:113
+msgid "Initial release"
+msgstr "Первый релиз"
+
+#~ msgid "Change the license to LGPLv3 (see `COPYING` and `COPYING.lesser`)"
+#~ msgstr ""
+

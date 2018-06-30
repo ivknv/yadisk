@@ -12,6 +12,7 @@ Welcome to YaDisk's documentation!
 
    intro
    docs
+   changelog
 
 Indices and tables
 ==================
