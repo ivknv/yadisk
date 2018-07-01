@@ -73,6 +73,14 @@ Examples
     # Create a new directory at "/test-dir"
     print(y.mkdir("/test-dir"))
 
+Dontations
+**********
+
+.. _donating: https://paypal.me/encryptandsync
+
+If you find this library helpful, please consider `donating`_.
+Your donation will help the development of this library.
+
 Changelog
 *********
 
@@ -153,7 +161,7 @@ Changelog
 * **Release 1.1.1 (2017-12-29)**
 
   * Fixed argument handling in :code:`upload()`, :code:`download()` and :code:`download_public()`.
-    Previously, passing :code:`n_retries` and :code:`retry_interval` would raise an exception (`TypeError`).
+    Previously, passing :code:`n_retries` and :code:`retry_interval` would raise an exception (:code:`TypeError`).
 
 * **Release 1.1.0 (2017-12-27)**
 

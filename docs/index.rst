@@ -14,6 +14,12 @@ Welcome to YaDisk's documentation!
    docs
    changelog
 
+Donations
+*********
+
+If you find this library helpful, please consider `donating <https://paypal.me/encryptandsync>`_.
+Your donation will help the development of this library.
+
 Indices and tables
 ==================
 

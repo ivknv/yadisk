@@ -73,6 +73,13 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
     # Создаёт новую папку "/test-dir"
     print(y.mkdir("/test-dir"))
 
+Пожертвования
+*************
+
+.. _пожертвованием: https://paypal.me/encryptandsync
+
+Если вам пригодилась эта библиотека, вы можете поддержать её разработку `пожертвованием`_.
+
 История изменений
 *****************
 
@@ -123,7 +130,7 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 
 * **Release 1.2.4 (2018-02-19)**
 
-  * Исправлена опечатка (`TokenObject.exprires_in` -> :code:`TokenObject.expires_in`)
+  * Исправлена опечатка (:code:`TokenObject.exprires_in` -> :code:`TokenObject.expires_in`)
 
 * **Release 1.2.3 (2018-01-20)**
 
@@ -148,7 +155,7 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 * **Release 1.1.1 (2017-12-29)**
 
   * Исправлена обработка аргументов в :code:`upload()`, :code:`download()` и :code:`download_public()`.
-    До этого использование :code:`n_retries` и :code:`retry_interval` вызывало исключение (`TypeError`).
+    До этого использование :code:`n_retries` и :code:`retry_interval` вызывало исключение (:code:`TypeError`).
 
 * **Release 1.1.0 (2017-12-27)**
 
