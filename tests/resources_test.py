@@ -62,6 +62,23 @@ class ResourcesTestCase(TestCase):
 
         self.assertEqual(result, names)
 
+    def test_listdir_fields(self):
+        names = ["dir1", "dir2", "dir3"]
+
+        for name in names:
+            path = posixpath.join(self.path, name)
+
+            self.yadisk.mkdir(path)
+
+        result = [(i.name, i.type, i.file) for i in self.yadisk.listdir(self.path, fields=["name", "type"])]
+
+        for name in names:
+            path = posixpath.join(self.path, name)
+
+            self.yadisk.remove(path, permanently=True)
+
+        self.assertEqual(result, [(name, "dir", None) for name in names])
+
     def test_listdir_on_file(self):
         buf = BytesIO()
         buf.write(b"0" * 1000)

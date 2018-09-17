@@ -284,6 +284,21 @@ def _listdir(get_meta_function, session, path, **kwargs):
     kwargs = dict(kwargs)
     kwargs.setdefault("limit", 10000)
 
+    if kwargs.get("fields") is None:
+        kwargs["fields"] = []
+
+    kwargs["fields"] = ["embedded.items.%s" % (k,) for k in kwargs["fields"]]
+
+    # Fields that are absolutely necessary
+    NECESSARY_FIELDS = ["type",
+                        "embedded",
+                        "embedded.offset",
+                        "embedded.limit",
+                        "embedded.total",
+                        "embedded.items"]
+
+    kwargs["fields"].extend(NECESSARY_FIELDS)
+
     result = get_meta_function(session, path, **kwargs)
 
     if result.type == "file":
