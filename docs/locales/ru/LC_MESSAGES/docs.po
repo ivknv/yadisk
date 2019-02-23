@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-29 22:58+0500\n"
+"POT-Creation-Date: 2019-02-23 18:22+0500\n"
 "PO-Revision-Date: 2018-01-20 15:41+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -135,7 +135,7 @@ msgstr "Реализует доступ к REST API Яндекс.Диска."
 #: yadisk.objects.YaDiskObject.set_field_types yadisk.objects.auth.TokenObject
 #: yadisk.objects.auth.TokenRevokeStatusObject
 #: yadisk.objects.disk.DiskInfoObject yadisk.objects.disk.SystemFoldersObject
-#: yadisk.objects.disk.UserObject
+#: yadisk.objects.disk.UserObject yadisk.objects.disk.UserPublicInfoObject
 #: yadisk.objects.operations.OperationStatusObject
 #: yadisk.objects.resources.CommentIDsObject
 #: yadisk.objects.resources.EXIFObject
@@ -179,7 +179,7 @@ msgstr "токен"
 #: yadisk.objects.ErrorObject yadisk.objects.auth.TokenObject
 #: yadisk.objects.auth.TokenRevokeStatusObject
 #: yadisk.objects.disk.DiskInfoObject yadisk.objects.disk.SystemFoldersObject
-#: yadisk.objects.disk.UserObject
+#: yadisk.objects.disk.UserObject yadisk.objects.disk.UserPublicInfoObject
 #: yadisk.objects.operations.OperationStatusObject
 #: yadisk.objects.resources.CommentIDsObject
 #: yadisk.objects.resources.EXIFObject
@@ -235,7 +235,7 @@ msgstr "токен, подлежащий проверке, то же самое,
 #: yadisk.YaDisk.is_trash_file:4 yadisk.YaDisk.listdir:9 yadisk.YaDisk.mkdir:5
 #: yadisk.YaDisk.move:8 yadisk.YaDisk.patch:6 yadisk.YaDisk.public_exists:4
 #: yadisk.YaDisk.public_listdir:9 yadisk.YaDisk.publish:5
-#: yadisk.YaDisk.refresh_token:4 yadisk.YaDisk.remove:8
+#: yadisk.YaDisk.refresh_token:4 yadisk.YaDisk.remove:9
 #: yadisk.YaDisk.remove_trash:6 yadisk.YaDisk.restore_trash:9
 #: yadisk.YaDisk.revoke_token:4 yadisk.YaDisk.save_to_disk:11
 #: yadisk.YaDisk.trash_exists:4 yadisk.YaDisk.trash_listdir:9
@@ -268,7 +268,7 @@ msgstr "токен, подлежащий проверке, то же самое,
 #: yadisk.functions.resources.move:9 yadisk.functions.resources.patch:7
 #: yadisk.functions.resources.public_exists:5
 #: yadisk.functions.resources.public_listdir:10
-#: yadisk.functions.resources.publish:6 yadisk.functions.resources.remove:9
+#: yadisk.functions.resources.publish:6 yadisk.functions.resources.remove:10
 #: yadisk.functions.resources.remove_trash:7
 #: yadisk.functions.resources.restore_trash:10
 #: yadisk.functions.resources.save_to_disk:12
@@ -295,7 +295,7 @@ msgstr "`float` или `tuple`, таймаут запроса"
 #: yadisk.YaDisk.is_trash_file:5 yadisk.YaDisk.listdir:10 yadisk.YaDisk.mkdir:6
 #: yadisk.YaDisk.move:9 yadisk.YaDisk.patch:7 yadisk.YaDisk.public_exists:5
 #: yadisk.YaDisk.public_listdir:10 yadisk.YaDisk.publish:6
-#: yadisk.YaDisk.refresh_token:5 yadisk.YaDisk.remove:9
+#: yadisk.YaDisk.refresh_token:5 yadisk.YaDisk.remove:10
 #: yadisk.YaDisk.remove_trash:7 yadisk.YaDisk.restore_trash:10
 #: yadisk.YaDisk.revoke_token:5 yadisk.YaDisk.save_to_disk:12
 #: yadisk.YaDisk.trash_exists:5 yadisk.YaDisk.trash_listdir:10
@@ -328,7 +328,7 @@ msgstr "`float` или `tuple`, таймаут запроса"
 #: yadisk.functions.resources.move:10 yadisk.functions.resources.patch:8
 #: yadisk.functions.resources.public_exists:6
 #: yadisk.functions.resources.public_listdir:11
-#: yadisk.functions.resources.publish:7 yadisk.functions.resources.remove:10
+#: yadisk.functions.resources.publish:7 yadisk.functions.resources.remove:11
 #: yadisk.functions.resources.remove_trash:8
 #: yadisk.functions.resources.restore_trash:11
 #: yadisk.functions.resources.save_to_disk:13
@@ -355,7 +355,7 @@ msgstr "`dict` или `None`, дополнительные заголовки з
 #: yadisk.YaDisk.is_trash_file:6 yadisk.YaDisk.listdir:11 yadisk.YaDisk.mkdir:7
 #: yadisk.YaDisk.move:10 yadisk.YaDisk.patch:8 yadisk.YaDisk.public_exists:6
 #: yadisk.YaDisk.public_listdir:11 yadisk.YaDisk.publish:7
-#: yadisk.YaDisk.refresh_token:6 yadisk.YaDisk.remove:10
+#: yadisk.YaDisk.refresh_token:6 yadisk.YaDisk.remove:11
 #: yadisk.YaDisk.remove_trash:8 yadisk.YaDisk.restore_trash:11
 #: yadisk.YaDisk.revoke_token:6 yadisk.YaDisk.save_to_disk:13
 #: yadisk.YaDisk.trash_exists:6 yadisk.YaDisk.trash_listdir:11
@@ -388,7 +388,7 @@ msgstr "`dict` или `None`, дополнительные заголовки з
 #: yadisk.functions.resources.move:11 yadisk.functions.resources.patch:9
 #: yadisk.functions.resources.public_exists:7
 #: yadisk.functions.resources.public_listdir:12
-#: yadisk.functions.resources.publish:8 yadisk.functions.resources.remove:11
+#: yadisk.functions.resources.publish:8 yadisk.functions.resources.remove:12
 #: yadisk.functions.resources.remove_trash:9
 #: yadisk.functions.resources.restore_trash:12
 #: yadisk.functions.resources.save_to_disk:14
@@ -415,7 +415,7 @@ msgstr "`int`, максимальное число повторных попыт
 #: yadisk.YaDisk.is_trash_file:7 yadisk.YaDisk.listdir:12 yadisk.YaDisk.mkdir:8
 #: yadisk.YaDisk.move:11 yadisk.YaDisk.patch:9 yadisk.YaDisk.public_exists:7
 #: yadisk.YaDisk.public_listdir:12 yadisk.YaDisk.publish:8
-#: yadisk.YaDisk.refresh_token:7 yadisk.YaDisk.remove:11
+#: yadisk.YaDisk.refresh_token:7 yadisk.YaDisk.remove:12
 #: yadisk.YaDisk.remove_trash:9 yadisk.YaDisk.restore_trash:12
 #: yadisk.YaDisk.revoke_token:7 yadisk.YaDisk.save_to_disk:14
 #: yadisk.YaDisk.trash_exists:7 yadisk.YaDisk.trash_listdir:12
@@ -448,7 +448,7 @@ msgstr "`int`, максимальное число повторных попыт
 #: yadisk.functions.resources.move:12 yadisk.functions.resources.patch:10
 #: yadisk.functions.resources.public_exists:8
 #: yadisk.functions.resources.public_listdir:13
-#: yadisk.functions.resources.publish:9 yadisk.functions.resources.remove:12
+#: yadisk.functions.resources.publish:9 yadisk.functions.resources.remove:13
 #: yadisk.functions.resources.remove_trash:10
 #: yadisk.functions.resources.restore_trash:13
 #: yadisk.functions.resources.save_to_disk:15
@@ -612,14 +612,14 @@ msgstr ""
 "если `True`, путь назначения может быть перезаписан, иначе будет вызвана "
 "ошибка"
 
-#: of yadisk.YaDisk.copy:9 yadisk.YaDisk.move:6 yadisk.YaDisk.remove:6
+#: of yadisk.YaDisk.copy:9 yadisk.YaDisk.move:6 yadisk.YaDisk.remove:7
 #: yadisk.YaDisk.remove_trash:4 yadisk.YaDisk.restore_trash:7
 #: yadisk.YaDisk.save_to_disk:9 yadisk.api.resources.CopyRequest:8
 #: yadisk.api.resources.DeleteRequest:7
 #: yadisk.api.resources.DeleteTrashRequest:5 yadisk.api.resources.MoveRequest:6
 #: yadisk.api.resources.RestoreTrashRequest:6
 #: yadisk.api.resources.SaveToDiskRequest:8 yadisk.functions.resources.copy:10
-#: yadisk.functions.resources.move:7 yadisk.functions.resources.remove:7
+#: yadisk.functions.resources.move:7 yadisk.functions.resources.remove:8
 #: yadisk.functions.resources.remove_trash:5
 #: yadisk.functions.resources.restore_trash:8
 #: yadisk.functions.resources.save_to_disk:10
@@ -635,13 +635,13 @@ msgstr "заставляет выполнять операцию асинхро�
 #: yadisk.YaDisk.get_upload_link:5 yadisk.YaDisk.listdir:8
 #: yadisk.YaDisk.mkdir:4 yadisk.YaDisk.move:7 yadisk.YaDisk.patch:5
 #: yadisk.YaDisk.public_listdir:8 yadisk.YaDisk.publish:4
-#: yadisk.YaDisk.remove:7 yadisk.YaDisk.remove_trash:5
+#: yadisk.YaDisk.remove:8 yadisk.YaDisk.remove_trash:5
 #: yadisk.YaDisk.restore_trash:8 yadisk.YaDisk.save_to_disk:10
 #: yadisk.YaDisk.trash_listdir:8 yadisk.YaDisk.unpublish:4
 #: yadisk.YaDisk.upload:7 yadisk.YaDisk.upload_url:6
 #: yadisk.api.disk.DiskInfoRequest:4
 #: yadisk.api.operations.GetOperationStatusRequest:5
-#: yadisk.api.resources.CopyRequest:9 yadisk.api.resources.DeleteRequest:8
+#: yadisk.api.resources.CopyRequest:9 yadisk.api.resources.DeleteRequest:9
 #: yadisk.api.resources.DeleteTrashRequest:6
 #: yadisk.api.resources.FilesRequest:10
 #: yadisk.api.resources.GetDownloadLinkRequest:5
@@ -673,7 +673,7 @@ msgstr "заставляет выполнять операцию асинхро�
 #: yadisk.functions.resources.listdir:9 yadisk.functions.resources.mkdir:5
 #: yadisk.functions.resources.move:8 yadisk.functions.resources.patch:6
 #: yadisk.functions.resources.public_listdir:9
-#: yadisk.functions.resources.publish:5 yadisk.functions.resources.remove:8
+#: yadisk.functions.resources.publish:5 yadisk.functions.resources.remove:9
 #: yadisk.functions.resources.remove_trash:6
 #: yadisk.functions.resources.restore_trash:9
 #: yadisk.functions.resources.save_to_disk:11
@@ -1305,7 +1305,12 @@ msgstr ""
 "если `True`, ресурс будет безвозвратно удалён, иначе ресурс будет "
 "перемещён в корзину"
 
-#: of yadisk.YaDisk.remove:13 yadisk.YaDisk.remove_trash:11
+#: of yadisk.YaDisk.remove:6 yadisk.api.resources.DeleteRequest:8
+#: yadisk.functions.resources.remove:7
+msgid "`str`, MD5 hash of the file to remove"
+msgstr "`str`, MD5 хэш файла, подлежащего удалению"
+
+#: of yadisk.YaDisk.remove:14 yadisk.YaDisk.remove_trash:11
 #: yadisk.functions.resources.remove_trash:12
 msgid ""
 ":any:`OperationLinkObject` if the operation is performed asynchronously, "
@@ -1445,8 +1450,8 @@ msgid ""
 "Almost all methods of `YaDisk` (the ones that accept `**kwargs`) accept "
 "some additional arguments:"
 msgstr ""
-"Почти все методы `YaDisk` (те, которые принимают `**kwargs`) "
-"принимают некоторые дополнительные параметры:"
+"Почти все методы `YaDisk` (те, которые принимают `**kwargs`) принимают "
+"некоторые дополнительные параметры:"
 
 #: ../../docs.rst:13
 msgid "**n_retries** - `int`, maximum number of retries for a request"
@@ -1662,8 +1667,8 @@ msgstr ""
 msgid "Thrown when the requested path does not exist."
 msgstr "Вызывается, когда запрашиваемый путь не существует."
 
-#: of yadisk.exceptions.ParentNotFoundError:1
-#: yadisk.exceptions.PathExistsError:1
+#: of yadisk.exceptions.MD5DifferError:1
+#: yadisk.exceptions.ParentNotFoundError:1 yadisk.exceptions.PathExistsError:1
 msgid "Bases: :class:`yadisk.exceptions.ConflictError`"
 msgstr ""
 
@@ -1701,6 +1706,12 @@ msgstr ""
 msgid "Thrown when the resource is locked by another operation."
 msgstr "Вызывается, когда запрашиваемый ресурс заблокирован другой операцией."
 
+#: of yadisk.exceptions.MD5DifferError:1
+msgid ""
+"Thrown when the MD5 hash of the file to be deleted doesn't match with the"
+" actual one."
+msgstr "Вызывается, когда MD5 хэш удаляемого ресурса не совпадает с указанным."
+
 #: ../../docs.rst:42
 msgid "Objects"
 msgstr "Объекты"
@@ -1721,6 +1732,7 @@ msgstr ""
 #: yadisk.objects.auth.TokenRevokeStatusObject:3
 #: yadisk.objects.disk.DiskInfoObject:3
 #: yadisk.objects.disk.SystemFoldersObject:3 yadisk.objects.disk.UserObject:3
+#: yadisk.objects.disk.UserPublicInfoObject:4
 #: yadisk.objects.operations.OperationStatusObject:3
 #: yadisk.objects.resources.CommentIDsObject:3
 #: yadisk.objects.resources.EXIFObject:3
@@ -1931,16 +1943,33 @@ msgid "User object."
 msgstr "Объект пользователя."
 
 #: of yadisk.objects.disk.UserObject:5
+msgid "`str`, user's country"
+msgstr "`str`, страна пользователя"
+
+#: of yadisk.objects.disk.UserObject:6
+#: yadisk.objects.disk.UserPublicInfoObject:6
 msgid "`str`, user's login"
 msgstr "`str`, логин пользователя"
 
-#: of yadisk.objects.disk.UserObject:6
+#: of yadisk.objects.disk.UserObject:7
+#: yadisk.objects.disk.UserPublicInfoObject:7
 msgid "`str`, user's display name"
 msgstr "`str`, отображаемое имя пользователя"
 
-#: of yadisk.objects.disk.UserObject:7
+#: of yadisk.objects.disk.UserObject:8
+#: yadisk.objects.disk.UserPublicInfoObject:8
 msgid "`str`, user's UID"
 msgstr "`str`, уникальный идентификатор пользователя"
+
+#: of yadisk.objects.disk.UserPublicInfoObject:1
+msgid "Bases: :class:`yadisk.objects.disk.UserObject`"
+msgstr ""
+
+#: of yadisk.objects.disk.UserPublicInfoObject:1
+msgid ""
+"Public user information object. Inherits from :any:`UserObject` for "
+"compatibility."
+msgstr "Публичная информация о пользователе. Наследуется от :any:`UserObject` для совместимости."
 
 #: of yadisk.objects.resources.CommentIDsObject:1
 msgid "Comment IDs object."
@@ -2158,42 +2187,48 @@ msgstr ":any:`datetime.datetime`, дата создания"
 #: of yadisk.objects.resources.PublicResourceObject:20
 #: yadisk.objects.resources.ResourceObject:20
 #: yadisk.objects.resources.TrashResourceObject:20
-msgid "`str`, MIME type"
-msgstr "`str`, MIME-тип"
+msgid ":any:`datetime.datetime`, photo/video creation date"
+msgstr ":any:`datetime.datetime`, дата создания фото/видео"
 
 #: of yadisk.objects.resources.PublicResourceObject:21
 #: yadisk.objects.resources.ResourceObject:21
 #: yadisk.objects.resources.TrashResourceObject:21
-msgid "`str`, path to the resource"
-msgstr "`str`, путь к ресурсу"
+msgid "`str`, MIME type"
+msgstr "`str`, MIME-тип"
 
 #: of yadisk.objects.resources.PublicResourceObject:22
 #: yadisk.objects.resources.ResourceObject:22
 #: yadisk.objects.resources.TrashResourceObject:22
-msgid "`str`, file preview URL"
-msgstr "`str`, URL превью файла"
+msgid "`str`, path to the resource"
+msgstr "`str`, путь к ресурсу"
 
 #: of yadisk.objects.resources.PublicResourceObject:23
 #: yadisk.objects.resources.ResourceObject:23
 #: yadisk.objects.resources.TrashResourceObject:23
-msgid ":any:`CommentIDsObject`, comment IDs"
-msgstr ":any:`CommentIDsObject`, идентификаторы комментариев"
+msgid "`str`, file preview URL"
+msgstr "`str`, URL превью файла"
 
 #: of yadisk.objects.resources.PublicResourceObject:24
 #: yadisk.objects.resources.ResourceObject:24
 #: yadisk.objects.resources.TrashResourceObject:24
-msgid "`str`, type (\"file\" or \"dir\")"
-msgstr "`str`, тип (\"file\" или \"dir\")"
+msgid ":any:`CommentIDsObject`, comment IDs"
+msgstr ":any:`CommentIDsObject`, идентификаторы комментариев"
 
 #: of yadisk.objects.resources.PublicResourceObject:25
 #: yadisk.objects.resources.ResourceObject:25
 #: yadisk.objects.resources.TrashResourceObject:25
-msgid "`str`, file type as determined by Yandex.Disk"
-msgstr "`str`, тип файла, согласно Яндекс.Диску"
+msgid "`str`, type (\"file\" or \"dir\")"
+msgstr "`str`, тип (\"file\" или \"dir\")"
 
 #: of yadisk.objects.resources.PublicResourceObject:26
 #: yadisk.objects.resources.ResourceObject:26
 #: yadisk.objects.resources.TrashResourceObject:26
+msgid "`str`, file type as determined by Yandex.Disk"
+msgstr "`str`, тип файла, согласно Яндекс.Диску"
+
+#: of yadisk.objects.resources.PublicResourceObject:27
+#: yadisk.objects.resources.ResourceObject:27
+#: yadisk.objects.resources.TrashResourceObject:27
 msgid "`int`, Yandex.Disk revision at the time of last modification"
 msgstr "`int`, ревизия Яндекс.Диска на момент последнего изменения"
 
@@ -2234,13 +2269,13 @@ msgstr "Объект публичного ресурса."
 msgid ":any:`PublicResourceObject`, list of nested resources"
 msgstr ":any:`PublicResourceObject`, список вложенных ресурсов"
 
-#: of yadisk.objects.resources.PublicResourceObject:27
+#: of yadisk.objects.resources.PublicResourceObject:28
 msgid "`int`, number of times the public resource was viewed"
 msgstr "`int`, количество просмотров публичного ресурса"
 
-#: of yadisk.objects.resources.PublicResourceObject:28
-msgid ":any:`UserObject`, owner of the public resource"
-msgstr ":any:`UserObject`, владелец публичного ресурса"
+#: of yadisk.objects.resources.PublicResourceObject:29
+msgid ":any:`UserPublicInfoObject`, owner of the public resource"
+msgstr ":any:`UserPublicInfoObject`, владелец публичного ресурса"
 
 #: of yadisk.objects.resources.PublicResourceListObject:1
 #: yadisk.objects.resources.TrashResourceListObject:1
@@ -2259,11 +2294,11 @@ msgstr "Объект ресурса корзины."
 msgid ":any:`TrashResourceListObject`, list of nested resources"
 msgstr ":any:`ResourceListObject`, список вложенных ресурсов"
 
-#: of yadisk.objects.resources.TrashResourceObject:27
+#: of yadisk.objects.resources.TrashResourceObject:28
 msgid "`str`, original path"
 msgstr "`str`, оригинальный путь"
 
-#: of yadisk.objects.resources.TrashResourceObject:28
+#: of yadisk.objects.resources.TrashResourceObject:29
 msgid ":any:`datetime.datetime`, date of deletion"
 msgstr ":any:`datetime.datetime`, дата удаления"
 
@@ -2401,7 +2436,7 @@ msgstr "объект :any:`requests.Session` с приготовленными �
 msgid "token to revoke"
 msgstr "токен, подлежащий отзыву"
 
-#: of yadisk.functions.resources.remove:14
+#: of yadisk.functions.resources.remove:15
 msgid ""
 ":any:`LinkObject` if the operation is performed asynchronously, `None` "
 "otherwise"
@@ -2639,7 +2674,7 @@ msgstr "Запрос для восстановления мусора."
 msgid "A request to delete a trash resource."
 msgstr "Запрос для удаления ресурса корзины."
 
-#: of yadisk.api.resources.DeleteRequest:10
+#: of yadisk.api.resources.DeleteRequest:11
 #: yadisk.api.resources.DeleteTrashRequest:8
 msgid ":any:`OperationLinkObject` or `None`"
 msgstr ":any:`OperationLinkObject` или `None`"
