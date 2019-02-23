@@ -2,7 +2,7 @@
 
 from .yadisk_object import YaDiskObject
 
-__all__ = ["DiskInfoObject", "SystemFoldersObject", "UserObject"]
+__all__ = ["DiskInfoObject", "SystemFoldersObject", "UserObject", "UserPublicInfoObject"]
 
 class DiskInfoObject(YaDiskObject):
     """
@@ -70,14 +70,33 @@ class UserObject(YaDiskObject):
 
         :param user: `dict` or `None`
 
+        :ivar country: `str`, user's country
         :ivar login: `str`, user's login
         :ivar display_name: `str`, user's display name
         :ivar uid: `str`, user's UID
     """
 
     def __init__(self, user=None):
-        YaDiskObject.__init__(self, {"login":        str,
+        YaDiskObject.__init__(self, {"country":      str,
+                                     "login":        str,
                                      "display_name": str,
                                      "uid":          str})
 
         self.import_fields(user)
+
+class UserPublicInfoObject(UserObject):
+    """
+        Public user information object.
+        Inherits from :any:`UserObject` for compatibility.
+
+        :param public_user_info: `dict` or `None`
+
+        :ivar login: `str`, user's login
+        :ivar display_name: `str`, user's display name
+        :ivar uid: `str`, user's UID
+    """
+
+    def __init__(self, public_user_info=None):
+        UserObject.__init__(self, public_user_info)
+        self.remove_field("country")
+        self.import_fields(public_user_info)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from .yadisk_object import YaDiskObject
-from .disk import UserObject
+from .disk import UserPublicInfoObject
 from ..common import typed_list, yandex_date
 
 __all__ = ["CommentIDsObject", "EXIFObject", "FilesResourceListObject",
@@ -145,6 +145,7 @@ class ResourceObject(YaDiskObject):
         :ivar share: :any:`ShareInfoObject`, shared folder information
         :ivar modified: :any:`datetime.datetime`, date of last modification
         :ivar created: :any:`datetime.datetime`, date of creation
+        :ivar photoslice_time: :any:`datetime.datetime`, photo/video creation date
         :ivar mime_type: `str`, MIME type
         :ivar path: `str`, path to the resource
         :ivar preview: `str`, file preview URL
@@ -169,6 +170,7 @@ class ResourceObject(YaDiskObject):
                                      "share":             ShareInfoObject,
                                      "modified":          yandex_date,
                                      "created":           yandex_date,
+                                     "photoslice_time":   yandex_date,
                                      "mime_type":         str,
                                      "path":              str,
                                      "preview":           str,
@@ -258,6 +260,7 @@ class PublicResourceObject(ResourceObject):
         :ivar share: :any:`ShareInfoObject`, shared folder information
         :ivar modified: :any:`datetime.datetime`, date of last modification
         :ivar created: :any:`datetime.datetime`, date of creation
+        :ivar photoslice_time: :any:`datetime.datetime`, photo/video creation date
         :ivar mime_type: `str`, MIME type
         :ivar path: `str`, path to the resource
         :ivar preview: `str`, file preview URL
@@ -266,7 +269,7 @@ class PublicResourceObject(ResourceObject):
         :ivar media_type: `str`, file type as determined by Yandex.Disk
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
         :ivar view_count: `int`, number of times the public resource was viewed
-        :ivar owner: :any:`UserObject`, owner of the public resource
+        :ivar owner: :any:`UserPublicInfoObject`, owner of the public resource
     """
 
     def __init__(self, public_resource=None):
@@ -274,7 +277,7 @@ class PublicResourceObject(ResourceObject):
         self.set_field_type("views_count", int)
         self.set_alias("view_count", "views_count")
         self.set_field_type("embedded", PublicResourceListObject)
-        self.set_field_type("owner", UserObject)
+        self.set_field_type("owner", UserPublicInfoObject)
         self.import_fields(public_resource)
 
 class PublicResourceListObject(ResourceListObject):
@@ -319,6 +322,7 @@ class TrashResourceObject(ResourceObject):
         :ivar share: :any:`ShareInfoObject`, shared folder information
         :ivar modified: :any:`datetime.datetime`, date of last modification
         :ivar created: :any:`datetime.datetime`, date of creation
+        :ivar photoslice_time: :any:`datetime.datetime`, photo/video creation date
         :ivar mime_type: `str`, MIME type
         :ivar path: `str`, path to the resource
         :ivar preview: `str`, file preview URL
