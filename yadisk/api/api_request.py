@@ -137,6 +137,6 @@ class APIRequest(object):
             result = self.response.json()
         except (ValueError, RuntimeError):
             result = None
-        
+
         if result is not None:
             return self.process_json(result)

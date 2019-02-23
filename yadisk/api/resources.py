@@ -524,6 +524,7 @@ class DeleteRequest(APIRequest):
         :param permanently: if `True`, the resource will be removed permanently,
                             otherwise, it will be just moved to the trash
         :param force_async: forces the operation to be executed asynchronously
+        :param md5: `str`, MD5 hash of the file to remove
         :param fields: list of keys to be included in the response
 
         :returns: :any:`OperationLinkObject` or `None`
@@ -533,17 +534,21 @@ class DeleteRequest(APIRequest):
     method = "DELETE"
     success_codes = {202, 204}
 
-    def __init__(self, session, path, permanently=False, force_async=False,
+    def __init__(self, session, path, permanently=False, md5=None, force_async=False,
                  fields=None, **kwargs):
         APIRequest.__init__(self, session, {"path":        path,
                                             "permanently": permanently,
+                                            "md5":         md5,
                                             "force_async": force_async,
                                             "fields":      fields}, **kwargs)
 
-    def process_args(self, path, permanently, force_async, fields):
+    def process_args(self, path, permanently, md5, force_async, fields):
         self.params["path"] = path
         self.params["permanently"] = "true" if permanently else "false"
         self.params["force_async"] = "true" if force_async else "false"
+
+        if md5 is not None:
+            self.params["md5"] = md5
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)

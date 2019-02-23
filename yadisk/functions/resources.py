@@ -372,6 +372,7 @@ def remove(session, path, **kwargs):
         :param path: path to the resource to be removed
         :param permanently: if `True`, the resource will be removed permanently,
                             otherwise, it will be just moved to the trash
+        :param md5: `str`, MD5 hash of the file to remove
         :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
         :param timeout: `float` or `tuple`, request timeout
