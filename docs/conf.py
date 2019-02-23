@@ -94,7 +94,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'YaDisk'
-copyright = '2018, Ivan Konovalov'
+copyright = '2019, Ivan Konovalov'
 author = 'Ivan Konovalov'
 
 # The version info for the project you're documenting, acts as replacement for
