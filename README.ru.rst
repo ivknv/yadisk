@@ -86,6 +86,14 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 .. _issue #2: https://github.com/ivknv/yadisk/issues/2
 .. _issue #4: https://github.com/ivknv/yadisk/issues/4
 
+* **Release 1.2.13 (2019-02-23)**
+
+  * Добавлен :code:`md5` параметр для :code:`remove()`
+  * Добавлен :code:`UserPublicInfoObject`
+  * Добавлен аттрибут :code:`country` для :code:`UserObject`
+  * Добавлен аттрибут :code:`photoslice_time` для :code:`ResourceObject`, :code:`PublicResourceObject`
+    и :code:`TrashResourceObject`
+
 * **Release 1.2.12 (2018-10-11)**
 
   * Исправлен баг: не работает параметр `fields` в `listdir()` (`issue #4`_)

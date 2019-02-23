@@ -87,6 +87,14 @@ Changelog
 .. _issue #2: https://github.com/ivknv/yadisk/issues/2
 .. _issue #4: https://github.com/ivknv/yadisk/issues/4
 
+* **Release 1.2.13 (2019-02-23)**
+
+  * Added :code:`md5` parameter for :code:`remove()`
+  * Added :code:`UserPublicInfoObject`
+  * Added :code:`country` attribute for :code:`UserObject`
+  * Added :code:`photoslice_time` attribute for :code:`ResourceObject`, :code:`PublicResourceObject`
+    and :code:`TrashResourceObject`
+
 * **Release 1.2.12 (2018-10-11)**
 
   * Fixed `fields` parameter not working properly in `listdir()` (`issue #4`_)
