@@ -11,6 +11,8 @@ class DiskInfoObject(YaDiskObject):
         :param disk_info: `dict` or `None`
 
         :ivar max_file_size: `int`, maximum supported file size (bytes)
+        :ivar unlimited_autoupload_enabled: `bool`, tells whether unlimited
+                                             autoupload from mobile devices is enabled
         :ivar total_space: `int`, total disk size (bytes)
         :ivar trash_size: `int`, amount of space used by trash (bytes), part of `used_space`
         :ivar is_paid: `bool`, tells if the account is paid or not
@@ -22,6 +24,7 @@ class DiskInfoObject(YaDiskObject):
 
     def __init__(self, disk_info=None):
         YaDiskObject.__init__(self, {"max_file_size":  int,
+                                     "unlimited_autoupload_enabled": bool,
                                      "total_space":    int,
                                      "trash_size":     int,
                                      "is_paid":        bool,
