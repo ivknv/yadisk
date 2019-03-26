@@ -280,7 +280,8 @@ def is_file(session, path, **kwargs):
     except PathNotFoundError:
         return False
 
-def _listdir(get_meta_function, session, path, **kwargs):
+def _listdir(get_meta_function, session, path, kwargs):
+    # kwargs is passed this way to avoid a TypeError sometimes (see issue https://github.com/ivknv/yadisk/issues/7)
     kwargs = dict(kwargs)
     kwargs.setdefault("limit", 10000)
 
@@ -341,7 +342,7 @@ def listdir(session, path, **kwargs):
         :returns: generator of :any:`ResourceObject`
     """
 
-    return _listdir(get_meta, session, path, **kwargs)
+    return _listdir(get_meta, session, path, kwargs) # NOT A TYPO!
 
 def mkdir(session, path, **kwargs):
     """
@@ -626,7 +627,7 @@ def save_to_disk(session, public_key, **kwargs):
         or a link to the resource otherwise.
 
         :param session: an instance of :any:`requests.Session` with prepared headers
-        :param public_key: public key or public URL of the resource
+        :param public_key: public key or public URL of the public resource
         :param name: filename of the saved resource
         :param path: path to the copied resource in the public folder
         :param save_path: path to the destination directory (downloads directory by default)
@@ -650,7 +651,10 @@ def get_public_meta(session, public_key, **kwargs):
         Get meta-information about a public resource.
 
         :param session: an instance of :any:`requests.Session` with prepared headers
-        :param public_key: public key or public URL of the resource
+        :param public_key: public key or public URL of the public resource
+        :param path: relative path to a resource in a public folder.
+                     By specifying the key of the published folder in `public_key`,
+                     you can request metainformation for any resource in the folder.
         :param offset: offset from the beginning of the list of nested resources
         :param limit: maximum number of nested elements to be included in the list
         :param sort: `str`, field to be used as a key to sort children resources
@@ -675,7 +679,8 @@ def public_exists(session, public_key, **kwargs):
         Check whether the public resource exists.
 
         :param session: an instance of :any:`requests.Session` with prepared headers
-        :param public_key: public key or public URL of the resource
+        :param public_key: public key or public URL of the public resource
+        :param path: relative path to the resource within the public folder
         :param timeout: `float` or `tuple`, request timeout
         :param headers: `dict` or `None`, additional request headers
         :param n_retries: `int`, maximum number of retries
@@ -691,7 +696,10 @@ def public_listdir(session, public_key, **kwargs):
         Get contents of a public directory.
 
         :param session: an instance of :any:`requests.Session` with prepared headers
-        :param public_key: public key or public URL of the resource
+        :param public_key: public key or public URL of the public resource
+        :param path: relative path to the resource in the public folder.
+                     By specifying the key of the published folder in `public_key`,
+                     you can request contents of any nested folder.
         :param limit: number of children resources to be included in the response
         :param offset: number of children resources to be skipped in the response
         :param preview_size: size of the file preview
@@ -705,14 +713,15 @@ def public_listdir(session, public_key, **kwargs):
         :returns: generator of :any:`PublicResourceObject`
     """
 
-    return _listdir(get_public_meta, session, public_key, **kwargs)
+    return _listdir(get_public_meta, session, public_key, kwargs) # NOT A TYPO!
 
 def get_public_type(session, public_key, **kwargs):
     """
         Get public resource type.
 
         :param session: an instance of :any:`requests.Session` with prepared headers
-        :param public_key: public key or public URL of the resource
+        :param public_key: public key or public URL of the public resource
+        :param path: relative path to the resource within the public folder
         :param timeout: `float` or `tuple`, request timeout
         :param headers: `dict` or `None`, additional request headers
         :param n_retries: `int`, maximum number of retries
@@ -725,10 +734,11 @@ def get_public_type(session, public_key, **kwargs):
 
 def is_public_dir(session, public_key, **kwargs):
     """
-        Check whether `public_key` is a public directory.
+        Check whether the public resource is a public directory.
 
         :param session: an instance of :any:`requests.Session` with prepared headers
-        :param public_key: public key or public URL of the resource
+        :param public_key: public key or public URL of the public resource
+        :param path: relative path to the resource within the public folder
         :param timeout: `float` or `tuple`, request timeout
         :param headers: `dict` or `None`, additional request headers
         :param n_retries: `int`, maximum number of retries
@@ -744,10 +754,11 @@ def is_public_dir(session, public_key, **kwargs):
 
 def is_public_file(session, public_key, **kwargs):
     """
-        Check whether `public_key` is a public file.
+        Check whether the public resource is a public file.
 
         :param session: an instance of :any:`requests.Session` with prepared headers
-        :param public_key: public key or public URL of the resource
+        :param public_key: public key or public URL of the public resource
+        :param path: relative path to the resource within the public folder
         :param timeout: `float` or `tuple`, request timeout
         :param headers: `dict` or `None`, additional request headers
         :param n_retries: `int`, maximum number of retries
@@ -780,7 +791,7 @@ def trash_listdir(session, path, **kwargs):
         :returns: generator of :any:`TrashResourceObject`
     """
 
-    return _listdir(get_trash_meta, session, path, **kwargs)
+    return _listdir(get_trash_meta, session, path, kwargs) # NOT A TYPO!
 
 def get_trash_type(session, path, **kwargs):
     """
@@ -977,7 +988,8 @@ def get_public_download_link(session, public_key, **kwargs):
         Get a download link for a public resource.
 
         :param session: an instance of :any:`requests.Session` with prepared headers
-        :param public_key: public key or public URL of the resource
+        :param public_key: public key or public URL of the public resource
+        :param path: relative path to the resource within the public folder
         :param fields: list of keys to be included in the response
         :param timeout: `float` or `tuple`, request timeout
         :param headers: `dict` or `None`, additional request headers
@@ -997,8 +1009,9 @@ def download_public(session, public_key, file_or_path, **kwargs):
         Download the public resource.
 
         :param session: an instance of :any:`requests.Session` with prepared headers
-        :param public_key: public key or public URL of the resource
-        :param path_or_file: destination path or file-like object
+        :param public_key: public key or public URL of the public resource
+        :param file_or_path: destination path or file-like object
+        :param path: relative path to the resource within the public folder
         :param timeout: `float` or `tuple`, request timeout
         :param headers: `dict` or `None`, additional request headers
         :param n_retries: `int`, maximum number of retries
@@ -1037,6 +1050,7 @@ def download_public(session, public_key, file_or_path, **kwargs):
 
             temp_kwargs.pop("n_retries", None)
             temp_kwargs.pop("retry_interval", None)
+            temp_kwargs.pop("path", None)
 
             try:
                 timeout = temp_kwargs["timeout"]

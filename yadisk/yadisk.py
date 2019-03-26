@@ -597,6 +597,9 @@ class YaDisk(object):
             Get meta-information about a public resource.
 
             :param public_key: public key or public URL of the resource
+            :param path: relative path to a resource in a public folder.
+                         By specifying the key of the published folder in `public_key`,
+                         you can request metainformation for any resource in the folder.
             :param offset: offset from the beginning of the list of nested resources
             :param limit: maximum number of nested elements to be included in the list
             :param sort: `str`, field to be used as a key to sort children resources
@@ -618,6 +621,7 @@ class YaDisk(object):
             Check whether the public resource exists.
 
             :param public_key: public key or public URL of the resource
+            :param path: relative path to the resource within the public folder
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -633,6 +637,9 @@ class YaDisk(object):
             Get contents of a public directory.
 
             :param public_key: public key or public URL of the resource
+            :param path: relative path to the resource in the public folder.
+                         By specifying the key of the published folder in `public_key`,
+                         you can request contents of any nested folder.
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview
@@ -653,6 +660,7 @@ class YaDisk(object):
             Get public resource type.
 
             :param public_key: public key or public URL of the resource
+            :param path: relative path to the resource within the public folder
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -668,6 +676,7 @@ class YaDisk(object):
             Check whether `public_key` is a public directory.
 
             :param public_key: public key or public URL of the resource
+            :param path: relative path to the resource within the public folder
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -683,6 +692,7 @@ class YaDisk(object):
             Check whether `public_key` is a public file.
 
             :param public_key: public key or public URL of the resource
+            :param path: relative path to the resource within the public folder
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -858,6 +868,7 @@ class YaDisk(object):
             Get a download link for a public resource.
 
             :param public_key: public key or public URL of the resource
+            :param path: relative path to the resource within the public folder
             :param fields: list of keys to be included in the response
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
@@ -876,6 +887,7 @@ class YaDisk(object):
 
             :param public_key: public key or public URL of the resource
             :param file_or_path: destination path or file-like object
+            :param path: relative path to the resource within the public folder
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries

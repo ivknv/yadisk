@@ -194,3 +194,11 @@ class ResourcesTestCase(TestCase):
 
         self.yadisk.patch(path, {"test_property": None})
         self.assertIsNone(self.yadisk.get_meta(path).custom_properties)
+
+    def test_issue7(self):
+        # See https://github.com/ivknv/yadisk/issues/7
+
+        try:
+            self.yadisk.public_listdir("any value here", path="any value here")
+        except yadisk.exceptions.PathNotFoundError:
+            pass

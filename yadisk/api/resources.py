@@ -613,6 +613,9 @@ class GetPublicMetaRequest(APIRequest):
 
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
+        :param path: relative path to a resource in a public folder.
+                     By specifying the key of the published folder in `public_key`,
+                     you can request metainformation for any resource in the folder.
         :param offset: offset from the beginning of the list of nested resources
         :param limit: maximum number of nested elements to be included in the list
         :param sort: `str`, field to be used as a key to sort children resources
@@ -671,6 +674,7 @@ class GetPublicDownloadLinkRequest(APIRequest):
 
         :param session: an instance of :any:`requests.Session` with prepared headers
         :param public_key: public key or public URL of the resource
+        :param path: relative path to the resource within the public folder
         :param fields: list of keys to be included in the response
 
         :returns: :any:`LinkObject`
@@ -679,12 +683,16 @@ class GetPublicDownloadLinkRequest(APIRequest):
     url = "https://cloud-api.yandex.net/v1/disk/public/resources/download"
     method = "GET"
 
-    def __init__(self, session, public_key, fields=None, **kwargs):
+    def __init__(self, session, public_key, path=None, fields=None, **kwargs):
         APIRequest.__init__(self, session, {"public_key": public_key,
+                                            "path":       path,
                                             "fields":     fields}, **kwargs)
 
-    def process_args(self, public_key, fields):
+    def process_args(self, public_key, path, fields):
         self.params["public_key"] = public_key
+
+        if path is not None:
+            self.params["path"] = path;
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)
