@@ -73,18 +73,18 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
     # Создаёт новую папку "/test-dir"
     print(y.mkdir("/test-dir"))
 
-Пожертвования
-*************
-
-.. _пожертвованием: https://paypal.me/encryptandsync
-
-Если вам пригодилась эта библиотека, вы можете поддержать её разработку `пожертвованием`_.
-
 История изменений
 *****************
 
 .. _issue #2: https://github.com/ivknv/yadisk/issues/2
 .. _issue #4: https://github.com/ivknv/yadisk/issues/4
+.. _issue #7: https://github.com/ivknv/yadisk/issues/7
+
+* **Release 1.2.14 (2019-03-26)**
+
+  * Исправлена ошибка :code:`TypeError` в функциях :code:`get_public_*` при
+    использовании с параметром :code:`path` (`issue #7`_)
+  * Добавлен аттрибут :code:`unlimited_autoupload_enabled` для :code:`DiskInfoObject`
 
 * **Release 1.2.13 (2019-02-23)**
 

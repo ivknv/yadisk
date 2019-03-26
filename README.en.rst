@@ -73,19 +73,26 @@ Examples
     # Create a new directory at "/test-dir"
     print(y.mkdir("/test-dir"))
 
-Dontations
-**********
-
-.. _donating: https://paypal.me/encryptandsync
-
-If you find this library helpful, please consider `donating`_.
-Your donation will help the development of this library.
-
 Changelog
 *********
 
 .. _issue #2: https://github.com/ivknv/yadisk/issues/2
 .. _issue #4: https://github.com/ivknv/yadisk/issues/4
+.. _issue #7: https://github.com/ivknv/yadisk/issues/7
+
+* **Release 1.2.14 (2019-03-26)**
+
+  * Fixed a :code:`TypeError` in :code:`get_public_*` functions when passing :code:`path` parameter
+    (see `issue #7`_)
+  * Added :code:`unlimited_autoupload_enabled` attribute for :code:`DiskInfoObject`
+
+* **Release 1.2.13 (2019-02-23)**
+
+  * Added :code:`md5` parameter for :code:`remove()`
+  * Added :code:`UserPublicInfoObject`
+  * Added :code:`country` attribute for :code:`UserObject`
+  * Added :code:`photoslice_time` attribute for :code:`ResourceObject`, :code:`PublicResourceObject`
+    and :code:`TrashResourceObject`
 
 * **Release 1.2.13 (2019-02-23)**
 

@@ -3,6 +3,13 @@ Changelog
 
 .. _issue #2: https://github.com/ivknv/yadisk/issues/2
 .. _issue #4: https://github.com/ivknv/yadisk/issues/4
+.. _issue #7: https://github.com/ivknv/yadisk/issues/7
+
+* **Release 1.2.14 (2019-03-26)**
+
+  * Fixed a `TypeError` in `get_public_*` functions when passing `path` parameter
+    (see `issue #7`_)
+  * Added `unlimited_autoupload_enabled` attribute for `DiskInfoObject`
 
 * **Release 1.2.13 (2019-02-23)**
 
