@@ -29,6 +29,11 @@ class ResourcesTestCase(TestCase):
 
         self.path = os.environ.get("PYTHON_YADISK_TEST_ROOT")
 
+        # Get rid of 'disk:/' prefix in the path and make it start with a slash
+        # for consistency
+        if self.path.startswith("disk:/"):
+            self.path = posixpath.join("/", self.path[len("disk:/"):])
+
     def test_get_meta(self):
        self.assertIsInstance(self.yadisk.get_meta(self.path), yadisk.objects.ResourceObject)
 
@@ -78,7 +83,7 @@ class ResourcesTestCase(TestCase):
         with self.assertRaises(yadisk.exceptions.WrongResourceTypeError):
             list(self.yadisk.listdir(path))
 
-        self.yadisk.remove(path)
+        self.yadisk.remove(path, permanently=True)
 
     def test_listdir_with_limits(self):
         names = ["dir1", "dir2", "dir3"]
@@ -133,17 +138,31 @@ class ResourcesTestCase(TestCase):
 
     def test_permanent_remove(self):
         path = posixpath.join(self.path, "dir")
+        origin_path = "disk:" + path
 
         self.yadisk.mkdir(path)
         self.yadisk.remove(path, permanently=True)
-        self.assertFalse(self.yadisk.trash_exists(path))
+
+        for i in self.yadisk.trash_listdir("/"):
+            self.assertFalse(i.origin_path == origin_path)
 
     def test_restore_trash(self):
         path = posixpath.join(self.path, "dir")
+        origin_path = "disk:" + path
 
         self.yadisk.mkdir(path)
         self.yadisk.remove(path)
-        self.yadisk.restore_trash("dir", path)
+
+        trash_path = None
+
+        for i in self.yadisk.trash_listdir("/"):
+            if i.origin_path == origin_path:
+                trash_path = i.path
+                break
+
+        self.assertTrue(trash_path is not None)
+
+        self.yadisk.restore_trash(trash_path, path)
         self.assertTrue(self.yadisk.exists(path))
         self.yadisk.remove(path, permanently=True)
 
@@ -159,10 +178,22 @@ class ResourcesTestCase(TestCase):
 
     def test_remove_trash(self):
         path = posixpath.join(self.path, "dir-to-remove")
+        origin_path = "disk:" + path
+
         self.yadisk.mkdir(path)
         self.yadisk.remove(path)
-        self.yadisk.remove_trash("dir-to-remove")
-        self.assertFalse(self.yadisk.trash_exists("dir-to-remove"))
+
+        trash_path = None
+
+        for i in self.yadisk.trash_listdir("/"):
+            if i.origin_path == origin_path:
+                trash_path = i.path
+                break
+
+        self.assertTrue(trash_path is not None)
+
+        self.yadisk.remove_trash(trash_path)
+        self.assertFalse(self.yadisk.trash_exists(trash_path))
 
     def test_publish_unpublish(self):
         path = self.path
