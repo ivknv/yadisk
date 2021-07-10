@@ -15,27 +15,14 @@ import yadisk.settings
 yadisk.settings.DEFAULT_N_RETRIES = 50
 yadisk.settings.DEFAULT_UPLOAD_N_RETRIES = 50
 
-original_send = requests.Session.send
-
-def patched_send(self, *args, **kwargs):
-    # Fake a random server error
-    if random.randint(1, 5) == 1:
-        raise yadisk.exceptions.InternalServerError()
-
-    response = original_send(self, *args, **kwargs)
-
-    return response
-
-requests.Session.send = patched_send
-
-if not os.environ.get("PYTHON_YADISK_APP_TOKEN"):
-    raise ValueError("Environment variable PYTHON_YADISK_APP_TOKEN must be set")
-
-if not os.environ.get("PYTHON_YADISK_TEST_ROOT"):
-    raise ValueError("Environment variable PYTHON_YADISK_TEST_ROOT must be set")
-
 class ResourcesTestCase(TestCase):
     def setUp(self):
+        if not os.environ.get("PYTHON_YADISK_APP_TOKEN"):
+            raise ValueError("Environment variable PYTHON_YADISK_APP_TOKEN must be set")
+
+        if not os.environ.get("PYTHON_YADISK_TEST_ROOT"):
+            raise ValueError("Environment variable PYTHON_YADISK_TEST_ROOT must be set")
+
         self.yadisk = yadisk.YaDisk(os.environ.get("PYTHON_YADISK_APP_ID"),
                                     os.environ.get("PYTHON_YADISK_APP_SECRET"),
                                     os.environ.get("PYTHON_YADISK_APP_TOKEN"))
