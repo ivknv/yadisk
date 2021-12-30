@@ -15,7 +15,9 @@ import yadisk.settings
 yadisk.settings.DEFAULT_N_RETRIES = 50
 yadisk.settings.DEFAULT_UPLOAD_N_RETRIES = 50
 
-class ResourcesTestCase(TestCase):
+__all__ = ["YaDiskTestCase"]
+
+class YaDiskTestCase(TestCase):
     def setUp(self):
         if not os.environ.get("PYTHON_YADISK_APP_TOKEN"):
             raise ValueError("Environment variable PYTHON_YADISK_APP_TOKEN must be set")
