@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
-try:
-    from urllib.parse import urlparse, parse_qs
-except ImportError:
-    from urlparse import urlparse, parse_qs
+from urllib.parse import urlparse, parse_qs
+from urllib.parse import quote as urlencode
 
 from .api_request import APIRequest
 from ..objects import OperationStatusObject
+from ..common import is_operation_link
 
 __all__ = ["GetOperationStatusRequest"]
 
@@ -24,16 +23,16 @@ class GetOperationStatusRequest(APIRequest):
     method = "GET"
 
     def __init__(self, session, operation_id, fields=None, **kwargs):
-        if operation_id.startswith("https://"):
+        if is_operation_link(operation_id):
             parsed_url = urlparse(operation_id)
-            self.url = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path
+            self.url = "https://" + parsed_url.netloc + parsed_url.path
 
             params = parse_qs(parsed_url.query)
-            operation_id = parsed_url.path.rsplit("/", 1)[0]
 
             if fields is None:
                 fields = params.get("fields", [None])[0]
         else:
+            operation_id = urlencode(operation_id)
             self.url = "https://cloud-api.yandex.net/v1/disk/operations/%s" % (operation_id,)
 
         APIRequest.__init__(self, session, {"fields": fields}, **kwargs)

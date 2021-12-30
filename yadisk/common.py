@@ -17,4 +17,8 @@ def yandex_date(string):
     return datetime.datetime.strptime(string[:-3] + string[-2:], "%Y-%m-%dT%H:%M:%S%z")
 
 def is_operation_link(link):
-    return link.startswith("https://cloud-api.yandex.net/v1/disk/operations/")
+    if link.startswith("https://cloud-api.yandex.net/v1/disk/operations/"):
+        return True
+
+    # Same but http:// version
+    return link.startswith("http://cloud-api.yandex.net/v1/disk/operations/")
