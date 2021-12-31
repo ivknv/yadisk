@@ -8,49 +8,50 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-01 15:26+0500\n"
+"POT-Creation-Date: 2021-12-31 14:42+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.6.0\n"
-
-#: ../../index.rst:7
-msgid "Welcome to YaDisk's documentation!"
-msgstr "Документация YaDisk"
+"Generated-By: Babel 2.9.1\n"
 
 #: ../../index.rst:9
 msgid "Contents:"
 msgstr "Содежание:"
 
+#: ../../index.rst:7
+msgid "Welcome to YaDisk's documentation!"
+msgstr "Документация YaDisk"
+
 #: ../../index.rst:18
-msgid "Donations"
-msgstr "Пожертвования"
-
-#: ../../index.rst:20
-msgid ""
-"If you find this library helpful, please consider `donating "
-"<https://paypal.me/encryptandsync>`_. Your donation will help the "
-"development of this library."
-msgstr ""
-"Если вам пригодилась эта библиотека, вы можете поддержать её разработку "
-"`пожертвованием <https://paypal.me/encryptandsync>`_."
-
-#: ../../index.rst:24
 msgid "Indices and tables"
 msgstr ""
 
-#: ../../index.rst:26
+#: ../../index.rst:20
 msgid ":ref:`genindex`"
 msgstr ""
 
-#: ../../index.rst:27
+#: ../../index.rst:21
 msgid ":ref:`modindex`"
 msgstr ""
 
-#: ../../index.rst:28
+#: ../../index.rst:22
 msgid ":ref:`search`"
 msgstr ""
+
+#~ msgid "Donations"
+#~ msgstr "Пожертвования"
+
+#~ msgid ""
+#~ "If you find this library helpful, "
+#~ "please consider `donating "
+#~ "<https://paypal.me/encryptandsync>`_. Your donation "
+#~ "will help the development of this "
+#~ "library."
+#~ msgstr ""
+#~ "Если вам пригодилась эта библиотека, вы"
+#~ " можете поддержать её разработку "
+#~ "`пожертвованием <https://paypal.me/encryptandsync>`_."
 

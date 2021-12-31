@@ -13,10 +13,6 @@ YaDisk
    :alt: AUR
    :target: https://aur.archlinux.org/packages/python-yadisk
    
-.. image:: https://img.shields.io/badge/Donate-PayPal-green.svg
-   :alt: Donate
-   :target: https://paypal.me/encryptandsync
-
 YaDisk is a Yandex.Disk REST API client library.
 
 .. _Read the Docs (EN): http://yadisk.readthedocs.io
@@ -79,6 +75,17 @@ Changelog
 .. _issue #2: https://github.com/ivknv/yadisk/issues/2
 .. _issue #4: https://github.com/ivknv/yadisk/issues/4
 .. _issue #7: https://github.com/ivknv/yadisk/issues/7
+
+* **Release 1.2.15 (2021-12-31)**
+
+  * Fixed an issue where :code:`http://` links were not recognized as operation links
+    (they were assumed to always be :code:`https://`, since all the other
+    requests are always HTTPS).
+    Occasionally, Yandex.Disk can for some reason return an :code:`http://` link
+    to an asynchronous operation instead of :code:`https://`.
+    Both links are now recognized correctly and an :code:`https://` version will
+    always be used by :code:`get_operation_status()`, regardless of which one
+    Yandex.Disk returned.
 
 * **Release 1.2.14 (2019-03-26)**
 

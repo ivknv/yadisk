@@ -13,10 +13,6 @@ YaDisk
    :alt: AUR
    :target: https://aur.archlinux.org/packages/python-yadisk
    
-.. image:: https://img.shields.io/badge/Donate-PayPal-green.svg
-   :alt: Donate
-   :target: https://paypal.me/encryptandsync
-
 YaDisk - это библиотека-клиент REST API Яндекс.Диска.
 
 .. _Read the Docs (EN): http://yadisk.readthedocs.io
@@ -79,6 +75,16 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 .. _issue #2: https://github.com/ivknv/yadisk/issues/2
 .. _issue #4: https://github.com/ivknv/yadisk/issues/4
 .. _issue #7: https://github.com/ivknv/yadisk/issues/7
+
+* **Release 1.2.15 (2021-12-31)**
+
+  * Исправлено: не распознавались ссылки на асинхронные операции, если они
+    использовали :code:`http://` (вместо :code:`https://`).
+    Иногда Яндекс.Диск может вернуть :code:`http://` ссылку на асинхронную
+    операцию. Теперь обе версии ссылок распознаются правильно, при этом,
+    при получении информации об операции (через :code:`get_operation_status()`)
+    всегда используется :code:`https://` версия ссылки, даже если Яндекс.Диск
+    вернул :code:`http://`.
 
 * **Release 1.2.14 (2019-03-26)**
 
