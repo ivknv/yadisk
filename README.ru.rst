@@ -4,15 +4,15 @@ YaDisk
 .. image:: https://img.shields.io/readthedocs/yadisk.svg
    :alt: Read the Docs
    :target: https://yadisk.readthedocs.io/en/latest/
-   
+
 .. image:: https://img.shields.io/pypi/v/yadisk.svg
    :alt: PyPI
    :target: https://pypi.org/project/yadisk
-   
+
 .. image:: https://img.shields.io/aur/version/python-yadisk.svg
    :alt: AUR
    :target: https://aur.archlinux.org/packages/python-yadisk
-   
+
 YaDisk - это библиотека-клиент REST API Яндекс.Диска.
 
 .. _Read the Docs (EN): http://yadisk.readthedocs.io
@@ -75,6 +75,12 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 .. _issue #2: https://github.com/ivknv/yadisk/issues/2
 .. _issue #4: https://github.com/ivknv/yadisk/issues/4
 .. _issue #7: https://github.com/ivknv/yadisk/issues/7
+.. _issue #23: https://github.com/ivknv/yadisk/issues/23
+
+* **Release 1.2.16 (2022-08-17)**
+
+  * Исправлен баг в :code:`check_token()`: функция могла вызвать :code:`ForbiddenError`,
+    если у приложения недостатчно прав (`issue #23`_).
 
 * **Release 1.2.15 (2021-12-31)**
 

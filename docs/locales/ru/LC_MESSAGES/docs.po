@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-31 14:35+0500\n"
+"POT-Creation-Date: 2022-08-16 21:28+0500\n"
 "PO-Revision-Date: 2018-01-20 15:41+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.10.3\n"
 
 #: ../../docs.rst:3
 msgid "Documentation"
@@ -1632,7 +1632,7 @@ msgstr ""
 #: yadisk.exceptions.GatewayTimeoutError:1
 #: yadisk.exceptions.InternalServerError:1 yadisk.exceptions.UnavailableError:1
 #: yadisk.exceptions.UnknownYaDiskError:1
-msgid "Bases: :py:class:`yadisk.exceptions.RetriableYaDiskError`"
+msgid "Bases: :py:class:`~yadisk.exceptions.RetriableYaDiskError`"
 msgstr ""
 
 #: of yadisk.exceptions.BadGatewayError:1
@@ -1648,7 +1648,7 @@ msgstr "Вызывается, когда сервер вернул код 502."
 #: yadisk.exceptions.UnauthorizedError:1
 #: yadisk.exceptions.UnsupportedMediaError:1
 #: yadisk.exceptions.WrongResourceTypeError:1
-msgid "Bases: :py:class:`yadisk.exceptions.YaDiskError`"
+msgid "Bases: :py:class:`~yadisk.exceptions.YaDiskError`"
 msgstr ""
 
 #: of yadisk.exceptions.BadRequestError:1
@@ -1660,7 +1660,7 @@ msgid "Thrown when the server returns code 409."
 msgstr "Вызывается, когда сервер вернул код 409."
 
 #: of yadisk.exceptions.DirectoryExistsError:1
-msgid "Bases: :py:class:`yadisk.exceptions.PathExistsError`"
+msgid "Bases: :py:class:`~yadisk.exceptions.PathExistsError`"
 msgstr ""
 
 #: of yadisk.exceptions.DirectoryExistsError:1
@@ -1668,7 +1668,7 @@ msgid "Thrown when the directory already exists."
 msgstr "Вызывается, когда папка уже существует."
 
 #: of yadisk.exceptions.FieldValidationError:1
-msgid "Bases: :py:class:`yadisk.exceptions.BadRequestError`"
+msgid "Bases: :py:class:`~yadisk.exceptions.BadRequestError`"
 msgstr ""
 
 #: of yadisk.exceptions.FieldValidationError:1
@@ -1697,7 +1697,7 @@ msgstr "Вызывается, когда сервер вернул код 423."
 
 #: of yadisk.exceptions.MD5DifferError:1
 #: yadisk.exceptions.ParentNotFoundError:1 yadisk.exceptions.PathExistsError:1
-msgid "Bases: :py:class:`yadisk.exceptions.ConflictError`"
+msgid "Bases: :py:class:`~yadisk.exceptions.ConflictError`"
 msgstr ""
 
 #: of yadisk.exceptions.MD5DifferError:1
@@ -1714,6 +1714,15 @@ msgstr "Вызывается, когда сервер вернул код 406."
 msgid "Thrown when the server returns code 404."
 msgstr "Вызывается, когда сервер вернул код 404."
 
+#: of yadisk.exceptions.OperationNotFoundError:1
+#: yadisk.exceptions.PathNotFoundError:1
+msgid "Bases: :py:class:`~yadisk.exceptions.NotFoundError`"
+msgstr ""
+
+#: of yadisk.exceptions.OperationNotFoundError:1
+msgid "Thrown by `get_operation_status()` when the operation doesn't exist."
+msgstr "Вызывается, когда операция, переденная `get_operation_status()` не существует."
+
 #: of yadisk.exceptions.ParentNotFoundError:1
 msgid "Thrown by `mkdir`, `upload`, etc. when the parent directory doesn't exist."
 msgstr ""
@@ -1725,15 +1734,11 @@ msgid "Thrown when the requested path already exists."
 msgstr "Вызывается, когда запрашиваемый путь уже существует."
 
 #: of yadisk.exceptions.PathNotFoundError:1
-msgid "Bases: :py:class:`yadisk.exceptions.NotFoundError`"
-msgstr ""
-
-#: of yadisk.exceptions.PathNotFoundError:1
 msgid "Thrown when the requested path does not exist."
 msgstr "Вызывается, когда запрашиваемый путь не существует."
 
 #: of yadisk.exceptions.ResourceIsLockedError:1
-msgid "Bases: :py:class:`yadisk.exceptions.LockedError`"
+msgid "Bases: :py:class:`~yadisk.exceptions.LockedError`"
 msgstr ""
 
 #: of yadisk.exceptions.ResourceIsLockedError:1
@@ -1903,7 +1908,7 @@ msgstr "`dict`, где ключи - это наименования полей, 
 #: yadisk.objects.resources.ResourceListObject:1
 #: yadisk.objects.resources.ResourceObject:1
 #: yadisk.objects.resources.ShareInfoObject:1
-msgid "Bases: :py:class:`yadisk.objects.yadisk_object.YaDiskObject`"
+msgid "Bases: :py:class:`~yadisk.objects.yadisk_object.YaDiskObject`"
 msgstr ""
 
 #: of yadisk.objects.error_object.ErrorObject:1
@@ -2055,7 +2060,7 @@ msgid "`str`, user's UID"
 msgstr "`str`, уникальный идентификатор пользователя"
 
 #: of yadisk.objects.disk.UserPublicInfoObject:1
-msgid "Bases: :py:class:`yadisk.objects.disk.UserObject`"
+msgid "Bases: :py:class:`~yadisk.objects.disk.UserObject`"
 msgstr ""
 
 #: of yadisk.objects.disk.UserPublicInfoObject:1
@@ -2145,7 +2150,7 @@ msgstr "`bool`, признак шаблонизированного URL"
 
 #: of yadisk.objects.resources.OperationLinkObject:1
 #: yadisk.objects.resources.ResourceUploadLinkObject:1
-msgid "Bases: :py:class:`yadisk.objects.resources.LinkObject`"
+msgid "Bases: :py:class:`~yadisk.objects.resources.LinkObject`"
 msgstr ""
 
 #: of yadisk.objects.resources.OperationLinkObject:1
@@ -2154,7 +2159,7 @@ msgstr "Объект ссылки на операцию."
 
 #: of yadisk.objects.resources.PublicResourceListObject:1
 #: yadisk.objects.resources.TrashResourceListObject:1
-msgid "Bases: :py:class:`yadisk.objects.resources.ResourceListObject`"
+msgid "Bases: :py:class:`~yadisk.objects.resources.ResourceListObject`"
 msgstr ""
 
 #: of yadisk.objects.resources.PublicResourceListObject:1
@@ -2186,7 +2191,7 @@ msgstr "`str`, публичный ключ к ресурсу"
 
 #: of yadisk.objects.resources.PublicResourceObject:1
 #: yadisk.objects.resources.TrashResourceObject:1
-msgid "Bases: :py:class:`yadisk.objects.resources.ResourceObject`"
+msgid "Bases: :py:class:`~yadisk.objects.resources.ResourceObject`"
 msgstr ""
 
 #: of yadisk.objects.resources.PublicResourceObject:1
@@ -2734,7 +2739,7 @@ msgstr ""
 #: yadisk.api.resources.SaveToDiskRequest:1
 #: yadisk.api.resources.UnpublishRequest:1
 #: yadisk.api.resources.UploadURLRequest:1
-msgid "Bases: :py:class:`yadisk.api.api_request.APIRequest`"
+msgid "Bases: :py:class:`~yadisk.api.api_request.APIRequest`"
 msgstr ""
 
 #: of yadisk.api.auth.GetTokenRequest:1
@@ -3037,5 +3042,44 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Bases: :class:`yadisk.api.api_request.APIRequest`"
+#~ msgstr ""
+
+#~ msgid "Bases: :py:class:`yadisk.exceptions.RetriableYaDiskError`"
+#~ msgstr ""
+
+#~ msgid "Bases: :py:class:`yadisk.exceptions.YaDiskError`"
+#~ msgstr ""
+
+#~ msgid "Bases: :py:class:`yadisk.exceptions.PathExistsError`"
+#~ msgstr ""
+
+#~ msgid "Bases: :py:class:`yadisk.exceptions.BadRequestError`"
+#~ msgstr ""
+
+#~ msgid "Bases: :py:class:`yadisk.exceptions.ConflictError`"
+#~ msgstr ""
+
+#~ msgid "Bases: :py:class:`yadisk.exceptions.NotFoundError`"
+#~ msgstr ""
+
+#~ msgid "Bases: :py:class:`yadisk.exceptions.LockedError`"
+#~ msgstr ""
+
+#~ msgid "Bases: :py:class:`yadisk.objects.yadisk_object.YaDiskObject`"
+#~ msgstr ""
+
+#~ msgid "Bases: :py:class:`yadisk.objects.disk.UserObject`"
+#~ msgstr ""
+
+#~ msgid "Bases: :py:class:`yadisk.objects.resources.LinkObject`"
+#~ msgstr ""
+
+#~ msgid "Bases: :py:class:`yadisk.objects.resources.ResourceListObject`"
+#~ msgstr ""
+
+#~ msgid "Bases: :py:class:`yadisk.objects.resources.ResourceObject`"
+#~ msgstr ""
+
+#~ msgid "Bases: :py:class:`yadisk.api.api_request.APIRequest`"
 #~ msgstr ""
 

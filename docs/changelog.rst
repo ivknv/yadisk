@@ -4,6 +4,12 @@ Changelog
 .. _issue #2: https://github.com/ivknv/yadisk/issues/2
 .. _issue #4: https://github.com/ivknv/yadisk/issues/4
 .. _issue #7: https://github.com/ivknv/yadisk/issues/7
+.. _issue #23: https://github.com/ivknv/yadisk/issues/23
+
+* **Release 1.2.16 (2022-08-17)**
+
+  * Fixed a bug in `check_token()`: could throw `ForbiddenError` if
+    the application lacks necessary permissions (`issue #23`_).
 
 * **Release 1.2.15 (2021-12-31)**
 
