@@ -16,7 +16,8 @@ EXCEPTION_MAP = {400: defaultdict(lambda: BadRequestError,
                  401: defaultdict(lambda: UnauthorizedError),
                  403: defaultdict(lambda: ForbiddenError),
                  404: defaultdict(lambda: NotFoundError,
-                                  {"DiskNotFoundError": PathNotFoundError}),
+                                  {"DiskNotFoundError": PathNotFoundError,
+                                   "DiskOperationNotFoundError": OperationNotFoundError}),
                  406: defaultdict(lambda: NotAcceptableError),
                  409: defaultdict(lambda: ConflictError,
                                   {"DiskPathDoesntExistsError": ParentNotFoundError,
@@ -58,7 +59,7 @@ def get_exception(response):
     desc = error.description or "<empty>"
 
     exc = exc_group[error.error]
-        
+
     return exc(error.error, "%s (%s / %s)" % (msg, desc, error.error), response)
 
 def auto_retry(func, n_retries=None, retry_interval=None):

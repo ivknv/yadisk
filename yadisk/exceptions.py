@@ -8,7 +8,7 @@ __all__ = ["YaDiskError", "RetriableYaDiskError", "UnknownYaDiskError",
            "UnavailableError", "GatewayTimeoutError", "InsufficientStorageError",
            "PathNotFoundError", "ParentNotFoundError", "PathExistsError",
            "DirectoryExistsError", "FieldValidationError", "ResourceIsLockedError",
-           "MD5DifferError"]
+           "MD5DifferError", "OperationNotFoundError"]
 
 class YaDiskError(Exception):
     """
@@ -126,4 +126,8 @@ class ResourceIsLockedError(LockedError):
 
 class MD5DifferError(ConflictError):
     """Thrown when the MD5 hash of the file to be deleted doesn't match with the actual one."""
+    pass
+
+class OperationNotFoundError(NotFoundError):
+    """Thrown by `get_operation_status()` when the operation doesn't exist."""
     pass
