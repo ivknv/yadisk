@@ -18,7 +18,7 @@ YaDisk is a Yandex.Disk REST API client library.
 .. _Read the Docs (EN): http://yadisk.readthedocs.io
 .. _Read the Docs (RU): http://yadisk.readthedocs.io/ru/latest
 
-Documentation is available at `Read the Docs (EN)`_ and `Read the Docs (RU)`_ (although it's not complete yet).
+Documentation is available at `Read the Docs (EN)`_ and `Read the Docs (RU)`_.
 
 Installation
 ************
@@ -76,6 +76,14 @@ Changelog
 .. _issue #4: https://github.com/ivknv/yadisk/issues/4
 .. _issue #7: https://github.com/ivknv/yadisk/issues/7
 .. _issue #23: https://github.com/ivknv/yadisk/issues/23
+
+* **Release 1.2.17 (2022-12-11)**
+
+  * Fixed a minor bug which could cause a :code:`ReferenceError`
+    (which would not cause a crash, but still show an error message). The bug
+    involved using :code:`__del__()` method in :code:`SelfDestructingSession`
+    to automatically close the sessions it seems to affect primarily old Python
+    versions (such as 3.4).
 
 * **Release 1.2.16 (2022-08-17)**
 

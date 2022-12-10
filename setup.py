@@ -12,7 +12,7 @@ with codecs.open(os.path.join(module_dir, "README.rst"), encoding="utf8") as f:
     long_description = f.read()
 
 setup(name="yadisk",
-      version="1.2.16",
+      version="1.2.17",
       packages=find_packages(exclude=("tests",)),
       description="Библиотека-клиент REST API Яндекс.Диска / Yandex.Disk REST API client library",
       long_description=long_description,

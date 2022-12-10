@@ -6,6 +6,14 @@ Changelog
 .. _issue #7: https://github.com/ivknv/yadisk/issues/7
 .. _issue #23: https://github.com/ivknv/yadisk/issues/23
 
+* **Release 1.2.17 (2022-12-11)**
+
+  * Fixed a minor bug which could cause a `ReferenceError`
+    (which would not cause a crash, but still show an error message). The bug
+    involved using `__del__()` method in `SelfDestructingSession`
+    to automatically close the sessions it seems to affect primarily old Python
+    versions (such as 3.4).
+
 * **Release 1.2.16 (2022-08-17)**
 
   * Fixed a bug in `check_token()`: could throw `ForbiddenError` if
