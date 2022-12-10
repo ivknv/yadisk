@@ -2,30 +2,13 @@
 
 import functools
 import threading
+import weakref
 
 import requests
 
 from . import functions
 
 __all__ = ["YaDisk"]
-
-class SelfDestructingSession(requests.Session):
-    """Just like your regular :any:`requests.Session` but with a destructor"""
-
-    def __init__(self, *args, **kwargs):
-        self._init_completed = False
-
-        requests.Session.__init__(self, *args, **kwargs)
-
-        self._init_completed = True
-
-    def __del__(self):
-        # Extra check to avoid AttributeError
-        if self._init_completed:
-            if hasattr(requests.Session, "__del__"):
-                requests.Session.__del__(self)
-
-            self.close()
 
 class YaDisk(object):
     """
@@ -67,7 +50,10 @@ class YaDisk(object):
         if token is None:
             token = self.token
 
-        session = SelfDestructingSession()
+        session = requests.Session()
+
+        # Make sure the session is eventually closed
+        weakref.finalize(session, session.close)
 
         if token:
             session.headers["Authorization"] = "OAuth " + token
