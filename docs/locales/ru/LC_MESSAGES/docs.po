@@ -1597,7 +1597,7 @@ msgstr ""
 #: ../../docs.rst:28
 msgid "**DEFAULT_RETRY_INTERVAL** - `float`, default retry interval"
 msgstr ""
-"**DEFAULT_RETRY_DELAY** - `float`, стандартная задержка между повторными "
+"**DEFAULT_RETRY_INTERVAL** - `float`, стандартная задержка между повторными "
 "попытками"
 
 #: ../../docs.rst:29
