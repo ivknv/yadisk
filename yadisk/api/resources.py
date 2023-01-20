@@ -8,7 +8,7 @@ from ..objects import LinkObject, PublicResourcesListObject, TrashResourceObject
 from ..objects import FilesResourceListObject, LastUploadedResourceListObject
 from ..objects import ResourceObject, ResourceUploadLinkObject, PublicResourceObject
 from ..objects import OperationLinkObject
-from ..common import is_operation_link
+from ..common import is_operation_link, ensure_path_has_schema
 
 __all__ = ["GetPublicResourcesRequest", "UnpublishRequest", "GetDownloadLinkRequest",
            "GetTrashRequest", "RestoreTrashRequest", "DeleteTrashRequest",
@@ -85,7 +85,7 @@ class UnpublishRequest(APIRequest):
                                             "fields": fields}, **kwargs)
 
     def process_args(self, path, fields):
-        self.params["path"] = path
+        self.params["path"] = ensure_path_has_schema(path)
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)
@@ -112,7 +112,7 @@ class GetDownloadLinkRequest(APIRequest):
                             **kwargs)
 
     def process_args(self, path, fields):
-        self.params["path"] = path
+        self.params["path"] = ensure_path_has_schema(path)
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)
@@ -149,7 +149,7 @@ class GetTrashRequest(APIRequest):
                                             "fields":       fields}, **kwargs)
 
     def process_args(self, path, offset, limit, sort, preview_size, preview_crop, fields):
-        self.params["path"] = path
+        self.params["path"] = ensure_path_has_schema(path, "trash")
         self.params["offset"] = offset
         self.params["limit"] = limit
 
@@ -197,7 +197,7 @@ class RestoreTrashRequest(APIRequest):
                                             "fields":      fields}, **kwargs)
 
     def process_args(self, path, dst_path, force_async, overwrite, fields):
-        self.params["path"] = path
+        self.params["path"] = ensure_path_has_schema(path, "trash")
         self.params["overwrite"] = "true" if overwrite else "false"
         self.params["force_async"] = "true" if force_async else "false"
 
@@ -237,7 +237,7 @@ class DeleteTrashRequest(APIRequest):
 
     def process_args(self, path, force_async, fields):
         if path is not None:
-            self.params["path"] = path
+            self.params["path"] = ensure_path_has_schema(path, "trash")
 
         self.params["force_async"] = "true" if force_async else "false"
 
@@ -324,8 +324,8 @@ class CopyRequest(APIRequest):
                                             "fields":      fields}, **kwargs)
 
     def process_args(self, src_path, dst_path, overwrite, force_async, fields):
-        self.params["from"] = src_path
-        self.params["path"] = dst_path
+        self.params["from"] = ensure_path_has_schema(src_path)
+        self.params["path"] = ensure_path_has_schema(dst_path)
         self.params["overwrite"] = "true" if overwrite else "false"
         self.params["force_async"] = "true" if force_async else "false"
 
@@ -371,7 +371,7 @@ class GetMetaRequest(APIRequest):
 
     def process_args(self, path, limit, offset, preview_size,
                      preview_crop, sort, fields):
-        self.params["path"] = path
+        self.params["path"] = ensure_path_has_schema(path)
 
         if limit is not None:
             self.params["limit"] = limit
@@ -417,7 +417,7 @@ class GetUploadLinkRequest(APIRequest):
                                             "fields":    fields}, **kwargs)
 
     def process_args(self, path, overwrite, fields):
-        self.params["path"] = path
+        self.params["path"] = ensure_path_has_schema(path)
         self.params["overwrite"] = "true" if overwrite else "false"
 
         if fields is not None:
@@ -445,7 +445,7 @@ class MkdirRequest(APIRequest):
                             **kwargs)
 
     def process_args(self, path, fields):
-        self.params["path"] = path
+        self.params["path"] = ensure_path_has_schema(path)
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)
@@ -472,7 +472,7 @@ class PublishRequest(APIRequest):
                                             "fields": fields}, **kwargs)
 
     def process_args(self, path, fields):
-        self.params["path"] = path
+        self.params["path"] = ensure_path_has_schema(path)
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)
@@ -506,7 +506,7 @@ class UploadURLRequest(APIRequest):
 
     def process_args(self, url, path, disable_redirects, fields):
         self.params["url"] = url
-        self.params["path"] = path
+        self.params["path"] = ensure_path_has_schema(path)
         self.params["disable_redirects"] = "true" if disable_redirects else "false"
 
         if fields is not None:
@@ -543,7 +543,7 @@ class DeleteRequest(APIRequest):
                                             "fields":      fields}, **kwargs)
 
     def process_args(self, path, permanently, md5, force_async, fields):
-        self.params["path"] = path
+        self.params["path"] = ensure_path_has_schema(path)
         self.params["permanently"] = "true" if permanently else "false"
         self.params["force_async"] = "true" if force_async else "false"
 
@@ -594,7 +594,7 @@ class SaveToDiskRequest(APIRequest):
             self.params["path"] = path
 
         if save_path is not None:
-            self.params["save_path"] = save_path
+            self.params["save_path"] = ensure_path_has_schema(save_path)
 
         self.params["force_async"] = "true" if force_async else "false"
 
@@ -727,8 +727,8 @@ class MoveRequest(APIRequest):
                                             "fields":      fields}, **kwargs)
 
     def process_args(self, src_path, dst_path, force_async, overwrite, fields):
-        self.params["from"] = src_path
-        self.params["path"] = dst_path
+        self.params["from"] = ensure_path_has_schema(src_path)
+        self.params["path"] = ensure_path_has_schema(dst_path)
         self.params["overwrite"] = "true" if overwrite else "false"
         self.params["force_async"] = "true" if force_async else "false"
 
@@ -826,7 +826,7 @@ class PatchRequest(APIRequest):
         self.request.headers["Content-Length"] = len(self.request.body)
 
     def process_args(self, path, properties, fields):
-        self.params["path"] = path
+        self.params["path"] = ensure_path_has_schema(path)
         self.data["body"] = json.dumps({"custom_properties": properties}).encode("utf8")
 
         if fields is not None:

@@ -11,7 +11,7 @@ from unittest import TestCase
 from io import BytesIO
 
 import yadisk.settings
-from yadisk.common import is_operation_link
+from yadisk.common import is_operation_link, ensure_path_has_schema
 from yadisk.api.operations import GetOperationStatusRequest
 
 yadisk.settings.DEFAULT_N_RETRIES = 50
@@ -249,3 +249,12 @@ class YaDiskTestCase(TestCase):
             "https://asd8iaysd89asdgiu")
         self.assertTrue(is_operation_link(request.url))
         self.assertTrue(request.url.startswith("https://"))
+
+    def test_ensure_path_has_schema(self):
+        # See https://github.com/ivknv/yadisk/issues/26 for more details
+
+        self.assertEqual(ensure_path_has_schema("disk:"), "disk:/")
+        self.assertEqual(ensure_path_has_schema("trash:"), "trash:/")
+        self.assertEqual(ensure_path_has_schema("/asd:123"), "disk:/asd:123")
+        self.assertEqual(ensure_path_has_schema("/asd:123", "trash"), "trash:/asd:123")
+        self.assertEqual(ensure_path_has_schema("example/path"), "disk:/example/path")

@@ -107,7 +107,7 @@ class APIRequest(object):
     def send(self):
         """
             Actually send the request
-           
+
            :returns: :any:`requests.Response` (`self.response`)
         """
 
