@@ -5,6 +5,13 @@ Changelog
 .. _issue #4: https://github.com/ivknv/yadisk/issues/4
 .. _issue #7: https://github.com/ivknv/yadisk/issues/7
 .. _issue #23: https://github.com/ivknv/yadisk/issues/23
+.. _issue #26: https://github.com/ivknv/yadisk/issues/26
+
+* **Release 1.2.18 (2023-01-20)**
+
+  * Fixed `issue #26`_: ':' character in filenames causes `BadRequestError`.
+    This is due the behavior of Yandex.Disk's REST API itself but is avoided
+    on the library level with this fix.
 
 * **Release 1.2.17 (2022-12-11)**
 
