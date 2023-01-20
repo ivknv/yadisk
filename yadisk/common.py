@@ -29,7 +29,7 @@ def ensure_path_has_schema(path, default_schema="disk"):
     # See https://github.com/ivknv/yadisk/issues/26 for more details
 
     if path in ("disk:", "trash:"):
-        return path + "/"
+        return default_schema + ":/" + path
 
     if path.startswith("disk:/") or path.startswith("trash:/"):
         return path

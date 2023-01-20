@@ -253,8 +253,8 @@ class YaDiskTestCase(TestCase):
     def test_ensure_path_has_schema(self):
         # See https://github.com/ivknv/yadisk/issues/26 for more details
 
-        self.assertEqual(ensure_path_has_schema("disk:"), "disk:/")
-        self.assertEqual(ensure_path_has_schema("trash:"), "trash:/")
+        self.assertEqual(ensure_path_has_schema("disk:"), "disk:/disk:")
+        self.assertEqual(ensure_path_has_schema("trash:", default_schema="trash"), "trash:/trash:")
         self.assertEqual(ensure_path_has_schema("/asd:123"), "disk:/asd:123")
         self.assertEqual(ensure_path_has_schema("/asd:123", "trash"), "trash:/asd:123")
         self.assertEqual(ensure_path_has_schema("example/path"), "disk:/example/path")
