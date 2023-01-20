@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: YaDisk 1.2.17\n"
+"Project-Id-Version: YaDisk 1.2.19\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-20 18:52+0500\n"
+"POT-Creation-Date: 2023-01-20 19:31+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,23 +22,35 @@ msgid "Changelog"
 msgstr "История изменений"
 
 #: ../../changelog.rst:10
-msgid "**Release 1.2.18 (2023-01-20)**"
+msgid "**Release 1.2.19 (2023-01-20)**"
 msgstr ""
 
 #: ../../changelog.rst:12
 msgid ""
+"Fixed incorrect behavior of the fix from 1.2.18 for paths `disk:` and "
+"`trash:` (only these two)."
+msgstr "Исправлено неправильное поведение фикса из 1.2.18 для путей `disk:` "
+"и `trash:`."
+
+#: ../../changelog.rst:15
+msgid "**Release 1.2.18 (2023-01-20)**"
+msgstr ""
+
+#: ../../changelog.rst:17
+msgid ""
 "Fixed `issue #26`_: ':' character in filenames causes `BadRequestError`. "
 "This is due the behavior of Yandex.Disk's REST API itself but is avoided "
 "on the library level with this fix."
-msgstr "Исправлено `issue #26`_: символ ':' в именах файлов приводит к "
+msgstr ""
+"Исправлено `issue #26`_: символ ':' в именах файлов приводит к "
 "`BadRequestError`. Это поведение вызвано работой самого REST API "
 "Яндекс.Диска, но было исправлено на уровне библиотеки."
 
-#: ../../changelog.rst:16
+#: ../../changelog.rst:21
 msgid "**Release 1.2.17 (2022-12-11)**"
 msgstr ""
 
-#: ../../changelog.rst:18
+#: ../../changelog.rst:23
 msgid ""
 "Fixed a minor bug which could cause a `ReferenceError` (which would not "
 "cause a crash, but still show an error message). The bug involved using "
@@ -50,11 +62,11 @@ msgstr ""
 "`ReferenceError` (ошибка игнорировалась, но сообщение выводилось).Баг "
 "проявляется по большей части в старых версиях Python (например 3.4)."
 
-#: ../../changelog.rst:24
+#: ../../changelog.rst:29
 msgid "**Release 1.2.16 (2022-08-17)**"
 msgstr ""
 
-#: ../../changelog.rst:26
+#: ../../changelog.rst:31
 msgid ""
 "Fixed a bug in `check_token()`: could throw `ForbiddenError` if the "
 "application lacks necessary permissions (`issue #23`_)."
@@ -62,11 +74,11 @@ msgstr ""
 "Исправлен баг в `check_token()`: функция могла вызвать "
 ":code:`ForbiddenError`,если у приложения недостатчно прав (`issue #23`_)."
 
-#: ../../changelog.rst:29
+#: ../../changelog.rst:34
 msgid "**Release 1.2.15 (2021-12-31)**"
 msgstr ""
 
-#: ../../changelog.rst:31
+#: ../../changelog.rst:36
 msgid ""
 "Fixed an issue where `http://` links were not recognized as operation "
 "links (they were assumed to always be `https://`, since all the other "
@@ -83,11 +95,11 @@ msgstr ""
 "операции (через `get_operation_status()`) всегда используется `https://` "
 "версия ссылки, даже если Яндекс.Диск вернул `http://`."
 
-#: ../../changelog.rst:40
+#: ../../changelog.rst:45
 msgid "**Release 1.2.14 (2019-03-26)**"
 msgstr ""
 
-#: ../../changelog.rst:42
+#: ../../changelog.rst:47
 msgid ""
 "Fixed a `TypeError` in `get_public_*` functions when passing `path` "
 "parameter (see `issue #7`_)"
@@ -95,27 +107,27 @@ msgstr ""
 "Исправлена ошибка `TypeError` в функциях `get_public_*` при использовании"
 " с параметром `path` (`issue #7`_)"
 
-#: ../../changelog.rst:44
+#: ../../changelog.rst:49
 msgid "Added `unlimited_autoupload_enabled` attribute for `DiskInfoObject`"
 msgstr "Добавлен аттрибут `unlimited_autoupload_enabled` для `DiskInfoObject`"
 
-#: ../../changelog.rst:46
+#: ../../changelog.rst:51
 msgid "**Release 1.2.13 (2019-02-23)**"
 msgstr ""
 
-#: ../../changelog.rst:48
+#: ../../changelog.rst:53
 msgid "Added `md5` parameter for `remove()`"
 msgstr "Добавлен параметр `md5` для `remove()`"
 
-#: ../../changelog.rst:49
+#: ../../changelog.rst:54
 msgid "Added `UserPublicInfoObject`"
 msgstr "Добавлен `UserPublicInfoObject`"
 
-#: ../../changelog.rst:50
+#: ../../changelog.rst:55
 msgid "Added `country` attribute for `UserObject`"
 msgstr "Добавлен аттрибут `country` для `UserObject`"
 
-#: ../../changelog.rst:51
+#: ../../changelog.rst:56
 msgid ""
 "Added `photoslice_time` attribute for `ResourceObject`, "
 "`PublicResourceObject` and `TrashResourceObject`"
@@ -123,23 +135,23 @@ msgstr ""
 "Добавлен аттрибут `photoslice_time` для `ResourceObject`, "
 "`PublicResourceObject` и `TrashResourceObject`"
 
-#: ../../changelog.rst:54
+#: ../../changelog.rst:59
 msgid "**Release 1.2.12 (2018-10-11)**"
 msgstr ""
 
-#: ../../changelog.rst:56
+#: ../../changelog.rst:61
 msgid "Fixed `fields` parameter not working properly in `listdir()` (`issue #4`_)"
 msgstr "Исправлен баг: не работает параметр `fields` в `listdir()` (`issue #4`_)"
 
-#: ../../changelog.rst:58
+#: ../../changelog.rst:63
 msgid "**Release 1.2.11 (2018-06-30)**"
 msgstr ""
 
-#: ../../changelog.rst:60
+#: ../../changelog.rst:65
 msgid "Added the missing parameter `sort` for `get_meta()`"
 msgstr "Добавлен недостающий параметр `sort` для `get_meta()`"
 
-#: ../../changelog.rst:61
+#: ../../changelog.rst:66
 msgid ""
 "Added `file` and `antivirus_status` attributes for `ResourceObject`, "
 "`PublicResourceObject` and `TrashResourceObject`"
@@ -147,23 +159,23 @@ msgstr ""
 "Добавлены аттрибуты `file` и `antivirus_status` для `ResourceObject`, "
 "`PublicResourceObject` и `TrashResourceObject`"
 
-#: ../../changelog.rst:63
+#: ../../changelog.rst:68
 msgid "Added `headers` parameter"
 msgstr "Добавлен параметр `headers`"
 
-#: ../../changelog.rst:64
+#: ../../changelog.rst:69
 msgid "Fixed a typo in `download()` and `download_public()` (`issue #2`_)"
 msgstr "Исправлена опечатка в `download()` и `download_public()` (`issue #2`_)"
 
-#: ../../changelog.rst:65
+#: ../../changelog.rst:70
 msgid "Removed `*args` parameter everywhere"
 msgstr "Убран параметр `*args`"
 
-#: ../../changelog.rst:67
+#: ../../changelog.rst:72
 msgid "**Release 1.2.10 (2018-06-14)**"
 msgstr ""
 
-#: ../../changelog.rst:69
+#: ../../changelog.rst:74
 msgid ""
 "Fixed `timeout=None` behavior. `None` is supposed to mean 'no timeout' "
 "but in the older versions it was synonymous with the default timeout."
@@ -172,23 +184,23 @@ msgstr ""
 "таймаута', но в предыдущих версиях значение `None` было синонимично со "
 "стандартным таймаутом."
 
-#: ../../changelog.rst:72
+#: ../../changelog.rst:77
 msgid "**Release 1.2.9 (2018-04-28)**"
 msgstr ""
 
-#: ../../changelog.rst:74
+#: ../../changelog.rst:79
 msgid "Changed the license to LGPLv3 (see `COPYING` and `COPYING.lesser`)"
 msgstr "Изменена лицензия на LGPLv3 (см. `COPYING` и `COPYING.lesser`)"
 
-#: ../../changelog.rst:75
+#: ../../changelog.rst:80
 msgid "Other package info updates"
 msgstr "Другие изменения информации о пакете"
 
-#: ../../changelog.rst:77
+#: ../../changelog.rst:82
 msgid "**Release 1.2.8 (2018-04-17)**"
 msgstr ""
 
-#: ../../changelog.rst:79
+#: ../../changelog.rst:84
 msgid ""
 "Fixed a couple of typos: `PublicResourceListObject.items` and "
 "`TrashResourceListObject.items` had wrong types"
@@ -196,7 +208,7 @@ msgstr ""
 "Исправлено несколько опечаток: у `PublicResourceListObject.items` и "
 "`TrashResourceListObject.items` были неправильные типы данных"
 
-#: ../../changelog.rst:81
+#: ../../changelog.rst:86
 msgid ""
 "Substitute field aliases in `fields` parameter when performing API "
 "requests (e.g. `embedded` -> `_embedded`)"
@@ -204,21 +216,21 @@ msgstr ""
 "Псевдонимы полей в параметре `fields` заменяются при выполнении запросов "
 "API (например, `embedded` -> `_embedded`)"
 
-#: ../../changelog.rst:84
+#: ../../changelog.rst:89
 msgid "**Release 1.2.7 (2018-04-15)**"
 msgstr ""
 
-#: ../../changelog.rst:86
+#: ../../changelog.rst:91
 msgid "Fixed a file rewinding bug when uploading/downloading files after a retry"
 msgstr ""
 "Исправлен баг перемотки файла при загрузке/скачивании после повторной "
 "попытки"
 
-#: ../../changelog.rst:88
+#: ../../changelog.rst:93
 msgid "**Release 1.2.6 (2018-04-13)**"
 msgstr ""
 
-#: ../../changelog.rst:90
+#: ../../changelog.rst:95
 msgid ""
 "Now caching `requests` sessions so that open connections can be reused "
 "(which can significantly speed things up sometimes)"
@@ -226,15 +238,15 @@ msgstr ""
 "Теперь объекты сессий `requests` кэшируются, чтобы их можно было "
 "переиспользовать (иногда может существенно ускорить выполнение запросов)"
 
-#: ../../changelog.rst:92
+#: ../../changelog.rst:97
 msgid "Disable `keep-alive` when uploading/downloading files by default"
 msgstr "`keep-alive` отключается при загрузке/скачивании файлов по умолчанию"
 
-#: ../../changelog.rst:94
+#: ../../changelog.rst:99
 msgid "**Release 1.2.5 (2018-03-31)**"
 msgstr ""
 
-#: ../../changelog.rst:96
+#: ../../changelog.rst:101
 msgid ""
 "Fixed an off-by-one bug in `utils.auto_retry()` (which could sometimes "
 "result in `AttributeError`)"
@@ -242,7 +254,7 @@ msgstr ""
 "Исправлен баг (ошибка на единицу) в `utils.auto_retry()` (иногда мог "
 "вызвать `AttributeError`)"
 
-#: ../../changelog.rst:98
+#: ../../changelog.rst:103
 msgid ""
 "Retry the whole request for `upload()`, `download()` and "
 "`download_public()`"
@@ -250,19 +262,19 @@ msgstr ""
 "Повторные попытки применяются для `upload()`, `download()` и "
 "`download_public()` целиком"
 
-#: ../../changelog.rst:99
+#: ../../changelog.rst:104
 msgid "Set `stream=True` for `download()` and `download_public()`"
 msgstr "Задано `stream=True` для `download()` и `download_public()`"
 
-#: ../../changelog.rst:100
+#: ../../changelog.rst:105
 msgid "Other minor fixes"
 msgstr "Другие мелкие исправления"
 
-#: ../../changelog.rst:102
+#: ../../changelog.rst:107
 msgid "**Release 1.2.4 (2018-02-19)**"
 msgstr ""
 
-#: ../../changelog.rst:104
+#: ../../changelog.rst:109
 msgid ""
 "Fixed `TokenObject` having `exprires_in` instead of `expires_in` (fixed a"
 " typo)"
@@ -270,35 +282,35 @@ msgstr ""
 "Исправлена опечатка (`TokenObject.exprires_in` -> "
 "`TokenObject.expires_in`)"
 
-#: ../../changelog.rst:106
+#: ../../changelog.rst:111
 msgid "**Release 1.2.3 (2018-01-20)**"
 msgstr ""
 
-#: ../../changelog.rst:108
+#: ../../changelog.rst:113
 msgid "Fixed a `TypeError` when `WrongResourceTypeError` is raised"
 msgstr "Исправлено `TypeError` при вызове `WrongResourceTypeError`"
 
-#: ../../changelog.rst:110
+#: ../../changelog.rst:115
 msgid "**Release 1.2.2 (2018-01-19)**"
 msgstr ""
 
-#: ../../changelog.rst:112
+#: ../../changelog.rst:117
 msgid "`refresh_token()` no longer requires a valid or empty token."
 msgstr "`refresh_token()` больше не требует валидный или пустой токен."
 
-#: ../../changelog.rst:114
+#: ../../changelog.rst:119
 msgid "**Release 1.2.1 (2018-01-14)**"
 msgstr ""
 
-#: ../../changelog.rst:116
+#: ../../changelog.rst:121
 msgid "Fixed auto retries not working. Whoops."
 msgstr "Исправлена неработоспособность повторных попыток."
 
-#: ../../changelog.rst:118
+#: ../../changelog.rst:123
 msgid "**Release 1.2.0 (2018-01-14)**"
 msgstr ""
 
-#: ../../changelog.rst:120
+#: ../../changelog.rst:125
 msgid ""
 "Fixed passing `n_retries=0` to `upload()`, `download()` and "
 "`download_public()`"
@@ -306,7 +318,7 @@ msgstr ""
 "Исправлено использование `n_retries=0` в `upload()`, `download()` и "
 "`download_public()`"
 
-#: ../../changelog.rst:122
+#: ../../changelog.rst:127
 msgid ""
 "`upload()`, `download()` and `download_public()` no longer return "
 "anything (see the docs)"
@@ -314,11 +326,11 @@ msgstr ""
 "`upload()`, `download()` и `download_public()` больше не возвращают "
 "ничего (см. документацию)"
 
-#: ../../changelog.rst:124
+#: ../../changelog.rst:129
 msgid "Added `utils` module (see the docs)"
 msgstr "Добавлен модуль `utils` (см. документацию)"
 
-#: ../../changelog.rst:125
+#: ../../changelog.rst:130
 msgid ""
 "Added `RetriableYaDiskError`, `WrongResourceTypeError`, `BadGatewayError`"
 " and `GatewayTimeoutError`"
@@ -326,7 +338,7 @@ msgstr ""
 "Добавлены `RetriableYaDiskError`, `WrongResourceTypeError`, "
 "`BadGatewayError` и `GatewayTimeoutError`"
 
-#: ../../changelog.rst:127
+#: ../../changelog.rst:132
 msgid ""
 "`listdir()` now raises `WrongResourceTypeError` instead of "
 "`NotADirectoryError`"
@@ -334,11 +346,11 @@ msgstr ""
 "`listdir()` теперь вызывает `WrongResourceTypeError` вместо "
 "`NotADirectoryError`"
 
-#: ../../changelog.rst:130
+#: ../../changelog.rst:135
 msgid "**Release 1.1.1 (2017-12-29)**"
 msgstr ""
 
-#: ../../changelog.rst:132
+#: ../../changelog.rst:137
 msgid ""
 "Fixed argument handling in `upload()`, `download()` and "
 "`download_public()`. Previously, passing `n_retries` and `retry_interval`"
@@ -348,97 +360,97 @@ msgstr ""
 "`download_public()`. До этого использование `n_retries` и "
 "`retry_interval` вызывало исключение (`TypeError`)."
 
-#: ../../changelog.rst:135
+#: ../../changelog.rst:140
 msgid "**Release 1.1.0 (2017-12-27)**"
 msgstr ""
 
-#: ../../changelog.rst:137
+#: ../../changelog.rst:142
 msgid "Better exceptions (see the docs)"
 msgstr "Усовершенствованные исключения (см. документацию)"
 
-#: ../../changelog.rst:138
+#: ../../changelog.rst:143
 msgid "Added support for `force_async` parameter"
 msgstr "Добавлена поддержка параметра `force_async`"
 
-#: ../../changelog.rst:139
+#: ../../changelog.rst:144
 msgid "Minor bug fixes"
 msgstr "Мелкие исправления багов"
 
-#: ../../changelog.rst:141
+#: ../../changelog.rst:146
 msgid "**Release 1.0.8 (2017-11-29)**"
 msgstr ""
 
-#: ../../changelog.rst:143
+#: ../../changelog.rst:148
 msgid "Fixed yet another `listdir()` bug"
 msgstr "Исправлен ещё один баг в `listdir()`"
 
-#: ../../changelog.rst:145
+#: ../../changelog.rst:150
 msgid "**Release 1.0.7 (2017-11-04)**"
 msgstr ""
 
-#: ../../changelog.rst:147
+#: ../../changelog.rst:152
 msgid "Added `install_requires` argument to `setup.py`"
 msgstr "Добавлен `install_requires` в `setup.py`"
 
-#: ../../changelog.rst:149
+#: ../../changelog.rst:154
 msgid "**Release 1.0.6 (2017-11-04)**"
 msgstr ""
 
-#: ../../changelog.rst:151
+#: ../../changelog.rst:156
 msgid "Return `OperationLinkObject` in some functions"
 msgstr "Некоторые функции теперь возвращают `OperationLinkObject`"
 
-#: ../../changelog.rst:153
+#: ../../changelog.rst:158
 msgid "**Release 1.0.5 (2017-10-29)**"
 msgstr ""
 
-#: ../../changelog.rst:155
+#: ../../changelog.rst:160
 msgid "Fixed `setup.py` to exclude tests"
 msgstr "Исправлен `setup.py`, теперь исключает тесты"
 
-#: ../../changelog.rst:157
+#: ../../changelog.rst:162
 msgid "**Release 1.0.4 (2017-10-23)**"
 msgstr ""
 
-#: ../../changelog.rst:159
+#: ../../changelog.rst:164
 msgid "Fixed bugs in `upload`, `download` and `listdir` functions"
 msgstr "Исправлены баги в `upload`, `download` и `listdir`"
 
-#: ../../changelog.rst:160
+#: ../../changelog.rst:165
 msgid "Set default `listdir` `limit` to `10000`"
 msgstr "Значение по-умолчанию `limit` в `listdir` установлено в `10000`"
 
-#: ../../changelog.rst:162
+#: ../../changelog.rst:167
 msgid "**Release 1.0.3 (2017-10-22)**"
 msgstr ""
 
-#: ../../changelog.rst:164
+#: ../../changelog.rst:169
 msgid "Added settings"
 msgstr "Добавлен модуль `settings`"
 
-#: ../../changelog.rst:166
+#: ../../changelog.rst:171
 msgid "**Release 1.0.2 (2017-10-19)**"
 msgstr ""
 
-#: ../../changelog.rst:168
+#: ../../changelog.rst:173
 msgid "Fixed `get_code_url` function (added missing parameters)"
 msgstr "Исправлена функция `get_code_url` (добавлены недостающие параметры)"
 
-#: ../../changelog.rst:170
+#: ../../changelog.rst:175
 msgid "**Release 1.0.1 (2017-10-18)**"
 msgstr ""
 
-#: ../../changelog.rst:172
+#: ../../changelog.rst:177
 msgid "Fixed a major bug in `GetTokenRequest` (added missing parameter)"
 msgstr ""
 "Исправлен серьёзный баг в `GetTokenRequest` (добавлен недостающий "
 "параметр)"
 
-#: ../../changelog.rst:174
+#: ../../changelog.rst:179
 msgid "**Release 1.0.0 (2017-10-18)**"
 msgstr ""
 
-#: ../../changelog.rst:176
+#: ../../changelog.rst:181
 msgid "Initial release"
 msgstr "Первый релиз"
 

@@ -78,6 +78,11 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 .. _issue #23: https://github.com/ivknv/yadisk/issues/23
 .. _issue #26: https://github.com/ivknv/yadisk/issues/26
 
+* **Release 1.2.19 (2023-01-20)**
+
+  * Исправлено неправильное поведение фикса из 1.2.18 для путей :code:`disk:`
+    и :code:`trash:`.
+
 * **Release 1.2.18 (2023-01-20)**
 
   * Исправлено `issue #26`_: символ ':' в именах файлов приводит к

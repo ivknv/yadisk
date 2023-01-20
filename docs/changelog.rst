@@ -7,6 +7,11 @@ Changelog
 .. _issue #23: https://github.com/ivknv/yadisk/issues/23
 .. _issue #26: https://github.com/ivknv/yadisk/issues/26
 
+* **Release 1.2.19 (2023-01-20)**
+
+  * Fixed incorrect behavior of the fix from 1.2.18 for paths `disk:`
+    and `trash:` (only these two).
+
 * **Release 1.2.18 (2023-01-20)**
 
   * Fixed `issue #26`_: ':' character in filenames causes `BadRequestError`.
