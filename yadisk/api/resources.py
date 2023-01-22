@@ -7,7 +7,7 @@ from .api_request import APIRequest
 from ..objects import LinkObject, PublicResourcesListObject, TrashResourceObject
 from ..objects import FilesResourceListObject, LastUploadedResourceListObject
 from ..objects import ResourceObject, ResourceUploadLinkObject, PublicResourceObject
-from ..objects import OperationLinkObject
+from ..objects import OperationLinkObject, ResourceLinkObject, ResourceDownloadLinkObject
 from ..common import is_operation_link, ensure_path_has_schema
 
 __all__ = ["GetPublicResourcesRequest", "UnpublishRequest", "GetDownloadLinkRequest",
@@ -63,8 +63,8 @@ class GetPublicResourcesRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js):
-        return PublicResourcesListObject(js)
+    def process_json(self, js, yadisk=None):
+        return PublicResourcesListObject(js, yadisk)
 
 class UnpublishRequest(APIRequest):
     """
@@ -74,7 +74,7 @@ class UnpublishRequest(APIRequest):
         :param path: path to the resource to be unpublished
         :param fields: list of keys to be included in the response
 
-        :returns: :any:`LinkObject`
+        :returns: :any:`ResourceLinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources/unpublish"
@@ -90,8 +90,8 @@ class UnpublishRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js):
-        return LinkObject(js)
+    def process_json(self, js, yadisk=None):
+        return ResourceLinkObject(js, yadisk)
 
 class GetDownloadLinkRequest(APIRequest):
     """
@@ -101,15 +101,15 @@ class GetDownloadLinkRequest(APIRequest):
         :param path: path to the resource to be downloaded
         :param fields: list of keys to be included in the response
 
-        :returns: :any:`LinkObject`
+        :returns: :any:`ResourceDownloadLinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources/download"
     method = "GET"
 
     def __init__(self, session, path, fields=None, **kwargs):
-        APIRequest.__init__(self, session, {"path": path, "fields": fields},
-                            **kwargs)
+        APIRequest.__init__(
+            self, session, {"path": path, "fields": fields}, **kwargs)
 
     def process_args(self, path, fields):
         self.params["path"] = ensure_path_has_schema(path)
@@ -117,8 +117,8 @@ class GetDownloadLinkRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js):
-        return LinkObject(js)
+    def process_json(self, js, yadisk=None):
+        return ResourceDownloadLinkObject(js, yadisk)
 
 class GetTrashRequest(APIRequest):
     """
@@ -167,8 +167,8 @@ class GetTrashRequest(APIRequest):
 
             self.params["fields"] = ",".join(_substitute_keys(fields, sub_map))
 
-    def process_json(self, js):
-        return TrashResourceObject(js)
+    def process_json(self, js, yadisk=None):
+        return TrashResourceObject(js, yadisk)
 
 class RestoreTrashRequest(APIRequest):
     """
@@ -181,7 +181,7 @@ class RestoreTrashRequest(APIRequest):
         :param overwrite: `bool`, determines whether the destination can be overwritten
         :param fields: list of keys to be included in the response
 
-        :returns: :any:`LinkObject` or :any:`OperationLinkObject`
+        :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/trash/resources/restore"
@@ -207,11 +207,11 @@ class RestoreTrashRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js):
+    def process_json(self, js, yadisk=None):
         if is_operation_link(js.get("href", "")):
-            return OperationLinkObject(js)
+            return OperationLinkObject(js, yadisk)
 
-        return LinkObject(js)
+        return ResourceLinkObject(js, yadisk)
 
 class DeleteTrashRequest(APIRequest):
     """
@@ -244,8 +244,8 @@ class DeleteTrashRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js):
-        return OperationLinkObject(js)
+    def process_json(self, js, yadisk=None):
+        return OperationLinkObject(js, yadisk)
 
 class LastUploadedRequest(APIRequest):
     """
@@ -293,8 +293,8 @@ class LastUploadedRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js):
-        return LastUploadedResourceListObject(js)
+    def process_json(self, js, yadisk=None):
+        return LastUploadedResourceListObject(js, yadisk)
 
 class CopyRequest(APIRequest):
     """
@@ -308,7 +308,7 @@ class CopyRequest(APIRequest):
         :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
 
-        :returns: :any:`LinkObject` or :any:`OperationLinkObject`
+        :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources/copy"
@@ -332,11 +332,11 @@ class CopyRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js):
+    def process_json(self, js, yadisk=None):
         if is_operation_link(js["href"]):
-            return OperationLinkObject(js)
+            return OperationLinkObject(js, yadisk)
 
-        return LinkObject(js)
+        return ResourceLinkObject(js, yadisk)
 
 class GetMetaRequest(APIRequest):
     """
@@ -393,8 +393,8 @@ class GetMetaRequest(APIRequest):
 
             self.params["fields"] = ",".join(_substitute_keys(fields, sub_map))
 
-    def process_json(self, js):
-        return ResourceObject(js)
+    def process_json(self, js, yadisk=None):
+        return ResourceObject(js, yadisk)
 
 class GetUploadLinkRequest(APIRequest):
     """
@@ -423,8 +423,8 @@ class GetUploadLinkRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js):
-        return ResourceUploadLinkObject(js)
+    def process_json(self, js, yadisk=None):
+        return ResourceUploadLinkObject(js, yadisk)
 
 class MkdirRequest(APIRequest):
     """
@@ -433,7 +433,7 @@ class MkdirRequest(APIRequest):
         :param path: path to the directory to be created
         :param fields: list of keys to be included in the response
 
-        :returns: :any:`LinkObject`
+        :returns: :any:`ResourceLinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources"
@@ -450,8 +450,8 @@ class MkdirRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js):
-        return LinkObject(js)
+    def process_json(self, js, yadisk=None):
+        return ResourceLinkObject(js, yadisk)
 
 class PublishRequest(APIRequest):
     """
@@ -461,7 +461,7 @@ class PublishRequest(APIRequest):
         :param path: path to the resource to be published
         :param fields: list of keys to be included in the response
 
-        :returns: :any:`LinkObject`
+        :returns: :any:`ResourceLinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources/publish"
@@ -477,8 +477,8 @@ class PublishRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js):
-        return LinkObject(js)
+    def process_json(self, js, yadisk=None):
+        return ResourceLinkObject(js, yadisk)
 
 class UploadURLRequest(APIRequest):
     """
@@ -512,8 +512,8 @@ class UploadURLRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js):
-        return OperationLinkObject(js)
+    def process_json(self, js, yadisk=None):
+        return OperationLinkObject(js, yadisk)
 
 class DeleteRequest(APIRequest):
     """
@@ -553,8 +553,8 @@ class DeleteRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js):
-        return OperationLinkObject(js)
+    def process_json(self, js, yadisk=None):
+        return OperationLinkObject(js, yadisk)
 
 class SaveToDiskRequest(APIRequest):
     """
@@ -568,7 +568,7 @@ class SaveToDiskRequest(APIRequest):
         :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
 
-        :returns: :any:`LinkObject` or :any:`OperationLinkObject`
+        :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/public/resources/save-to-disk"
@@ -601,11 +601,11 @@ class SaveToDiskRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js):
+    def process_json(self, js, yadisk=None):
         if is_operation_link(js.get("href", "")):
-            return OperationLinkObject(js)
+            return OperationLinkObject(js, yadisk)
 
-        return LinkObject(js)
+        return ResourceLinkObject(js, yadisk)
 
 class GetPublicMetaRequest(APIRequest):
     """
@@ -665,8 +665,8 @@ class GetPublicMetaRequest(APIRequest):
 
             self.params["fields"] = ",".join(_substitute_keys(fields, sub_map))
 
-    def process_json(self, js):
-        return PublicResourceObject(js)
+    def process_json(self, js, yadisk=None):
+        return PublicResourceObject(js, yadisk)
 
 class GetPublicDownloadLinkRequest(APIRequest):
     """
@@ -677,7 +677,7 @@ class GetPublicDownloadLinkRequest(APIRequest):
         :param path: relative path to the resource within the public folder
         :param fields: list of keys to be included in the response
 
-        :returns: :any:`LinkObject`
+        :returns: :any:`ResourceDownloadLinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/public/resources/download"
@@ -697,8 +697,8 @@ class GetPublicDownloadLinkRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js):
-        return LinkObject(js)
+    def process_json(self, js, yadisk=None):
+        return ResourceDownloadLinkObject(js, yadisk)
 
 class MoveRequest(APIRequest):
     """
@@ -711,7 +711,7 @@ class MoveRequest(APIRequest):
         :param overwrite: `bool`, determines whether to overwrite the destination
         :param fields: list of keys to be included in the response
 
-        :returns: :any:`OperationLinkObject` or :any:`LinkObject`
+        :returns: :any:`OperationLinkObject` or :any:`ResourceLinkObject`
     """
 
     url = "https://cloud-api.yandex.net/v1/disk/resources/move"
@@ -735,11 +735,11 @@ class MoveRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js):
+    def process_json(self, js, yadisk):
         if is_operation_link(js.get("href", "")):
-            return OperationLinkObject(js)
+            return OperationLinkObject(js, yadisk)
 
-        return LinkObject(js)
+        return ResourceLinkObject(js, yadisk)
 
 class FilesRequest(APIRequest):
     """
@@ -796,8 +796,8 @@ class FilesRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js):
-        return FilesResourceListObject(js)
+    def process_json(self, js, yadisk):
+        return FilesResourceListObject(js, yadisk)
 
 class PatchRequest(APIRequest):
     """
@@ -834,5 +834,5 @@ class PatchRequest(APIRequest):
 
             self.params["fields"] = ",".join(_substitute_keys(fields, sub_map))
 
-    def process_json(self, js):
-        return ResourceObject(js)
+    def process_json(self, js, yadisk=None):
+        return ResourceObject(js, yadisk)

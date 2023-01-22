@@ -2,16 +2,19 @@
 
 __all__ = ["YaDiskObject"]
 
-class YaDiskObject(object):
+class YaDiskObject:
     """
         Base class for all objects mirroring the ones returned by Yandex.Disk REST API.
         It must have a fixed number of fields, each field must have a type.
         It also supports subscripting and access of fields through the . operator.
 
         :param field_types: `dict` or `None`
+        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+
+        :ivar yadisk: :any:`YaDisk` or `None`, `YaDisk` object
     """
 
-    def __init__(self, field_types=None):
+    def __init__(self, field_types=None, yadisk=None):
         if field_types is None:
             field_types = {}
 
@@ -19,6 +22,8 @@ class YaDiskObject(object):
         self.FIELDS = {}
         self.ALIASES = {}
         self.set_field_types(field_types)
+
+        self._yadisk = yadisk
 
     def set_field_types(self, field_types):
         """
@@ -94,7 +99,7 @@ class YaDiskObject(object):
                     pass
 
     def __setattr__(self, attr, value):
-        if attr in ("FIELDS", "FIELD_TYPES", "ALIASES"):
+        if attr in ("FIELDS", "FIELD_TYPES", "ALIASES", "_yadisk"):
             self.__dict__[attr] = value
             return
 
@@ -107,9 +112,6 @@ class YaDiskObject(object):
         self.FIELDS[attr] = datatype(value) if value is not None else None
 
     def __getattr__(self, attr):
-        if attr in ("FIELDS", "FIELD_TYPES"):
-            return self.__dict__[attr]
-
         attr = self.ALIASES.get(attr, attr)
 
         if attr not in self.FIELD_TYPES:

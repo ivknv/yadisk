@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from functools import partial
+
 from .yadisk_object import YaDiskObject
 from .resources import LinkObject
 
@@ -10,6 +12,7 @@ class OperationStatusObject(YaDiskObject):
         Operation status object.
 
         :param operation_status: `dict` or `None`
+        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
 
         :ivar type: `str`, type of the operation
         :ivar status: `str`, status of the operation
@@ -18,11 +21,14 @@ class OperationStatusObject(YaDiskObject):
         :ivar data: `dict`, other information about the operation
     """
 
-    def __init__(self, operation_status=None):
-        YaDiskObject.__init__(self, {"type":         str,
-                                     "status":       str,
-                                     "operation_id": str,
-                                     "link":         LinkObject,
-                                     "data":         dict})
+    def __init__(self, operation_status=None, yadisk=None):
+        YaDiskObject.__init__(
+            self,
+            {"type":         str,
+             "status":       str,
+             "operation_id": str,
+             "link":         partial(LinkObject, yadisk=yadisk),
+             "data":         dict},
+            yadisk)
 
         self.import_fields(operation_status)

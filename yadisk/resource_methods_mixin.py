@@ -10,6 +10,7 @@ from .api import GetPublicResourcesRequest, PatchRequest, FilesRequest
 from .api import LastUploadedRequest, UploadURLRequest, GetPublicDownloadLinkRequest
 from .exceptions import WrongResourceTypeError, PathNotFoundError
 from .utils import auto_retry, get_exception
+from .objects import ResourceLinkObject, PublicResourceLinkObject
 
 from . import settings
 
@@ -98,7 +99,7 @@ class ResourceMethodsMixin:
         request = GetMetaRequest(self.get_session(), path, **kwargs)
         request.send()
 
-        return request.process()
+        return request.process(yadisk=self)
 
     def exists(self, path, **kwargs):
         """
@@ -206,20 +207,7 @@ class ResourceMethodsMixin:
 
         return request.process().href
 
-    def upload(self, file_or_path, dst_path, **kwargs):
-        """
-            Upload a file to disk.
-
-            :param file_or_path: path or file-like object to be uploaded
-            :param dst_path: destination path
-            :param overwrite: if `True`, the resource will be overwritten if it already exists,
-                              an error will be raised otherwise
-            :param timeout: `float` or `tuple`, request timeout
-            :param headers: `dict` or `None`, additional request headers
-            :param n_retries: `int`, maximum number of retries
-            :param retry_interval: delay between retries in seconds
-        """
-
+    def _upload(self, get_upload_link_function, file_or_path, dst_path, **kwargs):
         kwargs = dict(kwargs)
 
         try:
@@ -259,7 +247,7 @@ class ResourceMethodsMixin:
                 temp_kwargs["n_retries"] = 0
                 temp_kwargs["retry_interval"] = 0.0
 
-                link = self.get_upload_link(dst_path, **temp_kwargs)
+                link = get_upload_link_function(dst_path, **temp_kwargs)
 
                 # session.put() doesn't accept these parameters
                 for k in ("n_retries", "retry_interval", "overwrite", "fields"):
@@ -284,6 +272,42 @@ class ResourceMethodsMixin:
             if close_file and file is not None:
                 file.close()
 
+    def upload(self, file_or_path, dst_path, **kwargs):
+        """
+            Upload a file to disk.
+
+            :param file_or_path: path or file-like object to be uploaded
+            :param dst_path: destination path
+            :param overwrite: if `True`, the resource will be overwritten if it already exists,
+                              an error will be raised otherwise
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :returns: :any:`ResourceLinkObject`, link to the destination resource
+        """
+
+        self._upload(self.get_upload_link, file_or_path, dst_path, **kwargs)
+
+        return ResourceLinkObject.from_path(dst_path, yadisk=self)
+
+    def upload_by_link(self, file_or_path, link, **kwargs):
+        """
+            Upload a file to disk using an upload link.
+
+            :param file_or_path: path or file-like object to be uploaded
+            :param link: upload link
+            :param overwrite: if `True`, the resource will be overwritten if it already exists,
+                              an error will be raised otherwise
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+        """
+
+        self._upload(lambda *args, **kwargs: link, file_or_path, dst_path, **kwargs)
+
     def get_download_link(self, path, **kwargs):
         """
             Get a download link for a file (or a directory).
@@ -303,18 +327,7 @@ class ResourceMethodsMixin:
 
         return request.process().href
 
-    def download(self, src_path, file_or_path, **kwargs):
-        """
-            Download the file.
-
-            :param src_path: source path
-            :param file_or_path: destination path or file-like object
-            :param timeout: `float` or `tuple`, request timeout
-            :param headers: `dict` or `None`, additional request headers
-            :param n_retries: `int`, maximum number of retries
-            :param retry_interval: delay between retries in seconds
-        """
-
+    def _download(self, get_download_link_function, src_path, file_or_path, **kwargs):
         kwargs = dict(kwargs)
 
         n_retries = kwargs.get("n_retries")
@@ -353,7 +366,7 @@ class ResourceMethodsMixin:
                 temp_kwargs = dict(kwargs)
                 temp_kwargs["n_retries"] = 0
                 temp_kwargs["retry_interval"] = 0.0
-                link = self.get_download_link(src_path, **temp_kwargs)
+                link = get_download_link_function(src_path, **temp_kwargs)
 
                 # session.get() doesn't accept these parameters
                 for k in ("n_retries", "retry_interval", "fields"):
@@ -382,6 +395,38 @@ class ResourceMethodsMixin:
             if close_file and file is not None:
                 file.close()
 
+    def download(self, src_path, file_or_path, **kwargs):
+        """
+            Download the file.
+
+            :param src_path: source path
+            :param file_or_path: destination path or file-like object
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :returns: :any:`ResourceLinkObject`, link to the source resource
+        """
+
+        self._download(self.get_download_link, src_path, file_or_path, **kwargs)
+
+        return ResourceLinkObject.from_path(src_path, yadisk=self)
+
+    def download_by_link(self, link, file_or_path, **kwargs):
+        """
+            Download the file from the link.
+
+            :param link: download link
+            :param file_or_path: destination path or file-like object
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+        """
+
+        self._download(lambda *args, **kwargs: link, None, file_or_path, **kwargs)
+
     def remove(self, path, **kwargs):
         """
             Remove the resource.
@@ -404,7 +449,7 @@ class ResourceMethodsMixin:
 
         request.send()
 
-        return request.process()
+        return request.process(yadisk=self)
 
     def mkdir(self, path, **kwargs):
         """
@@ -417,13 +462,13 @@ class ResourceMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
-            :returns: :any:`LinkObject`
+            :returns: :any:`ResourceLinkObject`
         """
 
         request = MkdirRequest(self.get_session(), path, **kwargs)
         request.send()
 
-        return request.process()
+        return request.process(yadisk=self)
 
     def get_trash_meta(self, path, **kwargs):
         """
@@ -447,7 +492,7 @@ class ResourceMethodsMixin:
         request = GetTrashRequest(self.get_session(), path, **kwargs)
         request.send()
 
-        return request.process()
+        return request.process(yadisk=self)
 
     def trash_exists(self, path, **kwargs):
         """
@@ -481,13 +526,13 @@ class ResourceMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
-            :returns: :any:`LinkObject` or :any:`OperationLinkObject`
+            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
         """
 
         request = CopyRequest(self.get_session(), src_path, dst_path, **kwargs)
         request.send()
 
-        return request.process()
+        return request.process(yadisk=self)
 
     def restore_trash(self, path, dst_path=None, **kwargs):
         """
@@ -504,7 +549,7 @@ class ResourceMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
-            :returns: :any:`LinkObject` or :any:`OperationLinkObject`
+            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
         """
 
         kwargs = dict(kwargs)
@@ -513,7 +558,7 @@ class ResourceMethodsMixin:
         request = RestoreTrashRequest(self.get_session(), path, **kwargs)
         request.send()
 
-        return request.process()
+        return request.process(yadisk=self)
 
     def move(self, src_path, dst_path, **kwargs):
         """
@@ -529,13 +574,13 @@ class ResourceMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
-            :returns: :any:`LinkObject` or :any:`OperationLinkObject`
+            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
         """
 
         request = MoveRequest(self.get_session(), src_path, dst_path, **kwargs)
         request.send()
 
-        return request.process()
+        return request.process(yadisk=self)
 
     def remove_trash(self, path, **kwargs):
         """
@@ -555,7 +600,7 @@ class ResourceMethodsMixin:
         request = DeleteTrashRequest(self.get_session(), path, **kwargs)
         request.send()
 
-        return request.process()
+        return request.process(yadisk=self)
 
     def publish(self, path, **kwargs):
         """
@@ -568,13 +613,13 @@ class ResourceMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
-            :returns: :any:`LinkObject`, link to the resource
+            :returns: :any:`ResourceLinkObject`, link to the resource
         """
 
         request = PublishRequest(self.get_session(), path, **kwargs)
         request.send()
 
-        return request.process()
+        return request.process(yadisk=self)
 
     def unpublish(self, path, **kwargs):
         """
@@ -587,13 +632,13 @@ class ResourceMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
-            :returns: :any:`LinkObject`
+            :returns: :any:`ResourceLinkObject`
         """
 
         request = UnpublishRequest(self.get_session(), path, **kwargs)
         request.send()
 
-        return request.process()
+        return request.process(yadisk=self)
 
     def save_to_disk(self, public_key, **kwargs):
         """
@@ -612,13 +657,13 @@ class ResourceMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
-            :returns: :any:`LinkObject` or :any:`OperationLinkObject`
+            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
         """
 
         request = SaveToDiskRequest(self.get_session(), public_key, **kwargs)
         request.send()
 
-        return request.process()
+        return request.process(yadisk=self)
 
     def get_public_meta(self, public_key, **kwargs):
         """
@@ -645,7 +690,7 @@ class ResourceMethodsMixin:
         request = GetPublicMetaRequest(self.get_session(), public_key, **kwargs)
         request.send()
 
-        return request.process()
+        return request.process(yadisk=self)
 
     def public_exists(self, public_key, **kwargs):
         """
@@ -832,7 +877,7 @@ class ResourceMethodsMixin:
         request = GetPublicResourcesRequest(self.get_session(), **kwargs)
         request.send()
 
-        return request.process()
+        return request.process(yadisk=self)
 
     def patch(self, path, properties, **kwargs):
         """
@@ -852,7 +897,7 @@ class ResourceMethodsMixin:
         request = PatchRequest(self.get_session(), path, properties, **kwargs)
         request.send()
 
-        return request.process()
+        return request.process(yadisk=self)
 
     def get_files(self, **kwargs):
         """
@@ -877,7 +922,7 @@ class ResourceMethodsMixin:
             request = FilesRequest(self.get_session(), **kwargs)
             request.send()
 
-            for i in request.process().items:
+            for i in request.process(yadisk=self).items:
                 yield i
 
             return
@@ -918,7 +963,7 @@ class ResourceMethodsMixin:
         request = LastUploadedRequest(self.get_session(), **kwargs)
         request.send()
 
-        for i in request.process().items:
+        for i in request.process(yadisk=self).items:
             yield i
 
     def upload_url(self, url, path, **kwargs):
@@ -940,7 +985,7 @@ class ResourceMethodsMixin:
         request = UploadURLRequest(self.get_session(), url, path, **kwargs)
         request.send()
 
-        return request.process()
+        return request.process(yadisk=self)
 
     def get_public_download_link(self, public_key, **kwargs):
         """
@@ -975,67 +1020,8 @@ class ResourceMethodsMixin:
             :param retry_interval: delay between retries in seconds
         """
 
-        n_retries = kwargs.pop("n_retries", None)
+        self._download(
+            lambda *args, **kwargs: self.get_public_download_link(public_key),
+            None, file_or_path, **kwargs)
 
-        if n_retries is None:
-            n_retries = settings.DEFAULT_N_RETRIES
-
-        retry_interval = kwargs.pop("retry_interval", None)
-
-        if retry_interval is None:
-            retry_interval = settings.DEFAULT_RETRY_INTERVAL
-
-        file = None
-        close_file = False
-
-        session = self.get_session()
-
-        try:
-            if isinstance(file_or_path, (str, bytes)):
-                close_file = True
-                file = open(file_or_path, "wb")
-            else:
-                close_file = False
-                file = file_or_path
-
-            file_position = file.tell()
-
-            def attempt():
-                temp_kwargs = dict(kwargs)
-                temp_kwargs["n_retries"] = 0
-                temp_kwargs["retry_interval"] = 0.0
-
-                link = self.get_public_download_link(public_key, **temp_kwargs)
-
-                temp_kwargs.pop("n_retries", None)
-                temp_kwargs.pop("retry_interval", None)
-                temp_kwargs.pop("path", None)
-
-                try:
-                    timeout = temp_kwargs["timeout"]
-                except KeyError:
-                    timeout = settings.DEFAULT_TIMEOUT
-
-                temp_kwargs["timeout"] = timeout
-                temp_kwargs.setdefault("stream", True)
-
-                # Disable keep-alive by default, since the download server is random
-                try:
-                    temp_kwargs["headers"].setdefault("Connection", "close")
-                except KeyError:
-                    temp_kwargs["headers"] = {"Connection": "close"}
-
-                file.seek(file_position)
-
-                with contextlib.closing(session.get(link, **temp_kwargs)) as response:
-                    for chunk in response.iter_content(chunk_size=8192):
-                        if chunk:
-                            file.write(chunk)
-
-                    if response.status_code != 200:
-                        raise get_exception(response)
-
-            auto_retry(attempt, n_retries, retry_interval)
-        finally:
-            if close_file and file is not None:
-                file.close()
+        return PublicResourceLinkObject.from_public_key(public_key, yadisk=self)

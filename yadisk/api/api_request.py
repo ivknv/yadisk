@@ -115,20 +115,23 @@ class APIRequest(object):
 
         return self.response
 
-    def process_json(self, js):
+    def process_json(self, js, **kwargs):
         """
             Process the JSON response.
 
             :param js: `dict`, JSON response
+            :param kwargs: extra arguments (optional)
 
             :returns: processed response, can be anything
         """
 
         raise NotImplementedError
 
-    def process(self):
+    def process(self, **kwargs):
         """
             Process the response.
+
+            :param kwargs: extra arguments (optional)
 
             :returns: depends on `self.process_json()`
         """
@@ -139,4 +142,4 @@ class APIRequest(object):
             result = None
 
         if result is not None:
-            return self.process_json(result)
+            return self.process_json(result, **kwargs)
