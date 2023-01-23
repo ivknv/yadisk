@@ -124,6 +124,18 @@ class OperationLinkObject(LinkObject):
     """
 
     def get_status(self, **kwargs):
+        """
+            Get operation status.
+
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :returns: `str`
+        """
+
         if self._yadisk is None:
             raise ValueError("This object is not bound to a YaDisk instance")
 
