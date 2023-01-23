@@ -2,6 +2,11 @@
 
 from .yadisk_object import YaDiskObject
 
+from typing import Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ..yadisk import YaDisk
+
 __all__ = ["TokenObject", "TokenRevokeStatusObject"]
 
 class TokenObject(YaDiskObject):
@@ -17,7 +22,12 @@ class TokenObject(YaDiskObject):
         :ivar expires_in: `int`, amount of time before the token expires
     """
 
-    def __init__(self, token=None, yadisk=None):
+    access_token: Optional[str]
+    refresh_token: Optional[str]
+    token_type: Optional[str]
+    expires_in: Optional[int]
+
+    def __init__(self, token: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
             {"access_token":  str,
@@ -38,7 +48,11 @@ class TokenRevokeStatusObject(YaDiskObject):
         :ivar status: `str`, status of the operation
     """
 
-    def __init__(self, token_revoke_status=None, yadisk=None):
+    status: Optional[str]
+
+    def __init__(self,
+                 token_revoke_status: Optional[dict]=None,
+                 yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(self, {"status": str}, yadisk)
 
         self.import_fields(token_revoke_status)

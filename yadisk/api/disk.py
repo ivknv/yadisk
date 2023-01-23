@@ -3,6 +3,12 @@
 from .api_request import APIRequest
 from ..objects import DiskInfoObject
 
+from typing import Optional, TYPE_CHECKING
+from collections.abc import Iterable
+
+if TYPE_CHECKING:
+    import requests
+
 __all__ = ["DiskInfoRequest"]
 
 class DiskInfoRequest(APIRequest):
@@ -18,12 +24,14 @@ class DiskInfoRequest(APIRequest):
     url = "https://cloud-api.yandex.net/v1/disk"
     method = "GET"
 
-    def __init__(self, session, fields=None, **kwargs):
+    def __init__(self,
+                 session: "requests.Session",
+                 fields: Optional[Iterable[str]] = None, **kwargs):
         APIRequest.__init__(self, session, {"fields": fields}, **kwargs)
 
-    def process_args(self, fields):
+    def process_args(self, fields: Optional[Iterable[str]]) -> None:
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js):
+    def process_json(self, js: dict) -> DiskInfoObject:
         return DiskInfoObject(js)

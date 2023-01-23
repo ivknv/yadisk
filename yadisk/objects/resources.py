@@ -9,6 +9,13 @@ from .disk import UserPublicInfoObject
 from ..common import typed_list, yandex_date, is_resource_link, is_public_resource_link
 from ..common import ensure_path_has_schema
 
+from typing import overload, Union, IO, AnyStr, Protocol, Optional, TYPE_CHECKING
+from collections.abc import Generator
+
+if TYPE_CHECKING:
+    from ..yadisk import YaDisk
+    import datetime
+
 __all__ = ["CommentIDsObject", "EXIFObject", "FilesResourceListObject",
            "LastUploadedResourceListObject", "LinkObject", "OperationLinkObject",
            "PublicResourcesListObject", "ResourceListObject", "ResourceObject",
@@ -27,7 +34,12 @@ class CommentIDsObject(YaDiskObject):
         :ivar public_resource: `str`, comment ID for public resources
     """
 
-    def __init__(self, comment_ids=None, yadisk=None):
+    private_resource: Optional[str]
+    public_resource: Optional[str]
+
+    def __init__(self,
+                 comment_ids: Optional[dict] = None,
+                 yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self, {"private_resource": str, "public_resource":  str}, yadisk)
 
@@ -43,7 +55,11 @@ class EXIFObject(YaDiskObject):
         :ivar date_time: :any:`datetime.datetime`, capture date
     """
 
-    def __init__(self, exif=None, yadisk=None):
+    date_time: Optional["datetime.datetime"]
+
+    def __init__(self,
+                 exif: Optional[dict] = None,
+                 yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(self, {"date_time": yandex_date}, yadisk)
 
         self.import_fields(exif)
@@ -60,7 +76,13 @@ class FilesResourceListObject(YaDiskObject):
         :ivar offset: `int`, offset from the beginning of the list
     """
 
-    def __init__(self, files_resource_list=None, yadisk=None):
+    items: Optional[list["ResourceObject"]]
+    limit: Optional[int]
+    offset: Optional[int]
+
+    def __init__(self,
+                 files_resource_list: Optional[dict] = None,
+                 yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
             {"items":  typed_list(partial(ResourceObject, yadisk=yadisk)),
@@ -81,7 +103,12 @@ class LastUploadedResourceListObject(YaDiskObject):
         :ivar limit: `int`, maximum number of elements in the list
     """
 
-    def __init__(self, last_uploaded_resources_list=None, yadisk=None):
+    items: Optional[list["ResourceObject"]]
+    limit: Optional[int]
+
+    def __init__(self,
+                 last_uploaded_resources_list: Optional[dict] = None,
+                 yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
             {"items": typed_list(partial(ResourceObject, yadisk=yadisk)),
@@ -101,7 +128,13 @@ class LinkObject(YaDiskObject):
         :ivar templated: `bool`, tells whether the URL is templated
     """
 
-    def __init__(self, link=None, yadisk=None):
+    href: Optional[str]
+    method: Optional[str]
+    templated: Optional[bool]
+
+    def __init__(self,
+                 link: Optional[dict] = None,
+                 yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
             {"href":      str,
@@ -123,7 +156,7 @@ class OperationLinkObject(LinkObject):
         :ivar templated: `bool`, tells whether the URL is templated
     """
 
-    def get_status(self, **kwargs):
+    def get_status(self, **kwargs) -> str:
         """
             Get operation status.
 
@@ -138,6 +171,9 @@ class OperationLinkObject(LinkObject):
 
         if self._yadisk is None:
             raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.href is None:
+            raise ValueError("OperationLinkObject has no link")
 
         return self._yadisk.get_operation_status(self.href, **kwargs)
 
@@ -154,7 +190,14 @@ class PublicResourcesListObject(YaDiskObject):
         :ivar offset: `int`, offset from the beginning of the list
     """
 
-    def __init__(self, public_resources_list=None, yadisk=None):
+    items: Optional[list["PublicResourceObject"]]
+    type: Optional[str]
+    limit: Optional[int]
+    offset: Optional[int]
+
+    def __init__(self,
+                 public_resources_list: Optional[dict] = None,
+                 yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
             {"items":  typed_list(partial(PublicResourceObject, yadisk=yadisk)),
@@ -165,8 +208,25 @@ class PublicResourcesListObject(YaDiskObject):
 
         self.import_fields(public_resources_list)
 
+class ResourceProtocol(Protocol):
+    @property
+    def path(self) -> str: ...
+
+    @property
+    def public_key(self) -> str: ...
+
+    @property
+    def public_url(self) -> str: ...
+
+    @property
+    def file(self) -> str: ...
+
+    @property
+    def _yadisk(self) -> "YaDisk": ...
+
 class ResourceObjectMethodsMixin:
-    def get_meta(self, relative_path=None, /, **kwargs):
+    def get_meta(self: ResourceProtocol,
+                 relative_path: Optional[str] = None, /, **kwargs) -> "ResourceObject":
         """
             Get meta information about a file/directory.
 
@@ -195,7 +255,7 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.get_meta(str(path), **kwargs)
 
-    def get_public_meta(self, **kwargs):
+    def get_public_meta(self: ResourceProtocol, **kwargs) -> "PublicResourceObject":
         """
             Get meta-information about a public resource.
 
@@ -226,7 +286,8 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.get_public_meta(public_key_or_url, **kwargs)
 
-    def exists(self, relative_path=None, /, **kwargs):
+    def exists(self: ResourceProtocol,
+               relative_path: Optional[str] = None, /, **kwargs) -> bool:
         """
             Check whether resource exists.
 
@@ -249,7 +310,8 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.exists(str(path), **kwargs)
 
-    def get_type(self, relative_path=None, /, **kwargs):
+    def get_type(self: ResourceProtocol,
+                 relative_path: Optional[str] = None, /, **kwargs) -> str:
         """
             Get resource type.
 
@@ -272,7 +334,8 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.get_type(str(path), **kwargs)
 
-    def is_dir(self, relative_path=None, /, **kwargs):
+    def is_dir(self: ResourceProtocol,
+               relative_path: Optional[str] = None, /, **kwargs) -> bool:
         """
             Check whether resource is a directory.
 
@@ -295,7 +358,8 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.is_dir(str(path), **kwargs)
 
-    def is_file(self, relative_path=None, /, **kwargs):
+    def is_file(self: ResourceProtocol,
+                relative_path: Optional[str] = None, /, **kwargs) -> bool:
         """
             Check whether resource is a file.
 
@@ -318,7 +382,8 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.is_file(str(path), **kwargs)
 
-    def listdir(self, relative_path=None, /, **kwargs):
+    def listdir(self: ResourceProtocol,
+                relative_path: Optional[str] = None, /, **kwargs) -> Generator["ResourceObject", None, None]:
         """
             Get contents of the resource.
 
@@ -346,7 +411,7 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.listdir(str(path), **kwargs)
 
-    def public_listdir(self, **kwargs):
+    def public_listdir(self: ResourceProtocol, **kwargs) -> Generator["PublicResourceObject", None, None]:
         """
             Get contents of a public directory.
 
@@ -376,7 +441,8 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.public_listdir(public_key_or_url, **kwargs)
 
-    def get_upload_link(self, relative_path=None, /, **kwargs):
+    def get_upload_link(self: ResourceProtocol,
+                        relative_path: Optional[str] = None, /, **kwargs) -> str:
         """
             Get a link to upload the file using the PUT request.
 
@@ -401,7 +467,9 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.get_upload_link(str(path), **kwargs)
 
-    def upload(self, path_or_file, relative_path=None, /, **kwargs):
+    def upload(self: ResourceProtocol,
+               path_or_file: Union[str, IO[AnyStr]],
+               relative_path: Optional[str] = None, /, **kwargs):
         """
             Upload a file to disk.
 
@@ -427,7 +495,9 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.upload(path_or_file, str(dst_path), **kwargs)
 
-    def upload_url(self, url, relative_path=None, /, **kwargs):
+    def upload_url(self: ResourceProtocol,
+                   url: str,
+                   relative_path: Optional[str] = None, /, **kwargs) -> OperationLinkObject:
         """
             Upload a file from URL.
 
@@ -453,7 +523,8 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.upload_url(url, str(dst_path), **kwargs)
 
-    def get_download_link(self, relative_path=None, /, **kwargs):
+    def get_download_link(self: ResourceProtocol,
+                          relative_path: Optional[str] = None, /, **kwargs) -> str:
         """
             Get a download link for a file (or a directory).
 
@@ -477,12 +548,23 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.get_download_link(str(path), **kwargs)
 
-    def download(self, *args, **kwargs):
+    @overload
+    def download(self: ResourceProtocol,
+                 dst_path_or_file: Union[str, IO[AnyStr]], /, **kwargs) -> "ResourceLinkObject":
+        pass
+
+    @overload
+    def download(self: ResourceProtocol,
+                 relative_path: Optional[str],
+                 dst_path_or_file: Union[str, IO[AnyStr]], /, **kwargs) -> "ResourceLinkObject":
+        pass
+
+    def download(self: ResourceProtocol, *args, **kwargs) -> "ResourceLinkObject":
         """
             Download the file. This method takes 1 or 2 positional arguments:
 
             1. :code:`download(dst_path_or_file, /, **kwargs)`
-            2. :code:`download(relative_path=None, dst_path_or_file, /, **kwargs)`
+            2. :code:`download(relative_path, dst_path_or_file, /, **kwargs)`
 
             :param relative_path: `str` or `None`, source path relative to the resource
             :param dst_path_or_file: destination path or file-like object
@@ -516,13 +598,23 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.download(str(src_path), dst_path_or_file, **kwargs)
 
-    def patch(self, *args, **kwargs):
+    @overload
+    def patch(self: ResourceProtocol, properties: dict, **kwargs) -> "ResourceObject":
+        pass
+
+    @overload
+    def patch(self: ResourceProtocol,
+              relative_path: Union[str, None],
+              properties: dict, **kwargs) -> "ResourceObject":
+        pass
+
+    def patch(self: ResourceProtocol, *args, **kwargs) -> "ResourceObject":
         """
             Update custom properties of a resource.
             This method takes 1 or 2 positional arguments:
 
             1. :code:`patch(properties, /, **kwargs)`
-            2. :code:`patch(relative_path=None, properties, /, **kwargs)`
+            2. :code:`patch(relative_path, properties, /, **kwargs)`
 
             :param relative_path: `str` or `None`, path relative to the resource
             :param properties: `dict`, custom properties to update
@@ -552,7 +644,8 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.patch(str(path), properties, **kwargs)
 
-    def publish(self, relative_path=None, /, **kwargs):
+    def publish(self: ResourceProtocol,
+                relative_path: Optional[str] = None, /, **kwargs) -> "ResourceLinkObject":
         """
             Make a resource public.
 
@@ -576,7 +669,8 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.publish(str(path), **kwargs)
 
-    def unpublish(self, relative_path=None, /, **kwargs):
+    def unpublish(self: ResourceProtocol,
+                  relative_path: Optional[str] = None, /, **kwargs) -> "ResourceLinkObject":
         """
             Make a public resource private.
 
@@ -600,7 +694,8 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.unpublish(str(path), **kwargs)
 
-    def mkdir(self, relative_path=None, /, **kwargs):
+    def mkdir(self: ResourceProtocol,
+              relative_path: Optional[str] = None, /, **kwargs) -> "ResourceLinkObject":
         """
             Create a new directory.
 
@@ -624,7 +719,8 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.mkdir(str(path), **kwargs)
 
-    def remove(self, relative_path=None, /, **kwargs):
+    def remove(self: ResourceProtocol,
+               relative_path: Optional[str] = None, /, **kwargs) -> Optional[LinkObject]:
         """
             Remove the resource.
 
@@ -652,13 +748,24 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.remove(str(path), **kwargs)
 
-    def move(self, *args, **kwargs):
+    @overload
+    def move(self: ResourceProtocol,
+             dst_path: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+        pass
+
+    @overload
+    def move(self: ResourceProtocol,
+             relative_path: Optional[str],
+             dst_path: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+        pass
+
+    def move(self: ResourceProtocol, *args, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
         """
             Move resource to `dst_path`.
             This method takes 1 or 2 positional arguments:
 
             1. :code:`move(dst_path, /, **kwargs)`
-            2. :code:`move(relative_path=None, dst_path, /, **kwargs)`
+            2. :code:`move(relative_path, dst_path, /, **kwargs)`
 
             :param relative_path: `str` or `None`, source path to be moved relative to the resource
             :param dst_path: destination path
@@ -677,6 +784,8 @@ class ResourceObjectMethodsMixin:
             relative_path, dst_path = None, args[0]
         elif len(args) == 2:
             relative_path, dst_path = args
+        else:
+            raise TypeError("move() takes 1 or 2 positional arguments")
 
         if self._yadisk is None:
             raise ValueError("This object is not bound to a YaDisk instance")
@@ -688,7 +797,18 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.move(str(src_path), dst_path, **kwargs)
 
-    def copy(self, *args, **kwargs):
+    @overload
+    def copy(self: ResourceProtocol,
+             dst_path: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+        pass
+
+    @overload
+    def copy(self: ResourceProtocol,
+             relative_path: Optional[str],
+             dst_path: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+        pass
+
+    def copy(self: ResourceProtocol, *args, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
         """
             Copy resource to `dst_path`.
             If the operation is performed asynchronously, returns the link to the operation,
@@ -697,7 +817,7 @@ class ResourceObjectMethodsMixin:
             This method takes 1 or 2 positional arguments:
 
             1. :code:`copy(dst_path, /, **kwargs)`
-            2. :code:`copy(relative_path=None, dst_path, /, **kwargs)`
+            2. :code:`copy(relative_path, dst_path, /, **kwargs)`
 
             :param src_path: `str` or `None`, source path relative to the resource
             :param dst_path: destination path
@@ -717,6 +837,8 @@ class ResourceObjectMethodsMixin:
             relative_path, dst_path = None, args[0]
         elif len(args) == 2:
             relative_path, dst_path = args
+        else:
+            raise TypeError("copy() takes 1 or 2 positional arguments")
 
         if self._yadisk is None:
             raise ValueError("This object is not bound to a YaDisk instance")
@@ -760,7 +882,32 @@ class ResourceObject(YaDiskObject, ResourceObjectMethodsMixin):
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
     """
 
-    def __init__(self, resource=None, yadisk=None):
+    antivirus_status: Optional[str]
+    file: Optional[str]
+    size: Optional[int]
+    public_key: Optional[str]
+    sha256: Optional[str]
+    embedded: Optional["ResourceListObject"]
+    _embedded: Optional["ResourceListObject"]
+    name: Optional[str]
+    exif: Optional[EXIFObject]
+    resource_id: Optional[str]
+    custom_properties: Optional[dict]
+    public_url: Optional[str]
+    share: Optional["ShareInfoObject"]
+    modified: Optional["datetime.datetime"]
+    created: Optional["datetime.datetime"]
+    photoslice_time: Optional["datetime.datetime"]
+    mime_type: Optional[str]
+    path: Optional[str]
+    preview: Optional[str]
+    comment_ids: Optional[CommentIDsObject]
+    type: Optional[str]
+    media_type: Optional[str]
+    md5: Optional[str]
+    revision: Optional[int]
+
+    def __init__(self, resource: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
             {"antivirus_status":  str,
@@ -803,22 +950,24 @@ class ResourceLinkObject(LinkObject, ResourceObjectMethodsMixin):
         :ivar path: `str`, path to the resource
     """
 
-    def __init__(self, link=None, yadisk=None):
+    path: Optional[str]
+
+    def __init__(self, link: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
         LinkObject.__init__(self, link, yadisk)
         self.set_field_type("path", str)
 
-        if is_resource_link(self.href or ""):
+        if self.href is not None and is_resource_link(self.href):
             try:
                 self.path = ensure_path_has_schema(
                     parse_qs(urlparse(self.href).query).get("path", [])[0])
             except IndexError:
                 pass
 
-    @classmethod
-    def from_path(cls, path, yadisk=None):
+    @staticmethod
+    def from_path(path: str, yadisk: Optional["YaDisk"] = None) -> "ResourceLinkObject":
         path = ensure_path_has_schema(path)
 
-        return cls(
+        return ResourceLinkObject(
             {"method": "GET",
              "href": "https://cloud-api.yandex.net/v1/disk/resources?" + urlencode({"path": path}),
              "templated": False},
@@ -838,13 +987,16 @@ class PublicResourceLinkObject(LinkObject, ResourceObjectMethodsMixin):
         :ivar public_url: `str`, public URL of the resource
     """
 
-    def __init__(self, link=None, yadisk=None):
+    public_key: Optional[str]
+    public_url: Optional[str]
+
+    def __init__(self, link: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
         LinkObject.__init__(self, link, yadisk)
         self.set_field_type("public_key", str)
         self.set_field_type("public_url", str)
         self.set_field_type("path", str)
 
-        if is_public_resource_link(self.href or ""):
+        if self.href is not None and is_public_resource_link(self.href):
             try:
                 public_key_or_url = parse_qs(urlparse(self.href).query).get("public_key", [])[0]
             except IndexError:
@@ -855,9 +1007,9 @@ class PublicResourceLinkObject(LinkObject, ResourceObjectMethodsMixin):
             else:
                 self.public_key = public_key_or_url
 
-    @classmethod
-    def from_public_key(cls, public_key, yadisk=None):
-        return cls(
+    @staticmethod
+    def from_public_key(public_key: str, yadisk: Optional["YaDisk"] = None) -> "PublicResourceLinkObject":
+        return PublicResourceLinkObject(
             {"method": "GET",
              "href": "https://cloud-api.yandex.net/v1/disk/public/resources?" + urlencode({"public_key": public_key}),
              "templated": False},
@@ -878,7 +1030,14 @@ class ResourceListObject(YaDiskObject):
         :ivar total: `int`, number of elements in the list
     """
 
-    def __init__(self, resource_list=None, yadisk=None):
+    sort: Optional[str]
+    items: Optional[list[ResourceObject]]
+    limit: Optional[int]
+    offset: Optional[int]
+    path: Optional[str]
+    total: Optional[int]
+
+    def __init__(self, resource_list: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
             {"sort":   str,
@@ -903,7 +1062,11 @@ class ResourceUploadLinkObject(LinkObject):
         :ivar templated: `bool`, tells whether the URL is templated
     """
 
-    def __init__(self, resource_upload_link=None, yadisk=None):
+    operation_id: Optional[str]
+
+    def __init__(self,
+                 resource_upload_link: Optional[dict] = None,
+                 yadisk: Optional["YaDisk"] = None):
         LinkObject.__init__(self, None, yadisk)
         self.set_field_type("operation_id", str)
         self.import_fields(resource_upload_link)
@@ -934,7 +1097,11 @@ class ShareInfoObject(YaDiskObject):
         :ivar rights: `str`, access rights
     """
 
-    def __init__(self, share_info=None, yadisk=None):
+    is_root: Optional[bool]
+    is_owned: Optional[bool]
+    rights: Optional[str]
+
+    def __init__(self, share_info: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
             {"is_root":  bool,
@@ -977,6 +1144,12 @@ class PublicResourceObject(ResourceObject):
         :ivar owner: :any:`UserPublicInfoObject`, owner of the public resource
     """
 
+    views_count: Optional[int]
+    view_count: Optional[int]
+    embedded: Optional["PublicResourceListObject"]
+    _embedded: Optional["PublicResourceListObject"]
+    owner: Optional[UserPublicInfoObject]
+
     def __init__(self, public_resource=None, yadisk=None):
         ResourceObject.__init__(self, None, yadisk)
         self.set_field_type("views_count", int)
@@ -1001,7 +1174,12 @@ class PublicResourceListObject(ResourceListObject):
         :ivar public_key: `str`, public key of the resource
     """
 
-    def __init__(self, public_resource_list=None, yadisk=None):
+    public_key: Optional[str]
+    items: Optional[list[PublicResourceObject]]
+
+    def __init__(self,
+                 public_resource_list: Optional[dict] = None,
+                 yadisk: Optional["YaDisk"] = None):
         ResourceListObject.__init__(self, None, yadisk)
         self.set_field_type("public_key", str)
         self.set_field_type("items", typed_list(partial(PublicResourceObject, yadisk=yadisk)))
@@ -1041,14 +1219,22 @@ class TrashResourceObject(ResourceObject):
         :ivar deleted: :any:`datetime.datetime`, date of deletion
     """
 
-    def __init__(self, trash_resource=None, yadisk=None):
+    embedded: Optional["TrashResourceListObject"]
+    _embedded: Optional["TrashResourceListObject"]
+    origin_path: Optional[str]
+    deleted: Optional["datetime.datetime"]
+
+    def __init__(self,
+                 trash_resource: Optional[dict] = None,
+                 yadisk: Optional["YaDisk"] = None):
         ResourceObject.__init__(self, None, yadisk)
         self.set_field_type("embedded", partial(TrashResourceListObject, yadisk=yadisk))
         self.set_field_type("origin_path", str)
         self.set_field_type("deleted", yandex_date)
         self.import_fields(trash_resource)
 
-    def get_meta(self, relative_path=None, /, **kwargs):
+    def get_meta(self: ResourceProtocol,
+                 relative_path: Optional[str] = None, /, **kwargs) -> "TrashResourceObject":
         """
             Get meta information about a trash resource.
 
@@ -1077,7 +1263,8 @@ class TrashResourceObject(ResourceObject):
 
         return self._yadisk.get_trash_meta(str(path), **kwargs)
 
-    def exists(self, relative_path=None, /, **kwargs):
+    def exists(self: ResourceProtocol,
+               relative_path: Optional[str] = None, /, **kwargs) -> bool:
         """
             Check whether the trash resource exists.
 
@@ -1100,7 +1287,8 @@ class TrashResourceObject(ResourceObject):
 
         return self._yadisk.trash_exists(str(path), **kwargs)
 
-    def get_type(self, relative_path=None, /, **kwargs):
+    def get_type(self: ResourceProtocol,
+                 relative_path: Optional[str] = None, /, **kwargs) -> str:
         """
             Get trash resource type.
 
@@ -1123,7 +1311,8 @@ class TrashResourceObject(ResourceObject):
 
         return self._yadisk.get_trash_type(str(path), **kwargs)
 
-    def is_dir(self, relative_path=None, /, **kwargs):
+    def is_dir(self: ResourceProtocol,
+               relative_path: Optional[str] = None, /, **kwargs) -> bool:
         """
             Check whether resource is a trash directory.
 
@@ -1146,7 +1335,8 @@ class TrashResourceObject(ResourceObject):
 
         return self._yadisk.is_trash_dir(str(path), **kwargs)
 
-    def is_file(self, relative_path=None, /, **kwargs):
+    def is_file(self: ResourceProtocol,
+                relative_path: Optional[str] = None, /, **kwargs) -> bool:
         """
             Check whether resource is a trash file.
 
@@ -1169,7 +1359,8 @@ class TrashResourceObject(ResourceObject):
 
         return self._yadisk.is_trash_file(str(path), **kwargs)
 
-    def listdir(self, relative_path=None, /, **kwargs):
+    def listdir(self: ResourceProtocol,
+                relative_path: Optional[str] = None, /, **kwargs) -> Generator["TrashResourceObject", None, None]:
         """
             Get contents of a trash resource.
 
@@ -1197,7 +1388,8 @@ class TrashResourceObject(ResourceObject):
 
         return self._yadisk.trash_listdir(str(path), **kwargs)
 
-    def remove(self, relative_path=None, /, **kwargs):
+    def remove(self: ResourceProtocol,
+               relative_path: Optional[str] = None, /, **kwargs) -> Optional[OperationLinkObject]:
         """
             Remove a trash resource.
 
@@ -1222,7 +1414,18 @@ class TrashResourceObject(ResourceObject):
 
         return self._yadisk.remove_trash(str(path), **kwargs)
 
-    def restore(self, *args, **kwargs):
+    @overload
+    def restore(self: ResourceProtocol,
+                dst_path: str, /, **kwargs) -> Union[ResourceLinkObject, OperationLinkObject]:
+        pass
+
+    @overload
+    def restore(self: ResourceProtocol,
+                relative_path: Optional[str],
+                dst_path: str, /, **kwargs) -> Union[ResourceLinkObject, OperationLinkObject]:
+        pass
+
+    def restore(self: ResourceProtocol, *args, **kwargs) -> Union[ResourceLinkObject, OperationLinkObject]:
         """
             Restore a trash resource.
             Returns a link to the newly created resource or a link to the asynchronous operation.
@@ -1330,7 +1533,11 @@ class TrashResourceListObject(ResourceListObject):
         :ivar total: `int`, number of elements in the list
     """
 
-    def __init__(self, trash_resource_list=None, yadisk=None):
+    items: Optional[list[TrashResourceObject]]
+
+    def __init__(self,
+                 trash_resource_list: Optional[dict] = None,
+                 yadisk: Optional["YaDisk"] = None):
         ResourceListObject.__init__(self, None, yadisk)
         self.set_field_type("items", typed_list(partial(TrashResourceObject, yadisk=yadisk)))
         self.import_fields(trash_resource_list)

@@ -5,6 +5,11 @@ from functools import partial
 from .yadisk_object import YaDiskObject
 from .resources import LinkObject
 
+from typing import Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ..yadisk import YaDisk
+
 __all__ = ["OperationStatusObject"]
 
 class OperationStatusObject(YaDiskObject):
@@ -21,7 +26,9 @@ class OperationStatusObject(YaDiskObject):
         :ivar data: `dict`, other information about the operation
     """
 
-    def __init__(self, operation_status=None, yadisk=None):
+    def __init__(self,
+                 operation_status: Optional[dict] = None,
+                 yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
             {"type":         str,

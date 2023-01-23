@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from urllib.parse import urlparse, parse_qs
-from urllib.parse import quote as urlencode
+from urllib.parse import urlparse, parse_qs, quote
 
 from .api_request import APIRequest
 from ..objects import OperationStatusObject
 from ..common import is_operation_link
+
+from typing import Optional, TYPE_CHECKING
+from collections.abc import Iterable
+
+if TYPE_CHECKING:
+    import requests
 
 __all__ = ["GetOperationStatusRequest"]
 
@@ -22,7 +27,10 @@ class GetOperationStatusRequest(APIRequest):
 
     method = "GET"
 
-    def __init__(self, session, operation_id, fields=None, **kwargs):
+    def __init__(self,
+                 session: "requests.Session",
+                 operation_id: str,
+                 fields: Optional[Iterable[str]] = None, **kwargs):
         if is_operation_link(operation_id):
             parsed_url = urlparse(operation_id)
             self.url = "https://" + parsed_url.netloc + parsed_url.path
@@ -32,16 +40,16 @@ class GetOperationStatusRequest(APIRequest):
             if fields is None:
                 fields = params.get("fields", [None])[0]
         else:
-            operation_id = urlencode(operation_id)
+            operation_id = quote(operation_id)
             self.url = "https://cloud-api.yandex.net/v1/disk/operations/%s" % (operation_id,)
 
         APIRequest.__init__(self, session, {"fields": fields}, **kwargs)
 
-    def process_args(self, fields):
+    def process_args(self, fields: Optional[Iterable[str]]) -> None:
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js):
+    def process_json(self, js: dict) -> OperationStatusObject:
         if "items" in js:
             return OperationStatusObject(js["items"][0])
         return OperationStatusObject(js)

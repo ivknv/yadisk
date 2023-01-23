@@ -5,6 +5,8 @@ import requests
 from ..utils import auto_retry, get_exception
 from .. import settings
 
+from typing import Optional, Union, TypeVar
+
 __all__ = ["APIRequest"]
 
 # For cases when None can't be used
@@ -31,15 +33,20 @@ class APIRequest(object):
         :ivar retry_interval: `float`, delay between retries in seconds
     """
 
-    url = None
-    method = None
-    content_type = "application/x-www-form-urlencoded"
+    url: Optional[str] = None
+    method: Optional[str] = None
+    content_type: str = "application/x-www-form-urlencoded"
     timeout = _DEFAULT_TIMEOUT
-    n_retries = None
-    success_codes = {200}
-    retry_interval = None
+    n_retries: Optional[int] = None
+    success_codes: set[int] = {200}
+    retry_interval: Optional[Union[int, float]] = None
 
-    def __init__(self, session, args, **kwargs):
+    request: Optional[requests.PreparedRequest]
+    response: Optional[requests.Response]
+
+    T = TypeVar("T")
+
+    def __init__(self, session: requests.Session, args: dict, **kwargs):
         kwargs = dict(kwargs)
 
         n_retries = kwargs.pop("n_retries", None)
@@ -84,10 +91,10 @@ class APIRequest(object):
         self.process_args(**self.args)
         self.prepare()
 
-    def process_args(self):
+    def process_args(self) -> None:
         raise NotImplementedError
 
-    def prepare(self):
+    def prepare(self) -> None:
         """Prepare the request"""
 
         r = requests.Request(self.method, self.url,
@@ -96,7 +103,9 @@ class APIRequest(object):
         r.headers.update(self.headers)
         self.request = self.session.prepare_request(r)
 
-    def _attempt(self):
+    def _attempt(self) -> None:
+        assert self.request is not None
+
         self.response = self.session.send(self.request, **self.send_kwargs)
 
         success = self.response.status_code in self.success_codes
@@ -104,7 +113,7 @@ class APIRequest(object):
         if not success:
             raise get_exception(self.response)
 
-    def send(self):
+    def send(self) -> requests.Response:
         """
             Actually send the request
 
@@ -113,9 +122,11 @@ class APIRequest(object):
 
         auto_retry(self._attempt, self.n_retries, self.retry_interval)
 
+        assert self.response is not None
+
         return self.response
 
-    def process_json(self, js, **kwargs):
+    def process_json(self, js: dict, **kwargs) -> T:
         """
             Process the JSON response.
 
@@ -127,7 +138,7 @@ class APIRequest(object):
 
         raise NotImplementedError
 
-    def process(self, **kwargs):
+    def process(self, **kwargs) -> Optional[T]:
         """
             Process the response.
 
@@ -135,6 +146,8 @@ class APIRequest(object):
 
             :returns: depends on `self.process_json()`
         """
+
+        assert self.response is not None
 
         try:
             result = self.response.json()

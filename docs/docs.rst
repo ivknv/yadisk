@@ -4,7 +4,6 @@ Documentation
 
 .. autoclass:: yadisk.YaDisk
    :members:
-   :inherited-members:
 
 General parameters
 ##################
