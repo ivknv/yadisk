@@ -467,10 +467,13 @@ class ResourceObjectMethodsMixin:
 
     def download(self, *args, **kwargs):
         """
-            Download the file.
+            Download the file. This method takes 1 or 2 positional arguments:
+
+            1. :code:`download(dst_path_or_file, /, **kwargs)`
+            2. :code:`download(relative_path=None, dst_path_or_file, /, **kwargs)`
 
             :param relative_path: `str` or `None`, source path relative to the resource
-            :param file_or_path: destination path or file-like object
+            :param dst_path_or_file: destination path or file-like object
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -504,6 +507,10 @@ class ResourceObjectMethodsMixin:
     def patch(self, *args, **kwargs):
         """
             Update custom properties of a resource.
+            This method takes 1 or 2 positional arguments:
+
+            1. :code:`patch(properties, /, **kwargs)`
+            2. :code:`patch(relative_path=None, properties, /, **kwargs)`
 
             :param relative_path: `str` or `None`, path relative to the resource
             :param properties: `dict`, custom properties to update
@@ -636,6 +643,10 @@ class ResourceObjectMethodsMixin:
     def move(self, *args, **kwargs):
         """
             Move resource to `dst_path`.
+            This method takes 1 or 2 positional arguments:
+
+            1. :code:`move(dst_path, /, **kwargs)`
+            2. :code:`move(relative_path=None, dst_path, /, **kwargs)`
 
             :param relative_path: `str` or `None`, source path to be moved relative to the resource
             :param dst_path: destination path
@@ -670,6 +681,11 @@ class ResourceObjectMethodsMixin:
             Copy resource to `dst_path`.
             If the operation is performed asynchronously, returns the link to the operation,
             otherwise, returns the link to the newly created resource.
+
+            This method takes 1 or 2 positional arguments:
+
+            1. :code:`copy(dst_path, /, **kwargs)`
+            2. :code:`copy(relative_path=None, dst_path, /, **kwargs)`
 
             :param src_path: `str` or `None`, source path relative to the resource
             :param dst_path: destination path
@@ -1198,6 +1214,11 @@ class TrashResourceObject(ResourceObject):
         """
             Restore a trash resource.
             Returns a link to the newly created resource or a link to the asynchronous operation.
+
+            This method takes 1 or 2 positional arguments:
+
+            1. :code:`restore(dst_path, /, **kwargs)`
+            2. :code:`restore(relative_path=None, dst_path, /, **kwargs)`
 
             :param relative_path: `str` or `None`, relative path to the trash resource to be restored
             :param dst_path: destination path
