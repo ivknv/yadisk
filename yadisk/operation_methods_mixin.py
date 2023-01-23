@@ -5,7 +5,7 @@ from .api import GetOperationStatusRequest
 __all__ = ["OperationMethodsMixin"]
 
 class OperationMethodsMixin:
-    def get_operation_status(self, operation_id, **kwargs):
+    def get_operation_status(self, operation_id, /, **kwargs):
         """
             Get operation status.
 
@@ -21,7 +21,7 @@ class OperationMethodsMixin:
 
         return self._get_operation_status(self.get_session(), operation_id)
 
-    def _get_operation_status(self, session, operation_id, **kwargs):
+    def _get_operation_status(self, session, operation_id, /, **kwargs):
         # This method is kept for private use (such as for check_token())
         request = GetOperationStatusRequest(session, operation_id, **kwargs)
         request.send()

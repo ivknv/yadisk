@@ -92,7 +92,7 @@ class AuthMethodsMixin:
 
         return self.get_auth_url(**kwargs)
 
-    def get_token(self, code, **kwargs):
+    def get_token(self, code, /, **kwargs):
         """
             Get a new token.
 
@@ -112,7 +112,7 @@ class AuthMethodsMixin:
 
             return request.process()
 
-    def refresh_token(self, refresh_token, **kwargs):
+    def refresh_token(self, refresh_token, /, **kwargs):
         """
             Refresh an existing token.
 
@@ -132,7 +132,7 @@ class AuthMethodsMixin:
 
             return request.process()
 
-    def revoke_token(self, token=None, **kwargs):
+    def revoke_token(self, token=None, /, **kwargs):
         """
             Revoke the token.
 
@@ -154,7 +154,7 @@ class AuthMethodsMixin:
 
             return request.process()
 
-    def check_token(self, token=None, **kwargs):
+    def check_token(self, token=None, /, **kwargs):
         """
             Check whether the token is valid.
 

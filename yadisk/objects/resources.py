@@ -154,7 +154,7 @@ class PublicResourcesListObject(YaDiskObject):
         self.import_fields(public_resources_list)
 
 class ResourceObjectMethodsMixin:
-    def get_meta(self, relative_path=None, **kwargs):
+    def get_meta(self, relative_path=None, /, **kwargs):
         """
             Get meta information about a file/directory.
 
@@ -214,7 +214,7 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.get_public_meta(public_key_or_url, **kwargs)
 
-    def exists(self, relative_path=None, **kwargs):
+    def exists(self, relative_path=None, /, **kwargs):
         """
             Check whether resource exists.
 
@@ -237,7 +237,7 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.exists(str(path), **kwargs)
 
-    def get_type(self, relative_path=None, **kwargs):
+    def get_type(self, relative_path=None, /, **kwargs):
         """
             Get resource type.
 
@@ -260,7 +260,7 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.get_type(str(path), **kwargs)
 
-    def is_dir(self, relative_path=None, **kwargs):
+    def is_dir(self, relative_path=None, /, **kwargs):
         """
             Check whether resource is a directory.
 
@@ -283,7 +283,7 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.is_dir(str(path), **kwargs)
 
-    def is_file(self, relative_path=None, **kwargs):
+    def is_file(self, relative_path=None, /, **kwargs):
         """
             Check whether resource is a file.
 
@@ -306,7 +306,7 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.is_file(str(path), **kwargs)
 
-    def listdir(self, relative_path=None, **kwargs):
+    def listdir(self, relative_path=None, /, **kwargs):
         """
             Get contents of the resource.
 
@@ -364,7 +364,7 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.public_listdir(public_key_or_url, **kwargs)
 
-    def get_upload_link(self, relative_path=None, **kwargs):
+    def get_upload_link(self, relative_path=None, /, **kwargs):
         """
             Get a link to upload the file using the PUT request.
 
@@ -389,7 +389,7 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.get_upload_link(str(path), **kwargs)
 
-    def upload(self, path_or_file, relative_path=None, **kwargs):
+    def upload(self, path_or_file, relative_path=None, /, **kwargs):
         """
             Upload a file to disk.
 
@@ -415,7 +415,7 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.upload(path_or_file, str(dst_path), **kwargs)
 
-    def upload_url(self, url, relative_path=None, **kwargs):
+    def upload_url(self, url, relative_path=None, /, **kwargs):
         """
             Upload a file from URL.
 
@@ -441,7 +441,7 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.upload_url(url, str(dst_path), **kwargs)
 
-    def get_download_link(self, relative_path=None, **kwargs):
+    def get_download_link(self, relative_path=None, /, **kwargs):
         """
             Get a download link for a file (or a directory).
 
@@ -533,7 +533,7 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.patch(str(path), properties, **kwargs)
 
-    def publish(self, relative_path=None, **kwargs):
+    def publish(self, relative_path=None, /, **kwargs):
         """
             Make a resource public.
 
@@ -557,7 +557,7 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.publish(str(path), **kwargs)
 
-    def unpublish(self, relative_path=None, **kwargs):
+    def unpublish(self, relative_path=None, /, **kwargs):
         """
             Make a public resource private.
 
@@ -581,7 +581,7 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.unpublish(str(path), **kwargs)
 
-    def mkdir(self, relative_path=None, **kwargs):
+    def mkdir(self, relative_path=None, /, **kwargs):
         """
             Create a new directory.
 
@@ -605,7 +605,7 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.mkdir(str(path), **kwargs)
 
-    def remove(self, relative_path=None, **kwargs):
+    def remove(self, relative_path=None, /, **kwargs):
         """
             Remove the resource.
 
@@ -820,7 +820,7 @@ class PublicResourceLinkObject(LinkObject, ResourceObjectMethodsMixin):
             try:
                 public_key_or_url = parse_qs(urlparse(self.href).query).get("public_key", [])[0]
             except IndexError:
-                pass
+                public_key_or_url = ""
 
             if public_key_or_url.startswith("http://") or public_key_or_url.startswith("https://"):
                 self.public_url = public_key_or_url
@@ -1020,7 +1020,7 @@ class TrashResourceObject(ResourceObject):
         self.set_field_type("deleted", yandex_date)
         self.import_fields(trash_resource)
 
-    def get_meta(self, relative_path=None, **kwargs):
+    def get_meta(self, relative_path=None, /, **kwargs):
         """
             Get meta information about a trash resource.
 
@@ -1049,7 +1049,7 @@ class TrashResourceObject(ResourceObject):
 
         return self._yadisk.get_trash_meta(str(path), **kwargs)
 
-    def exists(self, relative_path=None, **kwargs):
+    def exists(self, relative_path=None, /, **kwargs):
         """
             Check whether the trash resource exists.
 
@@ -1072,7 +1072,7 @@ class TrashResourceObject(ResourceObject):
 
         return self._yadisk.trash_exists(str(path), **kwargs)
 
-    def get_type(self, relative_path=None, **kwargs):
+    def get_type(self, relative_path=None, /, **kwargs):
         """
             Get trash resource type.
 
@@ -1095,7 +1095,7 @@ class TrashResourceObject(ResourceObject):
 
         return self._yadisk.get_trash_type(str(path), **kwargs)
 
-    def is_dir(self, relative_path=None, **kwargs):
+    def is_dir(self, relative_path=None, /, **kwargs):
         """
             Check whether resource is a trash directory.
 
@@ -1118,7 +1118,7 @@ class TrashResourceObject(ResourceObject):
 
         return self._yadisk.is_trash_dir(str(path), **kwargs)
 
-    def is_file(self, relative_path=None, **kwargs):
+    def is_file(self, relative_path=None, /, **kwargs):
         """
             Check whether resource is a trash file.
 
@@ -1141,7 +1141,7 @@ class TrashResourceObject(ResourceObject):
 
         return self._yadisk.is_trash_file(str(path), **kwargs)
 
-    def listdir(self, relative_path=None, **kwargs):
+    def listdir(self, relative_path=None, /, **kwargs):
         """
             Get contents of a trash resource.
 
@@ -1169,7 +1169,7 @@ class TrashResourceObject(ResourceObject):
 
         return self._yadisk.trash_listdir(str(path), **kwargs)
 
-    def remove(self, relative_path=None, **kwargs):
+    def remove(self, relative_path=None, /, **kwargs):
         """
             Remove a trash resource.
 
@@ -1231,54 +1231,54 @@ class TrashResourceObject(ResourceObject):
 
         return self._yadisk.restore_trash(str(path), dst_path, **kwargs)
 
-    def get_public_meta(*args, **kwargs):
+    def get_public_meta(self, *args, **kwargs):
         """"""
         raise NotImplementedError
 
-    def public_listdir(*args, **kwargs):
+    def public_listdir(self, *args, **kwargs):
         """"""
         raise NotImplementedError
 
-    def get_download_link(*args, **kwargs):
+    def get_download_link(self, *args, **kwargs):
         """"""
         raise NotImplementedError
 
-    def download(*args, **kwargs):
+    def download(self, *args, **kwargs):
         """"""
         raise NotImplementedError
 
-    def get_upload_link(*args, **kwargs):
+    def get_upload_link(self, *args, **kwargs):
         """"""
         raise NotImplementedError
 
-    def upload(*args, **kwargs):
+    def upload(self, *args, **kwargs):
         """"""
         raise NotImplementedError
 
-    def copy(*args, **kwargs):
+    def copy(self, *args, **kwargs):
         """"""
         raise NotImplementedError
 
-    def move(*args, **kwargs):
+    def move(self, *args, **kwargs):
         """"""
         raise NotImplementedError
 
-    def upload_url(*args, **kwargs):
+    def upload_url(self, *args, **kwargs):
         """"""
         raise NotImplementedError
 
-    def patch(*args, **kwargs):
+    def patch(self, *args, **kwargs):
         raise NotImplementedError
 
-    def publish(*args, **kwargs):
+    def publish(self, *args, **kwargs):
         """"""
         raise NotImplementedError
 
-    def unpublish(*args, **kwargs):
+    def unpublish(self, *args, **kwargs):
         """"""
         raise NotImplementedError
 
-    def mkdir(*args, **kwargs):
+    def mkdir(self, *args, **kwargs):
         """"""
         raise NotImplementedError
 

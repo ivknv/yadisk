@@ -16,7 +16,7 @@ from . import settings
 
 __all__ = ["ResourceMethodsMixin"]
 
-def _exists(get_meta_function, *args, **kwargs):
+def _exists(get_meta_function, /, *args, **kwargs):
     kwargs = dict(kwargs)
     kwargs["limit"] = 0
 
@@ -27,14 +27,13 @@ def _exists(get_meta_function, *args, **kwargs):
     except PathNotFoundError:
         return False
 
-def _get_type(get_meta_function, *args, **kwargs):
+def _get_type(get_meta_function, /, *args, **kwargs):
     kwargs = dict(kwargs)
     kwargs["limit"] = 0
 
     return get_meta_function(*args, **kwargs).type
 
-def _listdir(get_meta_function, path, kwargs):
-    # kwargs is passed this way to avoid a TypeError sometimes (see issue https://github.com/ivknv/yadisk/issues/7)
+def _listdir(get_meta_function, path, /, **kwargs):
     kwargs = dict(kwargs)
     kwargs.setdefault("limit", 10000)
 
@@ -77,7 +76,7 @@ def _listdir(get_meta_function, path, kwargs):
         total = result.embedded.total
 
 class ResourceMethodsMixin:
-    def get_meta(self, path, **kwargs):
+    def get_meta(self, path, /, **kwargs):
         """
             Get meta information about a file/directory.
 
@@ -101,7 +100,7 @@ class ResourceMethodsMixin:
 
         return request.process(yadisk=self)
 
-    def exists(self, path, **kwargs):
+    def exists(self, path, /, **kwargs):
         """
             Check whether `path` exists.
 
@@ -116,7 +115,7 @@ class ResourceMethodsMixin:
 
         return _exists(self.get_meta, path, **kwargs)
 
-    def get_type(self, path, **kwargs):
+    def get_type(self, path, /, **kwargs):
         """
             Get resource type.
 
@@ -131,7 +130,7 @@ class ResourceMethodsMixin:
 
         return _get_type(self.get_meta, path, **kwargs)
 
-    def is_file(self, path, **kwargs):
+    def is_file(self, path, /, **kwargs):
         """
             Check whether `path` is a file.
 
@@ -149,7 +148,7 @@ class ResourceMethodsMixin:
         except PathNotFoundError:
             return False
 
-    def is_dir(self, path, **kwargs):
+    def is_dir(self, path, /, **kwargs):
         """
             Check whether `path` is a directory.
 
@@ -167,7 +166,7 @@ class ResourceMethodsMixin:
         except PathNotFoundError:
             return False
 
-    def listdir(self, path, **kwargs):
+    def listdir(self, path, /, **kwargs):
         """
             Get contents of `path`.
 
@@ -185,9 +184,9 @@ class ResourceMethodsMixin:
             :returns: generator of :any:`ResourceObject`
         """
 
-        return _listdir(self.get_meta, path, kwargs)
+        return _listdir(self.get_meta, path, **kwargs)
 
-    def get_upload_link(self, path, **kwargs):
+    def get_upload_link(self, path, /, **kwargs):
         """
             Get a link to upload the file using the PUT request.
 
@@ -207,7 +206,7 @@ class ResourceMethodsMixin:
 
         return request.process().href
 
-    def _upload(self, get_upload_link_function, file_or_path, dst_path, **kwargs):
+    def _upload(self, get_upload_link_function, file_or_path, dst_path, /, **kwargs):
         kwargs = dict(kwargs)
 
         try:
@@ -272,7 +271,7 @@ class ResourceMethodsMixin:
             if close_file and file is not None:
                 file.close()
 
-    def upload(self, file_or_path, dst_path, **kwargs):
+    def upload(self, file_or_path, dst_path, /, **kwargs):
         """
             Upload a file to disk.
 
@@ -292,7 +291,7 @@ class ResourceMethodsMixin:
 
         return ResourceLinkObject.from_path(dst_path, yadisk=self)
 
-    def upload_by_link(self, file_or_path, link, **kwargs):
+    def upload_by_link(self, file_or_path, link, /, **kwargs):
         """
             Upload a file to disk using an upload link.
 
@@ -308,7 +307,7 @@ class ResourceMethodsMixin:
 
         self._upload(lambda *args, **kwargs: link, file_or_path, dst_path, **kwargs)
 
-    def get_download_link(self, path, **kwargs):
+    def get_download_link(self, path, /, **kwargs):
         """
             Get a download link for a file (or a directory).
 
@@ -327,7 +326,7 @@ class ResourceMethodsMixin:
 
         return request.process().href
 
-    def _download(self, get_download_link_function, src_path, file_or_path, **kwargs):
+    def _download(self, get_download_link_function, src_path, file_or_path, /, **kwargs):
         kwargs = dict(kwargs)
 
         n_retries = kwargs.get("n_retries")
@@ -395,7 +394,7 @@ class ResourceMethodsMixin:
             if close_file and file is not None:
                 file.close()
 
-    def download(self, src_path, file_or_path, **kwargs):
+    def download(self, src_path, file_or_path, /, **kwargs):
         """
             Download the file.
 
@@ -413,7 +412,7 @@ class ResourceMethodsMixin:
 
         return ResourceLinkObject.from_path(src_path, yadisk=self)
 
-    def download_by_link(self, link, file_or_path, **kwargs):
+    def download_by_link(self, link, file_or_path, /, **kwargs):
         """
             Download the file from the link.
 
@@ -427,7 +426,7 @@ class ResourceMethodsMixin:
 
         self._download(lambda *args, **kwargs: link, None, file_or_path, **kwargs)
 
-    def remove(self, path, **kwargs):
+    def remove(self, path, /, **kwargs):
         """
             Remove the resource.
 
@@ -451,7 +450,7 @@ class ResourceMethodsMixin:
 
         return request.process(yadisk=self)
 
-    def mkdir(self, path, **kwargs):
+    def mkdir(self, path, /, **kwargs):
         """
             Create a new directory.
 
@@ -470,7 +469,7 @@ class ResourceMethodsMixin:
 
         return request.process(yadisk=self)
 
-    def get_trash_meta(self, path, **kwargs):
+    def get_trash_meta(self, path, /, **kwargs):
         """
             Get meta information about a trash resource.
 
@@ -494,7 +493,7 @@ class ResourceMethodsMixin:
 
         return request.process(yadisk=self)
 
-    def trash_exists(self, path, **kwargs):
+    def trash_exists(self, path, /, **kwargs):
         """
             Check whether the trash resource at `path` exists.
 
@@ -509,7 +508,7 @@ class ResourceMethodsMixin:
 
         return _exists(self.get_trash_meta, path, **kwargs)
 
-    def copy(self, src_path, dst_path, **kwargs):
+    def copy(self, src_path, dst_path, /, **kwargs):
         """
             Copy `src_path` to `dst_path`.
             If the operation is performed asynchronously, returns the link to the operation,
@@ -534,7 +533,7 @@ class ResourceMethodsMixin:
 
         return request.process(yadisk=self)
 
-    def restore_trash(self, path, dst_path=None, **kwargs):
+    def restore_trash(self, path, /, dst_path=None, **kwargs):
         """
             Restore a trash resource.
             Returns a link to the newly created resource or a link to the asynchronous operation.
@@ -560,7 +559,7 @@ class ResourceMethodsMixin:
 
         return request.process(yadisk=self)
 
-    def move(self, src_path, dst_path, **kwargs):
+    def move(self, src_path, dst_path, /, **kwargs):
         """
             Move `src_path` to `dst_path`.
 
@@ -582,7 +581,7 @@ class ResourceMethodsMixin:
 
         return request.process(yadisk=self)
 
-    def remove_trash(self, path, **kwargs):
+    def remove_trash(self, path, /, **kwargs):
         """
             Remove a trash resource.
 
@@ -602,7 +601,7 @@ class ResourceMethodsMixin:
 
         return request.process(yadisk=self)
 
-    def publish(self, path, **kwargs):
+    def publish(self, path, /, **kwargs):
         """
             Make a resource public.
 
@@ -621,7 +620,7 @@ class ResourceMethodsMixin:
 
         return request.process(yadisk=self)
 
-    def unpublish(self, path, **kwargs):
+    def unpublish(self, path, /, **kwargs):
         """
             Make a public resource private.
 
@@ -640,7 +639,7 @@ class ResourceMethodsMixin:
 
         return request.process(yadisk=self)
 
-    def save_to_disk(self, public_key, **kwargs):
+    def save_to_disk(self, public_key, /, **kwargs):
         """
             Saves a public resource to the disk.
             Returns the link to the operation if it's performed asynchronously,
@@ -665,7 +664,7 @@ class ResourceMethodsMixin:
 
         return request.process(yadisk=self)
 
-    def get_public_meta(self, public_key, **kwargs):
+    def get_public_meta(self, public_key, /, **kwargs):
         """
             Get meta-information about a public resource.
 
@@ -692,7 +691,7 @@ class ResourceMethodsMixin:
 
         return request.process(yadisk=self)
 
-    def public_exists(self, public_key, **kwargs):
+    def public_exists(self, public_key, /, **kwargs):
         """
             Check whether the public resource exists.
 
@@ -708,7 +707,7 @@ class ResourceMethodsMixin:
 
         return _exists(self.get_public_meta, public_key, **kwargs)
 
-    def public_listdir(self, public_key, **kwargs):
+    def public_listdir(self, public_key, /, **kwargs):
         """
             Get contents of a public directory.
 
@@ -729,9 +728,9 @@ class ResourceMethodsMixin:
             :returns: generator of :any:`PublicResourceObject`
         """
 
-        return _listdir(self.get_public_meta, public_key, kwargs)
+        return _listdir(self.get_public_meta, public_key, **kwargs)
 
-    def get_public_type(self, public_key, **kwargs):
+    def get_public_type(self, public_key, /, **kwargs):
         """
             Get public resource type.
 
@@ -747,7 +746,7 @@ class ResourceMethodsMixin:
 
         return _get_type(self.get_public_meta, public_key, **kwargs)
 
-    def is_public_dir(self, public_key, **kwargs):
+    def is_public_dir(self, public_key, /, **kwargs):
         """
             Check whether the public resource is a public directory.
 
@@ -766,7 +765,7 @@ class ResourceMethodsMixin:
         except PathNotFoundError:
             return False
 
-    def is_public_file(self, public_key, **kwargs):
+    def is_public_file(self, public_key, /, **kwargs):
         """
             Check whether the public resource is a public file.
 
@@ -785,7 +784,7 @@ class ResourceMethodsMixin:
         except PathNotFoundError:
             return False
 
-    def trash_listdir(self, path, **kwargs):
+    def trash_listdir(self, path, /, **kwargs):
         """
             Get contents of a trash resource.
 
@@ -803,9 +802,9 @@ class ResourceMethodsMixin:
             :returns: generator of :any:`TrashResourceObject`
         """
 
-        return _listdir(self.get_trash_meta, path, kwargs)
+        return _listdir(self.get_trash_meta, path, **kwargs)
 
-    def get_trash_type(self, path, **kwargs):
+    def get_trash_type(self, path, /, **kwargs):
         """
             Get trash resource type.
 
@@ -820,7 +819,7 @@ class ResourceMethodsMixin:
 
         return _get_type(self.get_trash_meta, path, **kwargs)
 
-    def is_trash_dir(self, path, **kwargs):
+    def is_trash_dir(self, path, /, **kwargs):
         """
             Check whether `path` is a trash directory.
 
@@ -838,7 +837,7 @@ class ResourceMethodsMixin:
         except PathNotFoundError:
             return False
 
-    def is_trash_file(self, path, **kwargs):
+    def is_trash_file(self, path, /, **kwargs):
         """
             Check whether `path` is a trash file.
 
@@ -879,7 +878,7 @@ class ResourceMethodsMixin:
 
         return request.process(yadisk=self)
 
-    def patch(self, path, properties, **kwargs):
+    def patch(self, path, properties, /, **kwargs):
         """
             Update custom properties of a resource.
 
@@ -966,7 +965,7 @@ class ResourceMethodsMixin:
         for i in request.process(yadisk=self).items:
             yield i
 
-    def upload_url(self, url, path, **kwargs):
+    def upload_url(self, url, path, /, **kwargs):
         """
             Upload a file from URL.
 
@@ -987,7 +986,7 @@ class ResourceMethodsMixin:
 
         return request.process(yadisk=self)
 
-    def get_public_download_link(self, public_key, **kwargs):
+    def get_public_download_link(self, public_key, /, **kwargs):
         """
             Get a download link for a public resource.
 
@@ -1007,7 +1006,7 @@ class ResourceMethodsMixin:
 
         return request.process().href
 
-    def download_public(self, public_key, file_or_path, **kwargs):
+    def download_public(self, public_key, file_or_path, /, **kwargs):
         """
             Download the public resource.
 
