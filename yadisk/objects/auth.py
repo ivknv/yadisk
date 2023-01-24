@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from .yadisk_object import YaDiskObject
+from ..common import str_or_error, int_or_error
 
 from typing import Optional, TYPE_CHECKING
 
@@ -30,10 +31,10 @@ class TokenObject(YaDiskObject):
     def __init__(self, token: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
-            {"access_token":  str,
-             "refresh_token": str,
-             "token_type":    str,
-             "expires_in":    int},
+            {"access_token":  str_or_error,
+             "refresh_token": str_or_error,
+             "token_type":    str_or_error,
+             "expires_in":    int_or_error},
             yadisk)
 
         self.import_fields(token)
@@ -53,6 +54,6 @@ class TokenRevokeStatusObject(YaDiskObject):
     def __init__(self,
                  token_revoke_status: Optional[dict]=None,
                  yadisk: Optional["YaDisk"] = None):
-        YaDiskObject.__init__(self, {"status": str}, yadisk)
+        YaDiskObject.__init__(self, {"status": str_or_error}, yadisk)
 
         self.import_fields(token_revoke_status)

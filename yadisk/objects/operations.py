@@ -4,6 +4,7 @@ from functools import partial
 
 from .yadisk_object import YaDiskObject
 from .resources import LinkObject
+from ..common import str_or_error, dict_or_error
 
 from typing import Optional, TYPE_CHECKING
 
@@ -31,11 +32,11 @@ class OperationStatusObject(YaDiskObject):
                  yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
-            {"type":         str,
-             "status":       str,
-             "operation_id": str,
+            {"type":         str_or_error,
+             "status":       str_or_error,
+             "operation_id": str_or_error,
              "link":         partial(LinkObject, yadisk=yadisk),
-             "data":         dict},
+             "data":         dict_or_error},
             yadisk)
 
         self.import_fields(operation_status)

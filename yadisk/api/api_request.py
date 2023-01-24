@@ -2,6 +2,8 @@
 
 import requests
 
+from yadisk.exceptions import InvalidResponseError
+
 from ..utils import auto_retry, get_exception
 from .. import settings
 
@@ -154,4 +156,7 @@ class APIRequest(object):
         except (ValueError, RuntimeError):
             result = None
 
-        return self.process_json(result, **kwargs)
+        try:
+            return self.process_json(result, **kwargs)
+        except ValueError as e:
+            raise InvalidResponseError(f"Server returned invalid response: {e}")

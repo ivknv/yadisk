@@ -7,7 +7,8 @@ from urllib.parse import urlencode, urlparse, parse_qs
 from .yadisk_object import YaDiskObject
 from .disk import UserPublicInfoObject
 from ..common import typed_list, yandex_date, is_resource_link, is_public_resource_link
-from ..common import ensure_path_has_schema
+from ..common import ensure_path_has_schema, str_or_error, int_or_error, bool_or_error
+from ..common import dict_or_error, str_or_dict_or_error
 
 from typing import overload, Union, IO, AnyStr, Protocol, Optional, TYPE_CHECKING
 from collections.abc import Generator
@@ -41,7 +42,10 @@ class CommentIDsObject(YaDiskObject):
                  comment_ids: Optional[dict] = None,
                  yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
-            self, {"private_resource": str, "public_resource":  str}, yadisk)
+            self,
+            {"private_resource": str_or_error,
+             "public_resource":  str_or_error},
+            yadisk)
 
         self.import_fields(comment_ids)
 
@@ -86,8 +90,8 @@ class FilesResourceListObject(YaDiskObject):
         YaDiskObject.__init__(
             self,
             {"items":  typed_list(partial(ResourceObject, yadisk=yadisk)),
-             "limit":  int,
-             "offset": int},
+             "limit":  int_or_error,
+             "offset": int_or_error},
             yadisk)
 
         self.import_fields(files_resource_list)
@@ -112,7 +116,7 @@ class LastUploadedResourceListObject(YaDiskObject):
         YaDiskObject.__init__(
             self,
             {"items": typed_list(partial(ResourceObject, yadisk=yadisk)),
-             "limit": int},
+             "limit": int_or_error},
             yadisk)
         self.import_fields(last_uploaded_resources_list)
 
@@ -137,9 +141,9 @@ class LinkObject(YaDiskObject):
                  yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
-            {"href":      str,
-             "method":    str,
-             "templated": bool},
+            {"href":      str_or_error,
+             "method":    str_or_error,
+             "templated": bool_or_error},
             yadisk)
 
         self.import_fields(link)
@@ -201,9 +205,9 @@ class PublicResourcesListObject(YaDiskObject):
         YaDiskObject.__init__(
             self,
             {"items":  typed_list(partial(PublicResourceObject, yadisk=yadisk)),
-             "type":   str,
-             "limit":  int,
-             "offset": int},
+             "type":   str_or_error,
+             "limit":  int_or_error,
+             "offset": int_or_error},
             yadisk)
 
         self.import_fields(public_resources_list)
@@ -906,29 +910,29 @@ class ResourceObject(YaDiskObject, ResourceObjectMethodsMixin):
     def __init__(self, resource: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
-            {"antivirus_status":  str,
-             "file":              str,
-             "size":              int,
-             "public_key":        str,
-             "sha256":            str,
+            {"antivirus_status":  str_or_dict_or_error,
+             "file":              str_or_error,
+             "size":              int_or_error,
+             "public_key":        str_or_error,
+             "sha256":            str_or_error,
              "embedded":          partial(ResourceListObject, yadisk=yadisk),
-             "name":              str,
+             "name":              str_or_error,
              "exif":              partial(EXIFObject, yadisk=yadisk),
-             "resource_id":       str,
-             "custom_properties": dict,
-             "public_url":        str,
+             "resource_id":       str_or_error,
+             "custom_properties": dict_or_error,
+             "public_url":        str_or_error,
              "share":             partial(ShareInfoObject, yadisk=yadisk),
              "modified":          yandex_date,
              "created":           yandex_date,
              "photoslice_time":   yandex_date,
-             "mime_type":         str,
-             "path":              str,
-             "preview":           str,
+             "mime_type":         str_or_error,
+             "path":              str_or_error,
+             "preview":           str_or_error,
              "comment_ids":       partial(CommentIDsObject, yadisk=yadisk),
-             "type":              str,
-             "media_type":        str,
-             "md5":               str,
-             "revision":          int},
+             "type":              str_or_error,
+             "media_type":        str_or_error,
+             "md5":               str_or_error,
+             "revision":          int_or_error},
             yadisk)
         self.set_alias("_embedded", "embedded")
         self.import_fields(resource)
@@ -950,7 +954,7 @@ class ResourceLinkObject(LinkObject, ResourceObjectMethodsMixin):
 
     def __init__(self, link: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
         LinkObject.__init__(self, link, yadisk)
-        self.set_field_type("path", str)
+        self.set_field_type("path", str_or_error)
 
         if self.href is not None and is_resource_link(self.href):
             try:
@@ -988,9 +992,9 @@ class PublicResourceLinkObject(LinkObject, ResourceObjectMethodsMixin):
 
     def __init__(self, link: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
         LinkObject.__init__(self, link, yadisk)
-        self.set_field_type("public_key", str)
-        self.set_field_type("public_url", str)
-        self.set_field_type("path", str)
+        self.set_field_type("public_key", str_or_error)
+        self.set_field_type("public_url", str_or_error)
+        self.set_field_type("path", str_or_error)
 
         if self.href is not None and is_public_resource_link(self.href):
             try:
@@ -1036,12 +1040,12 @@ class ResourceListObject(YaDiskObject):
     def __init__(self, resource_list: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
-            {"sort":   str,
+            {"sort":   str_or_error,
              "items":  typed_list(partial(ResourceObject, yadisk=yadisk)),
-             "limit":  int,
-             "offset": int,
-             "path":   str,
-             "total":  int},
+             "limit":  int_or_error,
+             "offset": int_or_error,
+             "path":   str_or_error,
+             "total":  int_or_error},
             yadisk)
         self.import_fields(resource_list)
 
@@ -1064,7 +1068,7 @@ class ResourceUploadLinkObject(LinkObject):
                  resource_upload_link: Optional[dict] = None,
                  yadisk: Optional["YaDisk"] = None):
         LinkObject.__init__(self, None, yadisk)
-        self.set_field_type("operation_id", str)
+        self.set_field_type("operation_id", str_or_error)
         self.import_fields(resource_upload_link)
 
 class ResourceDownloadLinkObject(LinkObject):
@@ -1100,9 +1104,9 @@ class ShareInfoObject(YaDiskObject):
     def __init__(self, share_info: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
-            {"is_root":  bool,
-             "is_owned": bool,
-             "rights":   str},
+            {"is_root":  bool_or_error,
+             "is_owned": bool_or_error,
+             "rights":   str_or_error},
             yadisk)
         self.import_fields(share_info)
 
@@ -1148,7 +1152,7 @@ class PublicResourceObject(ResourceObject):
 
     def __init__(self, public_resource=None, yadisk=None):
         ResourceObject.__init__(self, None, yadisk)
-        self.set_field_type("views_count", int)
+        self.set_field_type("views_count", int_or_error)
         self.set_alias("view_count", "views_count")
         self.set_field_type("embedded", partial(PublicResourceListObject, yadisk=yadisk))
         self.set_field_type("owner", partial(UserPublicInfoObject, yadisk=yadisk))
@@ -1177,7 +1181,7 @@ class PublicResourceListObject(ResourceListObject):
                  public_resource_list: Optional[dict] = None,
                  yadisk: Optional["YaDisk"] = None):
         ResourceListObject.__init__(self, None, yadisk)
-        self.set_field_type("public_key", str)
+        self.set_field_type("public_key", str_or_error)
         self.set_field_type("items", typed_list(partial(PublicResourceObject, yadisk=yadisk)))
         self.import_fields(public_resource_list)
 
@@ -1225,7 +1229,7 @@ class TrashResourceObject(ResourceObject):
                  yadisk: Optional["YaDisk"] = None):
         ResourceObject.__init__(self, None, yadisk)
         self.set_field_type("embedded", partial(TrashResourceListObject, yadisk=yadisk))
-        self.set_field_type("origin_path", str)
+        self.set_field_type("origin_path", str_or_error)
         self.set_field_type("deleted", yandex_date)
         self.import_fields(trash_resource)
 

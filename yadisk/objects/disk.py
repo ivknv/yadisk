@@ -2,6 +2,7 @@
 
 from functools import partial
 from .yadisk_object import YaDiskObject
+from ..common import str_or_error, bool_or_error, int_or_error
 
 from typing import Optional, NoReturn, TYPE_CHECKING
 
@@ -42,15 +43,15 @@ class DiskInfoObject(YaDiskObject):
     def __init__(self, disk_info: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
-            {"max_file_size":                int,
-             "unlimited_autoupload_enabled": bool,
-             "total_space":                  int,
-             "trash_size":                   int,
-             "is_paid":                      bool,
-             "used_space":                   int,
+            {"max_file_size":                int_or_error,
+             "unlimited_autoupload_enabled": bool_or_error,
+             "total_space":                  int_or_error,
+             "trash_size":                   int_or_error,
+             "is_paid":                      bool_or_error,
+             "used_space":                   int_or_error,
              "system_folders":               partial(SystemFoldersObject, yadisk=yadisk),
              "user":                         partial(UserObject, yadisk=yadisk),
-             "revision":                     int},
+             "revision":                     int_or_error},
             yadisk)
 
         self.import_fields(disk_info)
@@ -90,17 +91,17 @@ class SystemFoldersObject(YaDiskObject):
                  yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
-            {"odnoklassniki": str,
-             "google":        str,
-             "instagram":     str,
-             "vkontakte":     str,
-             "mailru":        str,
-             "downloads":     str,
-             "applications":  str,
-             "facebook":      str,
-             "social":        str,
-             "screenshots":   str,
-             "photostream":   str},
+            {"odnoklassniki": str_or_error,
+             "google":        str_or_error,
+             "instagram":     str_or_error,
+             "vkontakte":     str_or_error,
+             "mailru":        str_or_error,
+             "downloads":     str_or_error,
+             "applications":  str_or_error,
+             "facebook":      str_or_error,
+             "social":        str_or_error,
+             "screenshots":   str_or_error,
+             "photostream":   str_or_error},
             yadisk)
 
         self.import_fields(system_folders)
@@ -126,10 +127,10 @@ class UserObject(YaDiskObject):
     def __init__(self, user: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
-            {"country":      str,
-             "login":        str,
-             "display_name": str,
-             "uid":          str},
+            {"country":      str_or_error,
+             "login":        str_or_error,
+             "display_name": str_or_error,
+             "uid":          str_or_error},
             yadisk)
 
         self.import_fields(user)
