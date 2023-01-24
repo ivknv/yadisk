@@ -29,7 +29,6 @@ if TYPE_CHECKING:
 __all__ = ["YaDisk"]
 
 def _exists(get_meta_function: Callable, /, *args, **kwargs) -> bool:
-    kwargs = dict(kwargs)
     kwargs["limit"] = 0
 
     try:
@@ -40,13 +39,11 @@ def _exists(get_meta_function: Callable, /, *args, **kwargs) -> bool:
         return False
 
 def _get_type(get_meta_function: Callable, /, *args, **kwargs) -> str:
-    kwargs = dict(kwargs)
     kwargs["limit"] = 0
 
     return get_meta_function(*args, **kwargs).type
 
 def _listdir(get_meta_function: Callable, path: str, /, **kwargs) -> Generator[Any, None, None]:
-    kwargs = dict(kwargs)
     kwargs.setdefault("limit", 10000)
 
     if kwargs.get("fields") is None:
@@ -223,7 +220,6 @@ class YaDisk:
             :returns: authentication URL
         """
 
-        kwargs = dict(kwargs)
         kwargs["type"] = "code"
 
         return self.get_auth_url(**kwargs)
@@ -468,8 +464,6 @@ class YaDisk:
                 get_upload_link_function: Callable,
                 file_or_path: Union[str, IO[AnyStr]],
                 dst_path: str, /, **kwargs) -> None:
-        kwargs = dict(kwargs)
-
         try:
             timeout = kwargs["timeout"]
         except KeyError:
@@ -595,8 +589,6 @@ class YaDisk:
                   get_download_link_function: Callable,
                   src_path: str,
                   file_or_path: Union[str, IO[AnyStr]], /, **kwargs) -> None:
-        kwargs = dict(kwargs)
-
         n_retries = kwargs.get("n_retries")
 
         if n_retries is None:
@@ -827,7 +819,6 @@ class YaDisk:
             :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
         """
 
-        kwargs = dict(kwargs)
         kwargs["dst_path"] = dst_path
 
         request = RestoreTrashRequest(self.get_session(), path, **kwargs)
@@ -1209,8 +1200,6 @@ class YaDisk:
                 yield i
 
             return
-
-        kwargs = dict(kwargs)
 
         kwargs.setdefault("offset", 0)
         kwargs["limit"] = 1000

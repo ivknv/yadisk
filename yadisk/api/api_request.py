@@ -49,8 +49,6 @@ class APIRequest(object):
     T = TypeVar("T")
 
     def __init__(self, session: requests.Session, args: dict, **kwargs):
-        kwargs = dict(kwargs)
-
         n_retries = kwargs.pop("n_retries", None)
         retry_interval = kwargs.pop("retry_interval", None)
         headers = kwargs.pop("headers", {})
