@@ -260,8 +260,6 @@ class ResourceObjectMethodsMixin:
             Get meta-information about a public resource.
 
             :param path: relative path to a resource in a public folder.
-                         By specifying the key of the published folder in `public_key`,
-                         you can request metainformation for any resource in the folder.
             :param offset: offset from the beginning of the list of nested resources
             :param limit: maximum number of nested elements to be included in the list
             :param sort: `str`, field to be used as a key to sort children resources
@@ -416,8 +414,6 @@ class ResourceObjectMethodsMixin:
             Get contents of a public directory.
 
             :param path: relative path to the resource in the public folder.
-                         By specifying the key of the published folder in `public_key`,
-                         you can request contents of any nested folder.
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview
