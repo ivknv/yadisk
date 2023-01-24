@@ -101,7 +101,7 @@ class GatewayTimeoutError(RetriableYaDiskError):
     pass
 
 class InsufficientStorageError(YaDiskError):
-    """Thrown when the server returns code 509."""
+    """Thrown when the server returns code 507."""
     pass
 
 class PathNotFoundError(NotFoundError):
