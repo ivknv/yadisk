@@ -883,6 +883,58 @@ class ResourceObjectMethodsMixin:
         return self._yadisk.move(str(src_path), dst_path, **kwargs)
 
     @overload
+    def rename(self: ResourceProtocol,
+               new_name: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+        pass
+
+    @overload
+    def rename(self: ResourceProtocol,
+               relative_path: Optional[str],
+               new_name: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+        pass
+
+    def rename(self: ResourceProtocol, *args, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+        """
+            Rename `src_path` to have filename `new_name`.
+            Does the same as `move()` but changes only the filename.
+
+            :param relative_path: `str` or `None`, source path to be renamed relative to the resource
+            :param new_name: target filename to rename to
+            :param overwrite: `bool`, determines whether to overwrite the destination
+            :param force_async: forces the operation to be executed asynchronously
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+            :raises ValueError: `new_name` is not a valid filename
+
+            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+        """
+
+        if len(args) == 1:
+            relative_path, new_name = None, args[0]
+        elif len(args) == 2:
+            relative_path, new_name = args
+        else:
+            raise TypeError("rename() takes 1 or 2 positional arguments")
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return self._yadisk.rename(str(path), new_name, **kwargs)
+
+    @overload
     def copy(self: ResourceProtocol,
              dst_path: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
         pass
@@ -1618,6 +1670,10 @@ class TrashResourceObject(ResourceObject):
         raise NotImplementedError
 
     def move(self, *args, **kwargs):
+        """"""
+        raise NotImplementedError
+
+    def rename(self, *args, **kwargs):
         """"""
         raise NotImplementedError
 

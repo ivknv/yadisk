@@ -2,6 +2,7 @@
 
 import contextlib
 import functools
+from pathlib import PurePosixPath
 import threading
 import weakref
 
@@ -948,6 +949,39 @@ class YaDisk:
         request.send()
 
         return request.process(yadisk=self)
+
+    def rename(self, src_path: str, new_name: str, /, **kwargs) -> Union[ResourceLinkObject, "OperationLinkObject"]:
+        """
+            Rename `src_path` to have filename `new_name`.
+            Does the same as `move()` but changes only the filename.
+
+            :param src_path: source path to be moved
+            :param new_name: target filename to rename to
+            :param overwrite: `bool`, determines whether to overwrite the destination
+            :param force_async: forces the operation to be executed asynchronously
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+            :raises ValueError: `new_name` is not a valid filename
+
+            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+        """
+
+        new_name = new_name.rstrip("/")
+
+        if "/" in new_name or new_name in (".", ".."):
+            raise ValueError(f"Invalid filename: {new_name}")
+
+        dst_path = str(PurePosixPath(src_path).parent / new_name)
+
+        return self.move(src_path, dst_path, **kwargs)
 
     def remove_trash(self, path: str, /, **kwargs) -> Optional["OperationLinkObject"]:
         """
