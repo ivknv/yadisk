@@ -3,8 +3,8 @@
 __all__ = ["YaDiskError", "RetriableYaDiskError", "UnknownYaDiskError",
            "WrongResourceTypeError",  "BadRequestError", "UnauthorizedError",
            "ForbiddenError", "NotFoundError", "NotAcceptableError",
-           "ConflictError", "UnsupportedMediaError", "LockedError",
-           "TooManyRequestsError", "InternalServerError", "BadGatewayError",
+           "ConflictError", "PayloadTooLargeError", "UnsupportedMediaError",
+           "LockedError", "TooManyRequestsError", "InternalServerError", "BadGatewayError",
            "UnavailableError", "GatewayTimeoutError", "InsufficientStorageError",
            "PathNotFoundError", "ParentNotFoundError", "PathExistsError",
            "DirectoryExistsError", "FieldValidationError", "ResourceIsLockedError",
@@ -66,6 +66,10 @@ class NotAcceptableError(YaDiskError):
 
 class ConflictError(YaDiskError):
     """Thrown when the server returns code 409."""
+    pass
+
+class PayloadTooLargeError(YaDiskError):
+    """Thrown when the server returns code 413."""
     pass
 
 class UnsupportedMediaError(YaDiskError):

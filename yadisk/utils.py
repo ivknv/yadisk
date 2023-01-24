@@ -28,6 +28,7 @@ EXCEPTION_MAP = {400: defaultdict(lambda: BadRequestError,
                                    "DiskPathPointsToExistentDirectoryError": DirectoryExistsError,
                                    "DiskResourceAlreadyExistsError": PathExistsError,
                                    "MD5DifferError": MD5DifferError}),
+                 413: defaultdict(lambda: PayloadTooLargeError),
                  415: defaultdict(lambda: UnsupportedMediaError),
                  423: defaultdict(lambda: LockedError,
                                   {"DiskResourceLockedError": ResourceIsLockedError}),
@@ -36,7 +37,7 @@ EXCEPTION_MAP = {400: defaultdict(lambda: BadRequestError,
                  502: defaultdict(lambda: BadGatewayError),
                  503: defaultdict(lambda: UnavailableError),
                  504: defaultdict(lambda: GatewayTimeoutError),
-                 509: defaultdict(lambda: InsufficientStorageError)}
+                 507: defaultdict(lambda: InsufficientStorageError)}
 
 def get_exception(response: requests.Response) -> YaDiskError:
     """

@@ -95,6 +95,25 @@ class YaDisk:
         :ivar id: `str`, application ID
         :ivar secret: `str`, application secret password
         :ivar token: `str`, application token
+
+        The following exceptions may be raised by most API requests:
+
+        :raises BadRequestError: server returned HTTP code 400
+        :raises FieldValidationError: request contains fields with invalid data
+        :raises UnauthorizedError: server returned HTTP code 401
+        :raises ForbiddenError: server returned HTTP code 403
+        :raises NotAcceptableError: server returned HTTP code 406
+        :raises ConflictError: server returned HTTP code 409
+        :raises PayloadTooLargeError: server returned code 413
+        :raises UnsupportedMediaError: server returned HTTP code 415
+        :raises LockedError: server returned HTTP code 423
+        :raises TooManyRequestsError: server returned HTTP code 429
+        :raises InternalServerError: server returned HTTP code 500
+        :raises BadGatewayError: server returned HTTP code 502
+        :raises UnavailableError: server returned HTTP code 503
+        :raises GatewayTimeoutError: server returned HTTP code 504
+        :raises InsufficientStorageError: server returned HTTP code 509
+        :raises UnknownYaDiskError: other unknown error
     """
 
     def __init__(self, id: str = "", secret: str = "", token: str = ""):
@@ -149,6 +168,7 @@ class YaDisk:
     def get_auth_url(self, **kwargs) -> str:
         """
             Get authentication URL for the user to go to.
+            This method doesn't send any HTTP requests and merely constructs the URL.
 
             :param type: response type ("code" to get the confirmation code or "token" to get the token automatically)
             :param device_id: unique device ID, must be between 6 and 50 characters
@@ -206,6 +226,7 @@ class YaDisk:
         """
             Get the URL for the user to get the confirmation code.
             The confirmation code can later be used to get the token.
+            This method doesn't send any HTTP requests and merely constructs the URL.
 
             :param device_id: unique device ID, must be between 6 and 50 characters
             :param device_name: device name, should not be longer than 100 characters
@@ -235,6 +256,8 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises BadRequestError: invalid or expired code, application ID or secret
+
             :returns: :any:`TokenObject`
         """
 
@@ -253,6 +276,8 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises BadRequestError: invalid or expired refresh token, application ID or secret
 
             :returns: :any:`TokenObject`
         """
@@ -274,6 +299,8 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises BadRequestError: token cannot be revoked (not bound to this application, etc.)
 
             :returns: :any:`TokenRevokeStatusObject`
         """
@@ -322,6 +349,8 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
             :returns: :any:`DiskInfoObject`
         """
 
@@ -346,6 +375,9 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
             :returns: :any:`ResourceObject`
         """
 
@@ -364,6 +396,8 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
             :returns: `bool`
         """
 
@@ -379,6 +413,9 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
             :returns: "file" or "dir"
         """
 
@@ -393,6 +430,8 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `True` if `path` is a file, `False` otherwise (even if it doesn't exist)
         """
@@ -411,6 +450,8 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
         """
@@ -435,6 +476,10 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises WrongResourceTypeError: resource is not a directory
+
             :returns: generator of :any:`ResourceObject`
         """
 
@@ -451,6 +496,12 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises ParentNotFoundError: parent directory doesn't exist
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+            :raises InsufficientStorageError: cannot upload file due to lack of storage space
 
             :returns: `str`
         """
@@ -541,6 +592,12 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises ParentNotFoundError: parent directory doesn't exist
+            :raises PathExistsError: destination path already exists
+            :raises InsufficientStorageError: cannot upload file due to lack of storage space
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
             :returns: :any:`ResourceLinkObject`, link to the destination resource
         """
 
@@ -562,6 +619,8 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises InsufficientStorageError: cannot upload file due to lack of storage space
         """
 
         self._upload(lambda *args, **kwargs: link, file_or_path, "", **kwargs)
@@ -576,6 +635,10 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
 
             :returns: `str`
         """
@@ -667,6 +730,10 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
             :returns: :any:`ResourceLinkObject`, link to the source resource
         """
 
@@ -705,6 +772,11 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises BadRequestError: MD5 check is only available for files
+            :raises ResourceIsLockedError: resource is locked by another request
+
             :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
@@ -724,6 +796,12 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises ParentNotFoundError: parent directory doesn't exist
+            :raises DirectoryExistsError: destination path already exists
+            :raises InsufficientStorageError: cannot create directory due to lack of storage space
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
 
             :returns: :any:`ResourceLinkObject`
         """
@@ -749,6 +827,9 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
             :returns: :any:`TrashResourceObject`
         """
 
@@ -766,6 +847,8 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `bool`
         """
@@ -791,6 +874,12 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises InsufficientStorageError: cannot complete request due to lack of storage space
+            :raises ResourceIsLockedError: resource is locked by another request
+
             :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
         """
 
@@ -815,6 +904,11 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
 
             :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
         """
@@ -842,6 +936,11 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
             :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
         """
 
@@ -862,6 +961,10 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
             :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
@@ -881,6 +984,10 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
             :returns: :any:`ResourceLinkObject`, link to the resource
         """
 
@@ -899,6 +1006,10 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
 
             :returns: :any:`ResourceLinkObject`
         """
@@ -925,6 +1036,11 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+            :raises InsufficientStorageError: cannot upload file due to lack of storage space
 
             :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
         """
@@ -954,6 +1070,9 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
             :returns: :any:`PublicResourceObject`
         """
 
@@ -972,6 +1091,8 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `bool`
         """
@@ -997,6 +1118,10 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises WrongResourceTypeError: resource is not a directory
+
             :returns: generator of :any:`PublicResourceObject`
         """
 
@@ -1013,6 +1138,9 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
             :returns: "file" or "dir"
         """
 
@@ -1028,6 +1156,8 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `True` if `public_key` is a directory, `False` otherwise (even if it doesn't exist)
         """
@@ -1047,6 +1177,8 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `True` if `public_key` is a file, `False` otherwise (even if it doesn't exist)
         """
@@ -1072,6 +1204,10 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises WrongResourceTypeError: resource is not a directory
+
             :returns: generator of :any:`TrashResourceObject`
         """
 
@@ -1087,6 +1223,9 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
             :returns: "file" or "dir"
         """
 
@@ -1101,6 +1240,8 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
         """
@@ -1119,6 +1260,8 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `True` if `path` is a file, `False` otherwise (even if it doesn't exist)
         """
@@ -1143,6 +1286,8 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
             :returns: :any:`PublicResourcesListObject`
         """
 
@@ -1164,6 +1309,10 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
 
             :returns: :any:`ResourceObject`
         """
@@ -1188,6 +1337,8 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: generator of :any:`ResourceObject`
         """
@@ -1229,6 +1380,8 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
             :returns: generator of :any:`ResourceObject`
         """
 
@@ -1251,6 +1404,12 @@ class YaDisk:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises ParentNotFoundError: parent directory doesn't exist
+            :raises PathExistsError: destination path already exists
+            :raises InsufficientStorageError: cannot upload file due to lack of storage space
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
             :returns: :any:`OperationLinkObject`, link to the asynchronous operation
         """
 
@@ -1270,6 +1429,10 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
 
             :returns: `str`
         """
@@ -1292,6 +1455,12 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`PublicResourceLinkObject`
         """
 
         self._download(
@@ -1319,6 +1488,8 @@ class YaDisk:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises OperationNotFoundError: requested operation was not found
 
             :returns: `str`
         """

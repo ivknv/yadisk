@@ -170,6 +170,8 @@ class OperationLinkObject(LinkObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises OperationNotFoundError: requested operation was not found
+
             :returns: `str`
         """
 
@@ -246,6 +248,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
             :returns: :any:`ResourceObject`
         """
 
@@ -275,6 +280,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
             :returns: :any:`PublicResourceObject`
         """
 
@@ -298,6 +306,8 @@ class ResourceObjectMethodsMixin:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `bool`
         """
@@ -323,6 +333,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
             :returns: "file" or "dir"
         """
 
@@ -347,6 +360,8 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
             :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
         """
 
@@ -370,6 +385,8 @@ class ResourceObjectMethodsMixin:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `True` if `path` is a file, `False` otherwise (even if it doesn't exist)
         """
@@ -400,6 +417,10 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises WrongResourceTypeError: resource is not a directory
+
             :returns: generator of :any:`ResourceObject`
         """
 
@@ -428,6 +449,10 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises WrongResourceTypeError: resource is not a directory
+
             :returns: generator of :any:`PublicResourceObject`
         """
 
@@ -453,6 +478,12 @@ class ResourceObjectMethodsMixin:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises ParentNotFoundError: parent directory doesn't exist
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+            :raises InsufficientStorageError: cannot upload file due to lack of storage space
 
             :returns: `str`
         """
@@ -482,6 +513,12 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises ParentNotFoundError: parent directory doesn't exist
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+            :raises InsufficientStorageError: cannot upload file due to lack of storage space
+
             :returns: :any:`ResourceLinkObject`, link to the destination resource
         """
 
@@ -510,6 +547,12 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises ParentNotFoundError: parent directory doesn't exist
+            :raises PathExistsError: destination path already exists
+            :raises InsufficientStorageError: cannot upload file due to lack of storage space
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
             :returns: :any:`OperationLinkObject`, link to the asynchronous operation
         """
 
@@ -534,6 +577,10 @@ class ResourceObjectMethodsMixin:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
 
             :returns: `str`
         """
@@ -572,6 +619,10 @@ class ResourceObjectMethodsMixin:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
 
             :returns: :any:`ResourceLinkObject`, link to the source resource
         """
@@ -624,6 +675,10 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
             :returns: :any:`ResourceObject`
         """
 
@@ -656,6 +711,10 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
             :returns: :any:`ResourceLinkObject`, link to the resource
         """
 
@@ -681,6 +740,10 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
             :returns: :any:`ResourceLinkObject`
         """
 
@@ -705,6 +768,12 @@ class ResourceObjectMethodsMixin:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises ParentNotFoundError: parent directory doesn't exist
+            :raises DirectoryExistsError: destination path already exists
+            :raises InsufficientStorageError: cannot create directory due to lack of storage space
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
 
             :returns: :any:`ResourceLinkObject`
         """
@@ -734,6 +803,11 @@ class ResourceObjectMethodsMixin:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises BadRequestError: MD5 check is only available for files
+            :raises ResourceIsLockedError: resource is locked by another request
 
             :returns: :any:`LinkObject` if the operation is performed asynchronously, `None` otherwise
         """
@@ -776,6 +850,11 @@ class ResourceObjectMethodsMixin:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
 
             :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
         """
@@ -829,6 +908,12 @@ class ResourceObjectMethodsMixin:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises InsufficientStorageError: cannot complete request due to lack of storage space
+            :raises ResourceIsLockedError: resource is locked by another request
 
             :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
         """
@@ -1250,6 +1335,9 @@ class TrashResourceObject(ResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
             :returns: :any:`TrashResourceObject`
         """
 
@@ -1273,6 +1361,8 @@ class TrashResourceObject(ResourceObject):
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `bool`
         """
@@ -1298,6 +1388,9 @@ class TrashResourceObject(ResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
             :returns: "file" or "dir"
         """
 
@@ -1322,6 +1415,8 @@ class TrashResourceObject(ResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
             :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
         """
 
@@ -1345,6 +1440,8 @@ class TrashResourceObject(ResourceObject):
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `True` if `path` is a file, `False` otherwise (even if it doesn't exist)
         """
@@ -1375,6 +1472,10 @@ class TrashResourceObject(ResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises WrongResourceTypeError: resource is not a directory
+
             :returns: generator of :any:`TrashResourceObject`
         """
 
@@ -1400,6 +1501,10 @@ class TrashResourceObject(ResourceObject):
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
 
             :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
@@ -1444,6 +1549,11 @@ class TrashResourceObject(ResourceObject):
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
 
             :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
         """
