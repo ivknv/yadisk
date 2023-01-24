@@ -2,6 +2,7 @@
 
 from .api_request import APIRequest
 from ..objects import DiskInfoObject
+from ..exceptions import InvalidResponseError
 
 from typing import Optional, TYPE_CHECKING
 from collections.abc import Iterable
@@ -33,5 +34,8 @@ class DiskInfoRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: dict) -> DiskInfoObject:
+    def process_json(self, js: Optional[dict]) -> DiskInfoObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
         return DiskInfoObject(js)

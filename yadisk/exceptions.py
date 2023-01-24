@@ -8,7 +8,7 @@ __all__ = ["YaDiskError", "RetriableYaDiskError", "UnknownYaDiskError",
            "UnavailableError", "GatewayTimeoutError", "InsufficientStorageError",
            "PathNotFoundError", "ParentNotFoundError", "PathExistsError",
            "DirectoryExistsError", "FieldValidationError", "ResourceIsLockedError",
-           "MD5DifferError", "OperationNotFoundError"]
+           "MD5DifferError", "OperationNotFoundError", "InvalidResponseError"]
 
 class YaDiskError(Exception):
     """
@@ -130,4 +130,8 @@ class MD5DifferError(ConflictError):
 
 class OperationNotFoundError(NotFoundError):
     """Thrown by `get_operation_status()` when the operation doesn't exist."""
+    pass
+
+class InvalidResponseError(YaDiskError):
+    """Thrown when Yandex.Disk did not return a JSON response or if it's invalid."""
     pass

@@ -8,6 +8,7 @@ from ..objects import FilesResourceListObject, LastUploadedResourceListObject
 from ..objects import ResourceObject, ResourceUploadLinkObject, PublicResourceObject
 from ..objects import OperationLinkObject, ResourceLinkObject, ResourceDownloadLinkObject
 from ..common import is_operation_link, ensure_path_has_schema
+from ..exceptions import InvalidResponseError
 
 from collections.abc import Iterable
 from typing import Optional, Union, TYPE_CHECKING
@@ -83,7 +84,12 @@ class GetPublicResourcesRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: dict, yadisk: Optional["YaDisk"] = None) -> PublicResourcesListObject:
+    def process_json(self,
+                     js: Optional[dict],
+                     yadisk: Optional["YaDisk"] = None) -> PublicResourcesListObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
         return PublicResourcesListObject(js, yadisk)
 
 class UnpublishRequest(APIRequest):
@@ -113,7 +119,12 @@ class UnpublishRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: dict, yadisk: Optional["YaDisk"] = None) -> ResourceLinkObject:
+    def process_json(self,
+                     js: Optional[dict],
+                     yadisk: Optional["YaDisk"] = None) -> ResourceLinkObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
         return ResourceLinkObject(js, yadisk)
 
 class GetDownloadLinkRequest(APIRequest):
@@ -143,7 +154,12 @@ class GetDownloadLinkRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: dict, yadisk: Optional["YaDisk"] = None) -> ResourceDownloadLinkObject:
+    def process_json(self,
+                     js: Optional[dict],
+                     yadisk: Optional["YaDisk"] = None) -> ResourceDownloadLinkObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
         return ResourceDownloadLinkObject(js, yadisk)
 
 class GetTrashRequest(APIRequest):
@@ -166,7 +182,7 @@ class GetTrashRequest(APIRequest):
 
     def __init__(self,
                  session: "requests.Session",
-                 path: Optional[str] = None,
+                 path: str,
                  offset: int = 0,
                  limit: int = 20,
                  sort: Optional[str] = None,
@@ -182,7 +198,7 @@ class GetTrashRequest(APIRequest):
                                             "fields":       fields}, **kwargs)
 
     def process_args(self,
-                     path: Optional[str],
+                     path: str,
                      offset: int,
                      limit: int,
                      sort: Optional[str],
@@ -207,7 +223,12 @@ class GetTrashRequest(APIRequest):
 
             self.params["fields"] = ",".join(_substitute_keys(fields, sub_map))
 
-    def process_json(self, js: dict, yadisk: Optional["YaDisk"] = None) -> TrashResourceObject:
+    def process_json(self,
+                     js: Optional[dict],
+                     yadisk: Optional["YaDisk"] = None) -> TrashResourceObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
         return TrashResourceObject(js, yadisk)
 
 class RestoreTrashRequest(APIRequest):
@@ -257,8 +278,12 @@ class RestoreTrashRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: dict,
+    def process_json(self,
+                     js: Optional[dict],
                      yadisk: Optional["YaDisk"] = None) -> Union[OperationLinkObject, ResourceLinkObject]:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
         if is_operation_link(js.get("href", "")):
             return OperationLinkObject(js, yadisk)
 
@@ -301,8 +326,11 @@ class DeleteTrashRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: dict, yadisk: Optional["YaDisk"] = None) -> OperationLinkObject:
-        return OperationLinkObject(js, yadisk)
+    def process_json(self,
+                     js: Optional[dict],
+                     yadisk: Optional["YaDisk"] = None) -> Optional[OperationLinkObject]:
+        if js is not None:
+            return OperationLinkObject(js, yadisk)
 
 class LastUploadedRequest(APIRequest):
     """
@@ -360,7 +388,11 @@ class LastUploadedRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: dict, yadisk: Optional["YaDisk"] = None) -> LastUploadedResourceListObject:
+    def process_json(self,
+                     js: Optional[dict],
+                     yadisk: Optional["YaDisk"] = None) -> LastUploadedResourceListObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
         return LastUploadedResourceListObject(js, yadisk)
 
 class CopyRequest(APIRequest):
@@ -409,9 +441,13 @@ class CopyRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: dict,
+    def process_json(self,
+                     js: Optional[dict],
                      yadisk: Optional["YaDisk"] = None) -> Union[OperationLinkObject, ResourceLinkObject]:
-        if is_operation_link(js["href"]):
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
+        if is_operation_link(js.get("href", "")):
             return OperationLinkObject(js, yadisk)
 
         return ResourceLinkObject(js, yadisk)
@@ -483,7 +519,12 @@ class GetMetaRequest(APIRequest):
 
             self.params["fields"] = ",".join(_substitute_keys(fields, sub_map))
 
-    def process_json(self, js: dict, yadisk: Optional["YaDisk"] = None) -> ResourceObject:
+    def process_json(self,
+                     js: Optional[dict],
+                     yadisk: Optional["YaDisk"] = None) -> ResourceObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
         return ResourceObject(js, yadisk)
 
 class GetUploadLinkRequest(APIRequest):
@@ -517,7 +558,12 @@ class GetUploadLinkRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: dict, yadisk: Optional["YaDisk"] = None) -> ResourceUploadLinkObject:
+    def process_json(self,
+                     js: Optional[dict],
+                     yadisk: Optional["YaDisk"] = None) -> ResourceUploadLinkObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
         return ResourceUploadLinkObject(js, yadisk)
 
 class MkdirRequest(APIRequest):
@@ -547,7 +593,12 @@ class MkdirRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: dict, yadisk: Optional["YaDisk"] = None) -> ResourceLinkObject:
+    def process_json(self,
+                     js: Optional[dict],
+                     yadisk: Optional["YaDisk"] = None) -> ResourceLinkObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
         return ResourceLinkObject(js, yadisk)
 
 class PublishRequest(APIRequest):
@@ -577,7 +628,12 @@ class PublishRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: dict, yadisk: Optional["YaDisk"] = None) -> ResourceLinkObject:
+    def process_json(self,
+                     js: Optional[dict],
+                     yadisk: Optional["YaDisk"] = None) -> ResourceLinkObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
         return ResourceLinkObject(js, yadisk)
 
 class UploadURLRequest(APIRequest):
@@ -620,7 +676,12 @@ class UploadURLRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: dict, yadisk: Optional["YaDisk"] = None) -> OperationLinkObject:
+    def process_json(self,
+                     js: Optional[dict],
+                     yadisk: Optional["YaDisk"] = None) -> OperationLinkObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
         return OperationLinkObject(js, yadisk)
 
 class DeleteRequest(APIRequest):
@@ -671,8 +732,11 @@ class DeleteRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: dict, yadisk: Optional["YaDisk"] = None) -> OperationLinkObject:
-        return OperationLinkObject(js, yadisk)
+    def process_json(self,
+                     js: Optional[dict],
+                     yadisk: Optional["YaDisk"] = None) -> Optional[OperationLinkObject]:
+        if js is not None:
+            return OperationLinkObject(js, yadisk)
 
 class SaveToDiskRequest(APIRequest):
     """
@@ -731,7 +795,12 @@ class SaveToDiskRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: dict, yadisk: Optional["YaDisk"] = None) -> Union[OperationLinkObject, ResourceLinkObject]:
+    def process_json(self,
+                     js: Optional[dict],
+                     yadisk: Optional["YaDisk"] = None) -> Union[OperationLinkObject, ResourceLinkObject]:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
         if is_operation_link(js.get("href", "")):
             return OperationLinkObject(js, yadisk)
 
@@ -809,7 +878,12 @@ class GetPublicMetaRequest(APIRequest):
 
             self.params["fields"] = ",".join(_substitute_keys(fields, sub_map))
 
-    def process_json(self, js, yadisk=None):
+    def process_json(self,
+                     js: Optional[dict],
+                     yadisk: Optional["YaDisk"] = None) -> PublicResourceObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
         return PublicResourceObject(js, yadisk)
 
 class GetPublicDownloadLinkRequest(APIRequest):
@@ -848,7 +922,12 @@ class GetPublicDownloadLinkRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: dict, yadisk: Optional["YaDisk"] = None) -> ResourceDownloadLinkObject:
+    def process_json(self,
+                     js: Optional[dict],
+                     yadisk: Optional["YaDisk"] = None) -> ResourceDownloadLinkObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
         return ResourceDownloadLinkObject(js, yadisk)
 
 class MoveRequest(APIRequest):
@@ -896,8 +975,12 @@ class MoveRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: dict,
+    def process_json(self,
+                     js: Optional[dict],
                      yadisk: Optional["YaDisk"] = None) -> Union[OperationLinkObject, ResourceLinkObject]:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
         if is_operation_link(js.get("href", "")):
             return OperationLinkObject(js, yadisk)
 
@@ -971,7 +1054,12 @@ class FilesRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: dict, yadisk: Optional["YaDisk"] = None) -> FilesResourceListObject:
+    def process_json(self,
+                     js: Optional[dict],
+                     yadisk: Optional["YaDisk"] = None) -> FilesResourceListObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
         return FilesResourceListObject(js, yadisk)
 
 class PatchRequest(APIRequest):
@@ -1015,5 +1103,10 @@ class PatchRequest(APIRequest):
 
             self.params["fields"] = ",".join(_substitute_keys(fields, sub_map))
 
-    def process_json(self, js: dict, yadisk: Optional["YaDisk"] = None) -> ResourceObject:
+    def process_json(self,
+                     js: Optional[dict],
+                     yadisk: Optional["YaDisk"] = None) -> ResourceObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
         return ResourceObject(js, yadisk)

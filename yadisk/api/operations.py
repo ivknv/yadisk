@@ -5,6 +5,7 @@ from urllib.parse import urlparse, parse_qs, quote
 from .api_request import APIRequest
 from ..objects import OperationStatusObject
 from ..common import is_operation_link
+from ..exceptions import InvalidResponseError
 
 from typing import Optional, TYPE_CHECKING
 from collections.abc import Iterable
@@ -49,7 +50,10 @@ class GetOperationStatusRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: dict) -> OperationStatusObject:
+    def process_json(self, js: Optional[dict]) -> OperationStatusObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
         if "items" in js:
             return OperationStatusObject(js["items"][0])
         return OperationStatusObject(js)

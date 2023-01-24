@@ -2,6 +2,7 @@
 
 from .api_request import APIRequest
 from ..objects import TokenObject, TokenRevokeStatusObject
+from ..exceptions import InvalidResponseError
 
 from typing import Optional, TYPE_CHECKING
 
@@ -40,7 +41,10 @@ class RefreshTokenRequest(APIRequest):
         self.data["client_id"] = client_id
         self.data["client_secret"] = client_secret
 
-    def process_json(self, js: dict) -> TokenObject:
+    def process_json(self, js: Optional[dict]) -> TokenObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk did not return valid JSON")
+
         return TokenObject(js)
 
 class RevokeTokenRequest(APIRequest):
@@ -72,7 +76,10 @@ class RevokeTokenRequest(APIRequest):
         self.data["client_id"] = client_id
         self.data["client_secret"] = client_secret
 
-    def process_json(self, js: dict) -> TokenRevokeStatusObject:
+    def process_json(self, js: Optional[dict]) -> TokenRevokeStatusObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk did not return valid JSON")
+
         return TokenRevokeStatusObject(js)
 
 class GetTokenRequest(APIRequest):
@@ -121,5 +128,8 @@ class GetTokenRequest(APIRequest):
         if device_name is not None:
             self.data["device_name"] = device_name
 
-    def process_json(self, js: dict) -> TokenObject:
+    def process_json(self, js: Optional[dict]) -> TokenObject:
+        if js is None:
+            raise InvalidResponseError("Yandex.Disk did not return valid JSON")
+
         return TokenObject(js)
