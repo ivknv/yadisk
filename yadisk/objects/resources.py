@@ -216,19 +216,22 @@ class PublicResourcesListObject(YaDiskObject):
 
 class ResourceProtocol(Protocol):
     @property
-    def path(self) -> str: ...
+    def type(self) -> Optional[str]: ...
 
     @property
-    def public_key(self) -> str: ...
+    def path(self) -> Optional[str]: ...
 
     @property
-    def public_url(self) -> str: ...
+    def public_key(self) -> Optional[str]: ...
 
     @property
-    def file(self) -> str: ...
+    def public_url(self) -> Optional[str]: ...
 
     @property
-    def _yadisk(self) -> "YaDisk": ...
+    def file(self) -> Optional[str]: ...
+
+    @property
+    def _yadisk(self) -> Optional["YaDisk"]: ...
 
 class ResourceObjectMethodsMixin:
     def get_meta(self: ResourceProtocol,
@@ -612,6 +615,9 @@ class ResourceObjectMethodsMixin:
 
             1. :code:`download(dst_path_or_file, /, **kwargs)`
             2. :code:`download(relative_path, dst_path_or_file, /, **kwargs)`
+
+            If `relative_path` is empty or None (or not specified) this method
+            will try to use the `file` attribute as a download link.
 
             :param relative_path: `str` or `None`, source path relative to the resource
             :param dst_path_or_file: destination path or file-like object
@@ -1049,7 +1055,10 @@ class ResourceLinkObject(LinkObject, ResourceObjectMethodsMixin):
                 pass
 
     @staticmethod
-    def from_path(path: str, yadisk: Optional["YaDisk"] = None) -> "ResourceLinkObject":
+    def from_path(path: Optional[str], yadisk: Optional["YaDisk"] = None) -> "ResourceLinkObject":
+        if path is None:
+            return ResourceLinkObject(yadisk=yadisk)
+
         path = ensure_path_has_schema(path)
 
         return ResourceLinkObject(
@@ -1093,7 +1102,10 @@ class PublicResourceLinkObject(LinkObject, ResourceObjectMethodsMixin):
                 self.public_key = public_key_or_url
 
     @staticmethod
-    def from_public_key(public_key: str, yadisk: Optional["YaDisk"] = None) -> "PublicResourceLinkObject":
+    def from_public_key(public_key: Optional[str], yadisk: Optional["YaDisk"] = None) -> "PublicResourceLinkObject":
+        if public_key is None:
+            return PublicResourceLinkObject(yadisk=yadisk)
+
         return PublicResourceLinkObject(
             {"method": "GET",
              "href": "https://cloud-api.yandex.net/v1/disk/public/resources?" + urlencode({"public_key": public_key}),
