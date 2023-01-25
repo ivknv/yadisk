@@ -2,6 +2,9 @@
 Documentation
 =============
 
+YaDisk object
+#############
+
 .. autoclass:: yadisk.YaDisk
    :members:
 

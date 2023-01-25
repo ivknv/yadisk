@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 1.2.19\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-25 02:10+0500\n"
+"POT-Creation-Date: 2023-01-25 20:55+0500\n"
 "PO-Revision-Date: 2018-01-20 15:41+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,6 +20,10 @@ msgstr ""
 #: ../../docs.rst:3
 msgid "Documentation"
 msgstr "Документация"
+
+#: ../../docs.rst:6
+msgid "YaDisk object"
+msgstr "Объект YaDisk"
 
 #: of yadisk.yadisk.YaDisk:1
 msgid "Implements access to Yandex.Disk REST API."
@@ -1055,8 +1059,9 @@ msgstr "путь к ресурсу"
 msgid ""
 "Get authentication URL for the user to go to. This method doesn't send "
 "any HTTP requests and merely constructs the URL."
-msgstr "Получает URL для аутентификации для пользователя. Данный метод не"
-" отправляет никаких HTTP запросов."
+msgstr ""
+"Получает URL для аутентификации для пользователя. Данный метод не "
+"отправляет никаких HTTP запросов."
 
 #: of yadisk.yadisk.YaDisk.get_auth_url:4
 msgid ""
@@ -1631,7 +1636,9 @@ msgstr "refresh-токен, полученный вместе с токеном"
 
 #: of yadisk.yadisk.YaDisk.refresh_token:9
 msgid "invalid or expired refresh token, application ID or secret"
-msgstr "неправильный или истекший refresh-токен, идентификатор или пароль приложения"
+msgstr ""
+"неправильный или истекший refresh-токен, идентификатор или пароль "
+"приложения"
 
 #: of yadisk.objects.resources.ResourceObjectMethodsMixin.remove:1
 #: yadisk.yadisk.YaDisk.remove:1
@@ -1687,8 +1694,9 @@ msgstr "путь к ресурсу корзины, подлежащий удал
 msgid ""
 "Rename `src_path` to have filename `new_name`. Does the same as `move()` "
 "but changes only the filename."
-msgstr "Переименовывает `src_path` в `new_name`. Делает то же самое, что и"
-" `move()`, за исключением того, что меняет только имя файла."
+msgstr ""
+"Переименовывает `src_path` в `new_name`. Делает то же самое, что и "
+"`move()`, за исключением того, что меняет только имя файла."
 
 #: of yadisk.objects.resources.ResourceObjectMethodsMixin.rename:5
 #: yadisk.yadisk.YaDisk.rename:5
@@ -1730,7 +1738,9 @@ msgstr "токен, подлежащий отзыву"
 
 #: of yadisk.yadisk.YaDisk.revoke_token:9
 msgid "token cannot be revoked (not bound to this application, etc.)"
-msgstr "токен не может быть отозван (например, если не привязан к данному приложению)"
+msgstr ""
+"токен не может быть отозван (например, если не привязан к данному "
+"приложению)"
 
 #: of yadisk.api.auth.RevokeTokenRequest:8 yadisk.yadisk.YaDisk.revoke_token:11
 msgid ":any:`TokenRevokeStatusObject`"
@@ -1840,11 +1850,11 @@ msgstr "`bool`, запретить делать перенаправления"
 msgid ":any:`OperationLinkObject`, link to the asynchronous operation"
 msgstr ":any:`OperationLinkObject`, ссылка на асинхронную операцию"
 
-#: ../../docs.rst:9
+#: ../../docs.rst:12
 msgid "General parameters"
 msgstr "Общие параметры"
 
-#: ../../docs.rst:11
+#: ../../docs.rst:14
 msgid ""
 "Almost all methods of `YaDisk` (the ones that accept `**kwargs`) accept "
 "some additional arguments:"
@@ -1852,21 +1862,21 @@ msgstr ""
 "Почти все методы `YaDisk` (те, которые принимают `**kwargs`) принимают "
 "некоторые дополнительные параметры:"
 
-#: ../../docs.rst:13
+#: ../../docs.rst:16
 msgid "**n_retries** - `int`, maximum number of retries for a request"
 msgstr "**n_retries** - `int`, максимальное число повторных попыток запроса"
 
-#: ../../docs.rst:14
+#: ../../docs.rst:17
 msgid "**retry_interval** - `float`, delay between retries (in seconds)"
 msgstr ""
 "**retry_interval** - `float`, задержка между повторными попытками (в "
 "секундах)"
 
-#: ../../docs.rst:15
+#: ../../docs.rst:18
 msgid "**headers** - `dict` or `None`, additional request headers"
 msgstr "**headers** - `dict` или `None`, дополнительные заголовки запроса"
 
-#: ../../docs.rst:17
+#: ../../docs.rst:20
 msgid ""
 "`requests` parameters like `timeout`, `proxies`, etc. are also accepted "
 "(see :py:func:`requests.request`)."
@@ -1874,15 +1884,15 @@ msgstr ""
 "Параметры `requests`, такие как `timeout`, `proxies` и подобные так же "
 "принимаются (см. :py:func:`requests.request`)."
 
-#: ../../docs.rst:19
+#: ../../docs.rst:22
 msgid "This also applies to low-level functions and API request objects as well."
 msgstr "Это так же применяется для низкоуровневых функций и объектов запросов API."
 
-#: ../../docs.rst:22
+#: ../../docs.rst:25
 msgid "Settings"
 msgstr "Настройки"
 
-#: ../../docs.rst:24
+#: ../../docs.rst:27
 msgid ""
 "The following settings can be accessed and changed at runtime in "
 "`yadisk.settings` module:"
@@ -1890,7 +1900,7 @@ msgstr ""
 "Следующие настройки в модуле `yadisk.settings` могут быть получены и "
 "изменены:"
 
-#: ../../docs.rst:26
+#: ../../docs.rst:29
 msgid ""
 "**DEFAULT_TIMEOUT** - `tuple` of 2 numbers (`int` or float`), default "
 "timeout for requests. First number is the connect timeout, the second one"
@@ -1900,19 +1910,19 @@ msgstr ""
 "стандартный таймаут для запросов. Первое число - это таймаут соединения, "
 "второе - таймаут чтения."
 
-#: ../../docs.rst:27
+#: ../../docs.rst:30
 msgid "**DEFAULT_N_RETRIES** - `int`, default number of retries"
 msgstr ""
 "**DEFAULT_N_RETRIES** - `int`, максимальное число повторных попыток "
 "запроса по умолчанию"
 
-#: ../../docs.rst:28
+#: ../../docs.rst:31
 msgid "**DEFAULT_RETRY_INTERVAL** - `float`, default retry interval"
 msgstr ""
 "**DEFAULT_RETRY_INTERVAL** - `float`, стандартная задержка между "
 "повторными попытками"
 
-#: ../../docs.rst:29
+#: ../../docs.rst:32
 msgid ""
 "**DEFAULT_UPLOAD_TIMEOUT** - analogous to `DEFAULT_TIMEOUT` but for "
 "`upload` function"
@@ -1920,7 +1930,7 @@ msgstr ""
 "**DEFAULT_UPLOAD_TIMEOUT** - аналогично `DEFAULT_TIMEOUT`, но для функции"
 " `upload`"
 
-#: ../../docs.rst:30
+#: ../../docs.rst:33
 msgid ""
 "**DEFAULT_UPLOAD_RETRY_INTERVAL** - analogous to `DEFAULT_RETRY_INTERVAL`"
 " but for `upload` function"
@@ -1928,11 +1938,11 @@ msgstr ""
 "**DEFAULT_UPLOAD_RETRY_INTERVAL** - аналогично `DEFAULT_RETRY_INTERVAL`, "
 "но для функции `upload`"
 
-#: ../../docs.rst:33
+#: ../../docs.rst:36
 msgid "Exceptions"
 msgstr "Исключения"
 
-#: ../../docs.rst:35
+#: ../../docs.rst:38
 msgid ""
 "Aside from the exceptions listed below, API requests can also raise "
 "exceptions in `requests`."
@@ -2128,7 +2138,7 @@ msgstr "объект :any:`requests.Response`"
 msgid "`str`, exception message"
 msgstr "`str`, сообщение исключения"
 
-#: ../../docs.rst:42
+#: ../../docs.rst:45
 msgid "Objects"
 msgstr "Объекты"
 
@@ -2588,8 +2598,10 @@ msgstr ""
 msgid ""
 "If `relative_path` is empty or None (or not specified) this method will "
 "try to use the `file` attribute as a download link."
-msgstr "Если `relative_path` пустой или None (или не указан), данный метод"
-" будет использовать поле `file` (если доступно) в качестве ссылки для скачивания."
+msgstr ""
+"Если `relative_path` пустой или None (или не указан), данный метод будет "
+"использовать поле `file` (если доступно) в качестве ссылки для "
+"скачивания."
 
 #: of yadisk.objects.resources.ResourceObjectMethodsMixin.exists:1
 msgid "Check whether resource exists."
@@ -2647,8 +2659,9 @@ msgstr "`str` или `None`, относительный путь к папке, 
 msgid ""
 "Move resource to `dst_path`. This method takes 1 or 2 positional "
 "arguments:"
-msgstr "Перемещает ресурс в `dst_path`. Данный метод принимает 1 или 2"
-" позиционных аргумента:"
+msgstr ""
+"Перемещает ресурс в `dst_path`. Данный метод принимает 1 или 2 "
+"позиционных аргумента:"
 
 #: of yadisk.objects.resources.ResourceObjectMethodsMixin.move:4
 msgid ":code:`move(dst_path, /, **kwargs)`"
@@ -2660,15 +2673,18 @@ msgstr ""
 
 #: of yadisk.objects.resources.ResourceObjectMethodsMixin.move:7
 msgid "`str` or `None`, source path to be moved relative to the resource"
-msgstr "`str` или `None`, исходный путь, относительно ресурса, подлежащий перемещению"
+msgstr ""
+"`str` или `None`, исходный путь, относительно ресурса, подлежащий "
+"перемещению"
 
 #: of yadisk.objects.resources.ResourceObjectMethodsMixin.patch:1
 #: yadisk.objects.resources.TrashResourceObject.patch:1
 msgid ""
 "Update custom properties of a resource. This method takes 1 or 2 "
 "positional arguments:"
-msgstr "Обновляет пользовательские свойства ресурса. Данный метод принимает 1 "
-" или 2 позиционных аргумента:"
+msgstr ""
+"Обновляет пользовательские свойства ресурса. Данный метод принимает 1  "
+"или 2 позиционных аргумента:"
 
 #: of yadisk.objects.resources.ResourceObjectMethodsMixin.patch:4
 #: yadisk.objects.resources.TrashResourceObject.patch:4
@@ -2700,7 +2716,9 @@ msgstr ":any:`LinkObject`, если операция выполняется ас
 
 #: of yadisk.objects.resources.ResourceObjectMethodsMixin.rename:4
 msgid "`str` or `None`, source path to be renamed relative to the resource"
-msgstr "`str` или `None`, исходный путь, относительно ресурса, подлежащий переименованию"
+msgstr ""
+"`str` или `None`, исходный путь, относительно ресурса, подлежащий "
+"переименованию"
 
 #: of yadisk.objects.resources.ResourceObjectMethodsMixin.unpublish:3
 msgid "`str` or `None`, relative path to the resource to be unpublished"
@@ -3001,7 +3019,9 @@ msgstr "`str` или `None`, относительный путь к папке �
 
 #: of yadisk.objects.resources.TrashResourceObject.remove:3
 msgid "`str` or `None`, relative path to the trash resource to be deleted"
-msgstr "`str` или `None`, относительный путь к ресурсу корзины, подлежащий удалению"
+msgstr ""
+"`str` или `None`, относительный путь к ресурсу корзины, подлежащий "
+"удалению"
 
 #: of yadisk.objects.resources.TrashResourceObject.restore:6
 msgid ":code:`restore(dst_path, /, **kwargs)`"
@@ -3035,11 +3055,11 @@ msgstr ":any:`LinkObject`, ссылка на операцию"
 msgid "`dict`, other information about the operation"
 msgstr "`dict`, другая информация об операции"
 
-#: ../../docs.rst:72
+#: ../../docs.rst:75
 msgid "Low-level API"
 msgstr "Низкоуровневый API"
 
-#: ../../docs.rst:75
+#: ../../docs.rst:78
 msgid "Utilities"
 msgstr "Вспомогательные средства"
 
@@ -3077,7 +3097,7 @@ msgstr ""
 msgid "an exception instance, subclass of :any:`YaDiskError`"
 msgstr "Объект исключения, подкласс :any:`YaDiskError`"
 
-#: ../../docs.rst:81
+#: ../../docs.rst:84
 msgid "API request objects"
 msgstr "Объекты запросов к API"
 
@@ -3467,3 +3487,4 @@ msgstr "идентификатор операции или ссылка на н�
 #: of yadisk.api.operations.GetOperationStatusRequest:7
 msgid ":any:`OperationStatusObject`"
 msgstr ""
+
