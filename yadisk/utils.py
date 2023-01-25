@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from collections import defaultdict
-from collections.abc import Callable
 import time
 
 import requests
@@ -12,6 +11,8 @@ from .exceptions import *
 from . import settings
 
 from typing import Optional, Union, TypeVar
+
+from .compat import Callable
 
 __all__ = ["get_exception", "auto_retry"]
 

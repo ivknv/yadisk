@@ -5,7 +5,7 @@ from ..objects import DiskInfoObject
 from ..exceptions import InvalidResponseError
 
 from typing import Optional, TYPE_CHECKING
-from collections.abc import Iterable
+from ..compat import Iterable
 
 if TYPE_CHECKING:
     import requests

@@ -11,7 +11,8 @@ from ..common import ensure_path_has_schema, str_or_error, int_or_error, bool_or
 from ..common import dict_or_error, str_or_dict_or_error
 
 from typing import overload, Union, IO, AnyStr, Protocol, Optional, TYPE_CHECKING
-from collections.abc import Generator
+
+from ..compat import Generator, List
 
 if TYPE_CHECKING:
     from ..yadisk import YaDisk
@@ -80,7 +81,7 @@ class FilesResourceListObject(YaDiskObject):
         :ivar offset: `int`, offset from the beginning of the list
     """
 
-    items: Optional[list["ResourceObject"]]
+    items: Optional[List["ResourceObject"]]
     limit: Optional[int]
     offset: Optional[int]
 
@@ -107,7 +108,7 @@ class LastUploadedResourceListObject(YaDiskObject):
         :ivar limit: `int`, maximum number of elements in the list
     """
 
-    items: Optional[list["ResourceObject"]]
+    items: Optional[List["ResourceObject"]]
     limit: Optional[int]
 
     def __init__(self,
@@ -196,7 +197,7 @@ class PublicResourcesListObject(YaDiskObject):
         :ivar offset: `int`, offset from the beginning of the list
     """
 
-    items: Optional[list["PublicResourceObject"]]
+    items: Optional[List["PublicResourceObject"]]
     type: Optional[str]
     limit: Optional[int]
     offset: Optional[int]
@@ -1180,7 +1181,7 @@ class ResourceListObject(YaDiskObject):
     """
 
     sort: Optional[str]
-    items: Optional[list[ResourceObject]]
+    items: Optional[List[ResourceObject]]
     limit: Optional[int]
     offset: Optional[int]
     path: Optional[str]
@@ -1324,7 +1325,7 @@ class PublicResourceListObject(ResourceListObject):
     """
 
     public_key: Optional[str]
-    items: Optional[list[PublicResourceObject]]
+    items: Optional[List[PublicResourceObject]]
 
     def __init__(self,
                  public_resource_list: Optional[dict] = None,
@@ -1711,7 +1712,7 @@ class TrashResourceListObject(ResourceListObject):
         :ivar total: `int`, number of elements in the list
     """
 
-    items: Optional[list[TrashResourceObject]]
+    items: Optional[List[TrashResourceObject]]
 
     def __init__(self,
                  trash_resource_list: Optional[dict] = None,

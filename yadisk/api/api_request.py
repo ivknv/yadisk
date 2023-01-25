@@ -8,6 +8,7 @@ from ..utils import auto_retry, get_exception
 from .. import settings
 
 from typing import Optional, Union, TypeVar
+from ..compat import Set
 
 __all__ = ["APIRequest"]
 
@@ -40,7 +41,7 @@ class APIRequest(object):
     content_type: str = "application/x-www-form-urlencoded"
     timeout = _DEFAULT_TIMEOUT
     n_retries: Optional[int] = None
-    success_codes: set[int] = {200}
+    success_codes: Set[int] = {200}
     retry_interval: Optional[Union[int, float]] = None
 
     request: Optional[requests.PreparedRequest]

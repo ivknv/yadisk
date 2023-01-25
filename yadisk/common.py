@@ -2,7 +2,7 @@
 
 import datetime
 
-from collections.abc import Callable
+from .compat import Callable, List
 
 from typing import Optional, TypeVar, Any, Union
 
@@ -12,8 +12,8 @@ __all__ = ["typed_list", "int_or_error", "str_or_error", "bool_or_error",
 
 T = TypeVar("T", bound=Callable)
 
-def typed_list(datatype: T) -> Callable[[Optional[list]], list[T]]:
-    def list_factory(iterable: Optional[list] = None) -> list[T]:
+def typed_list(datatype: T) -> Callable[[Optional[List]], List[T]]:
+    def list_factory(iterable: Optional[List] = None) -> List[T]:
         if iterable is None:
             return []
 

@@ -10,7 +10,7 @@ from ..objects import OperationLinkObject, ResourceLinkObject, ResourceDownloadL
 from ..common import is_operation_link, ensure_path_has_schema
 from ..exceptions import InvalidResponseError
 
-from collections.abc import Iterable
+from ..compat import Iterable, Dict, List
 from typing import Optional, Union, TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -26,7 +26,7 @@ __all__ = ["GetPublicResourcesRequest", "UnpublishRequest", "GetDownloadLinkRequ
 
 Fields = Iterable[str]
 
-def _substitute_keys(keys: Iterable[str], sub_map: dict[str, str]) -> list[str]:
+def _substitute_keys(keys: Iterable[str], sub_map: Dict[str, str]) -> List[str]:
     return [".".join(sub_map.get(f, f) for f in k.split(".")) for k in keys]
 
 class GetPublicResourcesRequest(APIRequest):

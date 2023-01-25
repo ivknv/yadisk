@@ -20,7 +20,7 @@ from .objects import ResourceLinkObject, PublicResourceLinkObject, TrashResource
 from . import settings
 
 from typing import Any, Optional, IO, AnyStr, Union, TYPE_CHECKING
-from collections.abc import Callable, Generator
+from .compat import Callable, Generator
 
 if TYPE_CHECKING:
     from .objects import ResourceObject, OperationLinkObject, TrashResourceObject
