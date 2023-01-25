@@ -3,3 +3,4 @@ include COPYING.lesser
 include README.rst
 include README.en.rst
 include README.ru.rst
+include yadisk/py.typed
