@@ -11,6 +11,7 @@ Welcome to YaDisk's documentation!
    :caption: Contents:
 
    intro
+   known_issues
    docs
    changelog
 

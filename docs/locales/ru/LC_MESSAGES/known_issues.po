@@ -1,0 +1,148 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2023, Ivan Konovalov
+# This file is distributed under the same license as the YaDisk package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: YaDisk 1.2.19\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-01-27 03:39+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.11.0\n"
+
+#: ../../known_issues.rst:2
+msgid "Known Issues"
+msgstr "Известные проблемы"
+
+#: ../../known_issues.rst:5
+msgid "Very Slow Upload of Certain Types of Files"
+msgstr "Очень медленная загрузка некоторых типов файлов на Яндекс.Диск"
+
+#: ../../known_issues.rst:7
+msgid ""
+"For whatever reason, files with specific extensions take much longer time"
+" to upload. Here are some known extensions with this problem:"
+msgstr ""
+"По неизвестной причине файлы с определенными расширениями в имени "
+"загружаются на Яндекс.Диск гораздо медленнее. Вот некоторые из известных "
+"проблемных расширений файлов:"
+
+#: ../../known_issues.rst:10
+msgid ":code:`.db`"
+msgstr ""
+
+#: ../../known_issues.rst:11
+msgid ":code:`.mp4`"
+msgstr ""
+
+#: ../../known_issues.rst:12
+msgid ":code:`.avi`"
+msgstr ""
+
+#: ../../known_issues.rst:13
+msgid ":code:`.3gp`"
+msgstr ""
+
+#: ../../known_issues.rst:14
+msgid ":code:`.rar`"
+msgstr ""
+
+#: ../../known_issues.rst:15
+msgid ":code:`.zip`"
+msgstr ""
+
+#: ../../known_issues.rst:16
+msgid ":code:`.gz`"
+msgstr ""
+
+#: ../../known_issues.rst:17
+msgid ":code:`.tgz`"
+msgstr ""
+
+#: ../../known_issues.rst:18
+msgid ":code:`.dat`"
+msgstr ""
+
+#: ../../known_issues.rst:19
+msgid "...and more."
+msgstr "...и другие."
+
+#: ../../known_issues.rst:21
+msgid ""
+"The only known workaround is to upload files with changed filename "
+"extensions (or without them entirely). For example, if you want to upload"
+" a file named \"my_database.db\", you can initially upload it under the "
+"name \"my_database.some_other_extension\" and then rename it back to "
+"\"my_database.db\". This approach has some obvious downsides but at least"
+" it works."
+msgstr ""
+"Единственный известный способ обхода данной проблемы - это загрузка "
+"файлов с измененным расширением (или без расширения). Например, если вы "
+"хотите загрузить на Диск файл \"my_database.db\", вы можете изначально "
+"загрузить его под именем \"my_database.some_other_extension\" и после "
+"загрузки переименовать обратно в \"my_database.db\". У такого подхода "
+"есть очевидные недостатки, но по крайней мере он работает."
+
+#: ../../known_issues.rst:28
+msgid "Low Upload Speed on Windows"
+msgstr "Низкая скорость загрузки файлов на Диск под Windows"
+
+#: ../../known_issues.rst:37
+msgid ""
+"If you experience low upload speeds on Windows, the reason might be due "
+"to Python's standard library internally using :code:`select()` to wait "
+"for sockets. There are several ways around it:"
+msgstr ""
+"Если вы столкнулись с низкой скоростью загрузки файлов на Диск под "
+"Windows, то причиной может стандартная библиотека Python, которая внутри "
+"использует :code:`select()` для ожидания сокетов. В таком случае "
+"существует несколько путей обхода данной проблемы:"
+
+#: ../../known_issues.rst:41
+msgid ""
+"Monkey-patching `http.client`_ and `urllib3`_ to use bigger "
+":code:`blocksize`. See `this comment "
+"<https://github.com/urllib3/urllib3/issues/1394#issuecomment-954044006>`_"
+" for more details."
+msgstr "Monkey-patch `http.client`_ и `urllib3`_, чтобы увеличить :code:`blocksize`."
+" См. `этот комментарий <https://github.com/urllib3/urllib3/issues/1394#issuecomment-954044006>`_."
+
+#: ../../known_issues.rst:43
+msgid "Monkey-patching through a library like `eventlet`_."
+msgstr "Monkey-patch через библиотеку `eventlet`_."
+
+#: ../../known_issues.rst:44
+msgid "Using `yadisk-async`_ instead. It uses `aiohttp`_ instead of `requests`_."
+msgstr "Использование `yadisk-async`_. Эта версия использует `aiohttp`_ вместо"
+" `requests`_."
+
+#: ../../known_issues.rst:45
+msgid ""
+"Uploading files to direct links (obtained through "
+":any:`yadisk.YaDisk.get_upload_link()`) using a different library (such "
+"as `aiohttp`_)."
+msgstr "Загрузка файлов по прямым ссылкам (полученным через"
+" :any:`yadisk.YaDisk.get_upload_link()`), используя другую библиотеку"
+" (например, `aiohttp`_)."
+
+#: ../../known_issues.rst:49
+msgid "Upload Timeout on Large Files"
+msgstr "Таймауты при загрузки больших файлов на Диск"
+
+#: ../../known_issues.rst:51
+msgid ""
+"When uploading large files (over a couple of GB in size) you may "
+"experience timeout errors after the full upload. This might be caused by "
+"Yandex.Disk computing hash sums or doing some other operations. The "
+"bigger the file, the bigger the timeouts may need to be set."
+msgstr "При загрузке больших файлов на Диск (несколько ГБ и более) вы можете"
+" столкнуться с таймаутами после загрузки содержимого файла на Диск. Возможно,"
+" это связано с вычислением хэш сумм и выполнением каких-то других операций."
+" Чем больше файл, тем больше следует поставить таймаут."
