@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 1.2.19\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-25 20:55+0500\n"
+"POT-Creation-Date: 2023-01-27 04:02+0500\n"
 "PO-Revision-Date: 2018-01-20 15:41+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -982,16 +982,26 @@ msgstr "невозможно выполнить запрос из-за нехв�
 msgid "resource is locked by another request"
 msgstr "запрашиваемый ресурс заблокирован другой операцией"
 
+#: of yadisk.objects.resources.ResourceObjectMethodsMixin.copy:26
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.get_upload_link:16
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.upload:17
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.upload_url:17
+#: yadisk.yadisk.YaDisk.copy:21 yadisk.yadisk.YaDisk.get_upload_link:16
+#: yadisk.yadisk.YaDisk.save_to_disk:20 yadisk.yadisk.YaDisk.upload:17
+#: yadisk.yadisk.YaDisk.upload_url:17
+msgid "upload limit has been exceeded"
+msgstr "достигнут лимит на загрузку файлов"
+
 #: of yadisk.api.resources.CopyRequest:11
 #: yadisk.api.resources.RestoreTrashRequest:10
 #: yadisk.api.resources.SaveToDiskRequest:11
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.copy:27
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.copy:28
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.move:22
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.rename:20
 #: yadisk.objects.resources.TrashResourceObject.restore:24
-#: yadisk.yadisk.YaDisk.copy:22 yadisk.yadisk.YaDisk.move:18
+#: yadisk.yadisk.YaDisk.copy:23 yadisk.yadisk.YaDisk.move:18
 #: yadisk.yadisk.YaDisk.rename:20 yadisk.yadisk.YaDisk.restore_trash:19
-#: yadisk.yadisk.YaDisk.save_to_disk:21
+#: yadisk.yadisk.YaDisk.save_to_disk:22
 msgid ":any:`ResourceLinkObject` or :any:`OperationLinkObject`"
 msgstr ":any:`ResourceLinkObject` или :any:`OperationLinkObject`"
 
@@ -1144,14 +1154,14 @@ msgstr "Получает ссылку на скачивание файла (ил
 
 #: of yadisk.objects.resources.OperationLinkObject.get_status:11
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.get_download_link:14
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.get_upload_link:17
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.get_upload_link:18
 #: yadisk.objects.yadisk_object.YaDiskObject.remove_alias:3
 #: yadisk.objects.yadisk_object.YaDiskObject.remove_field:3
 #: yadisk.objects.yadisk_object.YaDiskObject.set_field_type:3
 #: yadisk.yadisk.YaDisk.get_download_link:14
 #: yadisk.yadisk.YaDisk.get_operation_status:12
 #: yadisk.yadisk.YaDisk.get_public_download_link:15
-#: yadisk.yadisk.YaDisk.get_upload_link:17
+#: yadisk.yadisk.YaDisk.get_upload_link:18
 msgid "`str`"
 msgstr ""
 
@@ -1815,8 +1825,8 @@ msgstr ""
 "если `True`, путь назначения может быть перезаписан, иначе будет вызвана "
 "ошибка"
 
-#: of yadisk.objects.resources.ResourceObjectMethodsMixin.upload:18
-#: yadisk.yadisk.YaDisk.upload:18
+#: of yadisk.objects.resources.ResourceObjectMethodsMixin.upload:19
+#: yadisk.yadisk.YaDisk.upload:19
 msgid ":any:`ResourceLinkObject`, link to the destination resource"
 msgstr ":any:`ResourceLinkObject`, ссылка на загруженный ресурс"
 
@@ -1845,8 +1855,8 @@ msgstr "исходный URL"
 msgid "`bool`, forbid redirects"
 msgstr "`bool`, запретить делать перенаправления"
 
-#: of yadisk.objects.resources.ResourceObjectMethodsMixin.upload_url:18
-#: yadisk.yadisk.YaDisk.upload_url:18
+#: of yadisk.objects.resources.ResourceObjectMethodsMixin.upload_url:19
+#: yadisk.yadisk.YaDisk.upload_url:19
 msgid ":any:`OperationLinkObject`, link to the asynchronous operation"
 msgstr ":any:`OperationLinkObject`, ссылка на асинхронную операцию"
 
@@ -2072,6 +2082,7 @@ msgid "Thrown when the server returns code 413."
 msgstr "Вызывается, когда сервер вернул код 413."
 
 #: of yadisk.exceptions.ResourceIsLockedError:1
+#: yadisk.exceptions.UploadTrafficLimitExceeded:1
 msgid "Bases: :py:class:`~yadisk.exceptions.LockedError`"
 msgstr ""
 
@@ -2108,6 +2119,10 @@ msgstr "Вызывается, когда запрос не удался, но н
 #: of yadisk.exceptions.UnsupportedMediaError:1
 msgid "Thrown when the server returns code 415."
 msgstr "Вызывается, когда сервер вернул код 415."
+
+#: of yadisk.exceptions.UploadTrafficLimitExceeded:1
+msgid "Thrown when upload limit has been exceeded."
+msgstr "Вызывается, когда превышен лимит на загрузку файлов."
 
 #: of yadisk.exceptions.WrongResourceTypeError:1
 msgid ""

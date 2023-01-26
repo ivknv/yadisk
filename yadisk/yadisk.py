@@ -503,6 +503,7 @@ class YaDisk:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
             :raises InsufficientStorageError: cannot upload file due to lack of storage space
+            :raises UploadTrafficLimitExceededError: upload limit has been exceeded
 
             :returns: `str`
         """
@@ -598,6 +599,7 @@ class YaDisk:
             :raises InsufficientStorageError: cannot upload file due to lack of storage space
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+            :raises UploadTrafficLimitExceededError: upload limit has been exceeded
 
             :returns: :any:`ResourceLinkObject`, link to the destination resource
         """
@@ -880,6 +882,7 @@ class YaDisk:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises InsufficientStorageError: cannot complete request due to lack of storage space
             :raises ResourceIsLockedError: resource is locked by another request
+            :raises UploadTrafficLimitExceededError: upload limit has been exceeded
 
             :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
         """
@@ -1075,6 +1078,7 @@ class YaDisk:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
             :raises InsufficientStorageError: cannot upload file due to lack of storage space
+            :raises UploadTrafficLimitExceededError: upload limit has been exceeded
 
             :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
         """
@@ -1443,6 +1447,7 @@ class YaDisk:
             :raises InsufficientStorageError: cannot upload file due to lack of storage space
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+            :raises UploadTrafficLimitExceededError: upload limit has been exceeded
 
             :returns: :any:`OperationLinkObject`, link to the asynchronous operation
         """

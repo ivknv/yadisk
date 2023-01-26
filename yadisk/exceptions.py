@@ -4,11 +4,12 @@ __all__ = ["YaDiskError", "RetriableYaDiskError", "UnknownYaDiskError",
            "WrongResourceTypeError",  "BadRequestError", "UnauthorizedError",
            "ForbiddenError", "NotFoundError", "NotAcceptableError",
            "ConflictError", "PayloadTooLargeError", "UnsupportedMediaError",
-           "LockedError", "TooManyRequestsError", "InternalServerError", "BadGatewayError",
-           "UnavailableError", "GatewayTimeoutError", "InsufficientStorageError",
-           "PathNotFoundError", "ParentNotFoundError", "PathExistsError",
-           "DirectoryExistsError", "FieldValidationError", "ResourceIsLockedError",
-           "MD5DifferError", "OperationNotFoundError", "InvalidResponseError"]
+           "LockedError", "UploadTrafficLimitExceededError", "TooManyRequestsError",
+           "InternalServerError", "BadGatewayError", "UnavailableError",
+           "GatewayTimeoutError", "InsufficientStorageError", "PathNotFoundError",
+           "ParentNotFoundError", "PathExistsError", "DirectoryExistsError",
+           "FieldValidationError", "ResourceIsLockedError", "MD5DifferError",
+           "OperationNotFoundError", "InvalidResponseError"]
 
 class YaDiskError(Exception):
     """
@@ -78,6 +79,10 @@ class UnsupportedMediaError(YaDiskError):
 
 class LockedError(YaDiskError):
     """Thrown when the server returns code 423."""
+    pass
+
+class UploadTrafficLimitExceededError(LockedError):
+    """Thrown when upload limit has been exceeded."""
     pass
 
 class TooManyRequestsError(YaDiskError):
