@@ -15,10 +15,13 @@ YaDisk
 
 YaDisk is a Yandex.Disk REST API client library.
 
-.. _Read the Docs (EN): http://yadisk.readthedocs.io
-.. _Read the Docs (RU): http://yadisk.readthedocs.io/ru/latest
+.. _Read the Docs (EN): https://yadisk.readthedocs.io
+.. _Read the Docs (RU): https://yadisk.readthedocs.io/ru/latest
+.. _yadisk-async: https://github.com/ivknv/yadisk-async
 
 Documentation is available at `Read the Docs (EN)`_ and `Read the Docs (RU)`_.
+
+There's also an asynchronous version of this library: `yadisk-async`_.
 
 Installation
 ************
