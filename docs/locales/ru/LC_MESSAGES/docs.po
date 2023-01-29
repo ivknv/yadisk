@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 1.2.19\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-27 04:02+0500\n"
+"POT-Creation-Date: 2023-01-29 10:26+0500\n"
 "PO-Revision-Date: 2018-01-20 15:41+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1680,7 +1680,8 @@ msgstr "`str`, MD5 хэш файла, подлежащего удалению"
 msgid "MD5 check is only available for files"
 msgstr "проверка MD5 доступна только для файлов"
 
-#: of yadisk.objects.resources.TrashResourceObject.remove:15
+#: of yadisk.objects.resources.ResourceObjectMethodsMixin.remove:19
+#: yadisk.objects.resources.TrashResourceObject.remove:15
 #: yadisk.yadisk.YaDisk.remove:19 yadisk.yadisk.YaDisk.remove_trash:15
 msgid ""
 ":any:`OperationLinkObject` if the operation is performed asynchronously, "
@@ -2082,7 +2083,7 @@ msgid "Thrown when the server returns code 413."
 msgstr "Вызывается, когда сервер вернул код 413."
 
 #: of yadisk.exceptions.ResourceIsLockedError:1
-#: yadisk.exceptions.UploadTrafficLimitExceeded:1
+#: yadisk.exceptions.UploadTrafficLimitExceededError:1
 msgid "Bases: :py:class:`~yadisk.exceptions.LockedError`"
 msgstr ""
 
@@ -2120,7 +2121,7 @@ msgstr "Вызывается, когда запрос не удался, но н
 msgid "Thrown when the server returns code 415."
 msgstr "Вызывается, когда сервер вернул код 415."
 
-#: of yadisk.exceptions.UploadTrafficLimitExceeded:1
+#: of yadisk.exceptions.UploadTrafficLimitExceededError:1
 msgid "Thrown when upload limit has been exceeded."
 msgstr "Вызывается, когда превышен лимит на загрузку файлов."
 
@@ -2722,12 +2723,6 @@ msgstr "`str` или `None`, относительный путь к публик
 #: of yadisk.objects.resources.ResourceObjectMethodsMixin.remove:3
 msgid "`str` or `None`, relative path to the resource to be removed"
 msgstr "`str` или `None`, относительный путь к удаляемому ресурсу"
-
-#: of yadisk.objects.resources.ResourceObjectMethodsMixin.remove:19
-msgid ""
-":any:`LinkObject` if the operation is performed asynchronously, `None` "
-"otherwise"
-msgstr ":any:`LinkObject`, если операция выполняется асинхронно, иначе `None`"
 
 #: of yadisk.objects.resources.ResourceObjectMethodsMixin.rename:4
 msgid "`str` or `None`, source path to be renamed relative to the resource"
@@ -3502,4 +3497,9 @@ msgstr "идентификатор операции или ссылка на н�
 #: of yadisk.api.operations.GetOperationStatusRequest:7
 msgid ":any:`OperationStatusObject`"
 msgstr ""
+
+#~ msgid ""
+#~ ":any:`LinkObject` if the operation is "
+#~ "performed asynchronously, `None` otherwise"
+#~ msgstr ":any:`LinkObject`, если операция выполняется асинхронно, иначе `None`"
 
