@@ -648,7 +648,7 @@ class ResourceObjectMethodsMixin:
         if self._yadisk is None:
             raise ValueError("This object is not bound to a YaDisk instance")
 
-        if not relative_path and self.file is not None:
+        if not relative_path and hasattr(self, "file") and self.file is not None:
             self._yadisk.download_by_link(self.file, dst_path_or_file, **kwargs)
 
             return ResourceLinkObject.from_path(self.path, yadisk=self._yadisk)
