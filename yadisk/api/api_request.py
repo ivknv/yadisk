@@ -2,7 +2,7 @@
 
 import requests
 
-from yadisk.exceptions import InvalidResponseError
+from ..exceptions import InvalidResponseError
 
 from ..utils import auto_retry, get_exception
 from .. import settings
