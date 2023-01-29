@@ -94,7 +94,7 @@ def auto_retry(func: Callable[[], T],
     for i in range(n_retries + 1):
         try:
             return func()
-        except (requests.exceptions.RequestException, RetriableYaDiskError) as e:
+        except (requests.exceptions.RequestException, ConnectionError, RetriableYaDiskError) as e:
             if i == n_retries:
                 raise e
 
