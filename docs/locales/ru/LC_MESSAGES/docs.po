@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 1.2.19\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-29 12:00+0500\n"
+"POT-Creation-Date: 2023-01-29 12:13+0500\n"
 "PO-Revision-Date: 2018-01-20 15:41+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2349,34 +2349,38 @@ msgid "`int`, maximum supported file size (bytes)"
 msgstr "`int`, максимальный поддерживаемый размер файла (в байтах)"
 
 #: of yadisk.objects.disk.DiskInfoObject:7
+msgid "`int`, maximum supported file size for a paid account (bytes)"
+msgstr "`int`, максимальный поддерживаемый размер файла для платного аккаунта (в байтах)"
+
+#: of yadisk.objects.disk.DiskInfoObject:8
 msgid "`bool`, tells whether unlimited autoupload from mobile devices is enabled"
 msgstr "`bool`, признак включенной безлимитной автозагрузки с мобильных устройств"
 
-#: of yadisk.objects.disk.DiskInfoObject:9
+#: of yadisk.objects.disk.DiskInfoObject:10
 msgid "`int`, total disk size (bytes)"
 msgstr "`int`, общий размер диска (в байтах)"
 
-#: of yadisk.objects.disk.DiskInfoObject:10
+#: of yadisk.objects.disk.DiskInfoObject:11
 msgid "`int`, amount of space used by trash (bytes), part of `used_space`"
 msgstr "`int`, размер, занятый мусором (в байтах), чась `used_space`"
 
-#: of yadisk.objects.disk.DiskInfoObject:11
+#: of yadisk.objects.disk.DiskInfoObject:12
 msgid "`bool`, tells if the account is paid or not"
 msgstr "`bool`, признак платного аккаунта"
 
-#: of yadisk.objects.disk.DiskInfoObject:12
+#: of yadisk.objects.disk.DiskInfoObject:13
 msgid "`int`, amount of space used (bytes)"
 msgstr "`int`, количество занятого места (в байтах)"
 
-#: of yadisk.objects.disk.DiskInfoObject:13
+#: of yadisk.objects.disk.DiskInfoObject:14
 msgid ":any:`SystemFoldersObject`, paths to the system folders"
 msgstr ":any:`SystemFoldersObject`, пути к системным папкам"
 
-#: of yadisk.objects.disk.DiskInfoObject:14
+#: of yadisk.objects.disk.DiskInfoObject:15
 msgid ":any:`UserObject`, owner of the disk"
 msgstr ":any:`UserObject`, владелец диска"
 
-#: of yadisk.objects.disk.DiskInfoObject:15
+#: of yadisk.objects.disk.DiskInfoObject:16
 msgid "`int`, current revision of Yandex.Disk"
 msgstr "`int`, текущая ревизия Яндекс.Диска"
 

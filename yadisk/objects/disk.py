@@ -19,6 +19,7 @@ class DiskInfoObject(YaDiskObject):
         :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
 
         :ivar max_file_size: `int`, maximum supported file size (bytes)
+        :ivar paid_max_file_size: `int`, maximum supported file size for a paid account (bytes)
         :ivar unlimited_autoupload_enabled: `bool`, tells whether unlimited
                                              autoupload from mobile devices is enabled
         :ivar total_space: `int`, total disk size (bytes)
@@ -30,20 +31,22 @@ class DiskInfoObject(YaDiskObject):
         :ivar revision: `int`, current revision of Yandex.Disk
     """
 
-    max_file_size: Optional[int]
+    max_file_size:                Optional[int]
+    paid_max_file_size:           Optional[int]
     unlimited_autoupload_enabled: Optional[bool]
-    total_space: Optional[int]
-    trash_size: Optional[int]
-    is_paid: Optional[bool]
-    used_space: Optional[int]
-    system_folders: "SystemFoldersObject"
-    user: "UserObject"
-    revision: Optional[int]
+    total_space:                  Optional[int]
+    trash_size:                   Optional[int]
+    is_paid:                      Optional[bool]
+    used_space:                   Optional[int]
+    system_folders:               "SystemFoldersObject"
+    user:                         "UserObject"
+    revision:                     Optional[int]
 
     def __init__(self, disk_info: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
         YaDiskObject.__init__(
             self,
             {"max_file_size":                int_or_error,
+             "paid_max_file_size":           int_or_error,
              "unlimited_autoupload_enabled": bool_or_error,
              "total_space":                  int_or_error,
              "trash_size":                   int_or_error,
