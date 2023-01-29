@@ -12,8 +12,9 @@ import requests
 
 from .api import *
 
-from .exceptions import WrongResourceTypeError, PathNotFoundError
-from .exceptions import UnauthorizedError, OperationNotFoundError
+from .exceptions import (
+    WrongResourceTypeError, PathNotFoundError, UnauthorizedError,
+    OperationNotFoundError, InvalidResponseError)
 from .utils import auto_retry, get_exception
 from .objects import ResourceLinkObject, PublicResourceLinkObject, TrashResourceObject
 
@@ -23,13 +24,16 @@ from typing import Any, Optional, IO, AnyStr, Union, TYPE_CHECKING
 from .compat import Callable, Generator
 
 if TYPE_CHECKING:
-    from .objects import ResourceObject, OperationLinkObject, TrashResourceObject
-    from .objects import PublicResourceObject, PublicResourcesListObject
-    from .objects import DiskInfoObject, TokenObject, TokenRevokeStatusObject
+    from .objects import (
+        ResourceObject, OperationLinkObject, TrashResourceObject,
+        PublicResourceObject, PublicResourcesListObject,
+        DiskInfoObject, TokenObject, TokenRevokeStatusObject)
 
 __all__ = ["YaDisk"]
 
-def _exists(get_meta_function: Callable, /, *args, **kwargs) -> bool:
+ResourceType = Union["ResourceObject", "PublicResourceObject", "TrashResourceObject"]
+
+def _exists(get_meta_function: Callable[..., ResourceType], /, *args, **kwargs) -> bool:
     kwargs["limit"] = 0
 
     try:
@@ -39,12 +43,18 @@ def _exists(get_meta_function: Callable, /, *args, **kwargs) -> bool:
     except PathNotFoundError:
         return False
 
-def _get_type(get_meta_function: Callable, /, *args, **kwargs) -> str:
+def _get_type(get_meta_function: Callable[..., ResourceType], /, *args, **kwargs) -> str:
     kwargs["limit"] = 0
+    kwargs["fields"] = ["type"]
 
-    return get_meta_function(*args, **kwargs).type
+    type = get_meta_function(*args, **kwargs).type
 
-def _listdir(get_meta_function: Callable, path: str, /, **kwargs) -> Generator[Any, None, None]:
+    if type is None:
+        raise InvalidResponseError("Response did not contain the type field")
+
+    return type
+
+def _listdir(get_meta_function: Callable[..., ResourceType], path: str, /, **kwargs) -> Generator[Any, None, None]:
     kwargs.setdefault("limit", 10000)
 
     if kwargs.get("fields") is None:
@@ -67,20 +77,34 @@ def _listdir(get_meta_function: Callable, path: str, /, **kwargs) -> Generator[A
     if result.type == "file":
         raise WrongResourceTypeError("%r is a file" % (path,))
 
-    for child in result.embedded.items:
-        yield child
+    if result.embedded is None:
+        raise InvalidResponseError("Response did not contain _embedded field")
 
-    limit = result.embedded.limit
-    offset = result.embedded.offset
-    total = result.embedded.total
+    if (result.type is None or result.embedded.items is None or
+        result.embedded.offset is None or result.embedded.limit is None or
+        result.embedded.total is None):
+        raise InvalidResponseError("Response did not contain key field")
+
+    yield from result.embedded.items
+
+    limit: int = result.embedded.limit
+    offset: int = result.embedded.offset
+    total: int = result.embedded.total
 
     while offset + limit < total:
         offset += limit
         kwargs["offset"] = offset
         result = get_meta_function(path, **kwargs)
 
-        for child in result.embedded.items:
-            yield child
+        if result.embedded is None:
+            raise InvalidResponseError("Response did not contain _embedded field")
+
+        if (result.type is None or result.embedded.items is None or
+            result.embedded.offset is None or result.embedded.limit is None or
+            result.embedded.total is None):
+            raise InvalidResponseError("Response did not contain key field")
+
+        yield from result.embedded.items
 
         limit = result.embedded.limit
         total = result.embedded.total
