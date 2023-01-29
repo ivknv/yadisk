@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 1.2.19\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-29 12:13+0500\n"
+"POT-Creation-Date: 2023-01-29 13:55+0500\n"
 "PO-Revision-Date: 2018-01-20 15:41+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -187,6 +187,13 @@ msgstr "пароль приложения"
 msgid "application token"
 msgstr "токен"
 
+#: of yadisk.yadisk.YaDisk:6
+msgid ""
+"`dict` or `None`, default arguments for methods. Can be used to set the "
+"default timeout, headers, etc."
+msgstr "`dict` или `None`, аргументы по умолчанию для методов. Можно использовать,"
+" чтобы задать стандартный таймаут, заголовки и т.д."
+
 #: of yadisk.api.api_request.APIRequest yadisk.exceptions.YaDiskError
 #: yadisk.objects.auth.TokenObject yadisk.objects.auth.TokenRevokeStatusObject
 #: yadisk.objects.disk.DiskInfoObject yadisk.objects.disk.SystemFoldersObject
@@ -214,19 +221,27 @@ msgstr "токен"
 msgid "Variables"
 msgstr ""
 
-#: of yadisk.yadisk.YaDisk:7
+#: of yadisk.yadisk.YaDisk:9
 msgid "`str`, application ID"
 msgstr "`str`, идентификатор приложения"
 
-#: of yadisk.yadisk.YaDisk:8
+#: of yadisk.yadisk.YaDisk:10
 msgid "`str`, application secret password"
 msgstr "`str`, пароль приложения"
 
-#: of yadisk.yadisk.YaDisk:9
+#: of yadisk.yadisk.YaDisk:11
 msgid "`str`, application token"
 msgstr "`str`, токен"
 
-#: of yadisk.yadisk.YaDisk:11
+#: of yadisk.yadisk.YaDisk:12
+msgid ""
+"`dict`, default arguments for methods. Can be used to set the default "
+"timeout, headers, etc."
+msgstr ""
+"`dict`, аргументы по умолчанию для методов. Можно использовать, чтобы "
+"задать стандартный таймаут, заголовки и т.д."
+
+#: of yadisk.yadisk.YaDisk:15
 msgid "The following exceptions may be raised by most API requests:"
 msgstr "Большинство запросов к API могут вызвать следующие исключения:"
 
@@ -288,67 +303,67 @@ msgstr "Большинство запросов к API могут вызвать
 msgid "Raises"
 msgstr ""
 
-#: of yadisk.yadisk.YaDisk:13
+#: of yadisk.yadisk.YaDisk:17
 msgid "server returned HTTP code 400"
 msgstr "сервер вернул код 400."
 
-#: of yadisk.yadisk.YaDisk:14
+#: of yadisk.yadisk.YaDisk:18
 msgid "request contains fields with invalid data"
 msgstr "запрос содежит поля с некорректными данными."
 
-#: of yadisk.yadisk.YaDisk:15
+#: of yadisk.yadisk.YaDisk:19
 msgid "server returned HTTP code 401"
 msgstr "сервер вернул код 401."
 
-#: of yadisk.yadisk.YaDisk:16
+#: of yadisk.yadisk.YaDisk:20
 msgid "server returned HTTP code 403"
 msgstr "сервер вернул код 403."
 
-#: of yadisk.yadisk.YaDisk:17
+#: of yadisk.yadisk.YaDisk:21
 msgid "server returned HTTP code 406"
 msgstr "сервер вернул код 406."
 
-#: of yadisk.yadisk.YaDisk:18
+#: of yadisk.yadisk.YaDisk:22
 msgid "server returned HTTP code 409"
 msgstr "сервер вернул код 409."
 
-#: of yadisk.yadisk.YaDisk:19
+#: of yadisk.yadisk.YaDisk:23
 msgid "server returned code 413"
 msgstr "сервер вернул код 413."
 
-#: of yadisk.yadisk.YaDisk:20
+#: of yadisk.yadisk.YaDisk:24
 msgid "server returned HTTP code 415"
 msgstr "сервер вернул код 415."
 
-#: of yadisk.yadisk.YaDisk:21
+#: of yadisk.yadisk.YaDisk:25
 msgid "server returned HTTP code 423"
 msgstr "сервер вернул код 423."
 
-#: of yadisk.yadisk.YaDisk:22
+#: of yadisk.yadisk.YaDisk:26
 msgid "server returned HTTP code 429"
 msgstr "сервер вернул код 429."
 
-#: of yadisk.yadisk.YaDisk:23
+#: of yadisk.yadisk.YaDisk:27
 msgid "server returned HTTP code 500"
 msgstr "сервер вернул код 500."
 
-#: of yadisk.yadisk.YaDisk:24
+#: of yadisk.yadisk.YaDisk:28
 msgid "server returned HTTP code 502"
 msgstr "сервер вернул код 502."
 
-#: of yadisk.yadisk.YaDisk:25
+#: of yadisk.yadisk.YaDisk:29
 msgid "server returned HTTP code 503"
 msgstr "сервер вернул код 503."
 
-#: of yadisk.yadisk.YaDisk:26
+#: of yadisk.yadisk.YaDisk:30
 msgid "server returned HTTP code 504"
 msgstr "сервер вернул код 504."
 
-#: of yadisk.yadisk.YaDisk:27
+#: of yadisk.yadisk.YaDisk:31
 msgid "server returned HTTP code 509"
 msgstr "сервер вернул код 509."
 
-#: of yadisk.yadisk.YaDisk:28
+#: of yadisk.yadisk.YaDisk:32
 msgid "other unknown error"
 msgstr "другая неизвестная ошибка"
 
@@ -2350,7 +2365,9 @@ msgstr "`int`, максимальный поддерживаемый разме�
 
 #: of yadisk.objects.disk.DiskInfoObject:7
 msgid "`int`, maximum supported file size for a paid account (bytes)"
-msgstr "`int`, максимальный поддерживаемый размер файла для платного аккаунта (в байтах)"
+msgstr ""
+"`int`, максимальный поддерживаемый размер файла для платного аккаунта (в "
+"байтах)"
 
 #: of yadisk.objects.disk.DiskInfoObject:8
 msgid "`bool`, tells whether unlimited autoupload from mobile devices is enabled"
