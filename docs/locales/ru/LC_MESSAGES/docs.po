@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 1.2.19\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-29 10:26+0500\n"
+"POT-Creation-Date: 2023-01-29 12:00+0500\n"
 "PO-Revision-Date: 2018-01-20 15:41+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2401,24 +2401,48 @@ msgid "`str`, path to the VKontakte folder"
 msgstr "`str`, путь к папке ВКонтакте"
 
 #: of yadisk.objects.disk.SystemFoldersObject:10
+msgid "`str`, path to the mail attachments folder"
+msgstr "`str`, путь к папке \"Почтовые вложения\""
+
+#: of yadisk.objects.disk.SystemFoldersObject:11
 msgid "`str`, path to the My World folder"
 msgstr "`str`, путь к папке Моего Мира"
 
-#: of yadisk.objects.disk.SystemFoldersObject:11
+#: of yadisk.objects.disk.SystemFoldersObject:12
+msgid "`str`, path to the Downloads folder"
+msgstr "`str`, путь к папке \"Загрузки\""
+
+#: of yadisk.objects.disk.SystemFoldersObject:13
+msgid "`str` path to the Applications folder"
+msgstr "`str`, путь к папке \"Приложения\""
+
+#: of yadisk.objects.disk.SystemFoldersObject:14
 msgid "`str`, path to the Facebook folder"
 msgstr "`str`, путь к папке Facebook"
 
-#: of yadisk.objects.disk.SystemFoldersObject:12
+#: of yadisk.objects.disk.SystemFoldersObject:15
 msgid "`str`, path to the social networks folder"
 msgstr "`str`, путь к папке социальных сетей"
 
-#: of yadisk.objects.disk.SystemFoldersObject:13
+#: of yadisk.objects.disk.SystemFoldersObject:16
+msgid "`str`, path to the Messenger Files folder"
+msgstr "`str`, путь к папке \"Файлы Мессенджера\""
+
+#: of yadisk.objects.disk.SystemFoldersObject:17
+msgid "`str`, path to the Meeting Materials folder"
+msgstr "`str`, путь к папке \"Материалы встреч\""
+
+#: of yadisk.objects.disk.SystemFoldersObject:18
+msgid "`str`, path to the camera folder"
+msgstr "`str`, путь к папке фотокамеры"
+
+#: of yadisk.objects.disk.SystemFoldersObject:19
 msgid "`str`, path to the screenshot folder"
 msgstr "`str`, путь к папке скриншотов"
 
-#: of yadisk.objects.disk.SystemFoldersObject:14
-msgid "`str`, path to the camera folder"
-msgstr "`str`, путь к папке фотокамеры"
+#: of yadisk.objects.disk.SystemFoldersObject:20
+msgid "`str`, path to the Scans folder"
+msgstr "`str`, путь к папке \"Сканы\""
 
 #: of yadisk.objects.disk.UserObject:1
 msgid "User object."

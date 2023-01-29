@@ -67,24 +67,34 @@ class SystemFoldersObject(YaDiskObject):
         :ivar google: `str`, path to the Google+ folder
         :ivar instagram: `str`, path to the Instagram folder
         :ivar vkontakte: `str`, path to the VKontakte folder
+        :ivar attach: `str`, path to the mail attachments folder
         :ivar mailru: `str`, path to the My World folder
+        :ivar downloads: `str`, path to the Downloads folder
+        :ivar applications: `str` path to the Applications folder
         :ivar facebook: `str`, path to the Facebook folder
         :ivar social: `str`, path to the social networks folder
-        :ivar screenshots: `str`, path to the screenshot folder
+        :ivar messenger: `str`, path to the Messenger Files folder
+        :ivar calendar: `str`, path to the Meeting Materials folder
         :ivar photostream: `str`, path to the camera folder
+        :ivar screenshots: `str`, path to the screenshot folder
+        :ivar scans: `str`, path to the Scans folder
     """
 
     odnoklassniki: Optional[str]
     google:        Optional[str]
     instagram:     Optional[str]
     vkontakte:     Optional[str]
+    attach:        Optional[str]
     mailru:        Optional[str]
     downloads:     Optional[str]
     applications:  Optional[str]
     facebook:      Optional[str]
     social:        Optional[str]
-    screenshots:   Optional[str]
+    messenger:     Optional[str]
+    calendar:      Optional[str]
     photostream:   Optional[str]
+    screenshots:   Optional[str]
+    scans:         Optional[str]
 
     def __init__(self,
                  system_folders: Optional[dict] = None,
@@ -95,13 +105,17 @@ class SystemFoldersObject(YaDiskObject):
              "google":        str_or_error,
              "instagram":     str_or_error,
              "vkontakte":     str_or_error,
+             "attach":        str_or_error,
              "mailru":        str_or_error,
              "downloads":     str_or_error,
              "applications":  str_or_error,
              "facebook":      str_or_error,
              "social":        str_or_error,
+             "messenger":     str_or_error,
+             "calendar":      str_or_error,
+             "photostream":   str_or_error,
              "screenshots":   str_or_error,
-             "photostream":   str_or_error},
+             "scans":         str_or_error},
             yadisk)
 
         self.import_fields(system_folders)
