@@ -346,7 +346,7 @@ msgstr "сервер вернул код 504."
 
 #: of yadisk.yadisk.YaDisk:27
 msgid "server returned HTTP code 509"
-msgstr "когда сервер вернул код 509."
+msgstr "сервер вернул код 509."
 
 #: of yadisk.yadisk.YaDisk:28
 msgid "other unknown error"
