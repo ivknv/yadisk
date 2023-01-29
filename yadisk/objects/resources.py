@@ -6,9 +6,10 @@ from urllib.parse import urlencode, urlparse, parse_qs
 
 from .yadisk_object import YaDiskObject
 from .disk import UserPublicInfoObject
-from ..common import typed_list, yandex_date, is_resource_link, is_public_resource_link
-from ..common import ensure_path_has_schema, str_or_error, int_or_error, bool_or_error
-from ..common import dict_or_error, str_or_dict_or_error
+from ..common import (
+    typed_list, yandex_date, is_resource_link, is_public_resource_link,
+    ensure_path_has_schema, str_or_error, int_or_error, bool_or_error,
+    dict_or_error, str_or_dict_or_error)
 
 from typing import overload, Union, IO, AnyStr, Protocol, Optional, TYPE_CHECKING
 
@@ -505,7 +506,7 @@ class ResourceObjectMethodsMixin:
 
     def upload(self: ResourceProtocol,
                path_or_file: Union[str, IO[AnyStr]],
-               relative_path: Optional[str] = None, /, **kwargs):
+               relative_path: Optional[str] = None, /, **kwargs) -> "ResourceLinkObject":
         """
             Upload a file to disk.
 
@@ -799,7 +800,7 @@ class ResourceObjectMethodsMixin:
         return self._yadisk.mkdir(str(path), **kwargs)
 
     def remove(self: ResourceProtocol,
-               relative_path: Optional[str] = None, /, **kwargs) -> Optional[LinkObject]:
+               relative_path: Optional[str] = None, /, **kwargs) -> Optional[OperationLinkObject]:
         """
             Remove the resource.
 
@@ -819,7 +820,7 @@ class ResourceObjectMethodsMixin:
             :raises BadRequestError: MD5 check is only available for files
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`LinkObject` if the operation is performed asynchronously, `None` otherwise
+            :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
         if self._yadisk is None:
