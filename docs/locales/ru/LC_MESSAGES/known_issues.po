@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 1.2.19\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-27 03:39+0500\n"
+"POT-Creation-Date: 2023-01-30 18:29+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,56 +25,60 @@ msgstr "Известные проблемы"
 msgid "Very Slow Upload of Certain Types of Files"
 msgstr "Очень медленная загрузка некоторых типов файлов на Яндекс.Диск"
 
-#: ../../known_issues.rst:7
-msgid ""
-"For whatever reason, files with specific extensions take much longer time"
-" to upload. Here are some known extensions with this problem:"
-msgstr ""
-"По неизвестной причине файлы с определенными расширениями в имени "
-"загружаются на Яндекс.Диск гораздо медленнее. Вот некоторые из известных "
-"проблемных расширений файлов:"
-
-#: ../../known_issues.rst:10
-msgid ":code:`.db`"
-msgstr ""
+#: ../../known_issues.rst:9
+msgid "The following information may become outdated at some point in the future."
+msgstr "Данная информация может в дальнейшем будущем оказаться устаревшей."
 
 #: ../../known_issues.rst:11
-msgid ":code:`.mp4`"
-msgstr ""
-
-#: ../../known_issues.rst:12
-msgid ":code:`.avi`"
-msgstr ""
-
-#: ../../known_issues.rst:13
-msgid ":code:`.3gp`"
-msgstr ""
-
-#: ../../known_issues.rst:14
-msgid ":code:`.rar`"
-msgstr ""
-
-#: ../../known_issues.rst:15
-msgid ":code:`.zip`"
-msgstr ""
+msgid ""
+"Yandex.Disk's REST API limits upload speeds up to 128 KiB/s for certain "
+"MIME types of files. More specifically, throttling takes place based on "
+"value of :code:`media_type` (see :any:`yadisk.YaDisk.get_meta`). It "
+"appears there are 3 types of media types that are throttled:"
+msgstr "REST API Яндекс.Диск ограничивает скорость загрузки файлов на Диск до"
+" 128 KiB/s для определенных MIME типов файлов. Если быть точнее, троттлинг"
+" осуществляется в зависимости от значения :code:`media_type` (см. :any:`yadisk.YaDisk.get_meta`)."
+" Судя по всему ограничение скорости действует на 3 типа файлов (media type):"
 
 #: ../../known_issues.rst:16
-msgid ":code:`.gz`"
+msgid ":code:`data` (.db, .dat, etc.)"
 msgstr ""
 
 #: ../../known_issues.rst:17
-msgid ":code:`.tgz`"
+msgid ":code:`compressed` (.zip, .gz, .tgz, .rar, .etc)"
 msgstr ""
 
 #: ../../known_issues.rst:18
-msgid ":code:`.dat`"
+msgid ":code:`video` (.3gp, .mp4, .avi, etc.)"
 msgstr ""
 
-#: ../../known_issues.rst:19
-msgid "...and more."
-msgstr "...и другие."
+#: ../../known_issues.rst:20
+msgid ""
+"This behavior of throttling is predetermined at the moment of requesting "
+"an upload link (with :any:`yadisk.YaDisk.get_upload_link`). The content "
+"of the uploaded file does not matter."
+msgstr "Ограничение скорости предопределяется в момент получения ссылки для "
+"загрузки файла на диск (см. :any:`yadisk.YaDisk.get_upload_link`). Содержимое"
+" загружаемого файла не имеет значения."
 
-#: ../../known_issues.rst:21
+#: ../../known_issues.rst:24
+msgid ""
+"The reason why this problem cannot be observed when uploading through the"
+" official website, is that this throttling does not apply to internal "
+"services (the Yandex.Disk website uses an intermediate internal API to "
+"obtain upload links)."
+msgstr "Причина, по которой эта проблема не наблюдается при попытке загрузить"
+" файл через оффициальный сайт, заключается в том, что ограничение скорости"
+" не применяется для внутренних сервисов (сайт Яндекс.Диска использует"
+" промежуточный внутренний API для получения ссылок)."
+
+#: ../../known_issues.rst:28
+msgid ""
+"While it is not clear what the purpose of this throttling is, it is "
+"certain at this point that this is not a bug."
+msgstr "Хотя и не понятно, в чем смысл такого ограничения, это точно не баг."
+
+#: ../../known_issues.rst:31
 msgid ""
 "The only known workaround is to upload files with changed filename "
 "extensions (or without them entirely). For example, if you want to upload"
@@ -90,11 +94,11 @@ msgstr ""
 "загрузки переименовать обратно в \"my_database.db\". У такого подхода "
 "есть очевидные недостатки, но по крайней мере он работает."
 
-#: ../../known_issues.rst:28
+#: ../../known_issues.rst:38
 msgid "Low Upload Speed on Windows"
 msgstr "Низкая скорость загрузки файлов на Диск под Windows"
 
-#: ../../known_issues.rst:37
+#: ../../known_issues.rst:47
 msgid ""
 "If you experience low upload speeds on Windows, the reason might be due "
 "to Python's standard library internally using :code:`select()` to wait "
@@ -105,44 +109,33 @@ msgstr ""
 "использует :code:`select()` для ожидания сокетов. В таком случае "
 "существует несколько путей обхода данной проблемы:"
 
-#: ../../known_issues.rst:41
+#: ../../known_issues.rst:51
 msgid ""
 "Monkey-patching `http.client`_ and `urllib3`_ to use bigger "
 ":code:`blocksize`. See `this comment "
 "<https://github.com/urllib3/urllib3/issues/1394#issuecomment-954044006>`_"
 " for more details."
-msgstr "Monkey-patch `http.client`_ и `urllib3`_, чтобы увеличить :code:`blocksize`."
-" См. `этот комментарий <https://github.com/urllib3/urllib3/issues/1394#issuecomment-954044006>`_."
+msgstr ""
+"Monkey-patch `http.client`_ и `urllib3`_, чтобы увеличить "
+":code:`blocksize`. См. `этот комментарий "
+"<https://github.com/urllib3/urllib3/issues/1394#issuecomment-954044006>`_."
 
-#: ../../known_issues.rst:43
+#: ../../known_issues.rst:53
 msgid "Monkey-patching through a library like `eventlet`_."
 msgstr "Monkey-patch через библиотеку `eventlet`_."
 
-#: ../../known_issues.rst:44
+#: ../../known_issues.rst:54
 msgid "Using `yadisk-async`_ instead. It uses `aiohttp`_ instead of `requests`_."
-msgstr "Использование `yadisk-async`_. Эта версия использует `aiohttp`_ вместо"
-" `requests`_."
+msgstr ""
+"Использование `yadisk-async`_. Эта версия использует `aiohttp`_ вместо "
+"`requests`_."
 
-#: ../../known_issues.rst:45
+#: ../../known_issues.rst:55
 msgid ""
 "Uploading files to direct links (obtained through "
 ":any:`yadisk.YaDisk.get_upload_link()`) using a different library (such "
 "as `aiohttp`_)."
-msgstr "Загрузка файлов по прямым ссылкам (полученным через"
-" :any:`yadisk.YaDisk.get_upload_link()`), используя другую библиотеку"
-" (например, `aiohttp`_)."
-
-#: ../../known_issues.rst:49
-msgid "Upload Timeout on Large Files"
-msgstr "Таймауты при загрузки больших файлов на Диск"
-
-#: ../../known_issues.rst:51
-msgid ""
-"When uploading large files (over a couple of GB in size) you may "
-"experience timeout errors after the full upload. This might be caused by "
-"Yandex.Disk computing hash sums or doing some other operations. The "
-"bigger the file, the bigger the timeouts may need to be set."
-msgstr "При загрузке больших файлов на Диск (несколько ГБ и более) вы можете"
-" столкнуться с таймаутами после загрузки содержимого файла на Диск. Возможно,"
-" это связано с вычислением хэш сумм и выполнением каких-то других операций."
-" Чем больше файл, тем больше следует поставить таймаут."
+msgstr ""
+"Загрузка файлов по прямым ссылкам (полученным через "
+":any:`yadisk.YaDisk.get_upload_link()`), используя другую библиотеку "
+"(например, `aiohttp`_)."

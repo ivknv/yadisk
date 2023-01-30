@@ -4,19 +4,29 @@ Known Issues
 Very Slow Upload of Certain Types of Files
 ##########################################
 
-For whatever reason, files with specific extensions take much longer time to upload.
-Here are some known extensions with this problem:
+.. note::
 
-1. :code:`.db`
-2. :code:`.mp4`
-3. :code:`.avi`
-4. :code:`.3gp`
-5. :code:`.rar`
-6. :code:`.zip`
-7. :code:`.gz`
-8. :code:`.tgz`
-9. :code:`.dat`
-10. ...and more.
+   The following information may become outdated at some point in the future.
+
+Yandex.Disk's REST API limits upload speeds up to 128 KiB/s for certain MIME types of files.
+More specifically, throttling takes place based on value of :code:`media_type`
+(see :any:`yadisk.YaDisk.get_meta`).
+It appears there are 3 types of media types that are throttled:
+
+1) :code:`data` (.db, .dat, etc.)
+2) :code:`compressed` (.zip, .gz, .tgz, .rar, .etc)
+3) :code:`video` (.3gp, .mp4, .avi, etc.)
+
+This behavior of throttling is predetermined at the moment of requesting an
+upload link (with :any:`yadisk.YaDisk.get_upload_link`). The content of the
+uploaded file does not matter.
+
+The reason why this problem cannot be observed when uploading through the
+official website, is that this throttling does not apply to internal services
+(the Yandex.Disk website uses an intermediate internal API to obtain upload links).
+
+While it is not clear what the purpose of this throttling is, it is certain at
+this point that this is not a bug.
 
 The only known workaround is to upload files with changed filename extensions (or without them entirely).
 For example, if you want to upload a file named "my_database.db", you can initially
@@ -44,11 +54,3 @@ There are several ways around it:
 3) Using `yadisk-async`_ instead. It uses `aiohttp`_ instead of `requests`_.
 4) Uploading files to direct links (obtained through :any:`yadisk.YaDisk.get_upload_link()`) using
    a different library (such as `aiohttp`_).
-
-Upload Timeout on Large Files
-#############################
-
-When uploading large files (over a couple of GB in size) you may experience
-timeout errors after the full upload. This might be caused by Yandex.Disk computing
-hash sums or doing some other operations. The bigger the file, the bigger the
-timeouts may need to be set.
