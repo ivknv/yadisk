@@ -9,10 +9,6 @@ YaDisk
    :alt: PyPI
    :target: https://pypi.org/project/yadisk
 
-.. image:: https://img.shields.io/aur/version/python-yadisk.svg
-   :alt: AUR
-   :target: https://aur.archlinux.org/packages/python-yadisk
-
 YaDisk - это библиотека-клиент REST API Яндекс.Диска.
 
 .. _Read the Docs (EN): https://yadisk.readthedocs.io
@@ -80,6 +76,19 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 .. _issue #7: https://github.com/ivknv/yadisk/issues/7
 .. _issue #23: https://github.com/ivknv/yadisk/issues/23
 .. _issue #26: https://github.com/ivknv/yadisk/issues/26
+
+* **Release 1.3.0 (2023-01-30)**
+
+  * Добавлены convenience-методы для объектов :code:`...Object` (например, см. :code:`ResourceObject`)
+  * Добавлены подсказки типов (type hints)
+  * Улучшены проверки ошибок и проверка ответа
+  * Добавлены :code:`InvalidResponseError`, :code:`PayloadTooLargeError`, :code:`UploadTrafficLimitExceededError`
+  * Добавлено несколько недостающих полей объектов :code:`DiskInfoObject` и :code:`SystemFoldersObject`
+  * Добавлены методы :code:`rename()`, :code:`upload_by_link()` и :code:`download_by_link()`
+  * Добавлен аттрибут :code:`default_args` объекта :code:`YaDisk`
+  * :code:`download()` и :code:`upload()` теперь возвращают :code:`ResourceLinkObject`
+  * До этого возвращаемые объекты :code:`LinkObject` были заменены более конкретными подклассами
+  * :code:`ConnectionError` теперь тоже вызывает повторную попытку
 
 * **Release 1.2.19 (2023-01-20)**
 

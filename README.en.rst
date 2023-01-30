@@ -9,10 +9,6 @@ YaDisk
    :alt: PyPI
    :target: https://pypi.org/project/yadisk
 
-.. image:: https://img.shields.io/aur/version/python-yadisk.svg
-   :alt: AUR
-   :target: https://aur.archlinux.org/packages/python-yadisk
-
 YaDisk is a Yandex.Disk REST API client library.
 
 .. _Read the Docs (EN): https://yadisk.readthedocs.io
@@ -80,6 +76,19 @@ Changelog
 .. _issue #7: https://github.com/ivknv/yadisk/issues/7
 .. _issue #23: https://github.com/ivknv/yadisk/issues/23
 .. _issue #26: https://github.com/ivknv/yadisk/issues/26
+
+* **Release 1.3.0 (2023-01-30)**
+
+  * Added convenience methods to :code:`...Object` objects (e.g. see :code:`ResourceObject` in docs)
+  * Added type hints
+  * Improved error checking and response validation
+  * Added :code:`InvalidResponseError`, :code:`PayloadTooLargeError`, :code:`UploadTrafficLimitExceededError`
+  * Added a few missing fields to :code:`DiskInfoObject` and :code:`SystemFoldersObject`
+  * Added :code:`rename()`, :code:`upload_by_link()` and :code:`download_by_link()` methods
+  * Added :code:`default_args` field for :code:`YaDisk` object
+  * :code:`download()` and :code:`upload()` now return :code:`ResourceLinkObject`
+  * Returned :code:`LinkObject` instances have been replaced by more specific subclasses
+  * :code:`ConnectionError` now also triggers a retry
 
 * **Release 1.2.19 (2023-01-20)**
 
