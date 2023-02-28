@@ -2,20 +2,17 @@
 # -*- coding: utf-8 -*-
 
 import os
-import requests
-import random
 import tempfile
 
 import posixpath
 from unittest import TestCase
 from io import BytesIO
 
-import yadisk.settings
+import yadisk
 from yadisk.common import is_operation_link, ensure_path_has_schema
 from yadisk.api.operations import GetOperationStatusRequest
 
 yadisk.settings.DEFAULT_N_RETRIES = 50
-yadisk.settings.DEFAULT_UPLOAD_N_RETRIES = 50
 
 __all__ = ["YaDiskTestCase"]
 
