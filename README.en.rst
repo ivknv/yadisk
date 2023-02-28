@@ -76,6 +76,12 @@ Changelog
 .. _issue #7: https://github.com/ivknv/yadisk/issues/7
 .. _issue #23: https://github.com/ivknv/yadisk/issues/23
 .. _issue #26: https://github.com/ivknv/yadisk/issues/26
+.. _issue #28: https://github.com/ivknv/yadisk/issues/28
+
+* **Release 1.3.1 (2023-02-28)**
+
+  * Fixed `issue #28`_: calling :code:`download_public()` with :code:`path` keyword argument raises :code:`TypeError`
+  * Fixed :code:`AttributeError` raised when calling :code:`ResourceLinkObject.public_listdir()`
 
 * **Release 1.3.0 (2023-01-30)**
 
