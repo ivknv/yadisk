@@ -115,6 +115,13 @@ def _apply_default_args(args: Dict[str, Any], default_args: Dict[str, Any]) -> N
     args.clear()
     args.update(new_args)
 
+def _filter_kwargs_for_requests(kwargs: dict[str, Any]) -> None:
+    # Remove some of the yadisk-specific arguments from kwargs
+    keys_to_remove = ("n_retries", "retry_interval", "fields", "overwrite", "path")
+
+    for key in keys_to_remove:
+        kwargs.pop(key, None)
+
 class YaDisk:
     """
         Implements access to Yandex.Disk REST API.
@@ -625,9 +632,8 @@ class YaDisk:
 
                 link = get_upload_link_function(dst_path, **temp_kwargs)
 
-                # session.put() doesn't accept these parameters
-                for k in ("n_retries", "retry_interval", "overwrite", "fields"):
-                    temp_kwargs.pop(k, None)
+                # session.put() doesn't accept some of the passed parameters
+                _filter_kwargs_for_requests(temp_kwargs)
 
                 temp_kwargs.setdefault("stream", True)
 
@@ -768,9 +774,8 @@ class YaDisk:
                 temp_kwargs["retry_interval"] = 0.0
                 link = get_download_link_function(src_path, **temp_kwargs)
 
-                # session.get() doesn't accept these parameters
-                for k in ("n_retries", "retry_interval", "fields", "path"):
-                    temp_kwargs.pop(k, None)
+                # session.get() doesn't accept some of the passed parameters
+                _filter_kwargs_for_requests(temp_kwargs)
 
                 temp_kwargs.setdefault("stream", True)
 
