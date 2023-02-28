@@ -1104,6 +1104,8 @@ class ResourceLinkObject(LinkObject, ResourceObjectMethodsMixin):
     def __init__(self, link: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
         LinkObject.__init__(self, link, yadisk)
         self.set_field_type("path", str_or_error)
+        self.set_field_type("public_key", str_or_error)
+        self.set_field_type("public_url", str_or_error)
 
         if self.href is not None and is_resource_link(self.href):
             try:
