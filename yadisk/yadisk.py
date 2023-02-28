@@ -769,7 +769,7 @@ class YaDisk:
                 link = get_download_link_function(src_path, **temp_kwargs)
 
                 # session.get() doesn't accept these parameters
-                for k in ("n_retries", "retry_interval", "fields"):
+                for k in ("n_retries", "retry_interval", "fields", "path"):
                     temp_kwargs.pop(k, None)
 
                 temp_kwargs.setdefault("stream", True)
@@ -1640,7 +1640,7 @@ class YaDisk:
         _apply_default_args(kwargs, self.default_args)
 
         self._download(
-            lambda *args, **kwargs: self.get_public_download_link(public_key),
+            lambda *args, **kwargs: self.get_public_download_link(public_key, **kwargs),
             "", file_or_path, **kwargs)
 
         return PublicResourceLinkObject.from_public_key(public_key, yadisk=self)
