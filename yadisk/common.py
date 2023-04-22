@@ -83,13 +83,15 @@ def ensure_path_has_schema(path: str, default_schema: str = "disk") -> str:
     # Without the schema Yandex.Disk won't let you upload filenames with the ':' character.
     # See https://github.com/ivknv/yadisk/issues/26 for more details
 
-    if path in ("disk:", "trash:"):
-        return default_schema + ":/" + path
+    KNOWN_SCHEMAS = ("disk:", "trash:", "app:")
 
-    if path.startswith("disk:/") or path.startswith("trash:/"):
-        return path
+    if path in KNOWN_SCHEMAS:
+        return default_schema + ":/" + path
 
     if path.startswith("/"):
         return default_schema + ":" + path
+
+    if any(path.startswith(schema + "/") for schema in KNOWN_SCHEMAS):
+        return path
 
     return default_schema + ":/" + path

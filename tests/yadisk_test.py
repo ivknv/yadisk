@@ -255,3 +255,4 @@ class YaDiskTestCase(TestCase):
         self.assertEqual(ensure_path_has_schema("/asd:123"), "disk:/asd:123")
         self.assertEqual(ensure_path_has_schema("/asd:123", "trash"), "trash:/asd:123")
         self.assertEqual(ensure_path_has_schema("example/path"), "disk:/example/path")
+        self.assertEqual(ensure_path_has_schema("app:/test"), "app:/test")
