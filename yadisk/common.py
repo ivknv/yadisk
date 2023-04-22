@@ -79,7 +79,7 @@ def is_public_resource_link(url: str) -> bool:
     return url.startswith("http://cloud-api.yandex.net/v1/disk/public/resources?")
 
 def ensure_path_has_schema(path: str, default_schema: str = "disk") -> str:
-    # Modifies path to always have a schema (disk:/ or trash:/).
+    # Modifies path to always have a schema (disk:/, trash:/ or app:/).
     # Without the schema Yandex.Disk won't let you upload filenames with the ':' character.
     # See https://github.com/ivknv/yadisk/issues/26 for more details
 
