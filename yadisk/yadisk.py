@@ -623,7 +623,10 @@ class YaDisk:
                 close_file = False
                 file = file_or_path
 
-            file_position = file.tell()
+            if file.seekable():
+                file_position = file.tell()
+            else:
+                n_retries = 0
 
             def attempt():
                 temp_kwargs = dict(kwargs)
@@ -643,7 +646,8 @@ class YaDisk:
                 except KeyError:
                     temp_kwargs["headers"] = {"Connection": "close"}
 
-                file.seek(file_position)
+                if file.seekable():
+                    file.seek(file_position)
 
                 with contextlib.closing(session.put(link, data=file, **temp_kwargs)) as response:
                     if response.status_code != 201:
@@ -766,7 +770,10 @@ class YaDisk:
                 close_file = False
                 file = file_or_path
 
-            file_position = file.tell()
+            if file.seekable():
+                file_position = file.tell()
+            else:
+                n_retries = 0
 
             def attempt():
                 temp_kwargs = dict(kwargs)
@@ -785,7 +792,8 @@ class YaDisk:
                 except KeyError:
                     temp_kwargs["headers"] = {"Connection": "close"}
 
-                file.seek(file_position)
+                if file.seekable():
+                    file.seek(file_position)
 
                 with contextlib.closing(session.get(link, **temp_kwargs)) as response:
                     for chunk in response.iter_content(chunk_size=8192):
