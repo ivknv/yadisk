@@ -280,7 +280,7 @@ class YaDiskTestCase(TestCase):
 
         self.yadisk.download(dst_path, test_output_file, n_retries=50)
 
-        self.yadisk.remove(dst_path)
+        self.yadisk.remove(dst_path, permanently=True)
 
         self.assertEqual(test_input_file.tell(), 1000)
         self.assertEqual(test_output_file.tell(), 1000)
