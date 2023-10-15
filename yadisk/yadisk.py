@@ -122,6 +122,12 @@ def _filter_kwargs_for_requests(kwargs: Dict[str, Any]) -> None:
     for key in keys_to_remove:
         kwargs.pop(key, None)
 
+def _read_file_as_generator(input_file: IO[AnyStr]) -> Generator[AnyStr, None, None]:
+    chunk_size = 8192
+
+    while chunk := input_file.read(chunk_size):
+        yield chunk
+
 class YaDisk:
     """
         Implements access to Yandex.Disk REST API.
@@ -610,8 +616,9 @@ class YaDisk:
 
         kwargs["timeout"] = timeout
 
-        file = None
+        file: Optional[IO[AnyStr]] = None
         close_file = False
+        file_position = 0
 
         session = self.get_session()
 
@@ -648,8 +655,14 @@ class YaDisk:
 
                 if file.seekable():
                     file.seek(file_position)
+                    payload = file
+                else:
+                    # requests will try to seek the file to determine the payload size
+                    # regardless of whether it is seekable() or not.
+                    # To bypass this problem we pass the file as a generator instead.
+                    payload = _read_file_as_generator(file)
 
-                with contextlib.closing(session.put(link, data=file, **temp_kwargs)) as response:
+                with contextlib.closing(session.put(link, data=payload, **temp_kwargs)) as response:
                     if response.status_code != 201:
                         raise get_exception(response)
 
