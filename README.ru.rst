@@ -78,6 +78,14 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 .. _issue #26: https://github.com/ivknv/yadisk/issues/26
 .. _issue #28: https://github.com/ivknv/yadisk/issues/28
 .. _issue #29: https://github.com/ivknv/yadisk/issues/29
+.. _PR #31: https://github.com/ivknv/yadisk/pull/31
+
+* **Release 1.3.4 (2023-10-15)**
+
+  * Методы :code:`upload()` и :code:`download()` (и связянные с ними) теперь
+    могут загружать/скачивать файлы, не поддерживающие операцию :code:`seek()`
+    (например, :code:`stdin` и :code:`stdout`, при условии, что они открыты в
+    режиме :code:`"rb"` или :code:`"wb"`), см. `PR #31`_
 
 * **Release 1.3.3 (2023-04-22)**
 

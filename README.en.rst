@@ -78,6 +78,13 @@ Changelog
 .. _issue #26: https://github.com/ivknv/yadisk/issues/26
 .. _issue #28: https://github.com/ivknv/yadisk/issues/28
 .. _issue #29: https://github.com/ivknv/yadisk/issues/29
+.. _PR #31: https://github.com/ivknv/yadisk/pull/31
+
+* **Release 1.3.4 (2023-10-15)**
+
+  * :code:`upload()` and :code:`download()` (and related) methods can now
+    upload/download non-seekable file-like objects (e.g. :code:`stdin` or :code:`stdout`
+    when open in binary mode), see `PR #31`_
 
 * **Release 1.3.3 (2023-04-22)**
 
