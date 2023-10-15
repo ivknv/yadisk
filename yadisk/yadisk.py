@@ -614,9 +614,14 @@ class YaDisk:
         if n_retries is None:
             n_retries = settings.DEFAULT_N_RETRIES
 
+        # Number of retries for getting the upload link.
+        # It is set to 0, unless the file is not seekable, in which case
+        # we have to use a different retry scheme
+        n_retries_for_upload_link = 0
+
         kwargs["timeout"] = timeout
 
-        file: Optional[IO[AnyStr]] = None
+        file = None
         close_file = False
         file_position = 0
 
@@ -633,11 +638,11 @@ class YaDisk:
             if file.seekable():
                 file_position = file.tell()
             else:
-                n_retries = 0
+                n_retries, n_retries_for_upload_link = 0, n_retries
 
             def attempt():
                 temp_kwargs = dict(kwargs)
-                temp_kwargs["n_retries"] = 0
+                temp_kwargs["n_retries"] = n_retries_for_upload_link
                 temp_kwargs["retry_interval"] = 0.0
 
                 link = get_upload_link_function(dst_path, **temp_kwargs)
@@ -758,6 +763,11 @@ class YaDisk:
         if n_retries is None:
             n_retries = settings.DEFAULT_N_RETRIES
 
+        # Number of retries for getting the download link.
+        # It is set to 0, unless the file is not seekable, in which case
+        # we have to use a different retry scheme
+        n_retries_for_download_link = 0
+
         retry_interval = kwargs.get("retry_interval")
 
         if retry_interval is None:
@@ -772,6 +782,7 @@ class YaDisk:
 
         file = None
         close_file = False
+        file_position = 0
 
         session = self.get_session()
 
@@ -786,11 +797,11 @@ class YaDisk:
             if file.seekable():
                 file_position = file.tell()
             else:
-                n_retries = 0
+                n_retries, n_retries_for_download_link = 0, n_retries
 
             def attempt():
                 temp_kwargs = dict(kwargs)
-                temp_kwargs["n_retries"] = 0
+                temp_kwargs["n_retries"] = n_retries_for_download_link
                 temp_kwargs["retry_interval"] = 0.0
                 link = get_download_link_function(src_path, **temp_kwargs)
 
