@@ -9,6 +9,7 @@ from unittest import TestCase
 from io import BytesIO
 
 import yadisk
+import yadisk.settings
 from yadisk.common import is_operation_link, ensure_path_has_schema
 from yadisk.api.operations import GetOperationStatusRequest
 
@@ -24,11 +25,11 @@ class YaDiskTestCase(TestCase):
         if not os.environ.get("PYTHON_YADISK_TEST_ROOT"):
             raise ValueError("Environment variable PYTHON_YADISK_TEST_ROOT must be set")
 
-        self.yadisk = yadisk.YaDisk(os.environ.get("PYTHON_YADISK_APP_ID"),
-                                    os.environ.get("PYTHON_YADISK_APP_SECRET"),
-                                    os.environ.get("PYTHON_YADISK_APP_TOKEN"))
+        self.yadisk = yadisk.YaDisk(os.environ["PYTHON_YADISK_APP_ID"],
+                                    os.environ["PYTHON_YADISK_APP_SECRET"],
+                                    os.environ["PYTHON_YADISK_APP_TOKEN"])
 
-        self.path = os.environ.get("PYTHON_YADISK_TEST_ROOT")
+        self.path = os.environ["PYTHON_YADISK_TEST_ROOT"]
 
         # Get rid of 'disk:/' prefix in the path and make it start with a slash
         # for consistency
@@ -256,3 +257,31 @@ class YaDiskTestCase(TestCase):
         self.assertEqual(ensure_path_has_schema("/asd:123", "trash"), "trash:/asd:123")
         self.assertEqual(ensure_path_has_schema("example/path"), "disk:/example/path")
         self.assertEqual(ensure_path_has_schema("app:/test"), "app:/test")
+
+    def test_upload_download_non_seekable(self):
+        # It should be possible to upload/download non-seekable file objects (such as sys.stdin/sys.stdout)
+        # See https://github.com/ivknv/yadisk/pull/31 for more details
+
+        test_input_file = BytesIO(b"0" * 1000)
+        test_input_file.seekable = lambda: False
+
+        def seek(*args, **kwargs):
+            raise NotImplementedError
+
+        test_input_file.seek = seek
+
+        dst_path = posixpath.join(self.path, "zeroes.txt")
+
+        self.yadisk.upload(test_input_file, dst_path, n_retries=50)
+
+        test_output_file = BytesIO()
+        test_output_file.seekable = lambda: False
+        test_output_file.seek = seek
+
+        self.yadisk.download(dst_path, test_output_file, n_retries=50)
+
+        self.yadisk.remove(dst_path)
+
+        self.assertEqual(test_input_file.tell(), 1000)
+        self.assertEqual(test_output_file.tell(), 1000)
+
