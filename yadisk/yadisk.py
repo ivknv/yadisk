@@ -20,7 +20,7 @@ from .objects import ResourceLinkObject, PublicResourceLinkObject, TrashResource
 
 from . import settings
 
-from typing import Any, Optional, IO, AnyStr, Union, TYPE_CHECKING
+from typing import Any, Optional, IO, AnyStr, BinaryIO, Union, TYPE_CHECKING
 from .compat import Callable, Generator, Dict
 
 if TYPE_CHECKING:
@@ -597,7 +597,7 @@ class YaDisk:
 
     def _upload(self,
                 get_upload_link_function: Callable,
-                file_or_path: Union[str, IO[AnyStr]],
+                file_or_path: Union[str, bytes, IO[AnyStr]],
                 dst_path: str, /, **kwargs) -> None:
         try:
             timeout = kwargs["timeout"]
@@ -677,7 +677,7 @@ class YaDisk:
                 file.close()
 
     def upload(self,
-               file_or_path: Union[str, IO[AnyStr]],
+               file_or_path: Union[str, bytes, IO[AnyStr]],
                dst_path: str, /, **kwargs) -> ResourceLinkObject:
         """
             Upload a file to disk.
@@ -708,7 +708,7 @@ class YaDisk:
         return ResourceLinkObject.from_path(dst_path, yadisk=self)
 
     def upload_by_link(self,
-                       file_or_path: Union[str, IO[AnyStr]],
+                       file_or_path: Union[str, bytes, IO[AnyStr]],
                        link: str, /, **kwargs) -> None:
         """
             Upload a file to disk using an upload link.
@@ -757,7 +757,7 @@ class YaDisk:
     def _download(self,
                   get_download_link_function: Callable,
                   src_path: str,
-                  file_or_path: Union[str, IO[AnyStr]], /, **kwargs) -> None:
+                  file_or_path: Union[str, bytes, BinaryIO], /, **kwargs) -> None:
         n_retries = kwargs.get("n_retries")
 
         if n_retries is None:
@@ -834,7 +834,7 @@ class YaDisk:
 
     def download(self,
                  src_path: str,
-                 file_or_path: Union[str, IO[AnyStr]], /, **kwargs) -> ResourceLinkObject:
+                 file_or_path: Union[str, bytes, BinaryIO], /, **kwargs) -> ResourceLinkObject:
         """
             Download the file.
 
@@ -860,7 +860,7 @@ class YaDisk:
 
     def download_by_link(self,
                          link: str,
-                         file_or_path: Union[str, IO[AnyStr]], /, **kwargs) -> None:
+                         file_or_path: Union[str, bytes, BinaryIO], /, **kwargs) -> None:
         """
             Download the file from the link.
 
@@ -1655,7 +1655,7 @@ class YaDisk:
 
     def download_public(self,
                         public_key: str,
-                        file_or_path: Union[str, IO[AnyStr]], /, **kwargs) -> PublicResourceLinkObject:
+                        file_or_path: Union[str, bytes, BinaryIO], /, **kwargs) -> PublicResourceLinkObject:
         """
             Download the public resource.
 
