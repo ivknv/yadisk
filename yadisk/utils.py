@@ -3,11 +3,9 @@
 from collections import defaultdict
 import time
 
-import requests
-import requests.exceptions
-
 from .objects import ErrorObject
 from .exceptions import *
+from .session import Response
 from . import settings
 
 from typing import Optional, Union, TypeVar
@@ -41,16 +39,16 @@ EXCEPTION_MAP = {400: defaultdict(lambda: BadRequestError,
                  504: defaultdict(lambda: GatewayTimeoutError),
                  507: defaultdict(lambda: InsufficientStorageError)}
 
-def get_exception(response: requests.Response) -> YaDiskError:
+def get_exception(response: Response) -> YaDiskError:
     """
         Get an exception instance based on response, assuming the request has failed.
 
-        :param response: an instance of :any:`requests.Response`
+        :param response: an instance of :any:`Response`
 
         :returns: an exception instance, subclass of :any:`YaDiskError`
     """
 
-    exc_group = EXCEPTION_MAP.get(response.status_code, None)
+    exc_group = EXCEPTION_MAP.get(response.status, None)
 
     if exc_group is None:
         return UnknownYaDiskError("Unknown Yandex.Disk error")
@@ -76,7 +74,7 @@ def auto_retry(func: Callable[[], T],
                retry_interval: Optional[Union[int, float]] = None) -> T:
     """
         Attempt to perform a request with automatic retries.
-        A retry is triggered by :any:`requests.exceptions.RequestException` or :any:`RetriableYaDiskError`.
+        A retry is triggered by :any:`RequestError` or :any:`RetriableYaDiskError`.
 
         :param func: function to run, must not require any arguments
         :param n_retries: `int`, maximum number of retries
@@ -94,7 +92,7 @@ def auto_retry(func: Callable[[], T],
     for i in range(n_retries + 1):
         try:
             return func()
-        except (requests.exceptions.RequestException, ConnectionError, RetriableYaDiskError) as e:
+        except (RequestError, RetriableYaDiskError) as e:
             if i == n_retries:
                 raise e
 

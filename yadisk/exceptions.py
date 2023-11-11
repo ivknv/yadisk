@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-__all__ = ["YaDiskError", "RetriableYaDiskError", "UnknownYaDiskError",
+__all__ = ["YaDiskError", "RequestError", "YaDiskConnectionError", "TooManyRedirectsError",
+           "RequestTimeoutError", "RetriableYaDiskError", "UnknownYaDiskError",
            "WrongResourceTypeError",  "BadRequestError", "UnauthorizedError",
            "ForbiddenError", "NotFoundError", "NotAcceptableError",
            "ConflictError", "PayloadTooLargeError", "UnsupportedMediaError",
@@ -16,11 +17,11 @@ class YaDiskError(Exception):
         Base class for all exceptions in this library.
 
         :ivar error_type: `str`, unique error code as returned by API
-        :ivar response: an instance of :any:`requests.Response`
+        :ivar response: an instance of :any:`Response`
 
         :param error_type: `str`, unique error code as returned by API
         :param msg: `str`, exception message
-        :param response: an instance of :any:`requests.Response`
+        :param response: an instance of :any:`Response`
     """
 
     def __init__(self, error_type=None, msg="", response=None):
@@ -28,6 +29,27 @@ class YaDiskError(Exception):
 
         self.error_type = error_type
         self.response = response
+
+class RequestError(YaDiskError):
+    """
+        Generic exception class for cases when a request could not be sent or
+        response could not be received.
+    """
+
+    def __init__(self, msg=""):
+        YaDiskError.__init__(self, None, msg)
+
+class YaDiskConnectionError(RequestError):
+    """Thrown when a connection error occured."""
+    pass
+
+class TooManyRedirectsError(RequestError):
+    """Thrown when there were too many redirects."""
+    pass
+
+class RequestTimeoutError(RequestError):
+    """Thrown when a request timed out."""
+    pass
 
 class WrongResourceTypeError(YaDiskError):
     """Thrown when the resource was expected to be of different type (e.g., file instead of directory)."""

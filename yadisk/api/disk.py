@@ -8,7 +8,7 @@ from typing import Optional, TYPE_CHECKING
 from ..compat import Iterable
 
 if TYPE_CHECKING:
-    import requests
+    from ..session import Session
 
 __all__ = ["DiskInfoRequest"]
 
@@ -16,7 +16,7 @@ class DiskInfoRequest(APIRequest):
     """
         A request to get disk information.
 
-        :param session: an instance of :any:`requests.Session` with prepared headers
+        :param session: an instance of :any:`Session` with prepared headers
         :param fields: list of keys to be included in the response
 
         :returns: :any:`DiskInfoObject`
@@ -26,7 +26,7 @@ class DiskInfoRequest(APIRequest):
     method = "GET"
 
     def __init__(self,
-                 session: "requests.Session",
+                 session: "Session",
                  fields: Optional[Iterable[str]] = None, **kwargs):
         APIRequest.__init__(self, session, {"fields": fields}, **kwargs)
 

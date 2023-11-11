@@ -7,7 +7,7 @@ from ..exceptions import InvalidResponseError
 from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    import requests
+    from ..session import Session
 
 __all__ = ["RefreshTokenRequest", "RevokeTokenRequest", "GetTokenRequest"]
 
@@ -15,7 +15,7 @@ class RefreshTokenRequest(APIRequest):
     """
         A request to refresh an existing token.
 
-        :param session: an instance of :any:`requests.Session` with prepared headers
+        :param session: an instance of :any:`Session` with prepared headers
         :param refresh_token: the refresh token that was received with the original token
         :param client_id: application ID
         :param client_secret: application secret password
@@ -27,7 +27,7 @@ class RefreshTokenRequest(APIRequest):
     method = "POST"
 
     def __init__(self,
-                 session: "requests.Session",
+                 session: "Session",
                  refresh_token: str,
                  client_id: str,
                  client_secret: str, **kwargs):
@@ -51,7 +51,7 @@ class RevokeTokenRequest(APIRequest):
     """
         A request to revoke the token.
 
-        :param session: an instance of :any:`requests.Session` with prepared headers
+        :param session: an instance of :any:`Session` with prepared headers
         :param token: the token to be revoked
         :param client_id: application ID
         :param client_secret: application secret password
@@ -63,7 +63,7 @@ class RevokeTokenRequest(APIRequest):
     method = "POST"
 
     def __init__(self,
-                 session: "requests.Session",
+                 session: "Session",
                  token: str,
                  client_id: str,
                  client_secret: str, **kwargs):
@@ -86,7 +86,7 @@ class GetTokenRequest(APIRequest):
     """
         A request to get the token.
 
-        :param session: an instance of :any:`requests.Session` with prepared headers
+        :param session: an instance of :any:`Session` with prepared headers
         :param code: confirmation code
         :param client_id: application ID
         :param client_secret: application secret password
@@ -99,7 +99,7 @@ class GetTokenRequest(APIRequest):
     method = "POST"
 
     def __init__(self,
-                 session: "requests.Session",
+                 session: "Session",
                  code: str,
                  client_id: str,
                  client_secret: str,

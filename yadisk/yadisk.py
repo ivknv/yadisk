@@ -1,14 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import contextlib
-import functools
 from pathlib import PurePosixPath
-import threading
-import weakref
-
 from urllib.parse import urlencode
-
-import requests
 
 from .api import *
 
@@ -17,6 +10,13 @@ from .exceptions import (
     OperationNotFoundError, InvalidResponseError)
 from .utils import auto_retry, get_exception
 from .objects import ResourceLinkObject, PublicResourceLinkObject, TrashResourceObject
+
+from .session import Session
+
+try:
+    from .requests_session import RequestsSession
+except ImportError:
+    RequestsSession = None
 
 from . import settings
 
@@ -166,63 +166,57 @@ class YaDisk:
 
     id: str
     secret: str
-    token: str
     default_args: Dict[str, Any]
 
     def __init__(self,
                  id: str = "",
                  secret: str = "",
                  token: str = "",
-                 default_args: Optional[Dict[str, Any]] = None):
+                 default_args: Optional[Dict[str, Any]] = None,
+                 session_factory: Optional[Callable[[], Session]] = None):
         self.id = id
         self.secret = secret
-        self.token = token
+        self._token = ""
 
         self.default_args = {} if default_args is None else default_args
 
-        @functools.lru_cache(maxsize=1024)
-        def _get_session(token: str, tid: int):
-            return self.make_session(token)
+        if session_factory is None:
+            if RequestsSession is None:
+                raise RuntimeError("requests is not installed. Either install requests or provide a custom session_factory.")
 
-        self._get_session = _get_session
+            session_factory = RequestsSession
 
-    def clear_session_cache(self) -> None:
-        """Clears the session cache. Unused sessions will be closed."""
+        self.session_factory = session_factory
+        self.session = self.make_session()
 
-        self._get_session.cache_clear()
+        self.token = token
 
-    def make_session(self, token: Optional[str] = None) -> requests.Session:
+    @property
+    def token(self) -> str:
+        return self._token
+
+    @token.setter
+    def token(self, value: str) -> None:
+        self._token = value
+        self.session.set_token(self._token)
+
+    def make_session(self, token: Optional[str] = None) -> Session:
         """
-            Prepares :any:`requests.Session` object with headers needed for API.
+            Prepares :any:`Session` object with headers needed for API.
 
             :param token: application token, equivalent to `self.token` if `None`
-            :returns: :any:`requests.Session`
+            :returns: :any:`Session`
         """
 
         if token is None:
             token = self.token
 
-        session = requests.Session()
-
-        # Make sure the session is eventually closed
-        weakref.finalize(session, session.close)
+        session = self.session_factory()
 
         if token:
-            session.headers["Authorization"] = "OAuth " + token
+            session.set_token(token)
 
         return session
-
-    def get_session(self, token: Optional[str] = None) -> requests.Session:
-        """
-            Like :any:`YaDisk.make_session` but wrapped in :any:`functools.lru_cache`.
-
-            :returns: :any:`requests.Session`, different instances for different threads
-        """
-
-        if token is None:
-            token = self.token
-
-        return self._get_session(token, threading.get_ident())
 
     def get_auth_url(self, **kwargs) -> str:
         """
@@ -322,7 +316,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        with requests.Session() as session:
+        with self.session_factory() as session:
             request = GetTokenRequest(session, code, self.id, self.secret, **kwargs)
             request.send()
 
@@ -345,7 +339,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        with requests.Session() as session:
+        with self.session_factory() as session:
             request = RefreshTokenRequest(
                 session, refresh_token, self.id, self.secret, **kwargs)
             request.send()
@@ -373,7 +367,7 @@ class YaDisk:
         if token is None:
             token = self.token
 
-        with requests.Session() as session:
+        with self.session_factory() as session:
             request = RevokeTokenRequest(session, token, self.id, self.secret, **kwargs)
             request.send()
 
@@ -397,14 +391,25 @@ class YaDisk:
         # Any ID will do, doesn't matter whether it exists or not
         fake_operation_id = "0000"
 
+        if token is None:
+            token = self.token
+
+        if token == self.token:
+            session = self.session
+        else:
+            session = self.make_session(token)
+
         try:
             # get_operation_status() doesn't require any permissions, unlike most other requests
-            self._get_operation_status(self.get_session(token), fake_operation_id, **kwargs)
+            self._get_operation_status(session, fake_operation_id, **kwargs)
             return True
         except UnauthorizedError:
             return False
         except OperationNotFoundError:
             return True
+        finally:
+            if session is not self.session:
+                session.close()
 
     def get_disk_info(self, **kwargs) -> "DiskInfoObject":
         """
@@ -423,7 +428,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = DiskInfoRequest(self.get_session(), **kwargs)
+        request = DiskInfoRequest(self.session, **kwargs)
         request.send()
 
         return request.process()
@@ -452,7 +457,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = GetMetaRequest(self.get_session(), path, **kwargs)
+        request = GetMetaRequest(self.session, path, **kwargs)
         request.send()
 
         return request.process(yadisk=self)
@@ -590,7 +595,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = GetUploadLinkRequest(self.get_session(), path, **kwargs)
+        request = GetUploadLinkRequest(self.session, path, **kwargs)
         request.send()
 
         return request.process().href
@@ -625,7 +630,7 @@ class YaDisk:
         close_file = False
         file_position = 0
 
-        session = self.get_session()
+        session = self.session
 
         try:
             if isinstance(file_or_path, (str, bytes)):
@@ -667,8 +672,8 @@ class YaDisk:
                     # To bypass this problem we pass the file as a generator instead.
                     payload = _read_file_as_generator(file)
 
-                with contextlib.closing(session.put(link, data=payload, **temp_kwargs)) as response:
-                    if response.status_code != 201:
+                with session.send_request("PUT", link, data=payload, **temp_kwargs) as response:
+                    if response.status != 201:
                         raise get_exception(response)
 
             auto_retry(attempt, n_retries, retry_interval)
@@ -749,7 +754,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = GetDownloadLinkRequest(self.get_session(), path, **kwargs)
+        request = GetDownloadLinkRequest(self.session, path, **kwargs)
         request.send()
 
         return request.process().href
@@ -784,7 +789,7 @@ class YaDisk:
         close_file = False
         file_position = 0
 
-        session = self.get_session()
+        session = self.session
 
         try:
             if isinstance(file_or_path, (str, bytes)):
@@ -819,12 +824,10 @@ class YaDisk:
                 if file.seekable():
                     file.seek(file_position)
 
-                with contextlib.closing(session.get(link, **temp_kwargs)) as response:
-                    for chunk in response.iter_content(chunk_size=8192):
-                        if chunk:
-                            file.write(chunk)
+                with session.send_request("GET", link, **temp_kwargs) as response:
+                    response.download(file.write)
 
-                    if response.status_code != 200:
+                    if response.status != 200:
                         raise get_exception(response)
 
             auto_retry(attempt, n_retries, retry_interval)
@@ -901,7 +904,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = DeleteRequest(self.get_session(), path, **kwargs)
+        request = DeleteRequest(self.session, path, **kwargs)
 
         request.send()
 
@@ -929,7 +932,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = MkdirRequest(self.get_session(), path, **kwargs)
+        request = MkdirRequest(self.session, path, **kwargs)
         request.send()
 
         return request.process(yadisk=self)
@@ -958,7 +961,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = GetTrashRequest(self.get_session(), path, **kwargs)
+        request = GetTrashRequest(self.session, path, **kwargs)
         request.send()
 
         return request.process(yadisk=self)
@@ -1013,7 +1016,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = CopyRequest(self.get_session(), src_path, dst_path, **kwargs)
+        request = CopyRequest(self.session, src_path, dst_path, **kwargs)
         request.send()
 
         return request.process(yadisk=self)
@@ -1047,7 +1050,7 @@ class YaDisk:
 
         kwargs["dst_path"] = dst_path
 
-        request = RestoreTrashRequest(self.get_session(), path, **kwargs)
+        request = RestoreTrashRequest(self.session, path, **kwargs)
         request.send()
 
         return request.process(yadisk=self)
@@ -1078,7 +1081,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = MoveRequest(self.get_session(), src_path, dst_path, **kwargs)
+        request = MoveRequest(self.session, src_path, dst_path, **kwargs)
         request.send()
 
         return request.process(yadisk=self)
@@ -1139,7 +1142,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = DeleteTrashRequest(self.get_session(), path, **kwargs)
+        request = DeleteTrashRequest(self.session, path, **kwargs)
         request.send()
 
         return request.process(yadisk=self)
@@ -1164,7 +1167,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = PublishRequest(self.get_session(), path, **kwargs)
+        request = PublishRequest(self.session, path, **kwargs)
         request.send()
 
         return request.process(yadisk=self)
@@ -1189,7 +1192,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = UnpublishRequest(self.get_session(), path, **kwargs)
+        request = UnpublishRequest(self.session, path, **kwargs)
         request.send()
 
         return request.process(yadisk=self)
@@ -1223,7 +1226,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = SaveToDiskRequest(self.get_session(), public_key, **kwargs)
+        request = SaveToDiskRequest(self.session, public_key, **kwargs)
         request.send()
 
         return request.process(yadisk=self)
@@ -1256,7 +1259,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = GetPublicMetaRequest(self.get_session(), public_key, **kwargs)
+        request = GetPublicMetaRequest(self.session, public_key, **kwargs)
         request.send()
 
         return request.process(yadisk=self)
@@ -1491,7 +1494,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = GetPublicResourcesRequest(self.get_session(), **kwargs)
+        request = GetPublicResourcesRequest(self.session, **kwargs)
         request.send()
 
         return request.process(yadisk=self)
@@ -1519,7 +1522,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = PatchRequest(self.get_session(), path, properties, **kwargs)
+        request = PatchRequest(self.session, path, properties, **kwargs)
         request.send()
 
         return request.process(yadisk=self)
@@ -1548,7 +1551,7 @@ class YaDisk:
         _apply_default_args(kwargs, self.default_args)
 
         if kwargs.get("limit") is not None:
-            request = FilesRequest(self.get_session(), **kwargs)
+            request = FilesRequest(self.session, **kwargs)
             request.send()
 
             for i in request.process(yadisk=self).items:
@@ -1591,7 +1594,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = LastUploadedRequest(self.get_session(), **kwargs)
+        request = LastUploadedRequest(self.session, **kwargs)
         request.send()
 
         for i in request.process(yadisk=self).items:
@@ -1622,7 +1625,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = UploadURLRequest(self.get_session(), url, path, **kwargs)
+        request = UploadURLRequest(self.session, url, path, **kwargs)
         request.send()
 
         return request.process(yadisk=self)
@@ -1648,7 +1651,7 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        request = GetPublicDownloadLinkRequest(self.get_session(), public_key, **kwargs)
+        request = GetPublicDownloadLinkRequest(self.session, public_key, **kwargs)
         request.send()
 
         return request.process().href
@@ -1683,7 +1686,7 @@ class YaDisk:
         return PublicResourceLinkObject.from_public_key(public_key, yadisk=self)
 
     def _get_operation_status(self,
-                              session: "requests.Session",
+                              session: Session,
                               operation_id: str, /, **kwargs) -> str:
         # This method is kept for private use (such as for check_token())
         request = GetOperationStatusRequest(session, operation_id, **kwargs)
@@ -1709,4 +1712,4 @@ class YaDisk:
 
         _apply_default_args(kwargs, self.default_args)
 
-        return self._get_operation_status(self.get_session(), operation_id, **kwargs)
+        return self._get_operation_status(self.session, operation_id, **kwargs)

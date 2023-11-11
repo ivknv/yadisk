@@ -8,7 +8,8 @@ from typing import Optional, TypeVar, Any, Union
 
 __all__ = ["typed_list", "int_or_error", "str_or_error", "bool_or_error",
            "dict_or_error", "str_or_dict_or_error", "yandex_date", "is_operation_link",
-           "is_resource_link", "is_public_resource_link", "ensure_path_has_schema"]
+           "is_resource_link", "is_public_resource_link", "ensure_path_has_schema",
+           "CaseInsensitiveDict"]
 
 T = TypeVar("T", bound=Callable)
 
@@ -95,3 +96,45 @@ def ensure_path_has_schema(path: str, default_schema: str = "disk") -> str:
         return path
 
     return default_schema + ":/" + path
+
+# https://stackoverflow.com/a/32888599/3653520
+class CaseInsensitiveDict(dict):
+    K = TypeVar("K")
+
+    @classmethod
+    def _k(cls, key: K) -> K:
+        return key.lower() if isinstance(key, str) else key
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._convert_keys()
+
+    def __getitem__(self, key: K) -> Any:
+        return super().__getitem__(self.__class__._k(key))
+
+    def __setitem__(self, key: K, value: Any) -> None:
+        super().__setitem__(self.__class__._k(key), value)
+
+    def __delitem__(self, key: K) -> Any:
+        return super().__delitem__(self.__class__._k(key))
+
+    def __contains__(self, key: K) -> bool:
+        return super().__contains__(self.__class__._k(key))
+
+    def pop(self, key: K, /, *args, **kwargs) -> Any:
+        return super().pop(self.__class__._k(key), *args, **kwargs)
+
+    def get(self, key: K, /, *args, **kwargs) -> Any:
+        return super().get(self.__class__._k(key), *args, **kwargs)
+
+    def setdefault(self, key: K, *args, **kwargs) -> Any:
+        return super().setdefault(self.__class__._k(key), *args, **kwargs)
+
+    def update(self, E: dict = {}, **F) -> None:
+        super().update(self.__class__(E))
+        super().update(self.__class__(**F))
+
+    def _convert_keys(self) -> None:
+        for k in list(self.keys()):
+            v = super(CaseInsensitiveDict, self).pop(k)
+            self.__setitem__(k, v)

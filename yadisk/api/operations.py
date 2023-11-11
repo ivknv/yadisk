@@ -11,7 +11,7 @@ from typing import Optional, TYPE_CHECKING
 from ..compat import Iterable
 
 if TYPE_CHECKING:
-    import requests
+    from ..session import Session
 
 __all__ = ["GetOperationStatusRequest"]
 
@@ -19,7 +19,7 @@ class GetOperationStatusRequest(APIRequest):
     """
         A request to get operation status.
 
-        :param session: an instance of :any:`requests.Session` with prepared headers
+        :param session: an instance of :any:`Session` with prepared headers
         :param operation_id: operation ID or link
         :param fields: list of keys to be included in the response
 
@@ -29,7 +29,7 @@ class GetOperationStatusRequest(APIRequest):
     method = "GET"
 
     def __init__(self,
-                 session: "requests.Session",
+                 session: "Session",
                  operation_id: str,
                  fields: Optional[Iterable[str]] = None, **kwargs):
         if is_operation_link(operation_id):

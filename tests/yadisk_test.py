@@ -36,6 +36,9 @@ class YaDiskTestCase(TestCase):
         if self.path.startswith("disk:/"):
             self.path = posixpath.join("/", self.path[len("disk:/"):])
 
+    def tearDown(self):
+        self.yadisk.session.close()
+
     def test_get_meta(self):
        self.assertIsInstance(self.yadisk.get_meta(self.path), yadisk.objects.ResourceObject)
 

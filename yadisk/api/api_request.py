@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 
-import requests
+from ..common import CaseInsensitiveDict
 
 from ..exceptions import InvalidResponseError
 
 from ..utils import auto_retry, get_exception
 from .. import settings
+from ..session import Session, Response
 
 from typing import Optional, Union, TypeVar
 from ..compat import Set
+import json
 
 __all__ = ["APIRequest"]
 
@@ -19,13 +21,13 @@ class APIRequest(object):
     """
         Base class for all API requests.
 
-        :param session: an instance of :any:`requests.Session`
+        :param session: an instance of :any:`Session`
         :param args: `dict` of arguments, that will be passed to `process_args`
         :param timeout: `float` or `tuple`, request timeout
         :param headers: `dict` or `None`, additional request headers
         :param n_retries: `int`, maximum number of retries
         :param retry_interval: delay between retries in seconds
-        :param kwargs: other arguments for :any:`requests.Session.send`
+        :param kwargs: other arguments for :any:`Session.send_request`
 
         :ivar url: `str`, request URL
         :ivar method: `str`, request method
@@ -44,12 +46,11 @@ class APIRequest(object):
     success_codes: Set[int] = {200}
     retry_interval: Optional[Union[int, float]] = None
 
-    request: Optional[requests.PreparedRequest]
-    response: Optional[requests.Response]
+    response: Optional[Response]
 
     T = TypeVar("T")
 
-    def __init__(self, session: requests.Session, args: dict, **kwargs):
+    def __init__(self, session: Session, args: dict, **kwargs):
         n_retries = kwargs.pop("n_retries", None)
         retry_interval = kwargs.pop("retry_interval", None)
         headers = kwargs.pop("headers", {})
@@ -90,35 +91,40 @@ class APIRequest(object):
         self.params = {}
 
         self.process_args(**self.args)
-        self.prepare()
 
     def process_args(self) -> None:
         raise NotImplementedError
 
-    def prepare(self) -> None:
-        """Prepare the request"""
-
-        r = requests.Request(self.method, self.url,
-                             data=self.data, params=self.params)
-        r.headers["Content-Type"] = self.content_type
-        r.headers.update(self.headers)
-        self.request = self.session.prepare_request(r)
-
     def _attempt(self) -> None:
-        assert self.request is not None
+        headers = CaseInsensitiveDict()
+        headers["Content-Type"] = self.content_type
+        headers.update(self.headers)
 
-        self.response = self.session.send(self.request, **self.send_kwargs)
+        if self.data and not isinstance(self.data, bytes):
+            data = json.dumps(self.data).encode("utf8")
+        else:
+            data = self.data or None
 
-        success = self.response.status_code in self.success_codes
+        kwargs = dict(self.send_kwargs)
+        kwargs.update({"headers": headers,
+                       "data":    data,
+                       "params":  self.params})
+
+        assert self.method is not None
+        assert self.url is not None
+
+        self.response = self.session.send_request(self.method, self.url, **kwargs)
+
+        success = self.response.status in self.success_codes
 
         if not success:
             raise get_exception(self.response)
 
-    def send(self) -> requests.Response:
+    def send(self) -> Response:
         """
             Actually send the request
 
-           :returns: :any:`requests.Response` (`self.response`)
+           :returns: :any:`Response` (`self.response`)
         """
 
         auto_retry(self._attempt, self.n_retries, self.retry_interval)
