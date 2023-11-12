@@ -12,11 +12,8 @@ import yadisk
 from yadisk.sessions.requests_session import RequestsSession
 from yadisk.sessions.httpx_session import HTTPXSession
 
-import yadisk.settings
 from yadisk.common import is_operation_link, ensure_path_has_schema
 from yadisk.api.operations import GetOperationStatusRequest
-
-yadisk.settings.DEFAULT_N_RETRIES = 50
 
 __all__ = ["RequestsTestCase", "HTTPXTestCase"]
 
@@ -33,6 +30,7 @@ def make_test_case(name, session_factory):
                                         os.environ["PYTHON_YADISK_APP_SECRET"],
                                         os.environ["PYTHON_YADISK_APP_TOKEN"],
                                         session_factory=session_factory)
+            self.client.default_args["n_retries"] = 50
 
             self.path = os.environ["PYTHON_YADISK_TEST_ROOT"]
 
