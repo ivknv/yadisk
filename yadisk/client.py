@@ -24,7 +24,7 @@ from . import settings
 
 from typing import Any, Optional, IO, AnyStr, Union, TYPE_CHECKING
 from .compat import Callable, Generator, Dict
-from .types import SessionFactory, FileOrPath, FileOrPathDestination
+from .types import OpenFileCallback, SessionFactory, FileOrPath, FileOrPathDestination
 
 if TYPE_CHECKING:
     from .objects import (
@@ -172,6 +172,7 @@ class Client:
     default_args: Dict[str, Any]
     session_factory: SessionFactory
     session: Session
+    open_file: OpenFileCallback
 
     synchronous = True
 
@@ -180,7 +181,8 @@ class Client:
                  secret: str = "",
                  token: str = "",
                  default_args: Optional[Dict[str, Any]] = None,
-                 session_factory: Optional[SessionFactory] = None):
+                 session_factory: Optional[SessionFactory] = None,
+                 open_file: Optional[OpenFileCallback] = None):
         self.id = id
         self.secret = secret
         self._token = ""
@@ -192,6 +194,11 @@ class Client:
                 raise RuntimeError("requests is not installed. Either install requests or provide a custom session_factory.")
 
             session_factory = RequestsSession
+
+        if open_file is None:
+            open_file = open
+
+        self.open_file = open_file
 
         self.session_factory = session_factory
         self.session = self.make_session()
@@ -659,7 +666,7 @@ class Client:
         try:
             if isinstance(file_or_path, (str, bytes)):
                 close_file = True
-                file = open(file_or_path, "rb")
+                file = self.open_file(file_or_path, "rb")
             else:
                 close_file = False
                 file = file_or_path
@@ -818,7 +825,7 @@ class Client:
         try:
             if isinstance(file_or_path, (str, bytes)):
                 close_file = True
-                file = open(file_or_path, "wb")
+                file = self.open_file(file_or_path, "wb")
             else:
                 close_file = False
                 file = file_or_path

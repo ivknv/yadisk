@@ -6,7 +6,10 @@ from pathlib import PurePosixPath
 
 from urllib.parse import urlencode
 
-from .types import AsyncFileOrPath, AsyncFileOrPathDestination, AsyncSessionFactory
+from .types import (
+    AsyncFileOrPath, AsyncFileOrPathDestination, AsyncSessionFactory,
+    AsyncOpenFileCallback, FileOpenMode, BinaryAsyncFileLike
+)
 
 from . import settings
 from .api import *
@@ -16,7 +19,7 @@ from .exceptions import (
 from .utils import auto_retry
 from .objects import AsyncResourceLinkObject, AsyncPublicResourceLinkObject
 
-from typing import Any, Optional, Union, IO, TYPE_CHECKING
+from typing import Any, Optional, Union, IO, TYPE_CHECKING, BinaryIO
 from .compat import Callable, AsyncGenerator, Awaitable, Dict
 
 from .async_session import AsyncSession
@@ -27,7 +30,18 @@ except ImportError:
     # aiohttp is not available
     AIOHTTPSession = None
 
-import aiofiles
+try:
+    import aiofiles
+
+    async def _open_file_with_aiofiles(path: Union[str, bytes], mode: FileOpenMode) -> BinaryAsyncFileLike:
+        return await aiofiles.open(path, mode)
+
+    _default_open_file = _open_file_with_aiofiles
+except ImportError:
+    async def _open_file(path: Union[str, bytes], mode: FileOpenMode) -> BinaryIO:
+        return open(path, mode)
+
+    _default_open_file = _open_file
 
 if TYPE_CHECKING:
     from .objects import (
@@ -223,6 +237,7 @@ class AsyncClient:
     default_args: Dict[str, Any]
     session_factory: AsyncSessionFactory
     session: AsyncSession
+    open_file: AsyncOpenFileCallback
 
     synchronous = False
 
@@ -231,7 +246,8 @@ class AsyncClient:
                  secret: str = "",
                  token: str = "",
                  default_args: Optional[Dict[str, Any]] = None,
-                 session_factory: Optional[AsyncSessionFactory] = None):
+                 session_factory: Optional[AsyncSessionFactory] = None,
+                 open_file: Optional[AsyncOpenFileCallback] = None):
         self.id = id
         self.secret = secret
 
@@ -248,6 +264,11 @@ class AsyncClient:
             self.session_factory = session_factory
 
         self.session = self.make_session()
+
+        if open_file is None:
+            open_file = _default_open_file
+
+        self.open_file = open_file
 
         self.token = token
 
@@ -673,7 +694,7 @@ class AsyncClient:
         try:
             if isinstance(file_or_path, (str, bytes)):
                 close_file = True
-                file = await aiofiles.open(file_or_path, "rb")
+                file = await self.open_file(file_or_path, "rb")
             elif inspect.isasyncgenfunction(file_or_path):
                 generator_factory = file_or_path
             else:
@@ -840,7 +861,7 @@ class AsyncClient:
         try:
             if isinstance(file_or_path, (str, bytes)):
                 close_file = True
-                file = await aiofiles.open(file_or_path, "wb")
+                file = await self.open_file(file_or_path, "wb")
             else:
                 close_file = False
                 file = file_or_path

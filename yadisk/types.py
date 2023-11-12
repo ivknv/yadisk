@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from typing import Any, Optional, Union, TYPE_CHECKING, Protocol, BinaryIO
+from typing import Any, Optional, Union, TYPE_CHECKING, Protocol, BinaryIO, Literal
 from .compat import (
     Dict, List, Tuple, Generator, AsyncGenerator, Callable, Awaitable,
     AsyncIterable
@@ -16,7 +16,8 @@ __all__ = [
     "JSON", "TimeoutParameter", "Headers", "Payload", "ConsumeCallback",
     "AsyncPayload", "AsyncConsumeCallback", "AnyResponse", "AnyClient",
     "AsyncFileLike", "BinaryAsyncFileLike", "FileOrPath", "FileOrPathDestination",
-    "AsyncFileOrPath", "AsyncFileOrPathDestination", "SessionFactory", "AsyncSessionFactory"
+    "AsyncFileOrPath", "AsyncFileOrPathDestination", "SessionFactory", "AsyncSessionFactory",
+    "FileOpenMode", "OpenFileCallback", "AsyncOpenFileCallback"
 ]
 
 JSON = Union[Dict, List, str, int, float, None]
@@ -74,3 +75,10 @@ AsyncFileOrPathDestination = Union[
 
 SessionFactory = Callable[[], "Session"]
 AsyncSessionFactory = Callable[[], "AsyncSession"]
+
+FileOpenMode = Union[Literal["rb"], Literal["wb"]]
+OpenFileCallback = Callable[[Union[str, bytes], FileOpenMode], BinaryIO]
+AsyncOpenFileCallback = Union[
+    Callable[[Union[str, bytes], FileOpenMode], Awaitable[BinaryAsyncFileLike]],
+    Callable[[Union[str, bytes], FileOpenMode], Awaitable[BinaryIO]],
+]
