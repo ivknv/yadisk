@@ -2,15 +2,20 @@
 
 from typing import Optional, Union
 
-from .exceptions import RequestError, TooManyRedirectsError, RequestTimeoutError, YaDiskConnectionError
-from .session import Session, Response
-from .compat import Dict, Iterable, Tuple
+from ..exceptions import (
+    RequestError, TooManyRedirectsError,
+    RequestTimeoutError, YaDiskConnectionError
+)
+
+from ..session import Session, Response
+from ..compat import Iterable
+from ..types import JSON, ConsumeCallback, Headers, TimeoutParameter
 
 import httpx
 
 __all__ = ["HTTPXSession"]
 
-def convert_httpx_exception(exc: httpx.HTTPError) -> Exception:
+def convert_httpx_exception(exc: httpx.HTTPError) -> Union[RequestError, httpx.HTTPError]:
     if isinstance(exc, httpx.TooManyRedirects):
         return TooManyRedirectsError(str(exc))
     elif isinstance(exc, httpx.TimeoutException):
@@ -27,21 +32,21 @@ class HTTPXResponse(Response):
         self._response = response
         self.status = response.status_code
 
-    def json(self) -> Response.JSON:
+    def json(self) -> JSON:
         self._response.read()
         return self._response.json()
 
-    def download(self, consume_callback) -> None:
+    def download(self, consume_callback: ConsumeCallback) -> None:
         try:
             for chunk in self._response.iter_bytes(8192):
                 consume_callback(chunk)
         except httpx.HTTPError as e:
             raise convert_httpx_exception(e)
 
-    def release(self) -> None:
+    def close(self) -> None:
         self._response.close()
 
-def convert_timeout(timeout: Optional[Union[float, Tuple[float, float]]]) -> Optional[httpx.Timeout]:
+def convert_timeout(timeout: TimeoutParameter) -> Optional[httpx.Timeout]:
     if timeout is None:
         return None
 
@@ -61,7 +66,7 @@ class HTTPXSession(Session):
     def httpx_session(self) -> httpx.Client:
         return self._session
 
-    def set_headers(self, headers: Dict[str, str]) -> None:
+    def set_headers(self, headers: Headers) -> None:
         self._session.headers.update(headers)
 
     def remove_headers(self, headers: Iterable[str]) -> None:

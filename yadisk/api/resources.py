@@ -3,10 +3,17 @@
 import json
 
 from .api_request import APIRequest
-from ..objects import PublicResourcesListObject, TrashResourceObject
-from ..objects import FilesResourceListObject, LastUploadedResourceListObject
-from ..objects import ResourceObject, ResourceUploadLinkObject, PublicResourceObject
-from ..objects import OperationLinkObject, ResourceLinkObject, ResourceDownloadLinkObject
+from ..objects import (
+    PublicResourcesListObject, SyncPublicResourcesListObject, AsyncPublicResourcesListObject,
+    TrashResourceObject, SyncTrashResourceObject, AsyncTrashResourceObject,
+    FilesResourceListObject, SyncFilesResourceListObject, AsyncFilesResourceListObject,
+    LastUploadedResourceListObject, SyncLastUploadedResourceListObject, AsyncLastUploadedResourceListObject,
+    ResourceObject, SyncResourceObject, AsyncResourceObject, ResourceUploadLinkObject,
+    PublicResourceObject, SyncPublicResourceObject, AsyncPublicResourceObject,
+    OperationLinkObject, SyncOperationLinkObject, AsyncOperationLinkObject,
+    ResourceLinkObject, SyncResourceLinkObject, AsyncResourceLinkObject, ResourceDownloadLinkObject
+)
+
 from ..common import is_operation_link, ensure_path_has_schema
 from ..exceptions import InvalidResponseError
 
@@ -14,8 +21,7 @@ from ..compat import Iterable, Dict, List
 from typing import Optional, Union, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ..session import Session
-    from ..yadisk import YaDisk
+    from ..types import AnySession, AnyClient
 
 __all__ = ["GetPublicResourcesRequest", "UnpublishRequest", "GetDownloadLinkRequest",
            "GetTrashRequest", "RestoreTrashRequest", "DeleteTrashRequest",
@@ -33,7 +39,7 @@ class GetPublicResourcesRequest(APIRequest):
     """
         A request to get a list of public resources.
 
-        :param session: an instance of :any:`Session` with prepared headers
+        :param session: an instance of :any:`AnySession` with prepared headers
         :param offset: offset from the beginning of the list
         :param limit: maximum number of elements in the list
         :param preview_size: size of the file preview
@@ -48,7 +54,7 @@ class GetPublicResourcesRequest(APIRequest):
     method = "GET"
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  offset: int = 0,
                  limit: int = 20,
                  preview_size: Optional[str] = None,
@@ -86,17 +92,20 @@ class GetPublicResourcesRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> PublicResourcesListObject:
+                     yadisk: Optional["AnyClient"] = None) -> PublicResourcesListObject:
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
-        return PublicResourcesListObject(js, yadisk)
+        if yadisk is None or yadisk.synchronous:
+            return SyncPublicResourcesListObject(js, yadisk)
+        else:
+            return AsyncPublicResourcesListObject(js, yadisk)
 
 class UnpublishRequest(APIRequest):
     """
         A request to make a public resource private.
 
-        :param session: an instance of :any:`Session` with prepared headers
+        :param session: an instance of :any:`AnySession` with prepared headers
         :param path: path to the resource to be unpublished
         :param fields: list of keys to be included in the response
 
@@ -107,7 +116,7 @@ class UnpublishRequest(APIRequest):
     method = "PUT"
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  path: str,
                  fields: Optional[Iterable[str]] = None, **kwargs):
         APIRequest.__init__(self, session, {"path":   path,
@@ -121,17 +130,20 @@ class UnpublishRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> ResourceLinkObject:
+                     yadisk: Optional["AnyClient"] = None) -> ResourceLinkObject:
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
-        return ResourceLinkObject(js, yadisk)
+        if yadisk is None or yadisk.synchronous:
+            return SyncResourceLinkObject(js, yadisk)
+        else:
+            return AsyncResourceLinkObject(js, yadisk)
 
 class GetDownloadLinkRequest(APIRequest):
     """
         A request to get a download link to a resource.
 
-        :param session: an instance of :any:`Session` with prepared headers
+        :param session: an instance of :any:`AnySession` with prepared headers
         :param path: path to the resource to be downloaded
         :param fields: list of keys to be included in the response
 
@@ -142,7 +154,7 @@ class GetDownloadLinkRequest(APIRequest):
     method = "GET"
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  path: str,
                  fields: Optional[Iterable[str]] = None, **kwargs):
         APIRequest.__init__(
@@ -156,7 +168,7 @@ class GetDownloadLinkRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> ResourceDownloadLinkObject:
+                     yadisk: Optional["AnyClient"] = None) -> ResourceDownloadLinkObject:
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
@@ -181,7 +193,7 @@ class GetTrashRequest(APIRequest):
     method = "GET"
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  path: str,
                  offset: int = 0,
                  limit: int = 20,
@@ -225,17 +237,20 @@ class GetTrashRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> TrashResourceObject:
+                     yadisk: Optional["AnyClient"] = None) -> TrashResourceObject:
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
-        return TrashResourceObject(js, yadisk)
+        if yadisk is None or yadisk.synchronous:
+            return SyncTrashResourceObject(js, yadisk)
+        else:
+            return AsyncTrashResourceObject(js, yadisk)
 
 class RestoreTrashRequest(APIRequest):
     """
         A request to restore trash.
 
-        :param session: an instance of :any:`Session` with prepared headers
+        :param session: an instance of :any:`AnySession` with prepared headers
         :param path: path to the trash resource to be restored
         :param dst_path: destination path
         :param force_async: forces the operation to be executed asynchronously
@@ -250,7 +265,7 @@ class RestoreTrashRequest(APIRequest):
     success_codes = {201, 202}
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  path: str,
                  dst_path: Optional[str] = None,
                  force_async: bool = False,
@@ -280,20 +295,26 @@ class RestoreTrashRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> Union[OperationLinkObject, ResourceLinkObject]:
+                     yadisk: Optional["AnyClient"] = None) -> Union[OperationLinkObject, ResourceLinkObject]:
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if is_operation_link(js.get("href", "")):
-            return OperationLinkObject(js, yadisk)
+            if yadisk is None or yadisk.synchronous:
+                return SyncOperationLinkObject(js, yadisk)
+            else:
+                return AsyncOperationLinkObject(js, yadisk)
 
-        return ResourceLinkObject(js, yadisk)
+        if yadisk is None or yadisk.synchronous:
+            return SyncResourceLinkObject(js, yadisk)
+        else:
+            return AsyncResourceLinkObject(js, yadisk)
 
 class DeleteTrashRequest(APIRequest):
     """
         A request to delete a trash resource.
 
-        :param session: an instance of :any:`Session` with prepared headers
+        :param session: an instance of :any:`AnySession` with prepared headers
         :param path: path to the trash resource to be deleted
         :param force_async: forces the operation to be executed asynchronously
         :param fields: list of keys to be included in the response
@@ -306,7 +327,7 @@ class DeleteTrashRequest(APIRequest):
     success_codes = {202, 204}
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  path: Optional[str] = None,
                  force_async: bool = False,
                  fields: Optional[Iterable[str]] = None, **kwargs):
@@ -328,15 +349,18 @@ class DeleteTrashRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> Optional[OperationLinkObject]:
+                     yadisk: Optional["AnyClient"] = None) -> Optional[OperationLinkObject]:
         if js is not None:
-            return OperationLinkObject(js, yadisk)
+            if yadisk is None or yadisk.synchronous:
+                return SyncOperationLinkObject(js, yadisk)
+            else:
+                return AsyncOperationLinkObject(js, yadisk)
 
 class LastUploadedRequest(APIRequest):
     """
         A request to get the list of latest uploaded files sorted by upload date.
 
-        :param session: an instance of :any:`Session` with prepared headers
+        :param session: an instance of :any:`AnySession` with prepared headers
         :param limit: maximum number of elements in the list
         :param media_type: type of files to include in the list
         :param preview_size: size of the file preview
@@ -350,7 +374,7 @@ class LastUploadedRequest(APIRequest):
     method = "GET"
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  limit: int = 20,
                  media_type: Optional[Union[str, Iterable[str]]] = None,
                  preview_size: Optional[str] = None,
@@ -390,16 +414,20 @@ class LastUploadedRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> LastUploadedResourceListObject:
+                     yadisk: Optional["AnyClient"] = None) -> LastUploadedResourceListObject:
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
-        return LastUploadedResourceListObject(js, yadisk)
+
+        if yadisk is None or yadisk.synchronous:
+            return SyncLastUploadedResourceListObject(js, yadisk)
+        else:
+            return AsyncLastUploadedResourceListObject(js, yadisk)
 
 class CopyRequest(APIRequest):
     """
         A request to copy a file or a directory.
 
-        :param session: an instance of :any:`Session` with prepared headers
+        :param session: an instance of :any:`AnySession` with prepared headers
         :param src_path: source path
         :param dst_path: destination path
         :param overwrite: if `True` the destination path can be overwritten,
@@ -415,7 +443,7 @@ class CopyRequest(APIRequest):
     success_codes = {201, 202}
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  src_path: str,
                  dst_path: str,
                  overwrite: bool = False,
@@ -443,20 +471,26 @@ class CopyRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> Union[OperationLinkObject, ResourceLinkObject]:
+                     yadisk: Optional["AnyClient"] = None) -> Union[OperationLinkObject, ResourceLinkObject]:
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if is_operation_link(js.get("href", "")):
-            return OperationLinkObject(js, yadisk)
+            if yadisk is None or yadisk.synchronous:
+                return SyncOperationLinkObject(js, yadisk)
+            else:
+                return AsyncOperationLinkObject(js, yadisk)
 
-        return ResourceLinkObject(js, yadisk)
+        if yadisk is None or yadisk.synchronous:
+            return SyncResourceLinkObject(js, yadisk)
+        else:
+            return AsyncResourceLinkObject(js, yadisk)
 
 class GetMetaRequest(APIRequest):
     """
         A request to get meta-information about a resource.
 
-        :param session: an instance of :any:`Session` with prepared headers
+        :param session: an instance of :any:`AnySession` with prepared headers
         :param path: path to the resource
         :param limit: number of children resources to be included in the response
         :param offset: number of children resources to be skipped in the response
@@ -472,7 +506,7 @@ class GetMetaRequest(APIRequest):
     method = "GET"
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  path: str,
                  limit: Optional[int] = None,
                  offset: Optional[int] = None,
@@ -521,17 +555,20 @@ class GetMetaRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> ResourceObject:
+                     yadisk: Optional["AnyClient"] = None) -> ResourceObject:
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
-        return ResourceObject(js, yadisk)
+        if yadisk is None or yadisk.synchronous:
+            return SyncResourceObject(js, yadisk)
+        else:
+            return AsyncResourceObject(js, yadisk)
 
 class GetUploadLinkRequest(APIRequest):
     """
         A request to get an upload link.
 
-        :param session: an instance of :any:`Session` with prepared headers
+        :param session: an instance of :any:`AnySession` with prepared headers
         :param path: path to be uploaded at
         :param overwrite: `bool`, determines whether to overwrite the destination
         :param fields: list of keys to be included in the response
@@ -543,7 +580,7 @@ class GetUploadLinkRequest(APIRequest):
     method = "GET"
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  path: str,
                  overwrite: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
@@ -560,7 +597,7 @@ class GetUploadLinkRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> ResourceUploadLinkObject:
+                     yadisk: Optional["AnyClient"] = None) -> ResourceUploadLinkObject:
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
@@ -581,7 +618,7 @@ class MkdirRequest(APIRequest):
     success_codes = {201}
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  path: str,
                  fields: Optional[Fields] = None, **kwargs):
         APIRequest.__init__(self, session, {"path": path, "fields": fields},
@@ -595,17 +632,20 @@ class MkdirRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> ResourceLinkObject:
+                     yadisk: Optional["AnyClient"] = None) -> ResourceLinkObject:
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
-        return ResourceLinkObject(js, yadisk)
+        if yadisk is None or yadisk.synchronous:
+            return SyncResourceLinkObject(js, yadisk)
+        else:
+            return AsyncResourceLinkObject(js, yadisk)
 
 class PublishRequest(APIRequest):
     """
         A request to make a resource public.
 
-        :param session: an instance of :any:`Session` with prepared headers
+        :param session: an instance of :any:`AnySession` with prepared headers
         :param path: path to the resource to be published
         :param fields: list of keys to be included in the response
 
@@ -616,7 +656,7 @@ class PublishRequest(APIRequest):
     method = "PUT"
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  path: str,
                  fields: Optional[Fields] = None, **kwargs):
         APIRequest.__init__(self, session, {"path":   path,
@@ -630,17 +670,20 @@ class PublishRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> ResourceLinkObject:
+                     yadisk: Optional["AnyClient"] = None) -> ResourceLinkObject:
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
-        return ResourceLinkObject(js, yadisk)
+        if yadisk is None or yadisk.synchronous:
+            return SyncResourceLinkObject(js, yadisk)
+        else:
+            return AsyncResourceLinkObject(js, yadisk)
 
 class UploadURLRequest(APIRequest):
     """
         A request to upload a file from URL.
 
-        :param session: an instance of :any:`Session` with prepared headers
+        :param session: an instance of :any:`AnySession` with prepared headers
         :param url: source URL
         :param path: destination path
         :param disable_redirects: `bool`, forbid redirects
@@ -654,7 +697,7 @@ class UploadURLRequest(APIRequest):
     success_codes = {202}
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  url: str,
                  path: str,
                  disable_redirects: bool = False,
@@ -678,17 +721,20 @@ class UploadURLRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> OperationLinkObject:
+                     yadisk: Optional["AnyClient"] = None) -> OperationLinkObject:
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
-        return OperationLinkObject(js, yadisk)
+        if yadisk is None or yadisk.synchronous:
+            return SyncOperationLinkObject(js, yadisk)
+        else:
+            return AsyncOperationLinkObject(js, yadisk)
 
 class DeleteRequest(APIRequest):
     """
         A request to delete a file or a directory.
 
-        :param session: an instance of :any:`Session` with prepared headers
+        :param session: an instance of :any:`AnySession` with prepared headers
         :param path: path to the resource to be removed
         :param permanently: if `True`, the resource will be removed permanently,
                             otherwise, it will be just moved to the trash
@@ -704,7 +750,7 @@ class DeleteRequest(APIRequest):
     success_codes = {202, 204}
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  path: str,
                  permanently: bool = False,
                  md5: Optional[str] = None,
@@ -734,15 +780,18 @@ class DeleteRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> Optional[OperationLinkObject]:
+                     yadisk: Optional["AnyClient"] = None) -> Optional[OperationLinkObject]:
         if js is not None:
-            return OperationLinkObject(js, yadisk)
+            if yadisk is None or yadisk.synchronous:
+                return SyncOperationLinkObject(js, yadisk)
+            else:
+                return AsyncOperationLinkObject(js, yadisk)
 
 class SaveToDiskRequest(APIRequest):
     """
         A request to save a public resource to the disk.
 
-        :param session: an instance of :any:`Session` with prepared headers
+        :param session: an instance of :any:`AnySession` with prepared headers
         :param public_key: public key or public URL of the resource
         :param name: filename of the saved resource
         :param path: path to the copied resource in the public folder
@@ -758,7 +807,7 @@ class SaveToDiskRequest(APIRequest):
     success_codes = {201, 202}
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  public_key: str,
                  name: Optional[str] = None,
                  path: Optional[str] = None,
@@ -797,20 +846,26 @@ class SaveToDiskRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> Union[OperationLinkObject, ResourceLinkObject]:
+                     yadisk: Optional["AnyClient"] = None) -> Union[OperationLinkObject, ResourceLinkObject]:
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if is_operation_link(js.get("href", "")):
-            return OperationLinkObject(js, yadisk)
+            if yadisk is None or yadisk.synchronous:
+                return SyncOperationLinkObject(js, yadisk)
+            else:
+                return AsyncOperationLinkObject(js, yadisk)
 
-        return ResourceLinkObject(js, yadisk)
+        if yadisk is None or yadisk.synchronous:
+            return SyncResourceLinkObject(js, yadisk)
+        else:
+            return AsyncResourceLinkObject(js, yadisk)
 
 class GetPublicMetaRequest(APIRequest):
     """
         A request to get meta-information about a public resource.
 
-        :param session: an instance of :any:`Session` with prepared headers
+        :param session: an instance of :any:`AnySession` with prepared headers
         :param public_key: public key or public URL of the resource
         :param path: relative path to a resource in a public folder.
                      By specifying the key of the published folder in `public_key`,
@@ -829,7 +884,7 @@ class GetPublicMetaRequest(APIRequest):
     method = "GET"
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  public_key: str,
                  offset: int = 0,
                  limit: int = 20,
@@ -880,17 +935,20 @@ class GetPublicMetaRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> PublicResourceObject:
+                     yadisk: Optional["AnyClient"] = None) -> PublicResourceObject:
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
-        return PublicResourceObject(js, yadisk)
+        if yadisk is None or yadisk.synchronous:
+            return SyncPublicResourceObject(js, yadisk)
+        else:
+            return AsyncPublicResourceObject(js, yadisk)
 
 class GetPublicDownloadLinkRequest(APIRequest):
     """
         A request to get a download link for a public resource.
 
-        :param session: an instance of :any:`Session` with prepared headers
+        :param session: an instance of :any:`AnySession` with prepared headers
         :param public_key: public key or public URL of the resource
         :param path: relative path to the resource within the public folder
         :param fields: list of keys to be included in the response
@@ -902,7 +960,7 @@ class GetPublicDownloadLinkRequest(APIRequest):
     method = "GET"
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  public_key: str,
                  path: Optional[str] = None,
                  fields: Optional[Fields] = None, **kwargs):
@@ -924,7 +982,7 @@ class GetPublicDownloadLinkRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> ResourceDownloadLinkObject:
+                     yadisk: Optional["AnyClient"] = None) -> ResourceDownloadLinkObject:
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
@@ -934,7 +992,7 @@ class MoveRequest(APIRequest):
     """
         A request to move a resource.
 
-        :param session: an instance of :any:`Session` with prepared headers
+        :param session: an instance of :any:`AnySession` with prepared headers
         :param src_path: source path to be moved
         :param dst_path: destination path
         :param force_async: forces the operation to be executed asynchronously
@@ -949,7 +1007,7 @@ class MoveRequest(APIRequest):
     success_codes = {201, 202}
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  src_path: str,
                  dst_path: str,
                  force_async: bool = False,
@@ -977,20 +1035,26 @@ class MoveRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> Union[OperationLinkObject, ResourceLinkObject]:
+                     yadisk: Optional["AnyClient"] = None) -> Union[OperationLinkObject, ResourceLinkObject]:
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if is_operation_link(js.get("href", "")):
-            return OperationLinkObject(js, yadisk)
+            if yadisk is None or yadisk.synchronous:
+                return SyncOperationLinkObject(js, yadisk)
+            else:
+                return AsyncOperationLinkObject(js, yadisk)
 
-        return ResourceLinkObject(js, yadisk)
+        if yadisk is None or yadisk.synchronous:
+            return SyncResourceLinkObject(js, yadisk)
+        else:
+            return AsyncResourceLinkObject(js, yadisk)
 
 class FilesRequest(APIRequest):
     """
         A request to get a flat list of all files (that doesn't include directories).
 
-        :param session: an instance of :any:`Session` with prepared headers
+        :param session: an instance of :any:`AnySession` with prepared headers
         :param offset: offset from the beginning of the list
         :param limit: number of list elements to be included
         :param media_type: type of files to include in the list
@@ -1006,7 +1070,7 @@ class FilesRequest(APIRequest):
     method = "GET"
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  offset: int = 0,
                  limit: int = 20,
                  media_type: Optional[Union[str, Iterable[str]]] = None,
@@ -1056,17 +1120,20 @@ class FilesRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> FilesResourceListObject:
+                     yadisk: Optional["AnyClient"] = None) -> FilesResourceListObject:
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
-        return FilesResourceListObject(js, yadisk)
+        if yadisk is None or yadisk.synchronous:
+            return SyncFilesResourceListObject(js, yadisk)
+        else:
+            return AsyncFilesResourceListObject(js, yadisk)
 
 class PatchRequest(APIRequest):
     """
         A request to update custom properties of a resource.
 
-        :param session: an instance of :any:`Session` with prepared headers
+        :param session: an instance of :any:`AnySession` with prepared headers
         :param path: path to the resource
         :param properties: `dict`, custom properties to update
         :param fields: list of keys to be included in the response
@@ -1079,7 +1146,7 @@ class PatchRequest(APIRequest):
     content_type = "application/json"
 
     def __init__(self,
-                 session: "Session",
+                 session: "AnySession",
                  path: str,
                  properties: dict,
                  fields: Optional[Fields] = None, **kwargs):
@@ -1089,7 +1156,7 @@ class PatchRequest(APIRequest):
 
     def process_args(self, path: str, properties: dict, fields: Optional[Fields]) -> None:
         self.params["path"] = ensure_path_has_schema(path)
-        self.data = json.dumps({"custom_properties": properties}).encode("utf8")
+        self.content = json.dumps({"custom_properties": properties}).encode("utf8")
 
         if fields is not None:
             sub_map = {"embedded": "_embedded"}
@@ -1098,8 +1165,11 @@ class PatchRequest(APIRequest):
 
     def process_json(self,
                      js: Optional[dict],
-                     yadisk: Optional["YaDisk"] = None) -> ResourceObject:
+                     yadisk: Optional["AnyClient"] = None) -> ResourceObject:
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
-        return ResourceObject(js, yadisk)
+        if yadisk is None or yadisk.synchronous:
+            return SyncResourceObject(js, yadisk)
+        else:
+            return AsyncResourceObject(js, yadisk)

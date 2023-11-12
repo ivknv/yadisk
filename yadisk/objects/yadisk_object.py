@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from typing import Optional, Callable, Any, Iterator, TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from ..yadisk import YaDisk
+from typing import Any, Optional, Callable, Any, Iterator
 
 __all__ = ["YaDiskObject"]
 
@@ -20,11 +17,11 @@ class YaDiskObject:
     FIELD_TYPES: dict
     FIELDS: dict
     ALIASES: dict
-    _yadisk: Optional["YaDisk"]
+    _yadisk: Optional[Any]
 
     def __init__(self,
                  field_types: Optional[dict] = None,
-                 yadisk: Optional["YaDisk"] = None):
+                 yadisk: Optional[Any] = None):
         if field_types is None:
             field_types = {}
 

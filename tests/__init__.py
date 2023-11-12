@@ -1,4 +1,4 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from .yadisk_test import *
+from .client_test import *
+from .async_client_test import *

@@ -1,17 +1,23 @@
 # -*- coding: utf-8 -*-
 
-from .exceptions import RequestError, TooManyRedirectsError, RequestTimeoutError, YaDiskConnectionError
-from .session import Session, Response
-from .compat import Dict, Iterable
-from .common import CaseInsensitiveDict
+from ..exceptions import (
+    RequestError, TooManyRedirectsError,
+    RequestTimeoutError, YaDiskConnectionError
+)
+
+from ..session import Session, Response
+from ..compat import Iterable
+from ..common import CaseInsensitiveDict
+from ..types import JSON, ConsumeCallback, Headers
+
+from typing import Union
 
 import threading
-
 import requests
 
 __all__ = ["RequestsSession"]
 
-def convert_requests_exception(exc: requests.RequestException) -> Exception:
+def convert_requests_exception(exc: requests.RequestException) -> Union[RequestError, requests.RequestException]:
     if isinstance(exc, requests.exceptions.TooManyRedirects):
         return TooManyRedirectsError(str(exc))
     elif isinstance(exc, requests.exceptions.Timeout):
@@ -28,17 +34,17 @@ class RequestsResponse(Response):
         self._response = response
         self.status = response.status_code
 
-    def json(self) -> Response.JSON:
+    def json(self) -> JSON:
         return self._response.json()
 
-    def download(self, consume_callback) -> None:
+    def download(self, consume_callback: ConsumeCallback) -> None:
         try:
             for chunk in self._response.iter_content(8192):
                 consume_callback(chunk)
         except requests.RequestException as e:
             raise convert_requests_exception(e)
 
-    def release(self) -> None:
+    def close(self) -> None:
         self._response.close()
 
 class RequestsSession(Session):
@@ -54,7 +60,7 @@ class RequestsSession(Session):
 
         return self._local.session
 
-    def set_headers(self, headers: Dict[str, str]) -> None:
+    def set_headers(self, headers: Headers) -> None:
         self._headers.update(headers)
 
     def remove_headers(self, headers: Iterable[str]) -> None:

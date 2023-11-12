@@ -6,10 +6,7 @@ from .yadisk_object import YaDiskObject
 from .resources import LinkObject
 from ..common import str_or_error, dict_or_error
 
-from typing import Optional, TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from ..yadisk import YaDisk
+from typing import Any, Optional
 
 __all__ = ["OperationStatusObject"]
 
@@ -29,7 +26,7 @@ class OperationStatusObject(YaDiskObject):
 
     def __init__(self,
                  operation_status: Optional[dict] = None,
-                 yadisk: Optional["YaDisk"] = None):
+                 yadisk: Optional[Any] = None):
         YaDiskObject.__init__(
             self,
             {"type":         str_or_error,

@@ -7,31 +7,34 @@ from .api import *
 
 from .exceptions import (
     WrongResourceTypeError, PathNotFoundError, UnauthorizedError,
-    OperationNotFoundError, InvalidResponseError)
-from .utils import auto_retry, get_exception
-from .objects import ResourceLinkObject, PublicResourceLinkObject, TrashResourceObject
+    OperationNotFoundError, InvalidResponseError
+)
+
+from .utils import auto_retry
+from .objects import SyncResourceLinkObject, SyncPublicResourceLinkObject, SyncTrashResourceObject
 
 from .session import Session
 
 try:
-    from .requests_session import RequestsSession
+    from .sessions.requests_session import RequestsSession
 except ImportError:
     RequestsSession = None
 
 from . import settings
 
-from typing import Any, Optional, IO, AnyStr, BinaryIO, Union, TYPE_CHECKING
+from typing import Any, Optional, IO, AnyStr, Union, TYPE_CHECKING
 from .compat import Callable, Generator, Dict
+from .types import SessionFactory, FileOrPath, FileOrPathDestination
 
 if TYPE_CHECKING:
     from .objects import (
-        ResourceObject, OperationLinkObject, TrashResourceObject,
-        PublicResourceObject, PublicResourcesListObject,
+        SyncResourceObject, SyncOperationLinkObject, SyncTrashResourceObject,
+        SyncPublicResourceObject, SyncPublicResourcesListObject,
         DiskInfoObject, TokenObject, TokenRevokeStatusObject)
 
-__all__ = ["YaDisk"]
+__all__ = ["Client"]
 
-ResourceType = Union["ResourceObject", "PublicResourceObject", "TrashResourceObject"]
+ResourceType = Union["SyncResourceObject", "SyncPublicResourceObject", "SyncTrashResourceObject"]
 
 def _exists(get_meta_function: Callable[..., ResourceType], /, *args, **kwargs) -> bool:
     kwargs["limit"] = 0
@@ -128,7 +131,7 @@ def _read_file_as_generator(input_file: IO[AnyStr]) -> Generator[AnyStr, None, N
     while chunk := input_file.read(chunk_size):
         yield chunk
 
-class YaDisk:
+class Client:
     """
         Implements access to Yandex.Disk REST API.
 
@@ -167,13 +170,17 @@ class YaDisk:
     id: str
     secret: str
     default_args: Dict[str, Any]
+    session_factory: SessionFactory
+    session: Session
+
+    synchronous = True
 
     def __init__(self,
                  id: str = "",
                  secret: str = "",
                  token: str = "",
                  default_args: Optional[Dict[str, Any]] = None,
-                 session_factory: Optional[Callable[[], Session]] = None):
+                 session_factory: Optional[SessionFactory] = None):
         self.id = id
         self.secret = secret
         self._token = ""
@@ -199,6 +206,23 @@ class YaDisk:
     def token(self, value: str) -> None:
         self._token = value
         self.session.set_token(self._token)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args, **kwargs) -> None:
+        self.close()
+
+    def close(self) -> None:
+        """
+            Closes the session.
+            Do not call this method while there are other active threads using this object.
+
+            This method can also be called implicitly by using the `async with`
+            statement.
+        """
+
+        self.session.close()
 
     def make_session(self, token: Optional[str] = None) -> Session:
         """
@@ -433,7 +457,7 @@ class YaDisk:
 
         return request.process()
 
-    def get_meta(self, path: str, /, **kwargs) -> "ResourceObject":
+    def get_meta(self, path: str, /, **kwargs) -> "SyncResourceObject":
         """
             Get meta information about a file/directory.
 
@@ -452,7 +476,7 @@ class YaDisk:
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
 
-            :returns: :any:`ResourceObject`
+            :returns: :any:`SyncResourceObject`
         """
 
         _apply_default_args(kwargs, self.default_args)
@@ -545,7 +569,7 @@ class YaDisk:
         except PathNotFoundError:
             return False
 
-    def listdir(self, path: str, /, **kwargs) -> Generator["ResourceObject", None, None]:
+    def listdir(self, path: str, /, **kwargs) -> Generator["SyncResourceObject", None, None]:
         """
             Get contents of `path`.
 
@@ -602,7 +626,7 @@ class YaDisk:
 
     def _upload(self,
                 get_upload_link_function: Callable,
-                file_or_path: Union[str, bytes, IO[AnyStr]],
+                file_or_path: FileOrPath,
                 dst_path: str, /, **kwargs) -> None:
         try:
             timeout = kwargs["timeout"]
@@ -626,7 +650,7 @@ class YaDisk:
 
         kwargs["timeout"] = timeout
 
-        file = None
+        file: Any = None
         close_file = False
         file_position = 0
 
@@ -674,7 +698,7 @@ class YaDisk:
 
                 with session.send_request("PUT", link, data=payload, **temp_kwargs) as response:
                     if response.status != 201:
-                        raise get_exception(response)
+                        raise response.get_exception()
 
             auto_retry(attempt, n_retries, retry_interval)
         finally:
@@ -682,8 +706,8 @@ class YaDisk:
                 file.close()
 
     def upload(self,
-               file_or_path: Union[str, bytes, IO[AnyStr]],
-               dst_path: str, /, **kwargs) -> ResourceLinkObject:
+               file_or_path: FileOrPath,
+               dst_path: str, /, **kwargs) -> SyncResourceLinkObject:
         """
             Upload a file to disk.
 
@@ -703,17 +727,17 @@ class YaDisk:
             :raises ResourceIsLockedError: resource is locked by another request
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
 
-            :returns: :any:`ResourceLinkObject`, link to the destination resource
+            :returns: :any:`SyncResourceLinkObject`, link to the destination resource
         """
 
         _apply_default_args(kwargs, self.default_args)
 
         self._upload(self.get_upload_link, file_or_path, dst_path, **kwargs)
 
-        return ResourceLinkObject.from_path(dst_path, yadisk=self)
+        return SyncResourceLinkObject.from_path(dst_path, yadisk=self)
 
     def upload_by_link(self,
-                       file_or_path: Union[str, bytes, IO[AnyStr]],
+                       file_or_path: FileOrPath,
                        link: str, /, **kwargs) -> None:
         """
             Upload a file to disk using an upload link.
@@ -762,7 +786,7 @@ class YaDisk:
     def _download(self,
                   get_download_link_function: Callable,
                   src_path: str,
-                  file_or_path: Union[str, bytes, BinaryIO], /, **kwargs) -> None:
+                  file_or_path: FileOrPathDestination, /, **kwargs) -> None:
         n_retries = kwargs.get("n_retries")
 
         if n_retries is None:
@@ -785,7 +809,7 @@ class YaDisk:
 
         kwargs["timeout"] = timeout
 
-        file = None
+        file: Any = None
         close_file = False
         file_position = 0
 
@@ -828,7 +852,7 @@ class YaDisk:
                     response.download(file.write)
 
                     if response.status != 200:
-                        raise get_exception(response)
+                        raise response.get_exception()
 
             auto_retry(attempt, n_retries, retry_interval)
         finally:
@@ -837,7 +861,7 @@ class YaDisk:
 
     def download(self,
                  src_path: str,
-                 file_or_path: Union[str, bytes, BinaryIO], /, **kwargs) -> ResourceLinkObject:
+                 file_or_path: FileOrPathDestination, /, **kwargs) -> SyncResourceLinkObject:
         """
             Download the file.
 
@@ -852,18 +876,18 @@ class YaDisk:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceLinkObject`, link to the source resource
+            :returns: :any:`SyncResourceLinkObject`, link to the source resource
         """
 
         _apply_default_args(kwargs, self.default_args)
 
         self._download(self.get_download_link, src_path, file_or_path, **kwargs)
 
-        return ResourceLinkObject.from_path(src_path, yadisk=self)
+        return SyncResourceLinkObject.from_path(src_path, yadisk=self)
 
     def download_by_link(self,
                          link: str,
-                         file_or_path: Union[str, bytes, BinaryIO], /, **kwargs) -> None:
+                         file_or_path: FileOrPathDestination, /, **kwargs) -> None:
         """
             Download the file from the link.
 
@@ -879,7 +903,7 @@ class YaDisk:
 
         self._download(lambda *args, **kwargs: link, "", file_or_path, **kwargs)
 
-    def remove(self, path: str, /, **kwargs) -> Optional["OperationLinkObject"]:
+    def remove(self, path: str, /, **kwargs) -> Optional["SyncOperationLinkObject"]:
         """
             Remove the resource.
 
@@ -899,7 +923,7 @@ class YaDisk:
             :raises BadRequestError: MD5 check is only available for files
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
+            :returns: :any:`SyncOperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
         _apply_default_args(kwargs, self.default_args)
@@ -910,7 +934,7 @@ class YaDisk:
 
         return request.process(yadisk=self)
 
-    def mkdir(self, path: str, /, **kwargs) -> ResourceLinkObject:
+    def mkdir(self, path: str, /, **kwargs) -> SyncResourceLinkObject:
         """
             Create a new directory.
 
@@ -927,7 +951,7 @@ class YaDisk:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceLinkObject`
+            :returns: :any:`SyncResourceLinkObject`
         """
 
         _apply_default_args(kwargs, self.default_args)
@@ -937,7 +961,7 @@ class YaDisk:
 
         return request.process(yadisk=self)
 
-    def get_trash_meta(self, path: str, /, **kwargs) -> "TrashResourceObject":
+    def get_trash_meta(self, path: str, /, **kwargs) -> "SyncTrashResourceObject":
         """
             Get meta information about a trash resource.
 
@@ -956,7 +980,7 @@ class YaDisk:
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
 
-            :returns: :any:`TrashResourceObject`
+            :returns: :any:`SyncTrashResourceObject`
         """
 
         _apply_default_args(kwargs, self.default_args)
@@ -987,7 +1011,7 @@ class YaDisk:
 
     def copy(self,
              src_path: str,
-             dst_path: str, /, **kwargs) -> Union[ResourceLinkObject, "OperationLinkObject"]:
+             dst_path: str, /, **kwargs) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
             Copy `src_path` to `dst_path`.
             If the operation is performed asynchronously, returns the link to the operation,
@@ -1011,7 +1035,7 @@ class YaDisk:
             :raises ResourceIsLockedError: resource is locked by another request
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
 
-            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+            :returns: :any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`
         """
 
         _apply_default_args(kwargs, self.default_args)
@@ -1023,7 +1047,7 @@ class YaDisk:
 
     def restore_trash(self,
                       path: str, /,
-                      dst_path: Optional[str] = None, **kwargs) -> Union[ResourceLinkObject, "OperationLinkObject"]:
+                      dst_path: Optional[str] = None, **kwargs) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
             Restore a trash resource.
             Returns a link to the newly created resource or a link to the asynchronous operation.
@@ -1043,7 +1067,7 @@ class YaDisk:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+            :returns: :any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`
         """
 
         _apply_default_args(kwargs, self.default_args)
@@ -1057,7 +1081,7 @@ class YaDisk:
 
     def move(self,
              src_path: str,
-             dst_path: str, /, **kwargs) -> Union[ResourceLinkObject, "OperationLinkObject"]:
+             dst_path: str, /, **kwargs) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
             Move `src_path` to `dst_path`.
 
@@ -1076,7 +1100,7 @@ class YaDisk:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+            :returns: :any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`
         """
 
         _apply_default_args(kwargs, self.default_args)
@@ -1086,7 +1110,7 @@ class YaDisk:
 
         return request.process(yadisk=self)
 
-    def rename(self, src_path: str, new_name: str, /, **kwargs) -> Union[ResourceLinkObject, "OperationLinkObject"]:
+    def rename(self, src_path: str, new_name: str, /, **kwargs) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
             Rename `src_path` to have filename `new_name`.
             Does the same as `move()` but changes only the filename.
@@ -1107,7 +1131,7 @@ class YaDisk:
             :raises ResourceIsLockedError: resource is locked by another request
             :raises ValueError: `new_name` is not a valid filename
 
-            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+            :returns: :any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`
         """
 
         _apply_default_args(kwargs, self.default_args)
@@ -1121,7 +1145,7 @@ class YaDisk:
 
         return self.move(src_path, dst_path, **kwargs)
 
-    def remove_trash(self, path: str, /, **kwargs) -> Optional["OperationLinkObject"]:
+    def remove_trash(self, path: str, /, **kwargs) -> Optional["SyncOperationLinkObject"]:
         """
             Remove a trash resource.
 
@@ -1137,7 +1161,7 @@ class YaDisk:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
+            :returns: :any:`SyncOperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
         _apply_default_args(kwargs, self.default_args)
@@ -1147,7 +1171,7 @@ class YaDisk:
 
         return request.process(yadisk=self)
 
-    def publish(self, path: str, /, **kwargs) -> ResourceLinkObject:
+    def publish(self, path: str, /, **kwargs) -> SyncResourceLinkObject:
         """
             Make a resource public.
 
@@ -1162,7 +1186,7 @@ class YaDisk:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceLinkObject`, link to the resource
+            :returns: :any:`SyncResourceLinkObject`, link to the resource
         """
 
         _apply_default_args(kwargs, self.default_args)
@@ -1172,7 +1196,7 @@ class YaDisk:
 
         return request.process(yadisk=self)
 
-    def unpublish(self, path: str, /, **kwargs) -> ResourceLinkObject:
+    def unpublish(self, path: str, /, **kwargs) -> SyncResourceLinkObject:
         """
             Make a public resource private.
 
@@ -1187,7 +1211,7 @@ class YaDisk:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceLinkObject`
+            :returns: :any:`SyncResourceLinkObject`
         """
 
         _apply_default_args(kwargs, self.default_args)
@@ -1198,7 +1222,7 @@ class YaDisk:
         return request.process(yadisk=self)
 
     def save_to_disk(self,
-                     public_key: str, /, **kwargs) -> Union[ResourceLinkObject, "OperationLinkObject"]:
+                     public_key: str, /, **kwargs) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
             Saves a public resource to the disk.
             Returns the link to the operation if it's performed asynchronously,
@@ -1221,7 +1245,7 @@ class YaDisk:
             :raises InsufficientStorageError: cannot upload file due to lack of storage space
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
 
-            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+            :returns: :any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`
         """
 
         _apply_default_args(kwargs, self.default_args)
@@ -1232,7 +1256,7 @@ class YaDisk:
         return request.process(yadisk=self)
 
     def get_public_meta(self,
-                        public_key: str, /, **kwargs) -> "PublicResourceObject":
+                        public_key: str, /, **kwargs) -> "SyncPublicResourceObject":
         """
             Get meta-information about a public resource.
 
@@ -1254,7 +1278,7 @@ class YaDisk:
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
 
-            :returns: :any:`PublicResourceObject`
+            :returns: :any:`SyncPublicResourceObject`
         """
 
         _apply_default_args(kwargs, self.default_args)
@@ -1285,7 +1309,7 @@ class YaDisk:
         return _exists(self.get_public_meta, public_key, **kwargs)
 
     def public_listdir(self,
-                       public_key: str, /, **kwargs) -> Generator["PublicResourceObject", None, None]:
+                       public_key: str, /, **kwargs) -> Generator["SyncPublicResourceObject", None, None]:
         """
             Get contents of a public directory.
 
@@ -1307,7 +1331,7 @@ class YaDisk:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises WrongResourceTypeError: resource is not a directory
 
-            :returns: generator of :any:`PublicResourceObject`
+            :returns: generator of :any:`SyncPublicResourceObject`
         """
 
         _apply_default_args(kwargs, self.default_args)
@@ -1382,7 +1406,7 @@ class YaDisk:
             return False
 
     def trash_listdir(self,
-                      path: str, /, **kwargs) -> Generator["TrashResourceObject", None, None]:
+                      path: str, /, **kwargs) -> Generator["SyncTrashResourceObject", None, None]:
         """
             Get contents of a trash resource.
 
@@ -1401,7 +1425,7 @@ class YaDisk:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises WrongResourceTypeError: resource is not a directory
 
-            :returns: generator of :any:`TrashResourceObject`
+            :returns: generator of :any:`SyncTrashResourceObject`
         """
 
         _apply_default_args(kwargs, self.default_args)
@@ -1472,7 +1496,7 @@ class YaDisk:
         except PathNotFoundError:
             return False
 
-    def get_public_resources(self, **kwargs) -> "PublicResourcesListObject":
+    def get_public_resources(self, **kwargs) -> "SyncPublicResourcesListObject":
         """
             Get a list of public resources.
 
@@ -1489,7 +1513,7 @@ class YaDisk:
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
-            :returns: :any:`PublicResourcesListObject`
+            :returns: :any:`SyncPublicResourcesListObject`
         """
 
         _apply_default_args(kwargs, self.default_args)
@@ -1501,7 +1525,7 @@ class YaDisk:
 
     def patch(self,
               path: str,
-              properties: dict, /, **kwargs) -> "ResourceObject":
+              properties: dict, /, **kwargs) -> "SyncResourceObject":
         """
             Update custom properties of a resource.
 
@@ -1527,7 +1551,7 @@ class YaDisk:
 
         return request.process(yadisk=self)
 
-    def get_files(self, **kwargs) -> Generator["ResourceObject", None, None]:
+    def get_files(self, **kwargs) -> Generator["SyncResourceObject", None, None]:
         """
             Get a flat list of all files (that doesn't include directories).
 
@@ -1573,7 +1597,7 @@ class YaDisk:
 
             kwargs["offset"] += kwargs["limit"]
 
-    def get_last_uploaded(self, **kwargs) -> Generator["ResourceObject", None, None]:
+    def get_last_uploaded(self, **kwargs) -> Generator["SyncResourceObject", None, None]:
         """
             Get the list of latest uploaded files sorted by upload date.
 
@@ -1600,7 +1624,7 @@ class YaDisk:
         for i in request.process(yadisk=self).items:
             yield i
 
-    def upload_url(self, url: str, path: str, /, **kwargs) -> "OperationLinkObject":
+    def upload_url(self, url: str, path: str, /, **kwargs) -> "SyncOperationLinkObject":
         """
             Upload a file from URL.
 
@@ -1620,7 +1644,7 @@ class YaDisk:
             :raises ResourceIsLockedError: resource is locked by another request
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
 
-            :returns: :any:`OperationLinkObject`, link to the asynchronous operation
+            :returns: :any:`SyncOperationLinkObject`, link to the asynchronous operation
         """
 
         _apply_default_args(kwargs, self.default_args)
@@ -1658,7 +1682,7 @@ class YaDisk:
 
     def download_public(self,
                         public_key: str,
-                        file_or_path: Union[str, bytes, BinaryIO], /, **kwargs) -> PublicResourceLinkObject:
+                        file_or_path: FileOrPathDestination, /, **kwargs) -> SyncPublicResourceLinkObject:
         """
             Download the public resource.
 
@@ -1674,7 +1698,7 @@ class YaDisk:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`PublicResourceLinkObject`
+            :returns: :any:`SyncPublicResourceLinkObject`
         """
 
         _apply_default_args(kwargs, self.default_args)
@@ -1683,7 +1707,7 @@ class YaDisk:
             lambda *args, **kwargs: self.get_public_download_link(public_key, **kwargs),
             "", file_or_path, **kwargs)
 
-        return PublicResourceLinkObject.from_public_key(public_key, yadisk=self)
+        return SyncPublicResourceLinkObject.from_public_key(public_key, yadisk=self)
 
     def _get_operation_status(self,
                               session: Session,

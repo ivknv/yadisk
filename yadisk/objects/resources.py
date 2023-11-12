@@ -9,22 +9,33 @@ from .disk import UserPublicInfoObject
 from ..common import (
     typed_list, yandex_date, is_resource_link, is_public_resource_link,
     ensure_path_has_schema, str_or_error, int_or_error, bool_or_error,
-    dict_or_error, str_or_dict_or_error)
+    dict_or_error, str_or_dict_or_error
+)
 
-from typing import overload, Union, IO, AnyStr, Protocol, Optional, TYPE_CHECKING
+from typing import Any, Self, overload, Union, IO, AnyStr, Protocol, Optional, TYPE_CHECKING
 
-from ..compat import Generator, List
+from ..compat import Generator, List, AsyncGenerator
 
 if TYPE_CHECKING:
-    from ..yadisk import YaDisk
     import datetime
 
-__all__ = ["CommentIDsObject", "EXIFObject", "FilesResourceListObject",
-           "LastUploadedResourceListObject", "LinkObject", "OperationLinkObject",
-           "PublicResourcesListObject", "ResourceListObject", "ResourceObject",
-           "ResourceUploadLinkObject", "ShareInfoObject", "PublicResourceObject",
-           "PublicResourceListObject", "TrashResourceObject", "TrashResourceListObject",
-           "ResourceLinkObject", "PublicResourceLinkObject", "ResourceDownloadLinkObject"]
+__all__ = [
+    "CommentIDsObject", "EXIFObject", "FilesResourceListObject",
+    "SyncFilesResourceListObject", "AsyncFilesResourceListObject",
+    "LastUploadedResourceListObject", "SyncLastUploadedResourceListObject",
+    "AsyncLastUploadedResourceListObject", "LinkObject", "OperationLinkObject",
+    "SyncOperationLinkObject", "AsyncOperationLinkObject", "PublicResourcesListObject",
+    "SyncPublicResourcesListObject", "AsyncPublicResourcesListObject",
+    "ResourceListObject", "SyncResourceListObject", "AsyncResourceListObject",
+    "ResourceObject", "SyncResourceObject", "AsyncResourceObject",
+    "ResourceUploadLinkObject", "ShareInfoObject", "PublicResourceObject",
+    "SyncPublicResourceObject", "AsyncPublicResourceObject", "PublicResourceListObject",
+    "SyncPublicResourceListObject", "AsyncPublicResourceListObject", "TrashResourceObject",
+    "SyncTrashResourceObject", "AsyncTrashResourceObject", "TrashResourceListObject",
+    "SyncTrashResourceListObject", "AsyncTrashResourceListObject", "ResourceLinkObject",
+    "SyncResourceLinkObject", "AsyncResourceLinkObject", "PublicResourceLinkObject",
+    "SyncPublicResourceLinkObject", "AsyncPublicResourceLinkObject", "ResourceDownloadLinkObject"
+]
 
 class CommentIDsObject(YaDiskObject):
     """
@@ -42,7 +53,7 @@ class CommentIDsObject(YaDiskObject):
 
     def __init__(self,
                  comment_ids: Optional[dict] = None,
-                 yadisk: Optional["YaDisk"] = None):
+                 yadisk: Optional[Any] = None):
         YaDiskObject.__init__(
             self,
             {"private_resource": str_or_error,
@@ -65,7 +76,7 @@ class EXIFObject(YaDiskObject):
 
     def __init__(self,
                  exif: Optional[dict] = None,
-                 yadisk: Optional["YaDisk"] = None):
+                 yadisk: Optional[Any] = None):
         YaDiskObject.__init__(self, {"date_time": yandex_date}, yadisk)
 
         self.import_fields(exif)
@@ -88,7 +99,7 @@ class FilesResourceListObject(YaDiskObject):
 
     def __init__(self,
                  files_resource_list: Optional[dict] = None,
-                 yadisk: Optional["YaDisk"] = None):
+                 yadisk: Optional[Any] = None):
         YaDiskObject.__init__(
             self,
             {"items":  typed_list(partial(ResourceObject, yadisk=yadisk)),
@@ -96,6 +107,28 @@ class FilesResourceListObject(YaDiskObject):
              "offset": int_or_error},
             yadisk)
 
+        self.import_fields(files_resource_list)
+
+class SyncFilesResourceListObject(FilesResourceListObject):
+    items: Optional[List["SyncResourceObject"]]
+
+    def __init__(self,
+                 files_resource_list: Optional[dict] = None,
+                 yadisk: Optional[Any] = None):
+        FilesResourceListObject.__init__(self, None, yadisk)
+
+        self.set_field_type("items", typed_list(partial(SyncResourceObject, yadisk=yadisk)))
+        self.import_fields(files_resource_list)
+
+class AsyncFilesResourceListObject(FilesResourceListObject):
+    items: Optional[List["AsyncResourceObject"]]
+
+    def __init__(self,
+                 files_resource_list: Optional[dict] = None,
+                 yadisk: Optional[Any] = None):
+        FilesResourceListObject.__init__(self, None, yadisk)
+
+        self.set_field_type("items", typed_list(partial(AsyncResourceObject, yadisk=yadisk)))
         self.import_fields(files_resource_list)
 
 class LastUploadedResourceListObject(YaDiskObject):
@@ -114,12 +147,34 @@ class LastUploadedResourceListObject(YaDiskObject):
 
     def __init__(self,
                  last_uploaded_resources_list: Optional[dict] = None,
-                 yadisk: Optional["YaDisk"] = None):
+                 yadisk: Optional[Any] = None):
         YaDiskObject.__init__(
             self,
             {"items": typed_list(partial(ResourceObject, yadisk=yadisk)),
              "limit": int_or_error},
             yadisk)
+        self.import_fields(last_uploaded_resources_list)
+
+class SyncLastUploadedResourceListObject(LastUploadedResourceListObject):
+    items: Optional[List["SyncResourceObject"]]
+
+    def __init__(self,
+                 last_uploaded_resources_list: Optional[dict] = None,
+                 yadisk: Optional[Any] = None):
+        LastUploadedResourceListObject.__init__(self, None, yadisk)
+
+        self.set_field_type("items", typed_list(partial(SyncResourceObject, yadisk=yadisk)))
+        self.import_fields(last_uploaded_resources_list)
+
+class AsyncLastUploadedResourceListObject(LastUploadedResourceListObject):
+    items: Optional[List["AsyncResourceObject"]]
+
+    def __init__(self,
+                 last_uploaded_resources_list: Optional[dict] = None,
+                 yadisk: Optional[Any] = None):
+        LastUploadedResourceListObject.__init__(self, None, yadisk)
+
+        self.set_field_type("items", typed_list(partial(AsyncResourceObject, yadisk=yadisk)))
         self.import_fields(last_uploaded_resources_list)
 
 class LinkObject(YaDiskObject):
@@ -140,7 +195,7 @@ class LinkObject(YaDiskObject):
 
     def __init__(self,
                  link: Optional[dict] = None,
-                 yadisk: Optional["YaDisk"] = None):
+                 yadisk: Optional[Any] = None):
         YaDiskObject.__init__(
             self,
             {"href":      str_or_error,
@@ -162,6 +217,9 @@ class OperationLinkObject(LinkObject):
         :ivar templated: `bool`, tells whether the URL is templated
     """
 
+    pass
+
+class SyncOperationLinkObject(OperationLinkObject):
     def get_status(self, **kwargs) -> str:
         """
             Get operation status.
@@ -185,6 +243,30 @@ class OperationLinkObject(LinkObject):
 
         return self._yadisk.get_operation_status(self.href, **kwargs)
 
+class AsyncOperationLinkObject(OperationLinkObject):
+    async def get_status(self, **kwargs) -> str:
+        """
+            Get operation status.
+
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises OperationNotFoundError: requested operation was not found
+
+            :returns: `str`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.href is None:
+            raise ValueError("OperationLinkObject has no link")
+
+        return await self._yadisk.get_operation_status(self.href, **kwargs)
+
 class PublicResourcesListObject(YaDiskObject):
     """
         List of public resources.
@@ -205,7 +287,7 @@ class PublicResourcesListObject(YaDiskObject):
 
     def __init__(self,
                  public_resources_list: Optional[dict] = None,
-                 yadisk: Optional["YaDisk"] = None):
+                 yadisk: Optional[Any] = None):
         YaDiskObject.__init__(
             self,
             {"items":  typed_list(partial(PublicResourceObject, yadisk=yadisk)),
@@ -213,6 +295,28 @@ class PublicResourcesListObject(YaDiskObject):
              "limit":  int_or_error,
              "offset": int_or_error},
             yadisk)
+
+        self.import_fields(public_resources_list)
+
+class SyncPublicResourcesListObject(PublicResourcesListObject):
+    items: Optional[List["SyncPublicResourceObject"]]
+
+    def __init__(self,
+                 public_resources_list: Optional[dict] = None,
+                 yadisk: Optional[Any] = None):
+        PublicResourcesListObject.__init__(self, None, yadisk)
+        self.set_field_type("items", typed_list(partial(SyncPublicResourcesListObject, yadisk=yadisk)))
+
+        self.import_fields(public_resources_list)
+
+class AsyncPublicResourcesListObject(PublicResourcesListObject):
+    items: Optional[List["AsyncPublicResourceObject"]]
+
+    def __init__(self,
+                 public_resources_list: Optional[dict] = None,
+                 yadisk: Optional[Any] = None):
+        PublicResourcesListObject.__init__(self, None, yadisk)
+        self.set_field_type("items", typed_list(partial(AsyncPublicResourcesListObject, yadisk=yadisk)))
 
         self.import_fields(public_resources_list)
 
@@ -233,7 +337,7 @@ class ResourceProtocol(Protocol):
     def file(self) -> Optional[str]: ...
 
     @property
-    def _yadisk(self) -> Optional["YaDisk"]: ...
+    def _yadisk(self) -> Optional[Any]: ...
 
 class ResourceObjectMethodsMixin:
     def get_meta(self: ResourceProtocol,
@@ -999,7 +1103,771 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.copy(str(src_path), dst_path, **kwargs)
 
-class ResourceObject(YaDiskObject, ResourceObjectMethodsMixin):
+class AsyncResourceObjectMethodsMixin:
+    async def get_meta(self: ResourceProtocol,
+                 relative_path: Optional[str] = None, /, **kwargs) -> "ResourceObject":
+        """
+            Get meta information about a file/directory.
+
+            :param relative_path: `str` or `None`, relative path from resource
+            :param limit: number of children resources to be included in the response
+            :param offset: number of children resources to be skipped in the response
+            :param preview_size: size of the file preview
+            :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+            :param sort: `str`, field to be used as a key to sort children resources
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
+            :returns: :any:`ResourceObject`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.get_meta(str(path), **kwargs)
+
+    async def get_public_meta(self: ResourceProtocol, **kwargs) -> "PublicResourceObject":
+        """
+            Get meta-information about a public resource.
+
+            :param path: relative path to a resource in a public folder.
+            :param offset: offset from the beginning of the list of nested resources
+            :param limit: maximum number of nested elements to be included in the list
+            :param sort: `str`, field to be used as a key to sort children resources
+            :param preview_size: file preview size
+            :param preview_crop: `bool`, allow preview crop
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
+            :returns: :any:`PublicResourceObject`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        public_key_or_url = self.public_key or self.public_url
+
+        if public_key_or_url is None:
+            raise ValueError("ResourceObject doesn't have a public_key/public_url")
+
+        return await self._yadisk.get_public_meta(public_key_or_url, **kwargs)
+
+    async def exists(self: ResourceProtocol,
+                     relative_path: Optional[str] = None, /, **kwargs) -> bool:
+        """
+            Check whether resource exists.
+
+            :param relative_path: `str` or `None`, relative path from the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
+            :returns: `bool`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.exists(str(path), **kwargs)
+
+    async def get_type(self: ResourceProtocol,
+                       relative_path: Optional[str] = None, /, **kwargs) -> str:
+        """
+            Get resource type.
+
+            :param relative_path: relative path from the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
+            :returns: "file" or "dir"
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.get_type(str(path), **kwargs)
+
+    async def is_dir(self: ResourceProtocol,
+                     relative_path: Optional[str] = None, /, **kwargs) -> bool:
+        """
+            Check whether resource is a directory.
+
+            :param relative_path: relative path from the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
+            :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.is_dir(str(path), **kwargs)
+
+    async def is_file(self: ResourceProtocol,
+                      relative_path: Optional[str] = None, /, **kwargs) -> bool:
+        """
+            Check whether resource is a file.
+
+            :param relative_path: relative path from the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
+            :returns: `True` if `path` is a file, `False` otherwise (even if it doesn't exist)
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.is_file(str(path), **kwargs)
+
+    async def listdir(self: ResourceProtocol,
+                      relative_path: Optional[str] = None, /, **kwargs) -> AsyncGenerator["ResourceObject", None]:
+        """
+            Get contents of the resource.
+
+            :param relative_path: relative path from resource
+            :param limit: number of children resources to be included in the response
+            :param offset: number of children resources to be skipped in the response
+            :param preview_size: size of the file preview
+            :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises WrongResourceTypeError: resource is not a directory
+
+            :returns: generator of :any:`ResourceObject`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.listdir(str(path), **kwargs)
+
+    async def public_listdir(self: ResourceProtocol, **kwargs) -> AsyncGenerator["PublicResourceObject", None]:
+        """
+            Get contents of a public directory.
+
+            :param path: relative path to the resource in the public folder.
+            :param limit: number of children resources to be included in the response
+            :param offset: number of children resources to be skipped in the response
+            :param preview_size: size of the file preview
+            :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises WrongResourceTypeError: resource is not a directory
+
+            :returns: generator of :any:`PublicResourceObject`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        public_key_or_url = self.public_key or self.public_url
+
+        if public_key_or_url is None:
+            raise ValueError("ResourceObject doesn't have a public_key/public_url")
+
+        return await self._yadisk.public_listdir(public_key_or_url, **kwargs)
+
+    async def get_upload_link(self: ResourceProtocol,
+                              relative_path: Optional[str] = None, /, **kwargs) -> str:
+        """
+            Get a link to upload the file using the PUT request.
+
+            :param relative_path: `str` or `None`, relative path to the resource
+            :param overwrite: `bool`, determines whether to overwrite the destination
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises ParentNotFoundError: parent directory doesn't exist
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+            :raises InsufficientStorageError: cannot upload file due to lack of storage space
+            :raises UploadTrafficLimitExceededError: upload limit has been exceeded
+
+            :returns: `str`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.get_upload_link(str(path), **kwargs)
+
+    async def upload(self: ResourceProtocol,
+                     path_or_file: Union[str, IO[AnyStr]],
+                     relative_path: Optional[str] = None, /, **kwargs) -> "ResourceLinkObject":
+        """
+            Upload a file to disk.
+
+            :param path_or_file: path or file-like object to be uploaded
+            :param relative_path: `str` or `None`, destination path relative to the resource
+            :param overwrite: if `True`, the resource will be overwritten if it already exists,
+                              an error will be raised otherwise
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises ParentNotFoundError: parent directory doesn't exist
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+            :raises InsufficientStorageError: cannot upload file due to lack of storage space
+            :raises UploadTrafficLimitExceededError: upload limit has been exceeded
+
+            :returns: :any:`ResourceLinkObject`, link to the destination resource
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        dst_path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.upload(path_or_file, str(dst_path), **kwargs)
+
+    async def upload_url(self: ResourceProtocol,
+                         url: str,
+                         relative_path: Optional[str] = None, /, **kwargs) -> OperationLinkObject:
+        """
+            Upload a file from URL.
+
+            :param url: source URL
+            :param relative_path: `str` or `None`, destination path relative to the resource
+            :param disable_redirects: `bool`, forbid redirects
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises ParentNotFoundError: parent directory doesn't exist
+            :raises PathExistsError: destination path already exists
+            :raises InsufficientStorageError: cannot upload file due to lack of storage space
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+            :raises UploadTrafficLimitExceededError: upload limit has been exceeded
+
+            :returns: :any:`OperationLinkObject`, link to the asynchronous operation
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        dst_path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.upload_url(url, str(dst_path), **kwargs)
+
+    async def get_download_link(self: ResourceProtocol,
+                                relative_path: Optional[str] = None, /, **kwargs) -> str:
+        """
+            Get a download link for a file (or a directory).
+
+            :param relative_path: `str` or `None`, path relative to the resource
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: `str`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.get_download_link(str(path), **kwargs)
+
+    @overload
+    async def download(self: ResourceProtocol,
+                       dst_path_or_file: Union[str, IO[AnyStr]], /, **kwargs) -> "ResourceLinkObject":
+        pass
+
+    @overload
+    async def download(self: ResourceProtocol,
+                       relative_path: Optional[str],
+                       dst_path_or_file: Union[str, IO[AnyStr]], /, **kwargs) -> "ResourceLinkObject":
+        pass
+
+    async def download(self: ResourceProtocol, *args, **kwargs) -> "ResourceLinkObject":
+        """
+            Download the file. This method takes 1 or 2 positional arguments:
+
+            1. :code:`download(dst_path_or_file, /, **kwargs)`
+            2. :code:`download(relative_path, dst_path_or_file, /, **kwargs)`
+
+            If `relative_path` is empty or None (or not specified) this method
+            will try to use the `file` attribute as a download link.
+
+            :param relative_path: `str` or `None`, source path relative to the resource
+            :param dst_path_or_file: destination path or file-like object
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`ResourceLinkObject`, link to the source resource
+        """
+
+        if len(args) == 1:
+            relative_path, dst_path_or_file = None, args[0]
+        elif len(args) == 2:
+            relative_path, dst_path_or_file = args
+        else:
+            raise TypeError("download() takes 1 or 2 positional arguments")
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if not relative_path and hasattr(self, "file") and self.file is not None:
+            await self._yadisk.download_by_link(self.file, dst_path_or_file, **kwargs)
+
+            return ResourceLinkObject.from_path(self.path, yadisk=self._yadisk)
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        src_path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.download(str(src_path), dst_path_or_file, **kwargs)
+
+    @overload
+    async def patch(self: ResourceProtocol, properties: dict, **kwargs) -> "ResourceObject":
+        pass
+
+    @overload
+    async def patch(self: ResourceProtocol,
+              relative_path: Union[str, None],
+              properties: dict, **kwargs) -> "ResourceObject":
+        pass
+
+    async def patch(self: ResourceProtocol, *args, **kwargs) -> "ResourceObject":
+        """
+            Update custom properties of a resource.
+            This method takes 1 or 2 positional arguments:
+
+            1. :code:`patch(properties, /, **kwargs)`
+            2. :code:`patch(relative_path, properties, /, **kwargs)`
+
+            :param relative_path: `str` or `None`, path relative to the resource
+            :param properties: `dict`, custom properties to update
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`ResourceObject`
+        """
+
+        if len(args) == 1:
+            relative_path, properties = None, args[0]
+        elif len(args) == 2:
+            relative_path, properties = args
+        else:
+            raise TypeError("patch() takes 1 or 2 positional arguments")
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.patch(str(path), properties, **kwargs)
+
+    async def publish(self: ResourceProtocol,
+                      relative_path: Optional[str] = None, /, **kwargs) -> "ResourceLinkObject":
+        """
+            Make a resource public.
+
+            :param relative_path: `str` or `None`, relative path to the resource to be published
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`ResourceLinkObject`, link to the resource
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.publish(str(path), **kwargs)
+
+    async def unpublish(self: ResourceProtocol,
+                        relative_path: Optional[str] = None, /, **kwargs) -> "ResourceLinkObject":
+        """
+            Make a public resource private.
+
+            :param relative_path: `str` or `None`, relative path to the resource to be unpublished
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`ResourceLinkObject`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.unpublish(str(path), **kwargs)
+
+    async def mkdir(self: ResourceProtocol,
+                    relative_path: Optional[str] = None, /, **kwargs) -> "ResourceLinkObject":
+        """
+            Create a new directory.
+
+            :param relative_path: `str` or `None`, relative path to the directory to be created
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises ParentNotFoundError: parent directory doesn't exist
+            :raises DirectoryExistsError: destination path already exists
+            :raises InsufficientStorageError: cannot create directory due to lack of storage space
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`ResourceLinkObject`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.mkdir(str(path), **kwargs)
+
+    async def remove(self: ResourceProtocol,
+                     relative_path: Optional[str] = None, /, **kwargs) -> Optional[OperationLinkObject]:
+        """
+            Remove the resource.
+
+            :param relative_path: `str` or `None`, relative path to the resource to be removed
+            :param permanently: if `True`, the resource will be removed permanently,
+                                otherwise, it will be just moved to the trash
+            :param md5: `str`, MD5 hash of the file to remove
+            :param force_async: forces the operation to be executed asynchronously
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises BadRequestError: MD5 check is only available for files
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.remove(str(path), **kwargs)
+
+    @overload
+    async def move(self: ResourceProtocol,
+                   dst_path: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+        pass
+
+    @overload
+    async def move(self: ResourceProtocol,
+                   relative_path: Optional[str],
+                   dst_path: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+        pass
+
+    async def move(self: ResourceProtocol, *args, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+        """
+            Move resource to `dst_path`.
+            This method takes 1 or 2 positional arguments:
+
+            1. :code:`move(dst_path, /, **kwargs)`
+            2. :code:`move(relative_path, dst_path, /, **kwargs)`
+
+            :param relative_path: `str` or `None`, source path to be moved relative to the resource
+            :param dst_path: destination path
+            :param overwrite: `bool`, determines whether to overwrite the destination
+            :param force_async: forces the operation to be executed asynchronously
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+        """
+
+        if len(args) == 1:
+            relative_path, dst_path = None, args[0]
+        elif len(args) == 2:
+            relative_path, dst_path = args
+        else:
+            raise TypeError("move() takes 1 or 2 positional arguments")
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        src_path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.move(str(src_path), dst_path, **kwargs)
+
+    @overload
+    async def rename(self: ResourceProtocol,
+                     new_name: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+        pass
+
+    @overload
+    async def rename(self: ResourceProtocol,
+                     relative_path: Optional[str],
+                     new_name: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+        pass
+
+    async def rename(self: ResourceProtocol, *args, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+        """
+            Rename `src_path` to have filename `new_name`.
+            Does the same as `move()` but changes only the filename.
+
+            :param relative_path: `str` or `None`, source path to be renamed relative to the resource
+            :param new_name: target filename to rename to
+            :param overwrite: `bool`, determines whether to overwrite the destination
+            :param force_async: forces the operation to be executed asynchronously
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+            :raises ValueError: `new_name` is not a valid filename
+
+            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+        """
+
+        if len(args) == 1:
+            relative_path, new_name = None, args[0]
+        elif len(args) == 2:
+            relative_path, new_name = args
+        else:
+            raise TypeError("rename() takes 1 or 2 positional arguments")
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.rename(str(path), new_name, **kwargs)
+
+    @overload
+    async def copy(self: ResourceProtocol,
+                   dst_path: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+        pass
+
+    @overload
+    async def copy(self: ResourceProtocol,
+                   relative_path: Optional[str],
+                   dst_path: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+        pass
+
+    async def copy(self: ResourceProtocol, *args, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+        """
+            Copy resource to `dst_path`.
+            If the operation is performed asynchronously, returns the link to the operation,
+            otherwise, returns the link to the newly created resource.
+
+            This method takes 1 or 2 positional arguments:
+
+            1. :code:`copy(dst_path, /, **kwargs)`
+            2. :code:`copy(relative_path, dst_path, /, **kwargs)`
+
+            :param src_path: `str` or `None`, source path relative to the resource
+            :param dst_path: destination path
+            :param overwrite: if `True` the destination path can be overwritten,
+                              otherwise, an error will be raised
+            :param force_async: forces the operation to be executed asynchronously
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises InsufficientStorageError: cannot complete request due to lack of storage space
+            :raises ResourceIsLockedError: resource is locked by another request
+            :raises UploadTrafficLimitExceededError: upload limit has been exceeded
+
+            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+        """
+
+        if len(args) == 1:
+            relative_path, dst_path = None, args[0]
+        elif len(args) == 2:
+            relative_path, dst_path = args
+        else:
+            raise TypeError("copy() takes 1 or 2 positional arguments")
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        src_path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.copy(str(src_path), dst_path, **kwargs)
+
+class ResourceObject(YaDiskObject):
     """
         Resource object.
 
@@ -1056,7 +1924,7 @@ class ResourceObject(YaDiskObject, ResourceObjectMethodsMixin):
     md5: Optional[str]
     revision: Optional[int]
 
-    def __init__(self, resource: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
+    def __init__(self, resource: Optional[dict] = None, yadisk: Optional[Any] = None):
         YaDiskObject.__init__(
             self,
             {"antivirus_status":  str_or_dict_or_error,
@@ -1086,7 +1954,25 @@ class ResourceObject(YaDiskObject, ResourceObjectMethodsMixin):
         self.set_alias("_embedded", "embedded")
         self.import_fields(resource)
 
-class ResourceLinkObject(LinkObject, ResourceObjectMethodsMixin):
+class SyncResourceObject(ResourceObject, ResourceObjectMethodsMixin):
+    embedded: Optional["SyncResourceListObject"]
+    _embedded: Optional["SyncResourceListObject"]
+
+    def __init__(self, resource: Optional[dict] = None, yadisk: Optional[Any] = None):
+        ResourceObject.__init__(self, None, yadisk)
+        self.set_field_type("embedded", partial(SyncResourceListObject, yadisk=yadisk))
+        self.import_fields(resource)
+
+class AsyncResourceObject(ResourceObject, AsyncResourceObjectMethodsMixin):
+    embedded: Optional["AsyncResourceListObject"]
+    _embedded: Optional["AsyncResourceListObject"]
+
+    def __init__(self, resource: Optional[dict] = None, yadisk: Optional[Any] = None):
+        ResourceObject.__init__(self, None, yadisk)
+        self.set_field_type("embedded", partial(AsyncResourceListObject, yadisk=yadisk))
+        self.import_fields(resource)
+
+class ResourceLinkObject(LinkObject):
     """
         Resource link object.
 
@@ -1101,7 +1987,7 @@ class ResourceLinkObject(LinkObject, ResourceObjectMethodsMixin):
 
     path: Optional[str]
 
-    def __init__(self, link: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
+    def __init__(self, link: Optional[dict] = None, yadisk: Optional[Any] = None):
         LinkObject.__init__(self, link, yadisk)
         self.set_field_type("path", str_or_error)
         self.set_field_type("public_key", str_or_error)
@@ -1114,20 +2000,26 @@ class ResourceLinkObject(LinkObject, ResourceObjectMethodsMixin):
             except IndexError:
                 pass
 
-    @staticmethod
-    def from_path(path: Optional[str], yadisk: Optional["YaDisk"] = None) -> "ResourceLinkObject":
+    @classmethod
+    def from_path(cls, path: Optional[str], yadisk: Optional[Any] = None) -> Self:
         if path is None:
-            return ResourceLinkObject(yadisk=yadisk)
+            return cls(yadisk=yadisk)
 
         path = ensure_path_has_schema(path)
 
-        return ResourceLinkObject(
+        return cls(
             {"method": "GET",
              "href": "https://cloud-api.yandex.net/v1/disk/resources?" + urlencode({"path": path}),
              "templated": False},
             yadisk=yadisk)
 
-class PublicResourceLinkObject(LinkObject, ResourceObjectMethodsMixin):
+class SyncResourceLinkObject(ResourceLinkObject, ResourceObjectMethodsMixin):
+    pass
+
+class AsyncResourceLinkObject(ResourceLinkObject, AsyncResourceObjectMethodsMixin):
+    pass
+
+class PublicResourceLinkObject(LinkObject):
     """
         Public resource link object.
 
@@ -1144,7 +2036,7 @@ class PublicResourceLinkObject(LinkObject, ResourceObjectMethodsMixin):
     public_key: Optional[str]
     public_url: Optional[str]
 
-    def __init__(self, link: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
+    def __init__(self, link: Optional[dict] = None, yadisk: Optional[Any] = None):
         LinkObject.__init__(self, link, yadisk)
         self.set_field_type("public_key", str_or_error)
         self.set_field_type("public_url", str_or_error)
@@ -1161,16 +2053,22 @@ class PublicResourceLinkObject(LinkObject, ResourceObjectMethodsMixin):
             else:
                 self.public_key = public_key_or_url
 
-    @staticmethod
-    def from_public_key(public_key: Optional[str], yadisk: Optional["YaDisk"] = None) -> "PublicResourceLinkObject":
+    @classmethod
+    def from_public_key(cls, public_key: Optional[str], yadisk: Optional[Any] = None) -> Self:
         if public_key is None:
-            return PublicResourceLinkObject(yadisk=yadisk)
+            return cls(yadisk=yadisk)
 
-        return PublicResourceLinkObject(
+        return cls(
             {"method": "GET",
              "href": "https://cloud-api.yandex.net/v1/disk/public/resources?" + urlencode({"public_key": public_key}),
              "templated": False},
             yadisk=yadisk)
+
+class SyncPublicResourceLinkObject(PublicResourceLinkObject, ResourceObjectMethodsMixin):
+    pass
+
+class AsyncPublicResourceLinkObject(PublicResourceLinkObject, AsyncResourceObjectMethodsMixin):
+    pass
 
 class ResourceListObject(YaDiskObject):
     """
@@ -1194,7 +2092,7 @@ class ResourceListObject(YaDiskObject):
     path: Optional[str]
     total: Optional[int]
 
-    def __init__(self, resource_list: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
+    def __init__(self, resource_list: Optional[dict] = None, yadisk: Optional[Any] = None):
         YaDiskObject.__init__(
             self,
             {"sort":   str_or_error,
@@ -1204,6 +2102,22 @@ class ResourceListObject(YaDiskObject):
              "path":   str_or_error,
              "total":  int_or_error},
             yadisk)
+        self.import_fields(resource_list)
+
+class SyncResourceListObject(ResourceListObject):
+    items: Optional[List[SyncResourceObject]]
+
+    def __init__(self, resource_list: Optional[dict] = None, yadisk: Optional[Any] = None):
+        ResourceListObject.__init__(self, None, yadisk)
+        self.set_field_type("items", typed_list(partial(SyncResourceObject, yadisk=yadisk)))
+        self.import_fields(resource_list)
+
+class AsyncResourceListObject(ResourceListObject):
+    items: Optional[List[AsyncResourceObject]]
+
+    def __init__(self, resource_list: Optional[dict] = None, yadisk: Optional[Any] = None):
+        ResourceListObject.__init__(self, None, yadisk)
+        self.set_field_type("items", typed_list(partial(AsyncResourceObject, yadisk=yadisk)))
         self.import_fields(resource_list)
 
 class ResourceUploadLinkObject(LinkObject):
@@ -1223,7 +2137,7 @@ class ResourceUploadLinkObject(LinkObject):
 
     def __init__(self,
                  resource_upload_link: Optional[dict] = None,
-                 yadisk: Optional["YaDisk"] = None):
+                 yadisk: Optional[Any] = None):
         LinkObject.__init__(self, None, yadisk)
         self.set_field_type("operation_id", str_or_error)
         self.import_fields(resource_upload_link)
@@ -1258,7 +2172,7 @@ class ShareInfoObject(YaDiskObject):
     is_owned: Optional[bool]
     rights: Optional[str]
 
-    def __init__(self, share_info: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
+    def __init__(self, share_info: Optional[dict] = None, yadisk: Optional[Any] = None):
         YaDiskObject.__init__(
             self,
             {"is_root":  bool_or_error,
@@ -1315,6 +2229,24 @@ class PublicResourceObject(ResourceObject):
         self.set_field_type("owner", partial(UserPublicInfoObject, yadisk=yadisk))
         self.import_fields(public_resource)
 
+class SyncPublicResourceObject(PublicResourceObject, ResourceObjectMethodsMixin):
+    embedded: Optional["SyncPublicResourceListObject"]
+    _embedded: Optional["SyncPublicResourceListObject"]
+
+    def __init__(self, public_resource: Optional[dict] = None, yadisk: Optional[Any] = None):
+        PublicResourceObject.__init__(self, None, yadisk)
+        self.set_field_type("embedded", partial(SyncPublicResourceListObject, yadisk=yadisk))
+        self.import_fields(public_resource)
+
+class AsyncPublicResourceObject(PublicResourceObject, AsyncResourceObjectMethodsMixin):
+    embedded: Optional["AsyncPublicResourceListObject"]
+    _embedded: Optional["AsyncPublicResourceListObject"]
+
+    def __init__(self, public_resource: Optional[dict] = None, yadisk: Optional[Any] = None):
+        PublicResourceObject.__init__(self, None, yadisk)
+        self.set_field_type("embedded", partial(AsyncPublicResourceListObject, yadisk=yadisk))
+        self.import_fields(public_resource)
+
 class PublicResourceListObject(ResourceListObject):
     """
         List of public resources.
@@ -1336,10 +2268,26 @@ class PublicResourceListObject(ResourceListObject):
 
     def __init__(self,
                  public_resource_list: Optional[dict] = None,
-                 yadisk: Optional["YaDisk"] = None):
+                 yadisk: Optional[Any] = None):
         ResourceListObject.__init__(self, None, yadisk)
         self.set_field_type("public_key", str_or_error)
         self.set_field_type("items", typed_list(partial(PublicResourceObject, yadisk=yadisk)))
+        self.import_fields(public_resource_list)
+
+class SyncPublicResourceListObject(PublicResourceListObject):
+    items: Optional[List[SyncPublicResourceObject]]
+
+    def __init__(self, public_resource_list: Optional[dict] = None, yadisk: Optional[Any] = None):
+        PublicResourceListObject.__init__(self, None, yadisk)
+        self.set_field_type("items", typed_list(partial(SyncPublicResourceObject, yadisk=yadisk)))
+        self.import_fields(public_resource_list)
+
+class AsyncPublicResourceListObject(PublicResourceListObject):
+    items: Optional[List[AsyncPublicResourceObject]]
+
+    def __init__(self, public_resource_list: Optional[dict] = None, yadisk: Optional[Any] = None):
+        PublicResourceListObject.__init__(self, None, yadisk)
+        self.set_field_type("items", typed_list(partial(AsyncPublicResourceObject, yadisk=yadisk)))
         self.import_fields(public_resource_list)
 
 class TrashResourceObject(ResourceObject):
@@ -1383,11 +2331,22 @@ class TrashResourceObject(ResourceObject):
 
     def __init__(self,
                  trash_resource: Optional[dict] = None,
-                 yadisk: Optional["YaDisk"] = None):
+                 yadisk: Optional[Any] = None):
         ResourceObject.__init__(self, None, yadisk)
         self.set_field_type("embedded", partial(TrashResourceListObject, yadisk=yadisk))
         self.set_field_type("origin_path", str_or_error)
         self.set_field_type("deleted", yandex_date)
+        self.import_fields(trash_resource)
+
+class SyncTrashResourceObject(TrashResourceObject):
+    embedded: Optional["SyncTrashResourceListObject"]
+    _embedded: Optional["SyncTrashResourceListObject"]
+
+    def __init__(self,
+                 trash_resource: Optional[dict] = None,
+                 yadisk: Optional[Any] = None):
+        TrashResourceObject.__init__(self, None, yadisk)
+        self.set_field_type("embedded", partial(SyncTrashResourceListObject, yadisk=yadisk))
         self.import_fields(trash_resource)
 
     def get_meta(self: ResourceProtocol,
@@ -1649,60 +2608,275 @@ class TrashResourceObject(ResourceObject):
 
         return self._yadisk.restore_trash(str(path), dst_path, **kwargs)
 
-    def get_public_meta(self, *args, **kwargs):
-        """"""
-        raise NotImplementedError
+class AsyncTrashResourceObject(TrashResourceObject):
+    embedded: Optional["AsyncTrashResourceListObject"]
+    _embedded: Optional["AsyncTrashResourceListObject"]
 
-    def public_listdir(self, *args, **kwargs):
-        """"""
-        raise NotImplementedError
+    def __init__(self,
+                 trash_resource: Optional[dict] = None,
+                 yadisk: Optional[Any] = None):
+        TrashResourceObject.__init__(self, None, yadisk)
+        self.set_field_type("embedded", partial(AsyncTrashResourceListObject, yadisk=yadisk))
+        self.import_fields(trash_resource)
 
-    def get_download_link(self, *args, **kwargs):
-        """"""
-        raise NotImplementedError
+    async def get_meta(self: ResourceProtocol,
+                       relative_path: Optional[str] = None, /, **kwargs) -> "TrashResourceObject":
+        """
+            Get meta information about a trash resource.
 
-    def download(self, *args, **kwargs):
-        """"""
-        raise NotImplementedError
+            :param relative_path: `str` or `None`, relative path to the trash resource
+            :param limit: number of children resources to be included in the response
+            :param offset: number of children resources to be skipped in the response
+            :param preview_size: size of the file preview
+            :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+            :param sort: `str`, field to be used as a key to sort children resources
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
-    def get_upload_link(self, *args, **kwargs):
-        """"""
-        raise NotImplementedError
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
 
-    def upload(self, *args, **kwargs):
-        """"""
-        raise NotImplementedError
+            :returns: :any:`TrashResourceObject`
+        """
 
-    def copy(self, *args, **kwargs):
-        """"""
-        raise NotImplementedError
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
 
-    def move(self, *args, **kwargs):
-        """"""
-        raise NotImplementedError
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
 
-    def rename(self, *args, **kwargs):
-        """"""
-        raise NotImplementedError
+        path = PurePosixPath(self.path) / (relative_path or "")
 
-    def upload_url(self, *args, **kwargs):
-        """"""
-        raise NotImplementedError
+        return await self._yadisk.get_trash_meta(str(path), **kwargs)
 
-    def patch(self, *args, **kwargs):
-        raise NotImplementedError
+    async def exists(self: ResourceProtocol,
+                     relative_path: Optional[str] = None, /, **kwargs) -> bool:
+        """
+            Check whether the trash resource exists.
 
-    def publish(self, *args, **kwargs):
-        """"""
-        raise NotImplementedError
+            :param relative_path: `str` or `None`, relative path to the trash resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
 
-    def unpublish(self, *args, **kwargs):
-        """"""
-        raise NotImplementedError
+            :raises ForbiddenError: application doesn't have enough rights for this request
 
-    def mkdir(self, *args, **kwargs):
-        """"""
-        raise NotImplementedError
+            :returns: `bool`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("TrashResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.trash_exists(str(path), **kwargs)
+
+    async def get_type(self: ResourceProtocol,
+                       relative_path: Optional[str] = None, /, **kwargs) -> str:
+        """
+            Get trash resource type.
+
+            :param relative_path: `str` or `None`, relative path to the trash resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
+            :returns: "file" or "dir"
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("TrashResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.get_trash_type(str(path), **kwargs)
+
+    async def is_dir(self: ResourceProtocol,
+                     relative_path: Optional[str] = None, /, **kwargs) -> bool:
+        """
+            Check whether resource is a trash directory.
+
+            :param relative_path: `str` or `None`, relative path to the trash resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
+            :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("TrashResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.is_trash_dir(str(path), **kwargs)
+
+    async def is_file(self: ResourceProtocol,
+                      relative_path: Optional[str] = None, /, **kwargs) -> bool:
+        """
+            Check whether resource is a trash file.
+
+            :param relative_path: `str` or `None`, relative path to the trash resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
+            :returns: `True` if `path` is a file, `False` otherwise (even if it doesn't exist)
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("TrashResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.is_trash_file(str(path), **kwargs)
+
+    async def listdir(self: ResourceProtocol,
+                      relative_path: Optional[str] = None, /, **kwargs) -> Generator["TrashResourceObject", None, None]:
+        """
+            Get contents of a trash resource.
+
+            :param relative_path: `str` or `None`, relative path to the directory in the trash bin
+            :param limit: number of children resources to be included in the response
+            :param offset: number of children resources to be skipped in the response
+            :param preview_size: size of the file preview
+            :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises WrongResourceTypeError: resource is not a directory
+
+            :returns: generator of :any:`TrashResourceObject`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("TrashResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.trash_listdir(str(path), **kwargs)
+
+    async def remove(self: ResourceProtocol,
+                     relative_path: Optional[str] = None, /, **kwargs) -> Optional[OperationLinkObject]:
+        """
+            Remove a trash resource.
+
+            :param relative_path: `str` or `None`, relative path to the trash resource to be deleted
+            :param force_async: forces the operation to be executed asynchronously
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("TrashResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.remove_trash(str(path), **kwargs)
+
+    @overload
+    async def restore(self: ResourceProtocol,
+                      dst_path: str, /, **kwargs) -> Union[ResourceLinkObject, OperationLinkObject]:
+        pass
+
+    @overload
+    async def restore(self: ResourceProtocol,
+                      relative_path: Optional[str],
+                      dst_path: str, /, **kwargs) -> Union[ResourceLinkObject, OperationLinkObject]:
+        pass
+
+    async def restore(self: ResourceProtocol, *args, **kwargs) -> Union[ResourceLinkObject, OperationLinkObject]:
+        """
+            Restore a trash resource.
+            Returns a link to the newly created resource or a link to the asynchronous operation.
+
+            This method takes 1 or 2 positional arguments:
+
+            1. :code:`restore(dst_path, /, **kwargs)`
+            2. :code:`restore(relative_path=None, dst_path, /, **kwargs)`
+
+            :param relative_path: `str` or `None`, relative path to the trash resource to be restored
+            :param dst_path: destination path
+            :param overwrite: `bool`, determines whether the destination can be overwritten
+            :param force_async: forces the operation to be executed asynchronously
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+        """
+
+        if len(args) == 0:
+            relative_path = dst_path = None
+        elif len(args) == 1:
+            relative_path, dst_path = None, args[0]
+        elif len(args) == 2:
+            relative_path, dst_path = args
+        else:
+            raise TypeError("restore() takes up to 2 positional arguments")
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("TrashResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.restore_trash(str(path), dst_path, **kwargs)
 
 class TrashResourceListObject(ResourceListObject):
     """
@@ -1723,7 +2897,27 @@ class TrashResourceListObject(ResourceListObject):
 
     def __init__(self,
                  trash_resource_list: Optional[dict] = None,
-                 yadisk: Optional["YaDisk"] = None):
+                 yadisk: Optional[Any] = None):
         ResourceListObject.__init__(self, None, yadisk)
         self.set_field_type("items", typed_list(partial(TrashResourceObject, yadisk=yadisk)))
+        self.import_fields(trash_resource_list)
+
+class SyncTrashResourceListObject(TrashResourceListObject):
+    items: Optional[List[SyncTrashResourceObject]]
+
+    def __init__(self,
+                 trash_resource_list: Optional[dict] = None,
+                 yadisk: Optional[Any] = None):
+        TrashResourceListObject.__init__(self, None, yadisk)
+        self.set_field_type("items", typed_list(partial(SyncTrashResourceObject, yadisk=yadisk)))
+        self.import_fields(trash_resource_list)
+
+class AsyncTrashResourceListObject(TrashResourceListObject):
+    items: Optional[List[AsyncTrashResourceObject]]
+
+    def __init__(self,
+                 trash_resource_list: Optional[dict] = None,
+                 yadisk: Optional[Any] = None):
+        TrashResourceListObject.__init__(self, None, yadisk)
+        self.set_field_type("items", typed_list(partial(AsyncTrashResourceObject, yadisk=yadisk)))
         self.import_fields(trash_resource_list)

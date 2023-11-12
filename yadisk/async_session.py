@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from typing import Self
-
-from .exceptions import YaDiskError
-from .compat import Dict, Iterable
-from .utils import get_exception
+from typing import Self, TYPE_CHECKING
+from .compat import Iterable
+from .types import AsyncConsumeCallback, JSON, Headers
 from .objects import ErrorObject
-from .types import ConsumeCallback, JSON
+from .utils import get_exception
 
-__all__ = ["Session", "Response"]
+if TYPE_CHECKING:
+    from .exceptions import YaDiskError
 
-class Response:
+__all__ = ["AsyncSession", "AsyncResponse"]
+
+class AsyncResponse:
     """
         Represents an HTTP response.
 
@@ -19,7 +20,7 @@ class Response:
 
     status: int
 
-    def json(self) -> JSON:
+    async def json(self) -> JSON:
         """
             Returns JSON-content of the response (parses JSON).
 
@@ -27,22 +28,23 @@ class Response:
         """
         raise NotImplementedError
 
-    def download(self, consume_callback: ConsumeCallback) -> None:
+    async def download(self, consume_callback: AsyncConsumeCallback) -> None:
         """
             Downloads response's content.
 
-            :param consume_callback: function, takes one parameter - chunk of data (bytes),
+            :param consume_callback: regular or async function, takes one
+                                     parameter - chunk of data (bytes),
                                      consumes the chunk (e.g. by writing to a file)
         """
         raise NotImplementedError
 
-    def get_exception(self) -> YaDiskError:
+    async def get_exception(self) -> "YaDiskError":
         """
             Convenience wrapper for :any:`yadisk.utils.get_exception`.
         """
 
         try:
-            js = self.json()
+            js = await self.json()
         except (ValueError, RuntimeError):
             js = None
 
@@ -50,18 +52,19 @@ class Response:
 
         return get_exception(self, error)
 
-    def close(self) -> None:
+    async def close(self) -> None:
         """Closes the response and releases the underlying connection into the pool"""
         raise NotImplementedError
 
-    def __enter__(self) -> Self:
+    async def __aenter__(self) -> Self:
         return self
 
-    def __exit__(self, *args, **kwargs) -> None:
+    async def __aexit__(self, *args, **kwargs) -> None:
         """Closes the response and releases the underlying connection into the pool"""
-        self.close()
 
-class Session:
+        await self.close()
+
+class AsyncSession:
     """
         HTTP session class. Maintains open connections, stores headers and other
         some other request parameters.
@@ -69,7 +72,7 @@ class Session:
         Must be explicitly closed (can be done using the `with` statement).
     """
 
-    def set_headers(self, headers: Dict[str, str]) -> None:
+    def set_headers(self, headers: Headers) -> None:
         """
             Updates session's headers.
 
@@ -94,7 +97,7 @@ class Session:
 
         self.set_headers({"Authorization": "OAuth " + token})
 
-    def send_request(self, method: str, url: str, /, **kwargs) -> Response:
+    async def send_request(self, method: str, url: str, /, **kwargs) -> AsyncResponse:
         """
             Sends an HTTP request with given parameters.
             In case an error occurs, the method should throw one of exceptions
@@ -114,13 +117,13 @@ class Session:
         """
         raise NotImplementedError
 
-    def close(self) -> None:
+    async def close(self) -> None:
         """Closes the session."""
         raise NotImplementedError
 
-    def __enter__(self) -> Self:
+    async def __aenter__(self) -> Self:
         return self
 
-    def __exit__(self, *args, **kwargs) -> None:
+    async def __aexit__(self, *args, **kwargs) -> None:
         """Closes the session."""
-        return self.close()
+        return await self.close()

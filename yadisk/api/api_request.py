@@ -4,13 +4,18 @@ from ..common import CaseInsensitiveDict
 
 from ..exceptions import InvalidResponseError
 
-from ..utils import auto_retry, get_exception
+from ..utils import auto_retry, async_auto_retry
 from .. import settings
-from ..session import Session, Response
 
-from typing import Optional, Union, TypeVar
-from ..compat import Set
+from typing import Any, Optional, Union, TypeVar, TYPE_CHECKING
+from ..compat import Set, Dict
 import json
+
+from ..types import AnySession, JSON
+
+if TYPE_CHECKING:
+    from ..session import Response
+    from ..async_session import AsyncResponse
 
 __all__ = ["APIRequest"]
 
@@ -38,19 +43,25 @@ class APIRequest(object):
         :ivar retry_interval: `float`, delay between retries in seconds
     """
 
-    url: Optional[str] = None
-    method: Optional[str] = None
+    url: str = ""
+    method: str = ""
     content_type: str = "application/x-www-form-urlencoded"
     timeout = _DEFAULT_TIMEOUT
     n_retries: Optional[int] = None
     success_codes: Set[int] = {200}
     retry_interval: Optional[Union[int, float]] = None
 
-    response: Optional[Response]
+    data: Dict
+    content: Optional[bytes]
+    params: Dict[str, Any]
+    send_kwargs: Dict[str, Any]
+
+    session: Any
+    response: Optional[Any]
 
     T = TypeVar("T")
 
-    def __init__(self, session: Session, args: dict, **kwargs):
+    def __init__(self, session: AnySession, args: dict, **kwargs):
         n_retries = kwargs.pop("n_retries", None)
         retry_interval = kwargs.pop("retry_interval", None)
         headers = kwargs.pop("headers", {})
@@ -85,9 +96,9 @@ class APIRequest(object):
         self.n_retries = n_retries
         self.retry_interval = retry_interval
         self.headers = headers
-        self.request = None
         self.response = None
         self.data = {}
+        self.content = None
         self.params = {}
 
         self.process_args(**self.args)
@@ -95,36 +106,56 @@ class APIRequest(object):
     def process_args(self) -> None:
         raise NotImplementedError
 
-    def _attempt(self) -> None:
+    def _prepare_send_args(self) -> Dict[str, Any]:
         headers = CaseInsensitiveDict()
         headers["Content-Type"] = self.content_type
         headers.update(self.headers)
 
-        if self.data and not isinstance(self.data, bytes):
+        if self.content is not None:
+            data = self.content
+        elif self.data:
             data = json.dumps(self.data).encode("utf8")
         else:
-            data = self.data or None
+            data = None
 
         kwargs = dict(self.send_kwargs)
         kwargs.update({"headers": headers,
                        "data":    data,
                        "params":  self.params})
 
-        assert self.method is not None
-        assert self.url is not None
+        return kwargs
+
+    def _attempt(self) -> None:
+        assert self.method
+        assert self.url
+
+        kwargs = self._prepare_send_args()
 
         self.response = self.session.send_request(self.method, self.url, **kwargs)
 
         success = self.response.status in self.success_codes
 
         if not success:
-            raise get_exception(self.response)
+            raise self.response.get_exception()
 
-    def send(self) -> Response:
+    async def _async_attempt(self) -> None:
+        assert self.method
+        assert self.url
+
+        kwargs = self._prepare_send_args()
+
+        self.response = await self.session.send_request(self.method, self.url, **kwargs)
+
+        success = self.response.status in self.success_codes
+
+        if not success:
+            raise await self.response.get_exception()
+
+    def send(self) -> "Response":
         """
             Actually send the request
 
-           :returns: :any:`Response` (`self.response`)
+            :returns: :any:`Response` (`self.response`)
         """
 
         auto_retry(self._attempt, self.n_retries, self.retry_interval)
@@ -133,7 +164,7 @@ class APIRequest(object):
 
         return self.response
 
-    def process_json(self, js: Optional[dict], **kwargs) -> T:
+    def process_json(self, js: JSON, **kwargs) -> T:
         """
             Process the JSON response.
 
@@ -158,6 +189,40 @@ class APIRequest(object):
 
         try:
             result = self.response.json()
+        except (ValueError, RuntimeError):
+            result = None
+
+        try:
+            return self.process_json(result, **kwargs)
+        except ValueError as e:
+            raise InvalidResponseError(f"Server returned invalid response: {e}")
+
+    async def asend(self) -> "AsyncResponse":
+        """
+            Actually send the request
+
+            :returns: :any:`AsyncResponse` (`self.response`)
+        """
+
+        await async_auto_retry(self._async_attempt, self.n_retries, self.retry_interval)
+
+        assert self.response is not None
+
+        return self.response
+
+    async def aprocess(self, **kwargs) -> T:
+        """
+            Process the response.
+
+            :param kwargs: extra arguments (optional)
+
+            :returns: depends on `self.process_json()`
+        """
+
+        assert self.response is not None
+
+        try:
+            result = await self.response.json()
         except (ValueError, RuntimeError):
             result = None
 

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import asyncio
 import datetime
+import inspect
 
 from .compat import Callable, List
 
@@ -138,3 +140,6 @@ class CaseInsensitiveDict(dict):
         for k in list(self.keys()):
             v = super(CaseInsensitiveDict, self).pop(k)
             self.__setitem__(k, v)
+
+def is_async_func(func: Any) -> bool:
+    return inspect.isgeneratorfunction(func) or asyncio.iscoroutinefunction(func)

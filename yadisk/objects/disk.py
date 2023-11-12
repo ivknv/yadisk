@@ -4,10 +4,7 @@ from functools import partial
 from .yadisk_object import YaDiskObject
 from ..common import str_or_error, bool_or_error, int_or_error
 
-from typing import Optional, NoReturn, TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from ..yadisk import YaDisk
+from typing import Any, Optional, NoReturn
 
 __all__ = ["DiskInfoObject", "SystemFoldersObject", "UserObject", "UserPublicInfoObject"]
 
@@ -42,7 +39,7 @@ class DiskInfoObject(YaDiskObject):
     user:                         "UserObject"
     revision:                     Optional[int]
 
-    def __init__(self, disk_info: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
+    def __init__(self, disk_info: Optional[dict] = None, yadisk: Optional[Any] = None):
         YaDiskObject.__init__(
             self,
             {"max_file_size":                int_or_error,
@@ -101,7 +98,7 @@ class SystemFoldersObject(YaDiskObject):
 
     def __init__(self,
                  system_folders: Optional[dict] = None,
-                 yadisk: Optional["YaDisk"] = None):
+                 yadisk: Optional[Any] = None):
         YaDiskObject.__init__(
             self,
             {"odnoklassniki": str_or_error,
@@ -141,7 +138,7 @@ class UserObject(YaDiskObject):
     display_name: Optional[str]
     uid: Optional[str]
 
-    def __init__(self, user: Optional[dict] = None, yadisk: Optional["YaDisk"] = None):
+    def __init__(self, user: Optional[dict] = None, yadisk: Optional[Any] = None):
         YaDiskObject.__init__(
             self,
             {"country":      str_or_error,
@@ -169,7 +166,7 @@ class UserPublicInfoObject(UserObject):
 
     def __init__(self,
                  public_user_info: Optional[dict] = None,
-                 yadisk: Optional["YaDisk"] = None):
+                 yadisk: Optional[Any] = None):
         UserObject.__init__(self, None, yadisk)
         self.remove_field("country")
         self.import_fields(public_user_info)
