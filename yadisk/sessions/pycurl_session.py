@@ -125,7 +125,7 @@ class PycurlSession(Session):
         params = kwargs.get("params", {})
         data = kwargs.get("data")
         stream = kwargs.get("stream", False)
-        headers = dict(self._headers)
+        headers = CaseInsensitiveDict(self._headers)
         headers.update(kwargs.get("headers", {}))
 
         options = kwargs.get("curl_options", {})
