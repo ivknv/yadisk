@@ -13,6 +13,8 @@ from ..types import JSON, ConsumeCallback, Headers
 from typing import Union
 
 import threading
+import weakref
+
 import requests
 
 __all__ = ["RequestsSession"]
@@ -57,6 +59,10 @@ class RequestsSession(Session):
     def requests_session(self) -> requests.Session:
         if not hasattr(self._local, "session"):
             self._local.session = requests.Session(*self._args, **self._kwargs)
+
+            # Session.close() only closes the thread-local session
+            # This is a simple way to ensure it gets closed eventually
+            weakref.finalize(self._local.session, self._local.session.close)
 
         return self._local.session
 
