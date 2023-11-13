@@ -11,11 +11,12 @@ from typing import Any
 import yadisk
 from yadisk.sessions.requests_session import RequestsSession
 from yadisk.sessions.httpx_session import HTTPXSession
+from yadisk.sessions.pycurl_session import PycurlSession
 
 from yadisk.common import is_operation_link, ensure_path_has_schema
 from yadisk.api.operations import GetOperationStatusRequest
 
-__all__ = ["RequestsTestCase", "HTTPXTestCase"]
+__all__ = ["RequestsTestCase", "HTTPXTestCase", "PycurlTestCase"]
 
 def make_test_case(name, session_factory):
     class ClientTestCase(TestCase):
@@ -306,3 +307,4 @@ def make_test_case(name, session_factory):
 
 RequestsTestCase = make_test_case("RequestsTestCase", RequestsSession)
 HTTPXTestCase = make_test_case("HTTPXTestCase", HTTPXSession)
+PycurlTestCase = make_test_case("PycurlTestCase", PycurlSession)
