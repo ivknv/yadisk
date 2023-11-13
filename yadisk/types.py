@@ -2,8 +2,8 @@
 
 from typing import Any, Optional, Union, TYPE_CHECKING, Protocol, BinaryIO, Literal
 from .compat import (
-    Dict, List, Tuple, Generator, AsyncGenerator, Callable, Awaitable,
-    AsyncIterable
+    Dict, List, Tuple, Callable, Awaitable,
+    Iterator, AsyncIterator
 )
 
 if TYPE_CHECKING:
@@ -24,10 +24,10 @@ JSON = Union[Dict, List, str, int, float, None]
 TimeoutParameter = Optional[Union[float, Tuple[Optional[float], Optional[float]]]]
 Headers = Dict[str, str]
 
-Payload = Union[bytes, Generator[bytes, None, None]]
+Payload = Union[bytes, Iterator[bytes]]
 ConsumeCallback = Callable[[bytes], None]
 
-AsyncPayload = Union[bytes, Generator[bytes, None, None], AsyncGenerator[bytes, None]]
+AsyncPayload = Union[bytes, Iterator[bytes], AsyncIterator[bytes]]
 AsyncConsumeCallback = Union[Callable[[bytes], None], Callable[[bytes], Awaitable[None]]]
 
 AnyResponse = Union["Response", "AsyncResponse"]
@@ -63,7 +63,7 @@ AsyncFileOrPath = Union[
     bytes,
     BinaryIO,
     AsyncFileLike,
-    Callable[[], AsyncIterable[bytes]]
+    Callable[[], AsyncIterator[bytes]]
 ]
 
 AsyncFileOrPathDestination = Union[

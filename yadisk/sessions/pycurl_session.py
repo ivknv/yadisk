@@ -9,7 +9,7 @@ from ..exceptions import (
 )
 
 from ..session import Session, Response
-from ..compat import Iterable, Generator
+from ..compat import Iterator
 from ..common import CaseInsensitiveDict
 from ..types import JSON, ConsumeCallback, Headers
 
@@ -64,8 +64,8 @@ class PycurlResponse(Response):
         self._curl.close()
 
 class IterableReader:
-    def __init__(self, generator: Generator[bytes, None, None]):
-        self.generator = generator
+    def __init__(self, iterator: Iterator[bytes]):
+        self.iterator = iterator
         self._current_chunk = b""
         self._position_in_chunk = 0
 
@@ -77,7 +77,7 @@ class IterableReader:
         while len(data) < size:
             if self._position_in_chunk >= len(self._current_chunk):
                 try:
-                    self._current_chunk = next(self.generator)
+                    self._current_chunk = next(self.iterator)
                 except StopIteration:
                     return data
 
@@ -98,7 +98,7 @@ class IterableReader:
         while True:
             if self._position_in_chunk >= len(self._current_chunk):
                 try:
-                    self._current_chunk = next(self.generator)
+                    self._current_chunk = next(self.iterator)
                 except StopIteration:
                     return data
 
@@ -117,7 +117,7 @@ class PycurlSession(Session):
     def set_headers(self, headers: Headers) -> None:
         self._headers.update(headers)
 
-    def remove_headers(self, headers: Iterable[str]) -> None:
+    def remove_headers(self, headers: Iterator[str]) -> None:
         for h in headers:
             self._headers.pop(h, None)
 
@@ -171,7 +171,7 @@ class PycurlSession(Session):
             curl.setopt(pycurl.UPLOAD, True)
             uploading_file = True
 
-            if isinstance(data, Generator):
+            if isinstance(data, Iterator):
                 data = IterableReader(data)
 
             curl.setopt(pycurl.READDATA, data)
