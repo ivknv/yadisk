@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from typing import Self
-
 from .exceptions import YaDiskError
-from .compat import Dict, Iterable
+from .compat import Dict, Iterable, Self
 from .utils import get_exception
 from .objects import ErrorObject
 from .types import ConsumeCallback, JSON

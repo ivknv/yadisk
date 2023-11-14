@@ -12,9 +12,9 @@ from ..common import (
     dict_or_error, str_or_dict_or_error
 )
 
-from typing import Any, Self, overload, Union, IO, AnyStr, Protocol, Optional, TYPE_CHECKING
+from typing import Any, overload, Union, IO, AnyStr, Protocol, Optional, TYPE_CHECKING
 
-from ..compat import Generator, List, AsyncGenerator
+from ..compat import Generator, List, AsyncGenerator, Self
 
 if TYPE_CHECKING:
     import datetime

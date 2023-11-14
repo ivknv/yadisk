@@ -2,7 +2,7 @@
 
 __all__ = ["List", "Dict", "Set", "Tuple", "Callable", "Iterable", "Generator",
            "AsyncGenerator", "Coroutine", "Awaitable", "AsyncIterable",
-           "Iterator", "AsyncIterator"]
+           "Iterator", "AsyncIterator", "Self"]
 
 import sys
 
@@ -21,3 +21,8 @@ else:
     Dict = dict
     Set = set
     Tuple = tuple
+
+if sys.version_info.major == 3 and sys.version_info.minor < 11:
+    from typing_extensions import Self
+else:
+    from typing import Self

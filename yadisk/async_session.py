@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from typing import Self, TYPE_CHECKING
-from .compat import Iterable
+from typing import TYPE_CHECKING
+from .compat import Iterable, Self
 from .types import AsyncConsumeCallback, JSON, Headers
 from .objects import ErrorObject
 from .utils import get_exception
