@@ -1156,7 +1156,7 @@ class PatchRequest(APIRequest):
 
     def process_args(self, path: str, properties: dict, fields: Optional[Fields]) -> None:
         self.params["path"] = ensure_path_has_schema(path)
-        self.content = json.dumps({"custom_properties": properties}).encode("utf8")
+        self.data = {"custom_properties": properties}
 
         if fields is not None:
             sub_map = {"embedded": "_embedded"}

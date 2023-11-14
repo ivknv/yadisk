@@ -52,7 +52,6 @@ class APIRequest(object):
     retry_interval: Optional[Union[int, float]] = None
 
     data: Dict
-    content: Optional[bytes]
     params: Dict[str, Any]
     send_kwargs: Dict[str, Any]
 
@@ -111,9 +110,7 @@ class APIRequest(object):
         headers["Content-Type"] = self.content_type
         headers.update(self.headers)
 
-        if self.content is not None:
-            data = self.content
-        elif self.data:
+        if self.data:
             data = json.dumps(self.data).encode("utf8")
         else:
             data = None
