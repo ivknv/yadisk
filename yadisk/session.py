@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
+from typing import Optional, Any
 from .exceptions import YaDiskError
 from .compat import Dict, Iterable, Self
 from .utils import get_exception
 from .objects import ErrorObject
-from .types import ConsumeCallback, JSON
+from .types import ConsumeCallback, JSON, HTTPMethod, Payload, TimeoutParameter
 
 __all__ = ["Session", "Response"]
 
@@ -61,7 +62,7 @@ class Response:
 
 class Session:
     """
-        HTTP session class. Maintains open connections, stores headers and other
+        HTTP session class. Maintains open connections, stores headers and
         some other request parameters.
 
         Must be explicitly closed (can be done using the `with` statement).
@@ -92,7 +93,15 @@ class Session:
 
         self.set_headers({"Authorization": "OAuth " + token})
 
-    def send_request(self, method: str, url: str, /, **kwargs) -> Response:
+    def send_request(self,
+                     method: HTTPMethod,
+                     url: str,
+                     *,
+                     params:  Optional[Dict[str, Any]] = None,
+                     data:    Optional[Payload] = None,
+                     timeout: TimeoutParameter = None,
+                     stream:  bool = False,
+                     **kwargs) -> Response:
         """
             Sends an HTTP request with given parameters.
             In case an error occurs, the method should throw one of exceptions

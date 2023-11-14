@@ -2,7 +2,7 @@
 
 from ..session import Session, Response
 from ..compat import Iterable
-from ..types import JSON, ConsumeCallback, Headers
+from ..types import JSON, ConsumeCallback, Headers, HTTPMethod
 
 from .httpx_common import *
 
@@ -45,7 +45,7 @@ class HTTPXSession(Session):
         for h in headers:
             self._session.headers.pop(h, None)
 
-    def send_request(self, method: str, url: str, /, **kwargs) -> Response:
+    def send_request(self, method: HTTPMethod, url: str, **kwargs) -> Response:
         request_kwargs, send_kwargs = convert_args_for_httpx(self._session, kwargs)
 
         try:

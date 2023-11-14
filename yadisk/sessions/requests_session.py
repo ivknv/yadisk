@@ -8,7 +8,7 @@ from ..exceptions import (
 from ..session import Session, Response
 from ..compat import Iterable
 from ..common import CaseInsensitiveDict
-from ..types import JSON, ConsumeCallback, Headers
+from ..types import JSON, ConsumeCallback, Headers, HTTPMethod
 
 from typing import Union
 
@@ -73,7 +73,7 @@ class RequestsSession(Session):
         for h in headers:
             self._headers.pop(h, None)
 
-    def send_request(self, method: str, url: str, /, **kwargs) -> Response:
+    def send_request(self, method: HTTPMethod, url: str, **kwargs) -> Response:
         headers = CaseInsensitiveDict(self.requests_session.headers)
         headers.update(self._headers)
 

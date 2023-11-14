@@ -4,7 +4,7 @@ from typing import Any
 
 from ..async_session import AsyncSession, AsyncResponse
 from ..compat import Iterable
-from ..types import JSON, AsyncConsumeCallback, Headers
+from ..types import JSON, AsyncConsumeCallback, Headers, HTTPMethod
 from ..common import is_async_func
 
 from .httpx_common import *
@@ -54,7 +54,7 @@ class AsyncHTTPXSession(AsyncSession):
         for h in headers:
             self._session.headers.pop(h, None)
 
-    async def send_request(self, method: str, url: str, /, **kwargs) -> AsyncResponse:
+    async def send_request(self, method: HTTPMethod, url: str, **kwargs) -> AsyncResponse:
         request_kwargs, send_kwargs = convert_args_for_httpx(self._session, kwargs)
 
         try:

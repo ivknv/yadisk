@@ -11,7 +11,7 @@ from ..exceptions import (
 from ..session import Session, Response
 from ..compat import Iterator
 from ..common import CaseInsensitiveDict
-from ..types import JSON, ConsumeCallback, Headers
+from ..types import JSON, ConsumeCallback, Headers, HTTPMethod
 
 from urllib.parse import urlencode
 
@@ -121,7 +121,7 @@ class PycurlSession(Session):
         for h in headers:
             self._headers.pop(h, None)
 
-    def send_request(self, method: str, url: str, /, **kwargs) -> Response:
+    def send_request(self, method: HTTPMethod, url: str, **kwargs) -> Response:
         params = kwargs.get("params", {})
         data = kwargs.get("data")
         stream = kwargs.get("stream", False)

@@ -11,7 +11,7 @@ from typing import Any, Optional, Union, TypeVar, TYPE_CHECKING
 from ..compat import Set, Dict
 import json
 
-from ..types import AnySession, JSON
+from ..types import AnySession, JSON, HTTPMethod
 
 if TYPE_CHECKING:
     from ..session import Response
@@ -44,7 +44,7 @@ class APIRequest(object):
     """
 
     url: str = ""
-    method: str = ""
+    method: Optional[HTTPMethod] = None
     content_type: str = "application/x-www-form-urlencoded"
     timeout = _DEFAULT_TIMEOUT
     n_retries: Optional[int] = None
@@ -126,7 +126,7 @@ class APIRequest(object):
         return kwargs
 
     def _attempt(self) -> None:
-        assert self.method
+        assert self.method is not None
         assert self.url
 
         kwargs = self._prepare_send_args()
@@ -139,7 +139,7 @@ class APIRequest(object):
             raise self.response.get_exception()
 
     async def _async_attempt(self) -> None:
-        assert self.method
+        assert self.method is not None
         assert self.url
 
         kwargs = self._prepare_send_args()

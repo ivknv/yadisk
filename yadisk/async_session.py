@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from typing import TYPE_CHECKING
-from .compat import Iterable, Self
-from .types import AsyncConsumeCallback, JSON, Headers
+from typing import TYPE_CHECKING, Any, Optional
+from .compat import Iterable, Self, Dict
+from .types import (
+    AsyncConsumeCallback, JSON, Headers, HTTPMethod, AsyncPayload, TimeoutParameter
+)
 from .objects import ErrorObject
 from .utils import get_exception
 
@@ -66,7 +68,7 @@ class AsyncResponse:
 
 class AsyncSession:
     """
-        HTTP session class. Maintains open connections, stores headers and other
+        HTTP session class. Maintains open connections, stores headers and
         some other request parameters.
 
         Must be explicitly closed (can be done using the `with` statement).
@@ -97,7 +99,15 @@ class AsyncSession:
 
         self.set_headers({"Authorization": "OAuth " + token})
 
-    async def send_request(self, method: str, url: str, /, **kwargs) -> AsyncResponse:
+    async def send_request(self,
+                           method: HTTPMethod,
+                           url: str,
+                           *,
+                           params:  Optional[Dict[str, Any]] = None,
+                           data:    Optional[AsyncPayload] = None,
+                           timeout: TimeoutParameter = None,
+                           stream:  bool = False,
+                           **kwargs) -> AsyncResponse:
         """
             Sends an HTTP request with given parameters.
             In case an error occurs, the method should throw one of exceptions

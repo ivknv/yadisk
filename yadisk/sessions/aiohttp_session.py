@@ -12,7 +12,7 @@ from ..exceptions import (
 from ..async_session import AsyncSession, AsyncResponse
 from ..compat import Iterable
 from ..common import is_async_func
-from ..types import JSON, AsyncConsumeCallback, Headers, TimeoutParameter
+from ..types import JSON, AsyncConsumeCallback, Headers, TimeoutParameter, HTTPMethod
 
 import aiohttp
 import sys
@@ -96,7 +96,7 @@ class AIOHTTPSession(AsyncSession):
         for h in headers:
             self._session.headers.pop(h, None)
 
-    async def send_request(self, method: str, url: str, /, **kwargs) -> AsyncResponse:
+    async def send_request(self, method: HTTPMethod, url: str, **kwargs) -> AsyncResponse:
         if "timeout" in kwargs:
             kwargs["timeout"] = convert_timeout(kwargs["timeout"])
 

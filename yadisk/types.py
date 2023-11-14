@@ -17,7 +17,7 @@ __all__ = [
     "AsyncPayload", "AsyncConsumeCallback", "AnyResponse", "AnyClient",
     "AsyncFileLike", "BinaryAsyncFileLike", "FileOrPath", "FileOrPathDestination",
     "AsyncFileOrPath", "AsyncFileOrPathDestination", "SessionFactory", "AsyncSessionFactory",
-    "FileOpenMode", "OpenFileCallback", "AsyncOpenFileCallback"
+    "FileOpenMode", "OpenFileCallback", "AsyncOpenFileCallback", "HTTPMethod"
 ]
 
 JSON = Union[Dict, List, str, int, float, None]
@@ -81,4 +81,16 @@ OpenFileCallback = Callable[[Union[str, bytes], FileOpenMode], BinaryIO]
 AsyncOpenFileCallback = Union[
     Callable[[Union[str, bytes], FileOpenMode], Awaitable[BinaryAsyncFileLike]],
     Callable[[Union[str, bytes], FileOpenMode], Awaitable[BinaryIO]],
+]
+
+HTTPMethod = Union[
+    Literal["GET"],
+    Literal["POST"],
+    Literal["PUT"],
+    Literal["PATCH"],
+    Literal["DELETE"],
+    Literal["OPTIONS"],
+    Literal["HEAD"],
+    Literal["CONNECT"],
+    Literal["TRACE"],
 ]
