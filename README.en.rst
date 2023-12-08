@@ -13,60 +13,131 @@ YaDisk is a Yandex.Disk REST API client library.
 
 .. _Read the Docs (EN): https://yadisk.readthedocs.io
 .. _Read the Docs (RU): https://yadisk.readthedocs.io/ru/latest
-.. _yadisk-async: https://github.com/ivknv/yadisk-async
 
 Documentation is available at `Read the Docs (EN)`_ and `Read the Docs (RU)`_.
-
-There's also an asynchronous version of this library: `yadisk-async`_.
 
 Installation
 ************
 
+This library supports multiple HTTP client libraries and has both synchronous and
+asynchronous API.
+
+The following HTTP client libraries are currently supported:
+
+* :code:`requests` (used by default for synchronous API)
+* :code:`httpx` (both synchronous and asynchronous)
+* :code:`aiohttp` (used by default for asynchronous API)
+* :code:`pycurl` (synchronous only)
+
+For synchronous API (installs :code:`requests`):
+
 .. code:: bash
 
-    pip install yadisk
+   pip install yadisk[sync_defaults]
 
-or
+For asynchronous API (installs :code:`aiofiles` and :code:`aiohttp`):
 
 .. code:: bash
 
-    python setup.py install
+   pip install yadisk[async_defaults]
+
+Alternatively, you can manually choose which optional libraries to install:
+
+.. code:: bash
+
+   # For use with pycurl
+   pip install yadisk pycurl
+
+   # For use with httpx, will also install aiofiles
+   pip install yadisk[async_files] httpx
 
 Examples
 ********
+
+Synchronous API
+---------------
 
 .. code:: python
 
     import yadisk
 
-    y = yadisk.YaDisk(token="<token>")
+    client = yadisk.Client(token="<token>")
     # or
-    # y = yadisk.YaDisk("<application-id>", "<application-secret>", "<token>")
+    # client = yadisk.Client("<application-id>", "<application-secret>", "<token>")
 
-    # Check if the token is valid
-    print(y.check_token())
+    # You can either use the with statement or manually call client.close() later
+    with client:
+        # Check if the token is valid
+        print(client.check_token())
 
-    # Get disk information
-    print(y.get_disk_info())
+        # Get disk information
+        print(client.get_disk_info())
 
-    # Print files and directories at "/some/path"
-    print(list(y.listdir("/some/path")))
+        # Print files and directories at "/some/path"
+        print(list(client.listdir("/some/path")))
 
-    # Upload "file_to_upload.txt" to "/destination.txt"
-    y.upload("file_to_upload.txt", "/destination.txt")
+        # Upload "file_to_upload.txt" to "/destination.txt"
+        client.upload("file_to_upload.txt", "/destination.txt")
 
-    # Same thing
-    with open("file_to_upload.txt", "rb") as f:
-        y.upload(f, "/destination.txt")
+        # Same thing
+        with open("file_to_upload.txt", "rb") as f:
+            client.upload(f, "/destination.txt")
 
-    # Download "/some-file-to-download.txt" to "downloaded.txt"
-    y.download("/some-file-to-download.txt", "downloaded.txt")
+        # Download "/some-file-to-download.txt" to "downloaded.txt"
+        client.download("/some-file-to-download.txt", "downloaded.txt")
 
-    # Permanently remove "/file-to-remove"
-    y.remove("/file-to-remove", permanently=True)
+        # Permanently remove "/file-to-remove"
+        client.remove("/file-to-remove", permanently=True)
 
-    # Create a new directory at "/test-dir"
-    print(y.mkdir("/test-dir"))
+        # Create a new directory at "/test-dir"
+        print(client.mkdir("/test-dir"))
+
+Asynchronous API
+----------------
+
+.. code:: python
+
+    import yadisk
+    import aiofiles
+
+    client = yadisk.AsyncClient(token="<token>")
+    # or
+    # client = yadisk.AsyncClient("<application-id>", "<application-secret>", "<token>")
+
+    # You can either use the with statement or manually call client.close() later
+    async with client:
+        # Check if the token is valid
+        print(await client.check_token())
+
+        # Get disk information
+        print(await client.get_disk_info())
+
+        # Print files and directories at "/some/path"
+        print([i async for i in await client.listdir("/some/path")])
+
+        # Upload "file_to_upload.txt" to "/destination.txt"
+        await client.upload("file_to_upload.txt", "/destination.txt")
+
+        # Same thing
+        async with aiofiles.open("file_to_upload.txt", "rb") as f:
+            await client.upload(f, "/destination.txt")
+
+        # Same thing but with regular files
+        with open("file_to_upload.txt", "rb") as f:
+            await client.upload(f, "/destination.txt")
+
+        # Download "/some-file-to-download.txt" to "downloaded.txt"
+        await client.download("/some-file-to-download.txt", "downloaded.txt")
+
+        # Same thing
+        async with aiofiles.open("downloaded.txt", "wb") as f:
+            await client.download("/some-file-to-download.txt", f)
+
+        # Permanently remove "/file-to-remove"
+        await client.remove("/file-to-remove", permanently=True)
+
+        # Create a new directory at "/test-dir"
+        print(await client.mkdir("/test-dir"))
 
 Changelog
 *********

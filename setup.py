@@ -21,7 +21,12 @@ setup(
     author_email="ivknv0@gmail.com",
     license="LGPLv3",
     python_requires=">=3.8",
-    install_requires=["requests"],
+    install_requires=[],
+    extras_require={
+        "sync_defaults":  ["requests"],
+        "async_defaults": ["aiofiles", "aiohttp"],
+        "async_files":    ["aiofiles"]
+    },
     url="https://github.com/ivknv/yadisk",
     project_urls={
         "Source code": "https://github.com/ivknv/yadisk",
