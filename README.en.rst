@@ -19,7 +19,7 @@ Documentation is available at `Read the Docs (EN)`_ and `Read the Docs (RU)`_.
 Installation
 ************
 
-This library supports multiple HTTP client libraries and has both synchronous and
+:code:`yadisk` supports multiple HTTP client libraries and has both synchronous and
 asynchronous API.
 
 The following HTTP client libraries are currently supported:

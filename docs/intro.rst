@@ -6,51 +6,78 @@ YaDisk is a Yandex.Disk REST API client library.
 Installation
 ************
 
+:code:`yadisk` supports multiple HTTP client libraries and has both synchronous and
+asynchronous API.
+
+The following HTTP client libraries are currently supported:
+
+* :code:`requests` (used by default for synchronous API)
+* :code:`httpx` (both synchronous and asynchronous)
+* :code:`aiohttp` (used by default for asynchronous API)
+* :code:`pycurl` (synchronous only)
+
+For synchronous API (installs :code:`requests`):
+
 .. code:: bash
 
-    pip install yadisk
+   pip install yadisk[sync_defaults]
 
-or
+For asynchronous API (installs :code:`aiofiles` and :code:`aiohttp`):
 
 .. code:: bash
 
-    python setup.py install
+   pip install yadisk[async_defaults]
+
+Alternatively, you can manually choose which optional libraries to install:
+
+.. code:: bash
+
+   # For use with pycurl
+   pip install yadisk pycurl
+
+   # For use with httpx, will also install aiofiles
+   pip install yadisk[async_files] httpx
 
 Examples
 ********
+
+Synchronous API
+---------------
 
 .. code:: python
 
     import yadisk
 
-    y = yadisk.YaDisk(token="<token>")
+    client = yadisk.Client(token="<token>")
     # or
-    # y = yadisk.YaDisk("<application-id>", "<application-secret>", "<token>")
+    # client = yadisk.Client("<application-id>", "<application-secret>", "<token>")
 
-    # Check if the token is valid
-    print(y.check_token())
+    # You can either use the with statement or manually call client.close() later
+    with client:
+        # Check if the token is valid
+        print(client.check_token())
 
-    # Get disk information
-    print(y.get_disk_info())
+        # Get disk information
+        print(client.get_disk_info())
 
-    # Print files and directories at "/some/path"
-    print(list(y.listdir("/some/path")))
+        # Print files and directories at "/some/path"
+        print(list(client.listdir("/some/path")))
 
-    # Upload "file_to_upload.txt" to "/destination.txt"
-    y.upload("file_to_upload.txt", "/destination.txt")
+        # Upload "file_to_upload.txt" to "/destination.txt"
+        client.upload("file_to_upload.txt", "/destination.txt")
 
-    # Same thing
-    with open("file_to_upload.txt", "rb") as f:
-        y.upload(f, "/destination.txt")
+        # Same thing
+        with open("file_to_upload.txt", "rb") as f:
+            client.upload(f, "/destination.txt")
 
-    # Download "/some-file-to-download.txt" to "downloaded.txt"
-    y.download("/some-file-to-download.txt", "downloaded.txt")
+        # Download "/some-file-to-download.txt" to "downloaded.txt"
+        client.download("/some-file-to-download.txt", "downloaded.txt")
 
-    # Permanently remove "/file-to-remove"
-    y.remove("/file-to-remove", permanently=True)
+        # Permanently remove "/file-to-remove"
+        client.remove("/file-to-remove", permanently=True)
 
-    # Create a new directory at "/test-dir"
-    print(y.mkdir("/test-dir"))
+        # Create a new directory at "/test-dir"
+        print(client.mkdir("/test-dir"))
 
 Receiving token with confirmation code
 ######################################
@@ -60,25 +87,27 @@ Receiving token with confirmation code
     import sys
     import yadisk
 
-    y = yadisk.YaDisk("application-id>", "<application-secret>")
-    url = y.get_code_url()
+    def main():
+        with yadisk.Client("application-id>", "<application-secret>") as client:
+            url = client.get_code_url()
 
-    print("Go to the following url: %s" % url)
-    code = input("Enter the confirmation code: ")
+            print(f"Go to the following url: {url}")
+            code = input("Enter the confirmation code: ")
 
-    try:
-        response = y.get_token(code)
-    except yadisk.exceptions.BadRequestError:
-        print("Bad code")
-        sys.exit(1)
+            try:
+                response = client.get_token(code)
+            except yadisk.exceptions.BadRequestError:
+                print("Bad code")
+                return
 
-    y.token = response.access_token
+            client.token = response.access_token
 
-    if y.check_token():
-        print("Sucessfully received token!")
-    else:
-        print("Something went wrong. Not sure how though...")
+            if client.check_token():
+                print("Sucessfully received token!")
+            else:
+                print("Something went wrong. Not sure how though...")
 
+    main()
 
 Recursive upload
 ################
@@ -89,29 +118,30 @@ Recursive upload
     import os
     import yadisk
 
-    def recursive_upload(y, from_dir, to_dir):
+    def recursive_upload(client: yadisk.Client, from_dir: str, to_dir: str):
         for root, dirs, files in os.walk(from_dir):
-         p = root.split(from_dir)[1].strip(os.path.sep)
-         dir_path = posixpath.join(to_dir, p)
+            p = root.split(from_dir)[1].strip(os.path.sep)
+            dir_path = posixpath.join(to_dir, p)
 
-         try:
-            y.mkdir(dir_path)
-         except yadisk.exceptions.PathExistsError:
-            pass
+            try:
+                client.mkdir(dir_path)
+            except yadisk.exceptions.PathExistsError:
+                pass
 
-         for file in files:
-             file_path = posixpath.join(dir_path, file)
-             p_sys = p.replace("/", os.path.sep)
-             in_path = os.path.join(from_dir, p_sys, file)
-             try:
-                 y.upload(in_path, file_path)
-             except yadisk.exceptions.PathExistsError:
-                 pass
+            for file in files:
+                file_path = posixpath.join(dir_path, file)
+                p_sys = p.replace("/", os.path.sep)
+                in_path = os.path.join(from_dir, p_sys, file)
 
-    y = yadisk.YaDisk(token="<application-token>")
+                try:
+                    y.upload(in_path, file_path)
+                except yadisk.exceptions.PathExistsError:
+                    pass
+
+    client = yadisk.Client(token="<application-token>")
     to_dir = "/test"
     from_dir = "/home/ubuntu"
-    recursive_upload(y, from_dir, to_dir)
+    recursive_upload(client, from_dir, to_dir)
 
 Setting custom properties of files
 ##################################
@@ -120,25 +150,27 @@ Setting custom properties of files
 
     import yadisk
 
-    y = yadisk.YaDisk(token="<application-token>")
+    def main():
+        with yadisk.Client(token="<application-token>") as client:
+            path = input("Enter a path to patch: ")
+            properties = {"speed_of_light":       299792458,
+                          "speed_of_light_units": "meters per second",
+                          "message_for_owner":    "MWAHAHA! Your file has been patched by an evil script!"}
 
-    path = input("Enter a path to patch: ")
-    properties = {"speed_of_light":       299792458,
-                  "speed_of_light_units": "meters per second",
-                  "message_for_owner":    "MWAHAHA! Your file has been patched by an evil script!"}
+            meta = client.patch(path, properties)
+            print("\nNew properties: ")
 
-    meta = y.patch(path, properties)
-    print("\nNew properties: ")
+            for k, v in meta.custom_properties.items():
+                print(f"{k}: {repr(v)}")
 
-    for k, v in meta.custom_properties.items():
-        print("%s: %r" % (k, v))
+            answer = input("\nWant to get rid of them? (y/[n]) ")
 
-    answer = input("\nWant to get rid of them? (y/[n]) ")
+            if answer.lower() in ("y", "yes"):
+                properties = {k: None for k in properties}
+                client.patch(path, properties)
+                print("Everything's back as usual")
 
-    if answer.lower() in ("y", "yes"):
-        properties = {k: None for k in properties}
-        y.patch(path, properties)
-        print("Everything's back as usual")
+    main()
 
 Emptying the trash bin
 ######################
@@ -149,31 +181,252 @@ Emptying the trash bin
     import time
     import yadisk
 
-    y = yadisk.YaDisk(token="<application-token>")
+    def main():
+        answer = input("Are you sure about this? (y/[n]) ")
+        if answer.lower() not in ("y", "yes"):
+            print("Not going to do anything")
+            return
 
-    answer = input("Are you sure about this? (y/[n]) ")
+        with yadisk.Client(token="<application-token>") as client:
+            print("Emptying the trash bin...")
+            operation = client.remove_trash("/")
+            print("It might take a while...")
 
-    if answer.lower() in ("y", "yes"):
-        print("Emptying the trash bin...")
-        operation = y.remove_trash("/")
-        print("It might take a while...")
+            if operation is None:
+                print("Nevermind. The deed is done.")
+                return
 
-        if operation is None:
-            print("Nevermind. The deed is done.")
-            sys.exit(0)
+            while True:
+                status = client.get_operation_status(operation.href)
 
-        while True:
-            status = y.get_operation_status(operation.href)
+                if status == "in-progress":
+                    time.sleep(5)
+                    print("Still waiting...")
+                elif status == "success":
+                    print("Success!")
+                    break
+                else:
+                    print(f"Got some weird status: {repr(status)}")
+                    print("That's not normal")
+                    break
 
-            if status == "in-progress":
-                time.sleep(5)
-                print("Still waiting...")
-            elif status == "success":
-                print("Success!")
-                break
+    main()
+
+Asynchronous API
+----------------
+
+.. code:: python
+
+    import yadisk
+    import aiofiles
+
+    client = yadisk.AsyncClient(token="<token>")
+    # or
+    # client = yadisk.AsyncClient("<application-id>", "<application-secret>", "<token>")
+
+    # You can either use the with statement or manually call client.close() later
+    async with client:
+        # Check if the token is valid
+        print(await client.check_token())
+
+        # Get disk information
+        print(await client.get_disk_info())
+
+        # Print files and directories at "/some/path"
+        print([i async for i in await client.listdir("/some/path")])
+
+        # Upload "file_to_upload.txt" to "/destination.txt"
+        await client.upload("file_to_upload.txt", "/destination.txt")
+
+        # Same thing
+        async with aiofiles.open("file_to_upload.txt", "rb") as f:
+            await client.upload(f, "/destination.txt")
+
+        # Same thing but with regular files
+        with open("file_to_upload.txt", "rb") as f:
+            await client.upload(f, "/destination.txt")
+
+        # Download "/some-file-to-download.txt" to "downloaded.txt"
+        await client.download("/some-file-to-download.txt", "downloaded.txt")
+
+        # Same thing
+        async with aiofiles.open("downloaded.txt", "wb") as f:
+            await client.download("/some-file-to-download.txt", f)
+
+        # Permanently remove "/file-to-remove"
+        await client.remove("/file-to-remove", permanently=True)
+
+        # Create a new directory at "/test-dir"
+        print(await client.mkdir("/test-dir"))
+
+Receiving token with confirmation code
+######################################
+
+.. code:: python
+
+    import asyncio
+    import sys
+    import yadisk
+
+    async def main():
+        async with yadisk.AsyncClient("application-id>", "<application-secret>") as client:
+            url = client.get_code_url()
+
+            print(f"Go to the following url: {url}")
+            code = input("Enter the confirmation code: ")
+
+            try:
+                response = await client.get_token(code)
+            except yadisk.exceptions.BadRequestError:
+                print("Bad code")
+                return
+
+            client.token = response.access_token
+
+            if await client.check_token():
+                print("Sucessfully received token!")
             else:
-                print("Got some weird status: %r" % (status,))
-                print("That's not normal")
-                break
-    else:
-        print("Not going to do anything")
+                print("Something went wrong. Not sure how though...")
+
+    asyncio.run(main())
+
+Recursive upload
+################
+
+.. code:: python
+
+    import asyncio
+    import posixpath
+    import os
+    import yadisk
+
+    async def recursive_upload(from_dir: str, to_dir: str, n_parallel_requests: int = 5):
+        async with yadisk.AsyncClient(token="<application-token>") as client:
+            async def upload_files(queue):
+                while queue:
+                    in_path, out_path = queue.pop(0)
+
+                    print(f"Uploading {in_path} -> {out_path}")
+
+                    try:
+                        await client.upload(in_path, out_path)
+                    except yadisk.exceptions.PathExistsError:
+                        print(f"{out_path} already exists")
+
+            async def create_dirs(queue):
+                while queue:
+                    path = queue.pop(0)
+
+                    print(f"Creating directory {path}")
+
+                    try:
+                        await client.mkdir(path)
+                    except yadisk.exceptions.PathExistsError:
+                        print(f"{path} already exists")
+
+            mkdir_queue = []
+            upload_queue = []
+
+            print(f"Creating directory {to_dir}")
+
+            try:
+                await client.mkdir(to_dir)
+            except yadisk.exceptions.PathExistsError:
+                print(f"{to_dir} already exists")
+
+            for root, dirs, files in os.walk(from_dir):
+                rel_dir_path = root.split(from_dir)[1].strip(os.path.sep)
+                rel_dir_path = rel_dir_path.replace(os.path.sep, "/")
+                dir_path = posixpath.join(to_dir, rel_dir_path)
+
+                for dirname in dirs:
+                    mkdir_queue.append(posixpath.join(dir_path, dirname))
+
+                for filename in files:
+                    out_path = posixpath.join(dir_path, filename)
+                    rel_dir_path_sys = rel_dir_path.replace("/", os.path.sep)
+                    in_path = os.path.join(from_dir, rel_dir_path_sys, filename)
+
+                    upload_queue.append((in_path, out_path))
+
+                tasks = [upload_files(upload_queue) for i in range(n_parallel_requests)]
+                tasks.extend(create_dirs(mkdir_queue) for i in range(n_parallel_requests))
+
+                await asyncio.gather(*tasks)
+
+    from_dir = input("Directory to upload: ")
+    to_dir = input("Destination directory: ")
+
+    asyncio.run(recursive_upload(from_dir, to_dir, 5))
+
+Setting custom properties of files
+##################################
+
+.. code:: python
+
+    import asyncio
+    import yadisk
+
+    async def main():
+        async with yadiskc.AsyncClient(token="<application-token>") as client:
+            path = input("Enter a path to patch: ")
+            properties = {"speed_of_light":       299792458,
+                          "speed_of_light_units": "meters per second",
+                          "message_for_owner":    "MWAHAHA! Your file has been patched by an evil script!"}
+
+            meta = await client.patch(path, properties)
+            print("\nNew properties: ")
+
+            for k, v in meta.custom_properties.items():
+                print(f"{k}: {repr(v)}")
+
+            answer = input("\nWant to get rid of them? (y/[n]) ")
+
+            if answer.lower() in ("y", "yes"):
+                properties = {k: None for k in properties}
+                await client.patch(path, properties)
+                print("Everything's back as usual")
+
+    asyncio.run(main())
+
+Emptying the trash bin
+######################
+
+.. code:: python
+
+    import asyncio
+    import sys
+    import yadisk
+
+    async def main():
+        answer = input("Are you sure about this? (y/[n]) ")
+
+        if answer not in ("y", "yes"):
+            print("Not going to do anything")
+            return
+
+        async with yadisk.AsyncClient(token="<application-token>") as client:
+            print("Emptying the trash bin...")
+            operation = await client.remove_trash("/")
+
+            print("It might take a while...")
+
+            if operation is None:
+                print("Nevermind. The deed is done.")
+                return
+
+            while True:
+                status = await client.get_operation_status(operation.href)
+
+                if status == "in-progress":
+                    await asyncio.sleep(5)
+                    print("Still waiting...")
+                elif status == "success":
+                    print("Success!")
+                    break
+                else:
+                    print(f"Got some weird status: {repr(status)}")
+                    print("That's not normal")
+                    break
+
+    asyncio.run(main())
