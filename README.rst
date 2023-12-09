@@ -9,64 +9,139 @@ YaDisk
    :alt: PyPI
    :target: https://pypi.org/project/yadisk
 
+.. _English version of this document: https://github.com/ivknv/yadisk/blob/master/README.en.rst
+
+`English version of this document`_
+
 YaDisk - это библиотека-клиент REST API Яндекс.Диска.
 
 .. _Read the Docs (EN): https://yadisk.readthedocs.io
 .. _Read the Docs (RU): https://yadisk.readthedocs.io/ru/latest
-.. _yadisk-async: https://github.com/ivknv/yadisk-async
 
 Документация доступна на `Read the Docs (RU)`_ и `Read the Docs (EN)`_.
-
-Существует также асинхронная версия библиотеки: `yadisk-async`_.
 
 Установка
 *********
 
+Библиотека поддерживает несколько HTTP библиотек и реализует одновременно как синхронный
+так и асинхронный API.
+
+На данный момент поддерживаются следующие HTTP библиотеки:
+
+* :code:`requests` (используется по умолчанию для синхронного API)
+* :code:`httpx` (синхронный и асинхронный API)
+* :code:`aiohttp` (используется по умолчанию для асинхронного API)
+* :code:`pycurl` (синхронный API)
+
+Для синхронного API (устанавливает :code:`requests`):
+
 .. code:: bash
 
-    pip install yadisk
+    pip install yadisk[sync_defaults]
 
-или
+Для асинхронного API (устанавливает :code:`aiohttp` и :code:`aiofiles`):
 
 .. code:: bash
 
-    python setup.py install
+   pip install yadisk[async_defaults]
+
+Вы можете также вручную установить нужные библиотеки:
+
+.. code:: bash
+
+   # Для использования совместно с pycurl
+   pip install yadisk pycurl
+
+   # Для использования совместно с httpx, также установит aiofiles
+   pip install yadisk[async_files] httpx
 
 Примеры
 *******
+
+Синхронный API
+--------------
 
 .. code:: python
 
     import yadisk
 
-    y = yadisk.YaDisk(token="<токен>")
+    client = yadisk.Client(token="<токен>")
     # или
-    # y = yadisk.YaDisk("<id-приложения>", "<secret-приложения>", "<токен>")
+    # client = yadisk.Client("<id-приложения>", "<secret-приложения>", "<токен>")
 
-    # Проверяет, валиден ли токен
-    print(y.check_token())
+    # Вы можете использовать либо конструкцию with, либо вручную вызвать client.close() в конце
+    with client:
+        # Проверяет, валиден ли токен
+        print(client.check_token())
 
-    # Получает общую информацию о диске
-    print(y.get_disk_info())
+        # Получает общую информацию о диске
+        print(client.get_disk_info())
 
-    # Выводит содержимое "/some/path"
-    print(list(y.listdir("/some/path")))
+        # Выводит содержимое "/some/path"
+        print(list(client.listdir("/some/path")))
 
-    # Загружает "file_to_upload.txt" в "/destination.txt"
-    y.upload("file_to_upload.txt", "/destination.txt")
+        # Загружает "file_to_upload.txt" в "/destination.txt"
+        client.upload("file_to_upload.txt", "/destination.txt")
 
-    # То же самое
-    with open("file_to_upload.txt", "rb") as f:
-        y.upload(f, "/destination.txt")
+        # То же самое
+        with open("file_to_upload.txt", "rb") as f:
+            client.upload(f, "/destination.txt")
 
-    # Скачивает "/some-file-to-download.txt" в "downloaded.txt"
-    y.download("/some-file-to-download.txt", "downloaded.txt")
+        # Скачивает "/some-file-to-download.txt" в "downloaded.txt"
+        client.download("/some-file-to-download.txt", "downloaded.txt")
 
-    # Безвозвратно удаляет "/file-to-remove"
-    y.remove("/file-to-remove", permanently=True)
+        # Безвозвратно удаляет "/file-to-remove"
+        client.remove("/file-to-remove", permanently=True)
 
-    # Создаёт новую папку "/test-dir"
-    print(y.mkdir("/test-dir"))
+        # Создаёт новую папку "/test-dir"
+        print(client.mkdir("/test-dir"))
+
+Асинхронный API
+---------------
+
+.. code:: python
+
+    import yadisk
+    import aiofiles
+
+    client = yadisk.AsyncClient(token="<token>")
+    # или
+    # client = yadisk.AsyncClient("<application-id>", "<application-secret>", "<token>")
+
+    # Вы можете использовать либо конструкцию with, либо вручную вызвать client.close() в конце
+    async with client:
+        # Проверяет, валиден ли токен
+        print(await client.check_token())
+
+        # Получает общую информацию о диске
+        print(await client.get_disk_info())
+
+        # Выводит содержимое "/some/path"
+        print([i async for i in await client.listdir("/some/path")])
+
+        # Загружает "file_to_upload.txt" в "/destination.txt"
+        await client.upload("file_to_upload.txt", "/destination.txt")
+
+        # То же самое
+        async with aiofiles.open("file_to_upload.txt", "rb") as f:
+            await client.upload(f, "/destination.txt")
+
+        # Same thing, но с обычными файлами
+        with open("file_to_upload.txt", "rb") as f:
+            await client.upload(f, "/destination.txt")
+
+        # Скачивает "/some-file-to-download.txt" в "downloaded.txt"
+        await client.download("/some-file-to-download.txt", "downloaded.txt")
+
+        # То же самое
+        async with aiofiles.open("downloaded.txt", "wb") as f:
+            await client.download("/some-file-to-download.txt", f)
+
+        # Безвозвратно удаляет "/file-to-remove"
+        await client.remove("/file-to-remove", permanently=True)
+
+        # Создаёт новую папку "/test-dir"
+        print(await client.mkdir("/test-dir"))
 
 История изменений
 *****************
