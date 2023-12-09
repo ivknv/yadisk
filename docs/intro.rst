@@ -212,6 +212,18 @@ Emptying the trash bin
 
     main()
 
+Specifying HTTP client library
+##############################
+
+.. code:: python
+
+   import yadisk
+   from yadisk.sessions.httpx_session import HTTPXSession
+
+   # Will use httpx for making requests
+   with yadisk.Client(token="<token>", session_factory=HTTPXSession) as client:
+       print(client.check_token())
+
 Asynchronous API
 ----------------
 
@@ -430,3 +442,15 @@ Emptying the trash bin
                     break
 
     asyncio.run(main())
+
+Specifying HTTP client library
+##############################
+
+.. code:: python
+
+   import yadisk
+   from yadisk.sessions.async_httpx_session import AsyncHTTPXSession
+
+   # Will use httpx for making requests
+   with yadisk.AsyncClient(token="<token>", session_factory=AsyncHTTPXSession) as client:
+       print(await client.check_token())
