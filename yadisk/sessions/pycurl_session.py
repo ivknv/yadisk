@@ -17,7 +17,7 @@ from urllib.parse import urlencode
 
 import pycurl
 
-__all__ = ["PycurlSession"]
+__all__ = ["PycURLSession"]
 
 def convert_curl_error(error: pycurl.error) -> RequestError:
     code, msg = error.args
@@ -109,7 +109,7 @@ class IterableReader:
             data += chunk_fragment
             self._position_in_chunk += len(chunk_fragment)
 
-class PycurlSession(Session):
+class PycURLSession(Session):
     """
         :any:`Session` implementation using the :code:`pycurl` library.
 
@@ -121,9 +121,9 @@ class PycurlSession(Session):
 
            import yadisk
            import pycurl
-           from yadisk.sessions.pycurl_session import PycurlSession
+           from yadisk.sessions.pycurl_session import PycURLSession
 
-           with yadisk.Client(..., session_factory=PycurlSession) as client:
+           with yadisk.Client(..., session_factory=PycURLSession) as client:
                client.get_meta(
                    "/my_file.txt",
                    n_retries=5,

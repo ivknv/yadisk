@@ -10,7 +10,7 @@ Synchronous
 .. autoclass:: yadisk.sessions.httpx_session.HTTPXSession
    :show-inheritance:
 
-.. autoclass:: yadisk.sessions.pycurl_session.PycurlSession
+.. autoclass:: yadisk.sessions.pycurl_session.PycURLSession
    :show-inheritance:
 
 Asynchronous
