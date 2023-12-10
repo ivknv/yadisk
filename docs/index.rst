@@ -12,7 +12,7 @@ Welcome to YaDisk's documentation!
 
    intro
    known_issues
-   docs
+   api_reference/index
    changelog
 
 Indices and tables

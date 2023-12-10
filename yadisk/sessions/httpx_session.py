@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from ..session import Session, Response
-from ..compat import Iterable
 from ..types import JSON, ConsumeCallback, Headers, HTTPMethod
 
 from .httpx_common import *
@@ -40,10 +39,6 @@ class HTTPXSession(Session):
 
     def set_headers(self, headers: Headers) -> None:
         self._session.headers.update(headers)
-
-    def remove_headers(self, headers: Iterable[str]) -> None:
-        for h in headers:
-            self._session.headers.pop(h, None)
 
     def send_request(self, method: HTTPMethod, url: str, **kwargs) -> Response:
         request_kwargs, send_kwargs = convert_args_for_httpx(self._session, kwargs)

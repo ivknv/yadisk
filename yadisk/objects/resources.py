@@ -1063,9 +1063,9 @@ class ResourceObjectMethodsMixin:
             This method takes 1 or 2 positional arguments:
 
             1. :code:`copy(dst_path, /, **kwargs)`
-            2. :code:`copy(relative_path, dst_path, /, **kwargs)`
+            2. :code:`copy(relative_src_path, dst_path, /, **kwargs)`
 
-            :param src_path: `str` or `None`, source path relative to the resource
+            :param relative_src_path: `str` or `None`, source path relative to the resource
             :param dst_path: destination path
             :param overwrite: if `True` the destination path can be overwritten,
                               otherwise, an error will be raised
@@ -1829,7 +1829,7 @@ class AsyncResourceObjectMethodsMixin:
             1. :code:`copy(dst_path, /, **kwargs)`
             2. :code:`copy(relative_path, dst_path, /, **kwargs)`
 
-            :param src_path: `str` or `None`, source path relative to the resource
+            :param relative_path: `str` or `None`, source path relative to the resource
             :param dst_path: destination path
             :param overwrite: if `True` the destination path can be overwritten,
                               otherwise, an error will be raised

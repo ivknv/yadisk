@@ -13,7 +13,7 @@ from typing import Any, Optional, Union, TypeVar
 from .compat import Callable, Awaitable
 from .types import AnyResponse
 
-__all__ = ["get_exception", "auto_retry"]
+__all__ = ["get_exception", "auto_retry", "async_auto_retry"]
 
 EXCEPTION_MAP = {400: defaultdict(lambda: BadRequestError,
                                   {"FieldValidationError": FieldValidationError}),

@@ -193,11 +193,11 @@ class AsyncClient:
         Implements access to Yandex.Disk REST API.
 
         .. note::
-           Do not forget to call :any:`YaDisk.close` or use the `async with` statement
+           Do not forget to call :any:`AsyncClient.close` or use the `async with` statement
            to close all the connections. Otherwise, you may get a warning.
 
-           In the original library this is handled in the destructor, but since
-           :any:`AsyncSession.close` is a coroutine function the
+           In :any:`Client` this is handled in the destructor, but since
+           :any:`AsyncClient.close` is a coroutine function the
            same cannot be done here, so you have to do it explicitly.
 
         :param id: application ID
@@ -205,12 +205,16 @@ class AsyncClient:
         :param token: application token
         :param default_args: `dict` or `None`, default arguments for methods.
                              Can be used to set the default timeout, headers, etc.
+        :param session_factory: `None` or a function that returns a new instance of :any:`AsyncSession`
+        :param open_file: `None` or an async function that opens a file for reading or writing (`aiofiles.open()` by default)
 
         :ivar id: `str`, application ID
         :ivar secret: `str`, application secret password
         :ivar token: `str`, application token
         :ivar default_args: `dict`, default arguments for methods. Can be used to
                             set the default timeout, headers, etc.
+        :ivar session_factory: function that returns a new instance of :any:`AsyncSession`
+        :ivar open_file: async function that opens a file for reading or writing (`aiofiles.open()` by default)
 
         The following exceptions may be raised by most API requests:
 

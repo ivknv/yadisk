@@ -26,6 +26,9 @@ class AsyncResponse:
         """
             Returns JSON-content of the response (parses JSON).
 
+            .. note::
+               This is an abstract method that needs to be implemented.
+
             :returns: `dict`, `list`, `str`, `int`, `float` or `None`
         """
         raise NotImplementedError
@@ -33,6 +36,9 @@ class AsyncResponse:
     async def download(self, consume_callback: AsyncConsumeCallback) -> None:
         """
             Downloads response's content.
+
+            .. note::
+               This is an abstract method that needs to be implemented.
 
             :param consume_callback: regular or async function, takes one
                                      parameter - chunk of data (bytes),
@@ -55,7 +61,12 @@ class AsyncResponse:
         return get_exception(self, error)
 
     async def close(self) -> None:
-        """Closes the response and releases the underlying connection into the pool"""
+        """
+            Closes the response and releases the underlying connection into the pool.
+
+            .. note::
+               This is an abstract method that needs to be implemented.
+        """
         raise NotImplementedError
 
     async def __aenter__(self) -> Self:
@@ -78,15 +89,10 @@ class AsyncSession:
         """
             Updates session's headers.
 
+            .. note::
+               This is an abstract method that needs to be implemented.
+
             :param headers: dictionary of headers to be set
-        """
-        raise NotImplementedError
-
-    def remove_headers(self, keys: Iterable[str]) -> None:
-        """
-            Removes session's headers.
-
-            :param headers: list of headers to be removed
         """
         raise NotImplementedError
 
@@ -115,6 +121,9 @@ class AsyncSession:
             Additional keyword arguments may be passed, they may be forwarded
             to the underlying HTTP client without modification.
 
+            .. note::
+               This is an abstract method that needs to be implemented.
+
             :param method: `str`, HTTP method
             :param url: `str`, URL
             :param params: `dict`, GET parameters
@@ -129,7 +138,12 @@ class AsyncSession:
         raise NotImplementedError
 
     async def close(self) -> None:
-        """Closes the session."""
+        """
+            Closes the session.
+
+            .. note::
+               This is an abstract method that needs to be implemented.
+        """
         raise NotImplementedError
 
     async def __aenter__(self) -> Self:

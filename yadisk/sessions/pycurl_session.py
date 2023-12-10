@@ -117,10 +117,6 @@ class PycurlSession(Session):
     def set_headers(self, headers: Headers) -> None:
         self._headers.update(headers)
 
-    def remove_headers(self, headers: Iterator[str]) -> None:
-        for h in headers:
-            self._headers.pop(h, None)
-
     def send_request(self, method: HTTPMethod, url: str, **kwargs) -> Response:
         params = kwargs.get("params", {})
         data = kwargs.get("data")

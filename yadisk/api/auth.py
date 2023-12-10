@@ -15,7 +15,7 @@ class RefreshTokenRequest(APIRequest):
     """
         A request to refresh an existing token.
 
-        :param session: an instance of :any:`AnySession` with prepared headers
+        :param session: an instance of :any:`Session` or :any:`AsyncSession` with prepared headers
         :param refresh_token: the refresh token that was received with the original token
         :param client_id: application ID
         :param client_secret: application secret password
@@ -51,7 +51,7 @@ class RevokeTokenRequest(APIRequest):
     """
         A request to revoke the token.
 
-        :param session: an instance of :any:`AnySession` with prepared headers
+        :param session: an instance of :any:`Session` or :any:`AsyncSession` with prepared headers
         :param token: the token to be revoked
         :param client_id: application ID
         :param client_secret: application secret password
@@ -86,7 +86,7 @@ class GetTokenRequest(APIRequest):
     """
         A request to get the token.
 
-        :param session: an instance of :any:`AnySession` with prepared headers
+        :param session: an instance of :any:`Session` or :any:`AsyncSession` with prepared headers
         :param code: confirmation code
         :param client_id: application ID
         :param client_secret: application secret password

@@ -140,12 +140,16 @@ class Client:
         :param token: application token
         :param default_args: `dict` or `None`, default arguments for methods.
                              Can be used to set the default timeout, headers, etc.
+        :param session_factory: `None` or a function that returns a new instance of :any:`Session`
+        :param open_file: `None` or a function that opens a file for reading or writing (`open()` by default)
 
         :ivar id: `str`, application ID
         :ivar secret: `str`, application secret password
         :ivar token: `str`, application token
         :ivar default_args: `dict`, default arguments for methods. Can be used to
                             set the default timeout, headers, etc.
+        :ivar session_factory: function that returns a new instance of :any:`Session`
+        :ivar open_file: function that opens a file for reading or writing (`open()` by default)
 
         The following exceptions may be raised by most API requests:
 
@@ -225,7 +229,7 @@ class Client:
             Closes the session.
             Do not call this method while there are other active threads using this object.
 
-            This method can also be called implicitly by using the `async with`
+            This method can also be called implicitly by using the `with`
             statement.
         """
 

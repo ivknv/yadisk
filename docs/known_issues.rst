@@ -10,7 +10,7 @@ Very Slow Upload of Certain Types of Files
 
 Yandex.Disk's REST API limits upload speeds up to 128 KiB/s for certain MIME types of files.
 More specifically, throttling takes place based on value of :code:`media_type`
-(see :any:`yadisk.YaDisk.get_meta`).
+(see :any:`yadisk.Client.get_meta`).
 It appears there are 3 types of media types that are throttled:
 
 1) :code:`data` (.db, .dat, etc.)
@@ -18,7 +18,7 @@ It appears there are 3 types of media types that are throttled:
 3) :code:`video` (.3gp, .mp4, .avi, etc.)
 
 This behavior of throttling is predetermined at the moment of requesting an
-upload link (with :any:`yadisk.YaDisk.get_upload_link`). The content of the
+upload link (with :any:`yadisk.Client.get_upload_link`). The content of the
 uploaded file does not matter.
 
 The reason why this problem cannot be observed when uploading through the
@@ -52,5 +52,5 @@ There are several ways around it:
    See `this comment <https://github.com/urllib3/urllib3/issues/1394#issuecomment-954044006>`_ for more details.
 2) Monkey-patching through a library like `eventlet`_.
 3) Using `yadisk-async`_ instead. It uses `aiohttp`_ instead of `requests`_.
-4) Uploading files to direct links (obtained through :any:`yadisk.YaDisk.get_upload_link()`) using
+4) Uploading files to direct links (obtained through :any:`yadisk.Client.get_upload_link()`) using
    a different library (such as `aiohttp`_).

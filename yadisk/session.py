@@ -2,7 +2,7 @@
 
 from typing import Optional, Any
 from .exceptions import YaDiskError
-from .compat import Dict, Iterable, Self
+from .compat import Dict, Self
 from .utils import get_exception
 from .objects import ErrorObject
 from .types import ConsumeCallback, JSON, HTTPMethod, Payload, TimeoutParameter
@@ -22,6 +22,9 @@ class Response:
         """
             Returns JSON-content of the response (parses JSON).
 
+            .. note::
+               This is an abstract method that needs to be implemented.
+
             :returns: `dict`, `list`, `str`, `int`, `float` or `None`
         """
         raise NotImplementedError
@@ -29,6 +32,9 @@ class Response:
     def download(self, consume_callback: ConsumeCallback) -> None:
         """
             Downloads response's content.
+
+            .. note::
+               This is an abstract method that needs to be implemented.
 
             :param consume_callback: function, takes one parameter - chunk of data (bytes),
                                      consumes the chunk (e.g. by writing to a file)
@@ -50,7 +56,12 @@ class Response:
         return get_exception(self, error)
 
     def close(self) -> None:
-        """Closes the response and releases the underlying connection into the pool"""
+        """
+            Closes the response and releases the underlying connection into the pool
+
+            .. note::
+               This is an abstract method that needs to be implemented.
+        """
         raise NotImplementedError
 
     def __enter__(self) -> Self:
@@ -72,15 +83,10 @@ class Session:
         """
             Updates session's headers.
 
+            .. note::
+               This is an abstract method that needs to be implemented.
+
             :param headers: dictionary of headers to be set
-        """
-        raise NotImplementedError
-
-    def remove_headers(self, keys: Iterable[str]) -> None:
-        """
-            Removes session's headers.
-
-            :param headers: list of headers to be removed
         """
         raise NotImplementedError
 
@@ -109,6 +115,9 @@ class Session:
             Additional keyword arguments may be passed, they may be forwarded
             to the underlying HTTP client without modification.
 
+            .. note::
+               This is an abstract method that needs to be implemented.
+
             :param method: `str`, HTTP method
             :param url: `str`, URL
             :param params: `dict`, GET parameters
@@ -122,7 +131,12 @@ class Session:
         raise NotImplementedError
 
     def close(self) -> None:
-        """Closes the session."""
+        """
+            Closes the session.
+
+            .. note::
+               This is an abstract method that needs to be implemented.
+        """
         raise NotImplementedError
 
     def __enter__(self) -> Self:
