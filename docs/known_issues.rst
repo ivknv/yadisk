@@ -4,10 +4,6 @@ Known Issues
 Very Slow Upload of Certain Types of Files
 ##########################################
 
-.. note::
-
-   The following information may become outdated at some point in the future.
-
 Yandex.Disk's REST API limits upload speeds up to 128 KiB/s for certain MIME types of files.
 More specifically, throttling takes place based on value of :code:`media_type`
 (see :any:`yadisk.Client.get_meta`).
@@ -34,8 +30,8 @@ upload it under the name "my_database.some_other_extension" and then rename it b
 to "my_database.db". This approach has some obvious downsides but at least it
 works.
 
-Low Upload Speed on Windows
-###########################
+Low Upload Speed on Windows When Using requests
+###############################################
 
 .. _http.client: https://docs.python.org/3/library/http.client.html
 .. _urllib3: https://pypi.org/project/urllib3/
@@ -43,14 +39,13 @@ Low Upload Speed on Windows
 .. _yadisk-async: https://pypi.org/project/yadisk-async
 .. _aiohttp: https://pypi.org/project/aiohttp
 .. _requests: https://pypi.org/project/requests
+.. _httpx: https://pypi.org/project/httpx
 
-If you experience low upload speeds on Windows, the reason might be due to
-Python's standard library internally using :code:`select()` to wait for sockets.
-There are several ways around it:
+If you use `requests`_ and experience low upload speeds on Windows, the reason
+might be due to Python's standard library internally using :code:`select()` to
+wait for sockets. There are several ways around it:
 
-1) Monkey-patching `http.client`_ and `urllib3`_ to use bigger :code:`blocksize`.
+1) Using a different HTTP library (e.g. `httpx`_, see :doc:`/api_reference/sessions`).
+2) Monkey-patching `http.client`_ and `urllib3`_ to use bigger :code:`blocksize`.
    See `this comment <https://github.com/urllib3/urllib3/issues/1394#issuecomment-954044006>`_ for more details.
-2) Monkey-patching through a library like `eventlet`_.
-3) Using `yadisk-async`_ instead. It uses `aiohttp`_ instead of `requests`_.
-4) Uploading files to direct links (obtained through :any:`yadisk.Client.get_upload_link()`) using
-   a different library (such as `aiohttp`_).
+3) Monkey-patching through a library like `eventlet`_.
