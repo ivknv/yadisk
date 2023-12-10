@@ -110,6 +110,8 @@ class FilesResourceListObject(YaDiskObject):
         self.import_fields(files_resource_list)
 
 class SyncFilesResourceListObject(FilesResourceListObject):
+    """See :any:`FilesResourceListObject`."""
+
     items: Optional[List["SyncResourceObject"]]
 
     def __init__(self,
@@ -121,6 +123,8 @@ class SyncFilesResourceListObject(FilesResourceListObject):
         self.import_fields(files_resource_list)
 
 class AsyncFilesResourceListObject(FilesResourceListObject):
+    """See :any:`FilesResourceListObject`."""
+
     items: Optional[List["AsyncResourceObject"]]
 
     def __init__(self,
@@ -220,6 +224,8 @@ class OperationLinkObject(LinkObject):
     pass
 
 class SyncOperationLinkObject(OperationLinkObject):
+    """See :any:`OperationLinkObject`."""
+
     def get_status(self, **kwargs) -> str:
         """
             Get operation status.
@@ -244,6 +250,8 @@ class SyncOperationLinkObject(OperationLinkObject):
         return self._yadisk.get_operation_status(self.href, **kwargs)
 
 class AsyncOperationLinkObject(OperationLinkObject):
+    """See :any:`OperationLinkObject`."""
+
     async def get_status(self, **kwargs) -> str:
         """
             Get operation status.
@@ -299,6 +307,8 @@ class PublicResourcesListObject(YaDiskObject):
         self.import_fields(public_resources_list)
 
 class SyncPublicResourcesListObject(PublicResourcesListObject):
+    """See :any:`PublicResourceListObject`."""
+
     items: Optional[List["SyncPublicResourceObject"]]
 
     def __init__(self,
@@ -310,6 +320,8 @@ class SyncPublicResourcesListObject(PublicResourcesListObject):
         self.import_fields(public_resources_list)
 
 class AsyncPublicResourcesListObject(PublicResourcesListObject):
+    """See :any:`PublicResourceListObject`."""
+
     items: Optional[List["AsyncPublicResourceObject"]]
 
     def __init__(self,
@@ -1955,6 +1967,8 @@ class ResourceObject(YaDiskObject):
         self.import_fields(resource)
 
 class SyncResourceObject(ResourceObject, ResourceObjectMethodsMixin):
+    """See :any:`ResourceObject`."""
+
     embedded: Optional["SyncResourceListObject"]
     _embedded: Optional["SyncResourceListObject"]
 
@@ -1964,6 +1978,8 @@ class SyncResourceObject(ResourceObject, ResourceObjectMethodsMixin):
         self.import_fields(resource)
 
 class AsyncResourceObject(ResourceObject, AsyncResourceObjectMethodsMixin):
+    """See :any:`ResourceObject`."""
+
     embedded: Optional["AsyncResourceListObject"]
     _embedded: Optional["AsyncResourceListObject"]
 
@@ -2014,9 +2030,13 @@ class ResourceLinkObject(LinkObject):
             yadisk=yadisk)
 
 class SyncResourceLinkObject(ResourceLinkObject, ResourceObjectMethodsMixin):
+    """See :any:`ResourceLinkObject`."""
+
     pass
 
 class AsyncResourceLinkObject(ResourceLinkObject, AsyncResourceObjectMethodsMixin):
+    """See :any:`ResourceLinkObject`."""
+
     pass
 
 class PublicResourceLinkObject(LinkObject):
@@ -2065,9 +2085,13 @@ class PublicResourceLinkObject(LinkObject):
             yadisk=yadisk)
 
 class SyncPublicResourceLinkObject(PublicResourceLinkObject, ResourceObjectMethodsMixin):
+    """See :any:`PublicResourceLinkObject`."""
+
     pass
 
 class AsyncPublicResourceLinkObject(PublicResourceLinkObject, AsyncResourceObjectMethodsMixin):
+    """See :any:`PublicResourceLinkObject`."""
+
     pass
 
 class ResourceListObject(YaDiskObject):
@@ -2105,6 +2129,8 @@ class ResourceListObject(YaDiskObject):
         self.import_fields(resource_list)
 
 class SyncResourceListObject(ResourceListObject):
+    """See :any:`ResourceListObject`."""
+
     items: Optional[List[SyncResourceObject]]
 
     def __init__(self, resource_list: Optional[dict] = None, yadisk: Optional[Any] = None):
@@ -2113,6 +2139,8 @@ class SyncResourceListObject(ResourceListObject):
         self.import_fields(resource_list)
 
 class AsyncResourceListObject(ResourceListObject):
+    """See :any:`ResourceListObject`."""
+
     items: Optional[List[AsyncResourceObject]]
 
     def __init__(self, resource_list: Optional[dict] = None, yadisk: Optional[Any] = None):
@@ -2230,6 +2258,8 @@ class PublicResourceObject(ResourceObject):
         self.import_fields(public_resource)
 
 class SyncPublicResourceObject(PublicResourceObject, ResourceObjectMethodsMixin):
+    """See :any:`PublicResourceObject`."""
+
     embedded: Optional["SyncPublicResourceListObject"]
     _embedded: Optional["SyncPublicResourceListObject"]
 
@@ -2239,6 +2269,8 @@ class SyncPublicResourceObject(PublicResourceObject, ResourceObjectMethodsMixin)
         self.import_fields(public_resource)
 
 class AsyncPublicResourceObject(PublicResourceObject, AsyncResourceObjectMethodsMixin):
+    """See :any:`PublicResourceObject`."""
+
     embedded: Optional["AsyncPublicResourceListObject"]
     _embedded: Optional["AsyncPublicResourceListObject"]
 
@@ -2275,6 +2307,8 @@ class PublicResourceListObject(ResourceListObject):
         self.import_fields(public_resource_list)
 
 class SyncPublicResourceListObject(PublicResourceListObject):
+    """See :any:`PublicResourceListObject`."""
+
     items: Optional[List[SyncPublicResourceObject]]
 
     def __init__(self, public_resource_list: Optional[dict] = None, yadisk: Optional[Any] = None):
@@ -2283,6 +2317,8 @@ class SyncPublicResourceListObject(PublicResourceListObject):
         self.import_fields(public_resource_list)
 
 class AsyncPublicResourceListObject(PublicResourceListObject):
+    """See :any:`PublicResourceListObject`."""
+
     items: Optional[List[AsyncPublicResourceObject]]
 
     def __init__(self, public_resource_list: Optional[dict] = None, yadisk: Optional[Any] = None):
@@ -2339,6 +2375,8 @@ class TrashResourceObject(ResourceObject):
         self.import_fields(trash_resource)
 
 class SyncTrashResourceObject(TrashResourceObject):
+    """See :any:`TrashResourceObject`."""
+
     embedded: Optional["SyncTrashResourceListObject"]
     _embedded: Optional["SyncTrashResourceListObject"]
 
@@ -2609,6 +2647,8 @@ class SyncTrashResourceObject(TrashResourceObject):
         return self._yadisk.restore_trash(str(path), dst_path, **kwargs)
 
 class AsyncTrashResourceObject(TrashResourceObject):
+    """See :any:`TrashResourceObject`."""
+
     embedded: Optional["AsyncTrashResourceListObject"]
     _embedded: Optional["AsyncTrashResourceListObject"]
 
@@ -2903,6 +2943,8 @@ class TrashResourceListObject(ResourceListObject):
         self.import_fields(trash_resource_list)
 
 class SyncTrashResourceListObject(TrashResourceListObject):
+    """See :any:`TrashResourceListObject`."""
+
     items: Optional[List[SyncTrashResourceObject]]
 
     def __init__(self,
@@ -2913,6 +2955,8 @@ class SyncTrashResourceListObject(TrashResourceListObject):
         self.import_fields(trash_resource_list)
 
 class AsyncTrashResourceListObject(TrashResourceListObject):
+    """See :any:`TrashResourceListObject`."""
+
     items: Optional[List[AsyncTrashResourceObject]]
 
     def __init__(self,

@@ -110,6 +110,32 @@ class IterableReader:
             self._position_in_chunk += len(chunk_fragment)
 
 class PycurlSession(Session):
+    """
+        :any:`Session` implementation using the :code:`pycurl` library.
+
+        To pass `pycurl`-specific arguments from :any:`Client` use :code:`curl_options` keyword argument.
+
+        Usage example:
+
+        .. code:: python
+
+           import yadisk
+           import pycurl
+           from yadisk.sessions.pycurl_session import PycurlSession
+
+           with yadisk.Client(..., session_factory=PycurlSession) as client:
+               client.get_meta(
+                   "/my_file.txt",
+                   n_retries=5,
+                   curl_options={
+                       pycurl.MAX_SEND_SPEED_LARGE: 5 * 1024**2,
+                       pycurl.MAX_RECV_SPEED_LARGE: 5 * 1024**2,
+                       pycurl.PROXY: "http://localhost:12345",
+                       pycurl.MAXREDIRS: 15
+                   }
+                )
+    """
+
     def __init__(self):
         self._share = pycurl.CurlShare()
         self._headers = CaseInsensitiveDict()

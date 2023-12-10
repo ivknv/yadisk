@@ -13,6 +13,9 @@ class Response:
     """
         Represents an HTTP response.
 
+        In case an error occurs, methods of this class should throw one of exceptions
+        derived from :any:`YaDiskError`.
+
         :ivar status: `int`, HTTP status code
     """
 

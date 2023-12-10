@@ -39,6 +39,37 @@ class AsyncHTTPXResponse(AsyncResponse):
         await self._response.aclose()
 
 class AsyncHTTPXSession(AsyncSession):
+    """
+        :any:`AsyncSession` implementation using the :code:`httpx` library.
+
+        .. _httpx.AsyncClient: https://www.python-httpx.org/api/#asyncclient
+
+        All arguments passed in the constructor are directly forwared to `httpx.AsyncClient`_.
+
+        :ivar httpx_client: underlying instance of `httpx.AsyncClient`_
+
+        To pass `httpx`-specific arguments from :any:`AsyncClient` use :code:`httpx_args` keyword argument.
+
+        Usage example:
+
+        .. code:: python
+
+           import yadisk
+           from yadisk.sessions.async_httpx_session import AsyncHTTPXSession
+
+           async def main():
+               async with yadisk.AsyncClient(..., session_factory=AsyncHTTPXSession) as client:
+                   await client.get_meta(
+                       "/my_file.txt",
+                       n_retries=5,
+                       httpx_args={
+                           "proxies":"http://localhost:11234",
+                           "verify": False,
+                           "max_redirects": 10
+                       }
+                    )
+    """
+
     def __init__(self, *args, **kwargs):
         self._session = httpx.AsyncClient(*args, **kwargs)
         self._session.follow_redirects = True

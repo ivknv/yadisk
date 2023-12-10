@@ -71,6 +71,33 @@ DEFAULT_USER_AGENT = "Python/%s.%s aiohttp/%s" % (sys.version_info.major,
                                                   aiohttp.__version__)
 
 class AIOHTTPSession(AsyncSession):
+    """
+        :any:`AsyncSession` implementation using the :code:`aiohttp` library.
+
+        All arguments passed in the constructor are directly forwared to :any:`aiohttp.ClientSession`.
+
+        :ivar aiohttp_session: underlying instance of :any:`aiohttp.ClientSession`
+
+        To pass `aiohttp`-specific arguments from :any:`AsyncClient` use :code:`aiohttp_args` keyword argument.
+
+        Usage example:
+
+        .. code:: python
+
+           import yadisk
+           from yadisk.sessions.aiohttp_session import AIOHTTPSession
+
+           async def main():
+               async with yadisk.AsyncClient(..., session_factory=AIOHTTPSession) as client:
+                   await client.get_meta(
+                       "/my_file.txt",
+                       n_retries=5,
+                       aiohttp_args={
+                           "proxies": {"https": "http://example.com:1234"},
+                           "verify": False
+                       }
+                    )
+    """
     def __init__(self, *args, **kwargs):
         headers = CaseInsensitiveDict({
             "User-Agent": DEFAULT_USER_AGENT,

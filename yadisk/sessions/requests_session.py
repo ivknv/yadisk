@@ -50,6 +50,39 @@ class RequestsResponse(Response):
         self._response.close()
 
 class RequestsSession(Session):
+    """
+        :any:`Session` implementation using the :code:`requests` library.
+
+        All arguments passed in the constructor are directly forwared to :any:`requests.Session`.
+
+        :ivar requests_session: underlying instance of :any:`requests.Session`
+
+        .. note::
+           Internally, this class creates thread-local instances of
+           :any:`requests.Session`, since it is not currently guaranteed to be
+           thread safe.
+           Calling :any:`Session.close()` only closes the thread-local session.
+
+        To pass `requests`-specific arguments from :any:`Client` use :code:`requests_args` keyword argument.
+
+        Usage example:
+
+        .. code:: python
+
+           import yadisk
+           from yadisk.sessions.requests_session import RequestsSession
+
+           with yadisk.Client(..., session_factory=RequestsSession) as client:
+               client.get_meta(
+                   "/my_file.txt",
+                   n_retries=5,
+                   requests_args={
+                       "proxies": {"https": "http://example.com:1234"},
+                       "verify": False
+                   }
+                )
+    """
+
     def __init__(self, *args, **kwargs):
         self._args, self._kwargs = args, kwargs
         self._local = threading.local()
@@ -68,10 +101,6 @@ class RequestsSession(Session):
 
     def set_headers(self, headers: Headers) -> None:
         self._headers.update(headers)
-
-    def remove_headers(self, headers: Iterable[str]) -> None:
-        for h in headers:
-            self._headers.pop(h, None)
 
     def send_request(self, method: HTTPMethod, url: str, **kwargs) -> Response:
         headers = CaseInsensitiveDict(self.requests_session.headers)

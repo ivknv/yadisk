@@ -29,25 +29,54 @@ class HTTPXResponse(Response):
         self._response.close()
 
 class HTTPXSession(Session):
+    """
+        :any:`Session` implementation using the :code:`httpx` library.
+
+        .. _httpx.Client: https://www.python-httpx.org/api/#client
+
+        All arguments passed in the constructor are directly forwared to `httpx.Client`_.
+
+        :ivar httpx_client: underlying instance of `httpx.Client`_
+
+        To pass `httpx`-specific arguments from :any:`Client` use :code:`httpx_args` keyword argument.
+
+        Usage example:
+
+        .. code:: python
+
+           import yadisk
+           from yadisk.sessions.httpx_session import HTTPXSession
+
+           with yadisk.Client(..., session_factory=HTTPXSession) as client:
+               client.get_meta(
+                   "/my_file.txt",
+                   n_retries=5,
+                   httpx_args={
+                       "proxies":"http://localhost:11234",
+                       "verify": False,
+                       "max_redirects": 10
+                   }
+                )
+    """
     def __init__(self, *args, **kwargs):
-        self._session = httpx.Client(*args, **kwargs)
-        self._session.follow_redirects = True
+        self._client = httpx.Client(*args, **kwargs)
+        self._client.follow_redirects = True
 
     @property
-    def httpx_session(self) -> httpx.Client:
-        return self._session
+    def httpx_client(self) -> httpx.Client:
+        return self._client
 
     def set_headers(self, headers: Headers) -> None:
-        self._session.headers.update(headers)
+        self._client.headers.update(headers)
 
     def send_request(self, method: HTTPMethod, url: str, **kwargs) -> Response:
-        request_kwargs, send_kwargs = convert_args_for_httpx(self._session, kwargs)
+        request_kwargs, send_kwargs = convert_args_for_httpx(self._client, kwargs)
 
         try:
-            request = self._session.build_request(method, url, **request_kwargs)
-            return HTTPXResponse(self._session.send(request, **send_kwargs))
+            request = self._client.build_request(method, url, **request_kwargs)
+            return HTTPXResponse(self._client.send(request, **send_kwargs))
         except httpx.HTTPError as e:
             raise convert_httpx_exception(e)
 
     def close(self) -> None:
-        self._session.close()
+        self._client.close()
