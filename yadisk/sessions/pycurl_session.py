@@ -140,6 +140,10 @@ class PycURLSession(Session):
         self._share = pycurl.CurlShare()
         self._headers = CaseInsensitiveDict()
 
+        self._share.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_CONNECT)
+        self._share.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_DNS)
+        self._share.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_SSL_SESSION)
+
     def set_headers(self, headers: Headers) -> None:
         self._headers.update(headers)
 
