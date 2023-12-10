@@ -1,3 +1,7 @@
 sphinx
 sphinx-intl
 sphinx_rtd_theme
+requests
+httpx
+aiohttp
+pycurl
