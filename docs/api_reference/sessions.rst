@@ -8,8 +8,8 @@ Below you can see the list of session implementations that are shipped with the 
 Alternatively, you can make your own :any:`Session`/:any:`AsyncSession` implementation.
 For a concrete example, take a look at the source code of any existing implementations (e.g. :any:`HTTPXSession`).
 
-Synchronous
-###########
+Synchronous Implementations
+###########################
 
 .. autoclass:: yadisk.sessions.requests_session.RequestsSession
    :show-inheritance:
@@ -20,8 +20,8 @@ Synchronous
 .. autoclass:: yadisk.sessions.pycurl_session.PycURLSession
    :show-inheritance:
 
-Asynchronous
-############
+Asynchronous Implementations
+############################
 
 .. autoclass:: yadisk.sessions.aiohttp_session.AIOHTTPSession
    :show-inheritance:
