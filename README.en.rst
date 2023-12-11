@@ -25,8 +25,8 @@ asynchronous API.
 The following HTTP client libraries are currently supported:
 
 * :code:`requests` (used by default for synchronous API)
-* :code:`httpx` (both synchronous and asynchronous)
-* :code:`aiohttp` (used by default for asynchronous API)
+* :code:`httpx` (both synchronous and asynchronous, used by default for asynchronous API)
+* :code:`aiohttp` (asynchronous only)
 * :code:`pycurl` (synchronous only)
 
 For synchronous API (installs :code:`requests`):
@@ -35,7 +35,7 @@ For synchronous API (installs :code:`requests`):
 
    pip install yadisk[sync_defaults]
 
-For asynchronous API (installs :code:`aiofiles` and :code:`aiohttp`):
+For asynchronous API (installs :code:`aiofiles` and :code:`httpx`):
 
 .. code:: bash
 
@@ -48,8 +48,8 @@ Alternatively, you can manually choose which optional libraries to install:
    # For use with pycurl
    pip install yadisk pycurl
 
-   # For use with httpx, will also install aiofiles
-   pip install yadisk[async_files] httpx
+   # For use with aiohttp, will also install aiofiles
+   pip install yadisk[async_files] aiofiles
 
 Examples
 ********

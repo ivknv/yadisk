@@ -24,7 +24,7 @@ setup(
     install_requires=["typing_extensions"],
     extras_require={
         "sync_defaults":  ["requests"],
-        "async_defaults": ["aiofiles", "aiohttp"],
+        "async_defaults": ["aiofiles", "httpx"],
         "async_files":    ["aiofiles"]
     },
     url="https://github.com/ivknv/yadisk",

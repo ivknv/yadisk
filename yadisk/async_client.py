@@ -25,10 +25,10 @@ from .compat import Callable, AsyncGenerator, Awaitable, Dict
 from .async_session import AsyncSession
 
 try:
-    from .sessions.aiohttp_session import AIOHTTPSession
+    from .sessions.async_httpx_session import AsyncHTTPXSession
 except ImportError:
-    # aiohttp is not available
-    AIOHTTPSession = None
+    # httpx is not available
+    AsyncHTTPXSession = None
 
 try:
     import aiofiles
@@ -193,7 +193,7 @@ class AsyncClient:
         Implements access to Yandex.Disk REST API (provides asynchronous API).
 
         HTTP client implementation can be specified using the `session_factory`
-        parameter. :any:`AIOHTTPSession` is used by default. For other options,
+        parameter. :any:`AsyncHTTPXSession` is used by default. For other options,
         see :doc:`/api_reference/sessions`.
 
         Almost all methods of :any:`AsyncClient` (the ones that accept `**kwargs`)
@@ -284,10 +284,10 @@ class AsyncClient:
         self.default_args = {} if default_args is None else default_args
 
         if session_factory is None:
-            if AIOHTTPSession is None:
-                raise RuntimeError("aiohttp is not installed. Either install aiohttp or provide a custom session_factory.")
+            if AsyncHTTPXSession is None:
+                raise RuntimeError("httpx is not installed. Either install httpx or provide a custom session_factory.")
 
-            self.session_factory = AIOHTTPSession
+            self.session_factory = AsyncHTTPXSession
         else:
             self.session_factory = session_factory
 

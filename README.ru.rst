@@ -9,6 +9,10 @@ YaDisk
    :alt: PyPI
    :target: https://pypi.org/project/yadisk
 
+.. _English version of this document: https://github.com/ivknv/yadisk/blob/master/README.en.rst
+
+`English version of this document`_
+
 YaDisk - это библиотека-клиент REST API Яндекс.Диска.
 
 .. _Read the Docs (EN): https://yadisk.readthedocs.io
@@ -25,8 +29,8 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 На данный момент поддерживаются следующие HTTP библиотеки:
 
 * :code:`requests` (используется по умолчанию для синхронного API)
-* :code:`httpx` (синхронный и асинхронный API)
-* :code:`aiohttp` (используется по умолчанию для асинхронного API)
+* :code:`httpx` (синхронный и асинхронный API, используется по умолчанию для асинхронного API)
+* :code:`aiohttp` (асинхронный API)
 * :code:`pycurl` (синхронный API)
 
 Для синхронного API (устанавливает :code:`requests`):
@@ -35,7 +39,7 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 
     pip install yadisk[sync_defaults]
 
-Для асинхронного API (устанавливает :code:`aiohttp` и :code:`aiofiles`):
+Для асинхронного API (устанавливает :code:`httpx` и :code:`aiofiles`):
 
 .. code:: bash
 
@@ -48,8 +52,8 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
    # Для использования совместно с pycurl
    pip install yadisk pycurl
 
-   # Для использования совместно с httpx, также установит aiofiles
-   pip install yadisk[async_files] httpx
+   # Для использования совместно с aiohttp, также установит aiofiles
+   pip install yadisk[async_files] aiohttp
 
 Примеры
 *******
