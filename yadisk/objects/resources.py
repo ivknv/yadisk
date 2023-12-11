@@ -429,7 +429,7 @@ class ResourceProtocol(Protocol):
 
 class ResourceObjectMethodsMixin:
     def get_meta(self: ResourceProtocol,
-                 relative_path: Optional[str] = None, /, **kwargs) -> "ResourceObject":
+                 relative_path: Optional[str] = None, /, **kwargs) -> "SyncResourceObject":
         """
             Get meta information about a file/directory.
 
@@ -448,7 +448,7 @@ class ResourceObjectMethodsMixin:
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
 
-            :returns: :any:`ResourceObject`
+            :returns: :any:`SyncResourceObject`
         """
 
         if self._yadisk is None:
@@ -461,7 +461,7 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.get_meta(str(path), **kwargs)
 
-    def get_public_meta(self: ResourceProtocol, **kwargs) -> "PublicResourceObject":
+    def get_public_meta(self: ResourceProtocol, **kwargs) -> "SyncPublicResourceObject":
         """
             Get meta-information about a public resource.
 
@@ -480,7 +480,7 @@ class ResourceObjectMethodsMixin:
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
 
-            :returns: :any:`PublicResourceObject`
+            :returns: :any:`SyncPublicResourceObject`
         """
 
         if self._yadisk is None:
@@ -599,7 +599,7 @@ class ResourceObjectMethodsMixin:
         return self._yadisk.is_file(str(path), **kwargs)
 
     def listdir(self: ResourceProtocol,
-                relative_path: Optional[str] = None, /, **kwargs) -> Generator["ResourceObject", None, None]:
+                relative_path: Optional[str] = None, /, **kwargs) -> Generator["SyncResourceObject", None, None]:
         """
             Get contents of the resource.
 
@@ -618,7 +618,7 @@ class ResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises WrongResourceTypeError: resource is not a directory
 
-            :returns: generator of :any:`ResourceObject`
+            :returns: generator of :any:`SyncResourceObject`
         """
 
         if self._yadisk is None:
@@ -631,7 +631,7 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.listdir(str(path), **kwargs)
 
-    def public_listdir(self: ResourceProtocol, **kwargs) -> Generator["PublicResourceObject", None, None]:
+    def public_listdir(self: ResourceProtocol, **kwargs) -> Generator["SyncPublicResourceObject", None, None]:
         """
             Get contents of a public directory.
 
@@ -650,7 +650,7 @@ class ResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises WrongResourceTypeError: resource is not a directory
 
-            :returns: generator of :any:`PublicResourceObject`
+            :returns: generator of :any:`SyncPublicResourceObject`
         """
 
         if self._yadisk is None:
@@ -698,7 +698,7 @@ class ResourceObjectMethodsMixin:
 
     def upload(self: ResourceProtocol,
                path_or_file: Union[str, IO[AnyStr]],
-               relative_path: Optional[str] = None, /, **kwargs) -> "ResourceLinkObject":
+               relative_path: Optional[str] = None, /, **kwargs) -> "SyncResourceLinkObject":
         """
             Upload a file to disk.
 
@@ -718,7 +718,7 @@ class ResourceObjectMethodsMixin:
             :raises InsufficientStorageError: cannot upload file due to lack of storage space
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
 
-            :returns: :any:`ResourceLinkObject`, link to the destination resource
+            :returns: :any:`SyncResourceLinkObject`, link to the destination resource
         """
 
         if self._yadisk is None:
@@ -753,7 +753,7 @@ class ResourceObjectMethodsMixin:
             :raises ResourceIsLockedError: resource is locked by another request
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
 
-            :returns: :any:`OperationLinkObject`, link to the asynchronous operation
+            :returns: :any:`SyncOperationLinkObject`, link to the asynchronous operation
         """
 
         if self._yadisk is None:
@@ -797,16 +797,16 @@ class ResourceObjectMethodsMixin:
 
     @overload
     def download(self: ResourceProtocol,
-                 dst_path_or_file: Union[str, IO[AnyStr]], /, **kwargs) -> "ResourceLinkObject":
+                 dst_path_or_file: Union[str, IO[AnyStr]], /, **kwargs) -> "SyncResourceLinkObject":
         pass
 
     @overload
     def download(self: ResourceProtocol,
                  relative_path: Optional[str],
-                 dst_path_or_file: Union[str, IO[AnyStr]], /, **kwargs) -> "ResourceLinkObject":
+                 dst_path_or_file: Union[str, IO[AnyStr]], /, **kwargs) -> "SyncResourceLinkObject":
         pass
 
-    def download(self: ResourceProtocol, *args, **kwargs) -> "ResourceLinkObject":
+    def download(self: ResourceProtocol, *args, **kwargs) -> "SyncResourceLinkObject":
         """
             Download the file. This method takes 1 or 2 positional arguments:
 
@@ -827,7 +827,7 @@ class ResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceLinkObject`, link to the source resource
+            :returns: :any:`SyncResourceLinkObject`, link to the source resource
         """
 
         if len(args) == 1:
@@ -843,7 +843,7 @@ class ResourceObjectMethodsMixin:
         if not relative_path and hasattr(self, "file") and self.file is not None:
             self._yadisk.download_by_link(self.file, dst_path_or_file, **kwargs)
 
-            return ResourceLinkObject.from_path(self.path, yadisk=self._yadisk)
+            return SyncResourceLinkObject.from_path(self.path, yadisk=self._yadisk)
 
         if self.path is None:
             raise ValueError("ResourceObject doesn't have a path")
@@ -853,16 +853,16 @@ class ResourceObjectMethodsMixin:
         return self._yadisk.download(str(src_path), dst_path_or_file, **kwargs)
 
     @overload
-    def patch(self: ResourceProtocol, properties: dict, **kwargs) -> "ResourceObject":
+    def patch(self: ResourceProtocol, properties: dict, **kwargs) -> "SyncResourceObject":
         pass
 
     @overload
     def patch(self: ResourceProtocol,
               relative_path: Union[str, None],
-              properties: dict, **kwargs) -> "ResourceObject":
+              properties: dict, **kwargs) -> "SyncResourceObject":
         pass
 
-    def patch(self: ResourceProtocol, *args, **kwargs) -> "ResourceObject":
+    def patch(self: ResourceProtocol, *args, **kwargs) -> "SyncResourceObject":
         """
             Update custom properties of a resource.
             This method takes 1 or 2 positional arguments:
@@ -882,7 +882,7 @@ class ResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceObject`
+            :returns: :any:`SyncResourceObject`
         """
 
         if len(args) == 1:
@@ -903,7 +903,7 @@ class ResourceObjectMethodsMixin:
         return self._yadisk.patch(str(path), properties, **kwargs)
 
     def publish(self: ResourceProtocol,
-                relative_path: Optional[str] = None, /, **kwargs) -> "ResourceLinkObject":
+                relative_path: Optional[str] = None, /, **kwargs) -> "SyncResourceLinkObject":
         """
             Make a resource public.
 
@@ -918,7 +918,7 @@ class ResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceLinkObject`, link to the resource
+            :returns: :any:`SyncResourceLinkObject`, link to the resource
         """
 
         if self._yadisk is None:
@@ -932,7 +932,7 @@ class ResourceObjectMethodsMixin:
         return self._yadisk.publish(str(path), **kwargs)
 
     def unpublish(self: ResourceProtocol,
-                  relative_path: Optional[str] = None, /, **kwargs) -> "ResourceLinkObject":
+                  relative_path: Optional[str] = None, /, **kwargs) -> "SyncResourceLinkObject":
         """
             Make a public resource private.
 
@@ -947,7 +947,7 @@ class ResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceLinkObject`
+            :returns: :any:`SyncResourceLinkObject`
         """
 
         if self._yadisk is None:
@@ -961,7 +961,7 @@ class ResourceObjectMethodsMixin:
         return self._yadisk.unpublish(str(path), **kwargs)
 
     def mkdir(self: ResourceProtocol,
-              relative_path: Optional[str] = None, /, **kwargs) -> "ResourceLinkObject":
+              relative_path: Optional[str] = None, /, **kwargs) -> "SyncResourceLinkObject":
         """
             Create a new directory.
 
@@ -978,7 +978,7 @@ class ResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceLinkObject`
+            :returns: :any:`SyncResourceLinkObject`
         """
 
         if self._yadisk is None:
@@ -992,7 +992,7 @@ class ResourceObjectMethodsMixin:
         return self._yadisk.mkdir(str(path), **kwargs)
 
     def remove(self: ResourceProtocol,
-               relative_path: Optional[str] = None, /, **kwargs) -> Optional[OperationLinkObject]:
+               relative_path: Optional[str] = None, /, **kwargs) -> Optional[SyncOperationLinkObject]:
         """
             Remove the resource.
 
@@ -1012,7 +1012,7 @@ class ResourceObjectMethodsMixin:
             :raises BadRequestError: MD5 check is only available for files
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
+            :returns: :any:`SyncOperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
         if self._yadisk is None:
@@ -1027,16 +1027,16 @@ class ResourceObjectMethodsMixin:
 
     @overload
     def move(self: ResourceProtocol,
-             dst_path: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+             dst_path: str, /, **kwargs) -> Union["SyncResourceLinkObject", SyncOperationLinkObject]:
         pass
 
     @overload
     def move(self: ResourceProtocol,
              relative_path: Optional[str],
-             dst_path: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+             dst_path: str, /, **kwargs) -> Union["SyncResourceLinkObject", SyncOperationLinkObject]:
         pass
 
-    def move(self: ResourceProtocol, *args, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+    def move(self: ResourceProtocol, *args, **kwargs) -> Union["SyncResourceLinkObject", SyncOperationLinkObject]:
         """
             Move resource to `dst_path`.
             This method takes 1 or 2 positional arguments:
@@ -1059,7 +1059,7 @@ class ResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+            :returns: :any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`
         """
 
         if len(args) == 1:
@@ -1081,16 +1081,16 @@ class ResourceObjectMethodsMixin:
 
     @overload
     def rename(self: ResourceProtocol,
-               new_name: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+               new_name: str, /, **kwargs) -> Union["SyncResourceLinkObject", SyncOperationLinkObject]:
         pass
 
     @overload
     def rename(self: ResourceProtocol,
                relative_path: Optional[str],
-               new_name: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+               new_name: str, /, **kwargs) -> Union["SyncResourceLinkObject", SyncOperationLinkObject]:
         pass
 
-    def rename(self: ResourceProtocol, *args, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+    def rename(self: ResourceProtocol, *args, **kwargs) -> Union["SyncResourceLinkObject", SyncOperationLinkObject]:
         """
             Rename `src_path` to have filename `new_name`.
             Does the same as `move()` but changes only the filename.
@@ -1111,7 +1111,7 @@ class ResourceObjectMethodsMixin:
             :raises ResourceIsLockedError: resource is locked by another request
             :raises ValueError: `new_name` is not a valid filename
 
-            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+            :returns: :any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`
         """
 
         if len(args) == 1:
@@ -1133,16 +1133,16 @@ class ResourceObjectMethodsMixin:
 
     @overload
     def copy(self: ResourceProtocol,
-             dst_path: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+             dst_path: str, /, **kwargs) -> Union["SyncResourceLinkObject", SyncOperationLinkObject]:
         pass
 
     @overload
     def copy(self: ResourceProtocol,
              relative_path: Optional[str],
-             dst_path: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+             dst_path: str, /, **kwargs) -> Union["SyncResourceLinkObject", SyncOperationLinkObject]:
         pass
 
-    def copy(self: ResourceProtocol, *args, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+    def copy(self: ResourceProtocol, *args, **kwargs) -> Union["SyncResourceLinkObject", SyncOperationLinkObject]:
         """
             Copy resource to `dst_path`.
             If the operation is performed asynchronously, returns the link to the operation,
@@ -1171,7 +1171,7 @@ class ResourceObjectMethodsMixin:
             :raises ResourceIsLockedError: resource is locked by another request
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
 
-            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+            :returns: :any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`
         """
 
         if len(args) == 1:
@@ -1193,7 +1193,7 @@ class ResourceObjectMethodsMixin:
 
 class AsyncResourceObjectMethodsMixin:
     async def get_meta(self: ResourceProtocol,
-                 relative_path: Optional[str] = None, /, **kwargs) -> "ResourceObject":
+                 relative_path: Optional[str] = None, /, **kwargs) -> "AsyncResourceObject":
         """
             Get meta information about a file/directory.
 
@@ -1212,7 +1212,7 @@ class AsyncResourceObjectMethodsMixin:
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
 
-            :returns: :any:`ResourceObject`
+            :returns: :any:`AsyncResourceObject`
         """
 
         if self._yadisk is None:
@@ -1225,7 +1225,7 @@ class AsyncResourceObjectMethodsMixin:
 
         return await self._yadisk.get_meta(str(path), **kwargs)
 
-    async def get_public_meta(self: ResourceProtocol, **kwargs) -> "PublicResourceObject":
+    async def get_public_meta(self: ResourceProtocol, **kwargs) -> "AsyncPublicResourceObject":
         """
             Get meta-information about a public resource.
 
@@ -1244,7 +1244,7 @@ class AsyncResourceObjectMethodsMixin:
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
 
-            :returns: :any:`PublicResourceObject`
+            :returns: :any:`AsyncPublicResourceObject`
         """
 
         if self._yadisk is None:
@@ -1363,7 +1363,7 @@ class AsyncResourceObjectMethodsMixin:
         return await self._yadisk.is_file(str(path), **kwargs)
 
     async def listdir(self: ResourceProtocol,
-                      relative_path: Optional[str] = None, /, **kwargs) -> AsyncGenerator["ResourceObject", None]:
+                      relative_path: Optional[str] = None, /, **kwargs) -> AsyncGenerator["AsyncResourceObject", None]:
         """
             Get contents of the resource.
 
@@ -1382,7 +1382,7 @@ class AsyncResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises WrongResourceTypeError: resource is not a directory
 
-            :returns: generator of :any:`ResourceObject`
+            :returns: generator of :any:`AsyncResourceObject`
         """
 
         if self._yadisk is None:
@@ -1395,7 +1395,7 @@ class AsyncResourceObjectMethodsMixin:
 
         return await self._yadisk.listdir(str(path), **kwargs)
 
-    async def public_listdir(self: ResourceProtocol, **kwargs) -> AsyncGenerator["PublicResourceObject", None]:
+    async def public_listdir(self: ResourceProtocol, **kwargs) -> AsyncGenerator["AsyncPublicResourceObject", None]:
         """
             Get contents of a public directory.
 
@@ -1414,7 +1414,7 @@ class AsyncResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises WrongResourceTypeError: resource is not a directory
 
-            :returns: generator of :any:`PublicResourceObject`
+            :returns: generator of :any:`AsyncPublicResourceObject`
         """
 
         if self._yadisk is None:
@@ -1462,7 +1462,7 @@ class AsyncResourceObjectMethodsMixin:
 
     async def upload(self: ResourceProtocol,
                      path_or_file: Union[str, IO[AnyStr]],
-                     relative_path: Optional[str] = None, /, **kwargs) -> "ResourceLinkObject":
+                     relative_path: Optional[str] = None, /, **kwargs) -> "AsyncResourceLinkObject":
         """
             Upload a file to disk.
 
@@ -1482,7 +1482,7 @@ class AsyncResourceObjectMethodsMixin:
             :raises InsufficientStorageError: cannot upload file due to lack of storage space
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
 
-            :returns: :any:`ResourceLinkObject`, link to the destination resource
+            :returns: :any:`AsyncResourceLinkObject`, link to the destination resource
         """
 
         if self._yadisk is None:
@@ -1497,7 +1497,7 @@ class AsyncResourceObjectMethodsMixin:
 
     async def upload_url(self: ResourceProtocol,
                          url: str,
-                         relative_path: Optional[str] = None, /, **kwargs) -> OperationLinkObject:
+                         relative_path: Optional[str] = None, /, **kwargs) -> AsyncOperationLinkObject:
         """
             Upload a file from URL.
 
@@ -1517,7 +1517,7 @@ class AsyncResourceObjectMethodsMixin:
             :raises ResourceIsLockedError: resource is locked by another request
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
 
-            :returns: :any:`OperationLinkObject`, link to the asynchronous operation
+            :returns: :any:`AsyncOperationLinkObject`, link to the asynchronous operation
         """
 
         if self._yadisk is None:
@@ -1561,16 +1561,16 @@ class AsyncResourceObjectMethodsMixin:
 
     @overload
     async def download(self: ResourceProtocol,
-                       dst_path_or_file: Union[str, IO[AnyStr]], /, **kwargs) -> "ResourceLinkObject":
+                       dst_path_or_file: Union[str, IO[AnyStr]], /, **kwargs) -> "AsyncResourceLinkObject":
         pass
 
     @overload
     async def download(self: ResourceProtocol,
                        relative_path: Optional[str],
-                       dst_path_or_file: Union[str, IO[AnyStr]], /, **kwargs) -> "ResourceLinkObject":
+                       dst_path_or_file: Union[str, IO[AnyStr]], /, **kwargs) -> "AsyncResourceLinkObject":
         pass
 
-    async def download(self: ResourceProtocol, *args, **kwargs) -> "ResourceLinkObject":
+    async def download(self: ResourceProtocol, *args, **kwargs) -> "AsyncResourceLinkObject":
         """
             Download the file. This method takes 1 or 2 positional arguments:
 
@@ -1591,7 +1591,7 @@ class AsyncResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceLinkObject`, link to the source resource
+            :returns: :any:`AsyncResourceLinkObject`, link to the source resource
         """
 
         if len(args) == 1:
@@ -1607,7 +1607,7 @@ class AsyncResourceObjectMethodsMixin:
         if not relative_path and hasattr(self, "file") and self.file is not None:
             await self._yadisk.download_by_link(self.file, dst_path_or_file, **kwargs)
 
-            return ResourceLinkObject.from_path(self.path, yadisk=self._yadisk)
+            return AsyncResourceLinkObject.from_path(self.path, yadisk=self._yadisk)
 
         if self.path is None:
             raise ValueError("ResourceObject doesn't have a path")
@@ -1617,16 +1617,16 @@ class AsyncResourceObjectMethodsMixin:
         return await self._yadisk.download(str(src_path), dst_path_or_file, **kwargs)
 
     @overload
-    async def patch(self: ResourceProtocol, properties: dict, **kwargs) -> "ResourceObject":
+    async def patch(self: ResourceProtocol, properties: dict, **kwargs) -> "AsyncResourceObject":
         pass
 
     @overload
     async def patch(self: ResourceProtocol,
               relative_path: Union[str, None],
-              properties: dict, **kwargs) -> "ResourceObject":
+              properties: dict, **kwargs) -> "AsyncResourceObject":
         pass
 
-    async def patch(self: ResourceProtocol, *args, **kwargs) -> "ResourceObject":
+    async def patch(self: ResourceProtocol, *args, **kwargs) -> "AsyncResourceObject":
         """
             Update custom properties of a resource.
             This method takes 1 or 2 positional arguments:
@@ -1646,7 +1646,7 @@ class AsyncResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceObject`
+            :returns: :any:`AsyncResourceObject`
         """
 
         if len(args) == 1:
@@ -1667,7 +1667,7 @@ class AsyncResourceObjectMethodsMixin:
         return await self._yadisk.patch(str(path), properties, **kwargs)
 
     async def publish(self: ResourceProtocol,
-                      relative_path: Optional[str] = None, /, **kwargs) -> "ResourceLinkObject":
+                      relative_path: Optional[str] = None, /, **kwargs) -> "AsyncResourceLinkObject":
         """
             Make a resource public.
 
@@ -1682,7 +1682,7 @@ class AsyncResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceLinkObject`, link to the resource
+            :returns: :any:`AsyncResourceLinkObject`, link to the resource
         """
 
         if self._yadisk is None:
@@ -1696,7 +1696,7 @@ class AsyncResourceObjectMethodsMixin:
         return await self._yadisk.publish(str(path), **kwargs)
 
     async def unpublish(self: ResourceProtocol,
-                        relative_path: Optional[str] = None, /, **kwargs) -> "ResourceLinkObject":
+                        relative_path: Optional[str] = None, /, **kwargs) -> "AsyncResourceLinkObject":
         """
             Make a public resource private.
 
@@ -1725,7 +1725,7 @@ class AsyncResourceObjectMethodsMixin:
         return await self._yadisk.unpublish(str(path), **kwargs)
 
     async def mkdir(self: ResourceProtocol,
-                    relative_path: Optional[str] = None, /, **kwargs) -> "ResourceLinkObject":
+                    relative_path: Optional[str] = None, /, **kwargs) -> "AsyncResourceLinkObject":
         """
             Create a new directory.
 
@@ -1742,7 +1742,7 @@ class AsyncResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceLinkObject`
+            :returns: :any:`AsyncResourceLinkObject`
         """
 
         if self._yadisk is None:
@@ -1756,7 +1756,7 @@ class AsyncResourceObjectMethodsMixin:
         return await self._yadisk.mkdir(str(path), **kwargs)
 
     async def remove(self: ResourceProtocol,
-                     relative_path: Optional[str] = None, /, **kwargs) -> Optional[OperationLinkObject]:
+                     relative_path: Optional[str] = None, /, **kwargs) -> Optional[AsyncOperationLinkObject]:
         """
             Remove the resource.
 
@@ -1776,7 +1776,7 @@ class AsyncResourceObjectMethodsMixin:
             :raises BadRequestError: MD5 check is only available for files
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
+            :returns: :any:`AsyncOperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
         if self._yadisk is None:
@@ -1791,16 +1791,16 @@ class AsyncResourceObjectMethodsMixin:
 
     @overload
     async def move(self: ResourceProtocol,
-                   dst_path: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+                   dst_path: str, /, **kwargs) -> Union["AsyncResourceLinkObject", AsyncOperationLinkObject]:
         pass
 
     @overload
     async def move(self: ResourceProtocol,
                    relative_path: Optional[str],
-                   dst_path: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+                   dst_path: str, /, **kwargs) -> Union["AsyncResourceLinkObject", AsyncOperationLinkObject]:
         pass
 
-    async def move(self: ResourceProtocol, *args, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+    async def move(self: ResourceProtocol, *args, **kwargs) -> Union["AsyncResourceLinkObject", AsyncOperationLinkObject]:
         """
             Move resource to `dst_path`.
             This method takes 1 or 2 positional arguments:
@@ -1823,7 +1823,7 @@ class AsyncResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+            :returns: :any:`AsyncResourceLinkObject` or :any:`AsyncOperationLinkObject`
         """
 
         if len(args) == 1:
@@ -1845,16 +1845,16 @@ class AsyncResourceObjectMethodsMixin:
 
     @overload
     async def rename(self: ResourceProtocol,
-                     new_name: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+                     new_name: str, /, **kwargs) -> Union["AsyncResourceLinkObject", AsyncOperationLinkObject]:
         pass
 
     @overload
     async def rename(self: ResourceProtocol,
                      relative_path: Optional[str],
-                     new_name: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+                     new_name: str, /, **kwargs) -> Union["AsyncResourceLinkObject", AsyncOperationLinkObject]:
         pass
 
-    async def rename(self: ResourceProtocol, *args, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+    async def rename(self: ResourceProtocol, *args, **kwargs) -> Union["AsyncResourceLinkObject", AsyncOperationLinkObject]:
         """
             Rename `src_path` to have filename `new_name`.
             Does the same as `move()` but changes only the filename.
@@ -1875,7 +1875,7 @@ class AsyncResourceObjectMethodsMixin:
             :raises ResourceIsLockedError: resource is locked by another request
             :raises ValueError: `new_name` is not a valid filename
 
-            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+            :returns: :any:`AsyncResourceLinkObject` or :any:`AsyncOperationLinkObject`
         """
 
         if len(args) == 1:
@@ -1897,16 +1897,16 @@ class AsyncResourceObjectMethodsMixin:
 
     @overload
     async def copy(self: ResourceProtocol,
-                   dst_path: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+                   dst_path: str, /, **kwargs) -> Union["AsyncResourceLinkObject", AsyncOperationLinkObject]:
         pass
 
     @overload
     async def copy(self: ResourceProtocol,
                    relative_path: Optional[str],
-                   dst_path: str, /, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+                   dst_path: str, /, **kwargs) -> Union["AsyncResourceLinkObject", AsyncOperationLinkObject]:
         pass
 
-    async def copy(self: ResourceProtocol, *args, **kwargs) -> Union["ResourceLinkObject", OperationLinkObject]:
+    async def copy(self: ResourceProtocol, *args, **kwargs) -> Union["AsyncResourceLinkObject", AsyncOperationLinkObject]:
         """
             Copy resource to `dst_path`.
             If the operation is performed asynchronously, returns the link to the operation,
@@ -1935,7 +1935,7 @@ class AsyncResourceObjectMethodsMixin:
             :raises ResourceIsLockedError: resource is locked by another request
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
 
-            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+            :returns: :any:`AsyncResourceLinkObject` or :any:`AsyncOperationLinkObject`
         """
 
         if len(args) == 1:
@@ -2707,7 +2707,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         self.import_fields(trash_resource)
 
     def get_meta(self: ResourceProtocol,
-                 relative_path: Optional[str] = None, /, **kwargs) -> "TrashResourceObject":
+                 relative_path: Optional[str] = None, /, **kwargs) -> "SyncTrashResourceObject":
         """
             Get meta information about a trash resource.
 
@@ -2726,7 +2726,7 @@ class SyncTrashResourceObject(TrashResourceObject):
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
 
-            :returns: :any:`TrashResourceObject`
+            :returns: :any:`SyncTrashResourceObject`
         """
 
         if self._yadisk is None:
@@ -2845,7 +2845,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         return self._yadisk.is_trash_file(str(path), **kwargs)
 
     def listdir(self: ResourceProtocol,
-                relative_path: Optional[str] = None, /, **kwargs) -> Generator["TrashResourceObject", None, None]:
+                relative_path: Optional[str] = None, /, **kwargs) -> Generator["SyncTrashResourceObject", None, None]:
         """
             Get contents of a trash resource.
 
@@ -2864,7 +2864,7 @@ class SyncTrashResourceObject(TrashResourceObject):
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises WrongResourceTypeError: resource is not a directory
 
-            :returns: generator of :any:`TrashResourceObject`
+            :returns: generator of :any:`SyncTrashResourceObject`
         """
 
         if self._yadisk is None:
@@ -2878,7 +2878,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         return self._yadisk.trash_listdir(str(path), **kwargs)
 
     def remove(self: ResourceProtocol,
-               relative_path: Optional[str] = None, /, **kwargs) -> Optional[OperationLinkObject]:
+               relative_path: Optional[str] = None, /, **kwargs) -> Optional[SyncOperationLinkObject]:
         """
             Remove a trash resource.
 
@@ -2894,7 +2894,7 @@ class SyncTrashResourceObject(TrashResourceObject):
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
+            :returns: :any:`SyncOperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
         if self._yadisk is None:
@@ -2909,16 +2909,16 @@ class SyncTrashResourceObject(TrashResourceObject):
 
     @overload
     def restore(self: ResourceProtocol,
-                dst_path: str, /, **kwargs) -> Union[ResourceLinkObject, OperationLinkObject]:
+                dst_path: str, /, **kwargs) -> Union[SyncResourceLinkObject, SyncOperationLinkObject]:
         pass
 
     @overload
     def restore(self: ResourceProtocol,
                 relative_path: Optional[str],
-                dst_path: str, /, **kwargs) -> Union[ResourceLinkObject, OperationLinkObject]:
+                dst_path: str, /, **kwargs) -> Union[SyncResourceLinkObject, SyncOperationLinkObject]:
         pass
 
-    def restore(self: ResourceProtocol, *args, **kwargs) -> Union[ResourceLinkObject, OperationLinkObject]:
+    def restore(self: ResourceProtocol, *args, **kwargs) -> Union[SyncResourceLinkObject, SyncOperationLinkObject]:
         """
             Restore a trash resource.
             Returns a link to the newly created resource or a link to the asynchronous operation.
@@ -2943,7 +2943,7 @@ class SyncTrashResourceObject(TrashResourceObject):
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+            :returns: :any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`
         """
 
         if len(args) == 0:
@@ -3010,7 +3010,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         self.import_fields(trash_resource)
 
     async def get_meta(self: ResourceProtocol,
-                       relative_path: Optional[str] = None, /, **kwargs) -> "TrashResourceObject":
+                       relative_path: Optional[str] = None, /, **kwargs) -> "AsyncTrashResourceObject":
         """
             Get meta information about a trash resource.
 
@@ -3029,7 +3029,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
 
-            :returns: :any:`TrashResourceObject`
+            :returns: :any:`AsyncTrashResourceObject`
         """
 
         if self._yadisk is None:
@@ -3148,7 +3148,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         return await self._yadisk.is_trash_file(str(path), **kwargs)
 
     async def listdir(self: ResourceProtocol,
-                      relative_path: Optional[str] = None, /, **kwargs) -> Generator["TrashResourceObject", None, None]:
+                      relative_path: Optional[str] = None, /, **kwargs) -> Generator["AsyncTrashResourceObject", None, None]:
         """
             Get contents of a trash resource.
 
@@ -3167,7 +3167,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises WrongResourceTypeError: resource is not a directory
 
-            :returns: generator of :any:`TrashResourceObject`
+            :returns: generator of :any:`AsyncTrashResourceObject`
         """
 
         if self._yadisk is None:
@@ -3181,7 +3181,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         return await self._yadisk.trash_listdir(str(path), **kwargs)
 
     async def remove(self: ResourceProtocol,
-                     relative_path: Optional[str] = None, /, **kwargs) -> Optional[OperationLinkObject]:
+                     relative_path: Optional[str] = None, /, **kwargs) -> Optional[AsyncOperationLinkObject]:
         """
             Remove a trash resource.
 
@@ -3197,7 +3197,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`OperationLinkObject` if the operation is performed asynchronously, `None` otherwise
+            :returns: :any:`AsyncOperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
         if self._yadisk is None:
@@ -3212,16 +3212,16 @@ class AsyncTrashResourceObject(TrashResourceObject):
 
     @overload
     async def restore(self: ResourceProtocol,
-                      dst_path: str, /, **kwargs) -> Union[ResourceLinkObject, OperationLinkObject]:
+                      dst_path: str, /, **kwargs) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         pass
 
     @overload
     async def restore(self: ResourceProtocol,
                       relative_path: Optional[str],
-                      dst_path: str, /, **kwargs) -> Union[ResourceLinkObject, OperationLinkObject]:
+                      dst_path: str, /, **kwargs) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         pass
 
-    async def restore(self: ResourceProtocol, *args, **kwargs) -> Union[ResourceLinkObject, OperationLinkObject]:
+    async def restore(self: ResourceProtocol, *args, **kwargs) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         """
             Restore a trash resource.
             Returns a link to the newly created resource or a link to the asynchronous operation.
@@ -3246,7 +3246,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
-            :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
+            :returns: :any:`AsyncResourceLinkObject` or :any:`AsyncOperationLinkObject`
         """
 
         if len(args) == 0:

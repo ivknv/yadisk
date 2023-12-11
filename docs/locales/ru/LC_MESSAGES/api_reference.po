@@ -4,12 +4,11 @@
 # This file is distributed under the same license as the YaDisk package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-12-12 02:54+0500\n"
+"POT-Creation-Date: 2023-12-12 03:28+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,8 +65,8 @@ msgid ""
 "seconds)"
 msgstr ""
 "**timeout** - `tuple` (:code:`(<connect timeout>, <read timeout>)`) или "
-"`float` (указывает одновременно и connect и read timeout), таймаут запроса"
-" в секундах"
+"`float` (указывает одновременно и connect и read timeout), таймаут "
+"запроса в секундах"
 
 #: of yadisk.async_client.AsyncClient:17
 msgid ""
@@ -1881,6 +1880,10 @@ msgstr "достигнут лимит на загрузку файлов"
 #: yadisk.async_client.AsyncClient.rename:20
 #: yadisk.async_client.AsyncClient.restore_trash:19
 #: yadisk.async_client.AsyncClient.save_to_disk:22
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy:28
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.move:22
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.rename:20
+#: yadisk.objects.resources.AsyncTrashResourceObject.restore:24
 msgid ":any:`AsyncResourceLinkObject` or :any:`AsyncOperationLinkObject`"
 msgstr ":any:`AsyncResourceLinkObject` или :any:`AsyncOperationLinkObject`"
 
@@ -1900,6 +1903,7 @@ msgid "destination path or file-like object"
 msgstr "путь назначения или файл-подобный объект"
 
 #: of yadisk.async_client.AsyncClient.download:14
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.download:20
 msgid ":any:`AsyncResourceLinkObject`, link to the source resource"
 msgstr ":any:`AsyncResourceLinkObject`, ссылка на исходный ресурс"
 
@@ -2273,6 +2277,8 @@ msgstr "количество ресурсов в папке, которые бу
 
 #: of yadisk.async_client.AsyncClient.get_meta:18
 #: yadisk.async_client.AsyncClient.patch:15
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_meta:18
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.patch:19
 msgid ":any:`AsyncResourceObject`"
 msgstr ":any:`AsyncResourceObject`"
 
@@ -2352,6 +2358,7 @@ msgid "`bool`, allow preview crop"
 msgstr "`bool`, разрешить обрезку превью"
 
 #: of yadisk.async_client.AsyncClient.get_public_meta:21
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_public_meta:18
 msgid ":any:`AsyncPublicResourceObject`"
 msgstr ":any:`AsyncPublicResourceObject`"
 
@@ -2434,6 +2441,7 @@ msgid "path to the trash resource"
 msgstr "путь к ресурсу корзины"
 
 #: of yadisk.async_client.AsyncClient.get_trash_meta:18
+#: yadisk.objects.resources.AsyncTrashResourceObject.get_meta:18
 msgid ":any:`AsyncTrashResourceObject`"
 msgstr ":any:`AsyncTrashResourceObject`"
 
@@ -2634,6 +2642,7 @@ msgstr "невозможно создать папку из-за нехватк�
 
 #: of yadisk.async_client.AsyncClient.mkdir:16
 #: yadisk.async_client.AsyncClient.unpublish:14
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.mkdir:16
 msgid ":any:`AsyncResourceLinkObject`"
 msgstr ":any:`AsyncResourceLinkObject`"
 
@@ -2697,6 +2706,7 @@ msgid "path to the resource to be published"
 msgstr "путь к публикуемому ресурсу"
 
 #: of yadisk.async_client.AsyncClient.publish:14
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.publish:14
 msgid ":any:`AsyncResourceLinkObject`, link to the resource"
 msgstr ":any:`AsyncResourceLinkObject`, ссылка на ресурс"
 
@@ -2754,6 +2764,8 @@ msgstr "проверка MD5 доступна только для файлов"
 
 #: of yadisk.async_client.AsyncClient.remove:19
 #: yadisk.async_client.AsyncClient.remove_trash:15
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.remove:19
+#: yadisk.objects.resources.AsyncTrashResourceObject.remove:15
 msgid ""
 ":any:`AsyncOperationLinkObject` if the operation is performed "
 "asynchronously, `None` otherwise"
@@ -2927,6 +2939,7 @@ msgstr ""
 "ошибка"
 
 #: of yadisk.async_client.AsyncClient.upload:20
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.upload:19
 msgid ":any:`AsyncResourceLinkObject`, link to the destination resource"
 msgstr ":any:`AsyncResourceLinkObject`, ссылка на загруженный ресурс"
 
@@ -2964,6 +2977,7 @@ msgid "`bool`, forbid redirects"
 msgstr "`bool`, запретить делать перенаправления"
 
 #: of yadisk.async_client.AsyncClient.upload_url:19
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.upload_url:19
 msgid ":any:`AsyncOperationLinkObject`, link to the asynchronous operation"
 msgstr ":any:`AsyncOperationLinkObject`, ссылка на асинхронную операцию"
 
@@ -3554,14 +3568,6 @@ msgstr "Запрос копирования файла или папки."
 #: of yadisk.api.resources.CopyRequest:11
 #: yadisk.api.resources.RestoreTrashRequest:10
 #: yadisk.api.resources.SaveToDiskRequest:11
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy:28
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.move:22
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.rename:20
-#: yadisk.objects.resources.AsyncTrashResourceObject.restore:24
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.copy:28
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.move:22
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.rename:20
-#: yadisk.objects.resources.SyncTrashResourceObject.restore:24
 msgid ":any:`ResourceLinkObject` or :any:`OperationLinkObject`"
 msgstr ":any:`ResourceLinkObject` или :any:`OperationLinkObject`"
 
@@ -3607,10 +3613,6 @@ msgstr "Запрос для получния мета-информации о р
 
 #: of yadisk.api.resources.GetMetaRequest:12
 #: yadisk.api.resources.PatchRequest:8 yadisk.client.Client.patch:15
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_meta:18
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.patch:19
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.get_meta:18
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.patch:19
 msgid ":any:`ResourceObject`"
 msgstr ":any:`ResourceObject`"
 
@@ -3623,8 +3625,6 @@ msgid "A request to get meta-information about a public resource."
 msgstr "Запрос для получния мета-информации о публичном ресурсе."
 
 #: of yadisk.api.resources.GetPublicMetaRequest:15
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_public_meta:18
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.get_public_meta:18
 msgid ":any:`PublicResourceObject`"
 msgstr ":any:`PublicResourceObject`"
 
@@ -3641,8 +3641,6 @@ msgid "A request to get meta-information about a trash resource."
 msgstr "Запрос для получния мета-информации о ресурсе корзины."
 
 #: of yadisk.api.resources.GetTrashRequest:11
-#: yadisk.objects.resources.AsyncTrashResourceObject.get_meta:18
-#: yadisk.objects.resources.SyncTrashResourceObject.get_meta:18
 msgid ":any:`TrashResourceObject`"
 msgstr ":any:`TrashResourceObject`"
 
@@ -3674,10 +3672,7 @@ msgstr "Запрос для создания новой папки."
 
 #: of yadisk.api.resources.MkdirRequest:6 yadisk.api.resources.PublishRequest:7
 #: yadisk.api.resources.UnpublishRequest:7
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.mkdir:16
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.unpublish:14
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.mkdir:16
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.unpublish:14
 msgid ":any:`ResourceLinkObject`"
 msgstr ":any:`ResourceLinkObject`"
 
@@ -4310,11 +4305,6 @@ msgstr ""
 "использовать поле `file` (если доступно) в качестве ссылки для "
 "скачивания."
 
-#: of yadisk.objects.resources.AsyncResourceObjectMethodsMixin.download:20
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.download:20
-msgid ":any:`ResourceLinkObject`, link to the source resource"
-msgstr ":any:`ResourceLinkObject`, ссылка на исходный ресурс"
-
 #: of yadisk.objects.resources.AsyncResourceObjectMethodsMixin.exists:1
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.exists:1
 msgid "Check whether resource exists."
@@ -4379,12 +4369,9 @@ msgstr "Получает содержимое папки."
 msgid "relative path from resource"
 msgstr "относительный путь от ресурса"
 
-#: of yadisk.client.Client.get_files:17
-#: yadisk.client.Client.get_last_uploaded:15 yadisk.client.Client.listdir:18
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.listdir:18
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.listdir:18
-msgid "generator of :any:`ResourceObject`"
-msgstr "генератор :any:`ResourceObject`"
+#: of yadisk.objects.resources.AsyncResourceObjectMethodsMixin.listdir:18
+msgid "generator of :any:`AsyncResourceObject`"
+msgstr "генератор :any:`AsyncResourceObject`"
 
 #: of yadisk.objects.resources.AsyncResourceObjectMethodsMixin.mkdir:3
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.mkdir:3
@@ -4443,35 +4430,18 @@ msgstr "относительный путь к ресурсу внутри пу�
 
 #: of
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.public_listdir:18
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.public_listdir:18
-msgid "generator of :any:`PublicResourceObject`"
-msgstr "генератор :any:`PublicResourceObject`"
+msgid "generator of :any:`AsyncPublicResourceObject`"
+msgstr "генератор :any:`AsyncPublicResourceObject`"
 
 #: of yadisk.objects.resources.AsyncResourceObjectMethodsMixin.publish:3
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.publish:3
 msgid "`str` or `None`, relative path to the resource to be published"
 msgstr "`str` или `None`, относительный путь к публикуемому ресурсу"
 
-#: of yadisk.objects.resources.AsyncResourceObjectMethodsMixin.publish:14
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.publish:14
-msgid ":any:`ResourceLinkObject`, link to the resource"
-msgstr ":any:`ResourceLinkObject`, ссылка на ресурс"
-
 #: of yadisk.objects.resources.AsyncResourceObjectMethodsMixin.remove:3
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.remove:3
 msgid "`str` or `None`, relative path to the resource to be removed"
 msgstr "`str` или `None`, относительный путь к удаляемому ресурсу"
-
-#: of yadisk.objects.resources.AsyncResourceObjectMethodsMixin.remove:19
-#: yadisk.objects.resources.AsyncTrashResourceObject.remove:15
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.remove:19
-#: yadisk.objects.resources.SyncTrashResourceObject.remove:15
-msgid ""
-":any:`OperationLinkObject` if the operation is performed asynchronously, "
-"`None` otherwise"
-msgstr ""
-":any:`OperationLinkObject`, если операция выполняется асинхронно, иначе "
-"`None`"
 
 #: of yadisk.objects.resources.AsyncResourceObjectMethodsMixin.rename:4
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.rename:4
@@ -4497,16 +4467,6 @@ msgstr "путь к файлу или файл-подобный объект д�
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.upload_url:4
 msgid "`str` or `None`, destination path relative to the resource"
 msgstr "`str` или `None`, путь назначения относительно ресурса"
-
-#: of yadisk.objects.resources.AsyncResourceObjectMethodsMixin.upload:19
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.upload:19
-msgid ":any:`ResourceLinkObject`, link to the destination resource"
-msgstr ":any:`ResourceLinkObject`, ссылка на загруженный ресурс"
-
-#: of yadisk.objects.resources.AsyncResourceObjectMethodsMixin.upload_url:19
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.upload_url:19
-msgid ":any:`OperationLinkObject`, link to the asynchronous operation"
-msgstr ":any:`OperationLinkObject`, ссылка на асинхронную операцию"
 
 #: of yadisk.objects.resources.AsyncPublicResourceListObject:1
 #: yadisk.objects.resources.SyncPublicResourceListObject:1
@@ -4998,9 +4958,8 @@ msgid "`str` or `None`, relative path to the directory in the trash bin"
 msgstr "`str` или `None`, относительный путь к папке в корзине"
 
 #: of yadisk.objects.resources.AsyncTrashResourceObject.listdir:18
-#: yadisk.objects.resources.SyncTrashResourceObject.listdir:18
-msgid "generator of :any:`TrashResourceObject`"
-msgstr "генератор :any:`TrashResourceObject`"
+msgid "generator of :any:`AsyncTrashResourceObject`"
+msgstr "генератор :any:`AsyncTrashResourceObject`"
 
 #: of yadisk.objects.resources.AsyncTrashResourceObject.remove:3
 #: yadisk.objects.resources.SyncTrashResourceObject.remove:3
@@ -5170,6 +5129,72 @@ msgstr ""
 msgid ":code:`copy(relative_src_path, dst_path, /, **kwargs)`"
 msgstr ":code:`copy(relative_src_path, dst_path, /, **kwargs)`"
 
+#: of yadisk.client.Client.copy:23 yadisk.client.Client.move:18
+#: yadisk.client.Client.rename:20 yadisk.client.Client.restore_trash:19
+#: yadisk.client.Client.save_to_disk:22
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.copy:28
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.move:22
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.rename:20
+#: yadisk.objects.resources.SyncTrashResourceObject.restore:24
+msgid ":any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`"
+msgstr ":any:`SyncResourceLinkObject` или :any:`SyncOperationLinkObject`"
+
+#: of yadisk.client.Client.download:14
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.download:20
+msgid ":any:`SyncResourceLinkObject`, link to the source resource"
+msgstr ":any:`SyncResourceLinkObject`, ссылка на исходный ресурс"
+
+#: of yadisk.client.Client.get_meta:18
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.get_meta:18
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.patch:19
+msgid ":any:`SyncResourceObject`"
+msgstr ":any:`SyncResourceObject`"
+
+#: of yadisk.client.Client.get_public_meta:21
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.get_public_meta:18
+msgid ":any:`SyncPublicResourceObject`"
+msgstr ":any:`SyncPublicResourceObject`"
+
+#: of yadisk.objects.resources.ResourceObjectMethodsMixin.listdir:18
+msgid "generator of :any:`SyncResourceObject`"
+msgstr "генератор :any:`SyncResourceObject`"
+
+#: of yadisk.client.Client.mkdir:16 yadisk.client.Client.unpublish:14
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.mkdir:16
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.unpublish:14
+msgid ":any:`SyncResourceLinkObject`"
+msgstr ":any:`SyncResourceLinkObject`"
+
+#: of yadisk.client.Client.public_listdir:21
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.public_listdir:18
+msgid "generator of :any:`SyncPublicResourceObject`"
+msgstr "генератор :any:`SyncPublicResourceObject`"
+
+#: of yadisk.client.Client.publish:14
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.publish:14
+msgid ":any:`SyncResourceLinkObject`, link to the resource"
+msgstr ":any:`SyncResourceLinkObject`, ссылка на ресурс"
+
+#: of yadisk.client.Client.remove:19 yadisk.client.Client.remove_trash:15
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.remove:19
+#: yadisk.objects.resources.SyncTrashResourceObject.remove:15
+msgid ""
+":any:`SyncOperationLinkObject` if the operation is performed "
+"asynchronously, `None` otherwise"
+msgstr ""
+":any:`SyncOperationLinkObject`, если операция выполняется асинхронно, "
+"иначе `None`"
+
+#: of yadisk.client.Client.upload:19
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.upload:19
+msgid ":any:`SyncResourceLinkObject`, link to the destination resource"
+msgstr ":any:`SyncResourceLinkObject`, ссылка на загруженный ресурс"
+
+#: of yadisk.client.Client.upload_url:19
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.upload_url:19
+msgid ":any:`SyncOperationLinkObject`, link to the asynchronous operation"
+msgstr ":any:`SyncOperationLinkObject`, ссылка на асинхронную операцию"
+
 #: of yadisk.objects.resources.SyncPublicResourceObject:1
 msgid ""
 "Bases: :py:class:`~yadisk.objects.resources.PublicResourceObject`, "
@@ -5214,6 +5239,16 @@ msgstr "`list`, список ресурсов (:any:`SyncTrashResourceObject`)"
 #: of yadisk.objects.resources.SyncTrashResourceObject:12
 msgid ":any:`SyncTrashResourceListObject`, list of nested resources"
 msgstr ":any:`SyncTrashResourceListObject`, список вложенных ресурсов"
+
+#: of yadisk.client.Client.get_trash_meta:18
+#: yadisk.objects.resources.SyncTrashResourceObject.get_meta:18
+msgid ":any:`SyncTrashResourceObject`"
+msgstr ":any:`SyncTrashResourceObject`"
+
+#: of yadisk.client.Client.trash_listdir:18
+#: yadisk.objects.resources.SyncTrashResourceObject.listdir:18
+msgid "generator of :any:`SyncTrashResourceObject`"
+msgstr "генератор :any:`SyncTrashResourceObject`"
 
 #: of yadisk.objects.resources.TrashResourceListObject:7
 msgid "`list`, list of resources (:any:`TrashResourceObject`)"
@@ -5745,16 +5780,6 @@ msgstr ""
 msgid "This method can also be called implicitly by using the `with` statement."
 msgstr "Этот метод может также быть вызван неявно с помощью конструкции `with`."
 
-#: of yadisk.client.Client.copy:23 yadisk.client.Client.move:18
-#: yadisk.client.Client.rename:20 yadisk.client.Client.restore_trash:19
-#: yadisk.client.Client.save_to_disk:22
-msgid ":any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`"
-msgstr ":any:`SyncResourceLinkObject` или :any:`SyncOperationLinkObject`"
-
-#: of yadisk.client.Client.download:14
-msgid ":any:`SyncResourceLinkObject`, link to the source resource"
-msgstr ":any:`SyncResourceLinkObject`, ссылка на исходный ресурс"
-
 #: of yadisk.client.Client.download_public:3
 #: yadisk.client.Client.get_public_download_link:3
 #: yadisk.client.Client.get_public_meta:3
@@ -5786,21 +5811,14 @@ msgstr ""
 "быть использован для получения токена. Данный метод не отправляет никаких"
 " HTTP запросов."
 
-#: of yadisk.client.Client.get_meta:18
-msgid ":any:`SyncResourceObject`"
-msgstr ":any:`SyncResourceObject`"
-
-#: of yadisk.client.Client.get_public_meta:21
-msgid ":any:`SyncPublicResourceObject`"
-msgstr ":any:`SyncPublicResourceObject`"
+#: of yadisk.client.Client.get_files:17
+#: yadisk.client.Client.get_last_uploaded:15 yadisk.client.Client.listdir:18
+msgid "generator of :any:`ResourceObject`"
+msgstr "генератор :any:`ResourceObject`"
 
 #: of yadisk.client.Client.get_public_resources:16
 msgid ":any:`SyncPublicResourcesListObject`"
 msgstr ":any:`SyncPublicResourceObject`"
-
-#: of yadisk.client.Client.get_trash_meta:18
-msgid ":any:`SyncTrashResourceObject`"
-msgstr ":any:`SyncTrashResourceObject`"
 
 #: of yadisk.client.Client.is_public_dir:1
 msgid "Check whether the public resource is a public directory."
@@ -5818,41 +5836,9 @@ msgstr "Готовит объект :any:`Session` с заголовками, н
 msgid ":any:`Session`"
 msgstr ":any:`Session`"
 
-#: of yadisk.client.Client.mkdir:16 yadisk.client.Client.unpublish:14
-msgid ":any:`SyncResourceLinkObject`"
-msgstr ":any:`SyncResourceLinkObject`"
-
-#: of yadisk.client.Client.public_listdir:21
-msgid "generator of :any:`SyncPublicResourceObject`"
-msgstr "генератор :any:`SyncPublicResourceObject`"
-
-#: of yadisk.client.Client.publish:14
-msgid ":any:`SyncResourceLinkObject`, link to the resource"
-msgstr ":any:`SyncResourceLinkObject`, ссылка на ресурс"
-
-#: of yadisk.client.Client.remove:19 yadisk.client.Client.remove_trash:15
-msgid ""
-":any:`SyncOperationLinkObject` if the operation is performed "
-"asynchronously, `None` otherwise"
-msgstr ""
-":any:`SyncOperationLinkObject`, если операция выполняется асинхронно, "
-"иначе `None`"
-
 #: of yadisk.client.Client.revoke_token:3
 msgid "token to revoke"
 msgstr "токен, подлежащий отзыву"
-
-#: of yadisk.client.Client.trash_listdir:18
-msgid "generator of :any:`SyncTrashResourceObject`"
-msgstr "генератор :any:`SyncTrashResourceObject`"
-
-#: of yadisk.client.Client.upload:19
-msgid ":any:`SyncResourceLinkObject`, link to the destination resource"
-msgstr ":any:`SyncResourceLinkObject`, ссылка на загруженный ресурс"
-
-#: of yadisk.client.Client.upload_url:19
-msgid ":any:`SyncOperationLinkObject`, link to the asynchronous operation"
-msgstr ":any:`SyncOperationLinkObject`, ссылка на асинхронную операцию"
 
 #: ../../api_reference/utilities.rst:2
 msgid "Utilities"
@@ -5898,4 +5884,29 @@ msgstr "экземпляр :any:`ErrorObject` или `None`"
 #: of yadisk.utils.get_exception:6
 msgid "an exception instance, subclass of :any:`YaDiskError`"
 msgstr "Объект исключения, подкласс :any:`YaDiskError`"
+
+#~ msgid ":any:`ResourceLinkObject`, link to the source resource"
+#~ msgstr ":any:`ResourceLinkObject`, ссылка на исходный ресурс"
+
+#~ msgid "generator of :any:`PublicResourceObject`"
+#~ msgstr "генератор :any:`PublicResourceObject`"
+
+#~ msgid ":any:`ResourceLinkObject`, link to the resource"
+#~ msgstr ":any:`ResourceLinkObject`, ссылка на ресурс"
+
+#~ msgid ""
+#~ ":any:`OperationLinkObject` if the operation is"
+#~ " performed asynchronously, `None` otherwise"
+#~ msgstr ""
+#~ ":any:`OperationLinkObject`, если операция "
+#~ "выполняется асинхронно, иначе `None`"
+
+#~ msgid ":any:`ResourceLinkObject`, link to the destination resource"
+#~ msgstr ":any:`ResourceLinkObject`, ссылка на загруженный ресурс"
+
+#~ msgid ":any:`OperationLinkObject`, link to the asynchronous operation"
+#~ msgstr ":any:`OperationLinkObject`, ссылка на асинхронную операцию"
+
+#~ msgid "generator of :any:`TrashResourceObject`"
+#~ msgstr "генератор :any:`TrashResourceObject`"
 
