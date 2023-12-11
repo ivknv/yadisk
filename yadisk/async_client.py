@@ -241,6 +241,7 @@ class AsyncClient:
 
         The following exceptions may be raised by most API requests:
 
+        :raises RequestError: HTTP client raised an exception while making a request
         :raises BadRequestError: server returned HTTP code 400
         :raises FieldValidationError: request contains fields with invalid data
         :raises UnauthorizedError: server returned HTTP code 401
