@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-05 22:41+0500\n"
+"POT-Creation-Date: 2023-12-11 20:52+0500\n"
 "PO-Revision-Date: 2018-01-05 22:45+0500\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.5.1\n"
+"Generated-By: Babel 2.13.0\n"
 
 #: ../../intro.rst:2
 msgid "Introduction"
@@ -29,27 +29,80 @@ msgstr "YaDisk - это библиотека-клиент REST API Яндекс.
 msgid "Installation"
 msgstr "Установка"
 
-#: ../../intro.rst:13
-msgid "or"
-msgstr "или"
+#: ../../intro.rst:9
+msgid ""
+":code:`yadisk` supports multiple HTTP client libraries and has both "
+"synchronous and asynchronous API."
+msgstr ""
 
-#: ../../intro.rst:20
+#: ../../intro.rst:12
+msgid "The following HTTP client libraries are currently supported:"
+msgstr ""
+
+#: ../../intro.rst:14
+msgid ":code:`requests` (used by default for synchronous API)"
+msgstr ""
+
+#: ../../intro.rst:15
+msgid ""
+":code:`httpx` (both synchronous and asynchronous, used by default for "
+"asynchronous API)"
+msgstr ""
+
+#: ../../intro.rst:16
+msgid ":code:`aiohttp` (used by default for asynchronous API)"
+msgstr ""
+
+#: ../../intro.rst:17
+msgid ":code:`pycurl` (synchronous only)"
+msgstr ""
+
+#: ../../intro.rst:19
+msgid "For synchronous API (installs :code:`requests`):"
+msgstr ""
+
+#: ../../intro.rst:25
+msgid "For asynchronous API (installs :code:`aiofiles` and :code:`httpx`):"
+msgstr ""
+
+#: ../../intro.rst:31
+msgid ""
+"Alternatively, you can manually choose which optional libraries to "
+"install:"
+msgstr ""
+
+#: ../../intro.rst:42
 msgid "Examples"
 msgstr "Примеры"
 
-#: ../../intro.rst:54
+#: ../../intro.rst:45
+msgid "Synchronous API"
+msgstr ""
+
+#: ../../intro.rst:83 ../../intro.rst:275
 msgid "Receiving token with confirmation code"
 msgstr "Получение токена через код подтверждения"
 
-#: ../../intro.rst:82
+#: ../../intro.rst:113 ../../intro.rst:306
 msgid "Recursive upload"
 msgstr "Рекурсивная загрузка файлов"
 
-#: ../../intro.rst:115
+#: ../../intro.rst:147 ../../intro.rst:375
 msgid "Setting custom properties of files"
 msgstr "Задание пользовательских свойств файлов"
 
-#: ../../intro.rst:142
+#: ../../intro.rst:176 ../../intro.rst:405
 msgid "Emptying the trash bin"
 msgstr "Очищение корзины"
+
+#: ../../intro.rst:216 ../../intro.rst:447
+msgid "Specifying HTTP client library"
+msgstr ""
+
+#: ../../intro.rst:228
+msgid "Asynchronous API"
+msgstr ""
+
+#~ msgid "or"
+#~ msgstr "или"
 

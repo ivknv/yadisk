@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 1.2.19\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-30 18:29+0500\n"
+"POT-Creation-Date: 2023-12-11 23:25+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.13.0\n"
 
 #: ../../known_issues.rst:2
 msgid "Known Issues"
@@ -25,60 +25,60 @@ msgstr "Известные проблемы"
 msgid "Very Slow Upload of Certain Types of Files"
 msgstr "Очень медленная загрузка некоторых типов файлов на Яндекс.Диск"
 
-#: ../../known_issues.rst:9
-msgid "The following information may become outdated at some point in the future."
-msgstr "Данная информация может в дальнейшем будущем оказаться устаревшей."
-
-#: ../../known_issues.rst:11
+#: ../../known_issues.rst:7
 msgid ""
 "Yandex.Disk's REST API limits upload speeds up to 128 KiB/s for certain "
 "MIME types of files. More specifically, throttling takes place based on "
-"value of :code:`media_type` (see :any:`yadisk.YaDisk.get_meta`). It "
+"value of :code:`media_type` (see :any:`yadisk.Client.get_meta`). It "
 "appears there are 3 types of media types that are throttled:"
-msgstr "REST API Яндекс.Диск ограничивает скорость загрузки файлов на Диск до"
-" 128 KiB/s для определенных MIME типов файлов. Если быть точнее, троттлинг"
-" осуществляется в зависимости от значения :code:`media_type` (см. :any:`yadisk.YaDisk.get_meta`)."
-" Судя по всему ограничение скорости действует на 3 типа файлов (media type):"
+msgstr ""
+"REST API Яндекс.Диск ограничивает скорость загрузки файлов на Диск до 128"
+" KiB/s для определенных MIME типов файлов. Если быть точнее, троттлинг "
+"осуществляется в зависимости от значения :code:`media_type` (см. "
+":any:`yadisk.Client.get_meta`). Судя по всему ограничение скорости "
+"действует на 3 типа файлов (media type):"
+
+#: ../../known_issues.rst:12
+msgid ":code:`data` (.db, .dat, etc.)"
+msgstr ":code:`data` (.db, .dat, etc.)"
+
+#: ../../known_issues.rst:13
+msgid ":code:`compressed` (.zip, .gz, .tgz, .rar, .etc)"
+msgstr ":code:`compressed` (.zip, .gz, .tgz, .rar, .etc)"
+
+#: ../../known_issues.rst:14
+msgid ":code:`video` (.3gp, .mp4, .avi, etc.)"
+msgstr ":code:`video` (.3gp, .mp4, .avi, etc.)"
 
 #: ../../known_issues.rst:16
-msgid ":code:`data` (.db, .dat, etc.)"
-msgstr ""
-
-#: ../../known_issues.rst:17
-msgid ":code:`compressed` (.zip, .gz, .tgz, .rar, .etc)"
-msgstr ""
-
-#: ../../known_issues.rst:18
-msgid ":code:`video` (.3gp, .mp4, .avi, etc.)"
-msgstr ""
-
-#: ../../known_issues.rst:20
 msgid ""
 "This behavior of throttling is predetermined at the moment of requesting "
-"an upload link (with :any:`yadisk.YaDisk.get_upload_link`). The content "
+"an upload link (with :any:`yadisk.Client.get_upload_link`). The content "
 "of the uploaded file does not matter."
-msgstr "Ограничение скорости предопределяется в момент получения ссылки для "
-"загрузки файла на диск (см. :any:`yadisk.YaDisk.get_upload_link`). Содержимое"
-" загружаемого файла не имеет значения."
+msgstr ""
+"Ограничение скорости предопределяется в момент получения ссылки для "
+"загрузки файла на диск (см. :any:`yadisk.Client.get_upload_link`). "
+"Содержимое загружаемого файла не имеет значения."
 
-#: ../../known_issues.rst:24
+#: ../../known_issues.rst:20
 msgid ""
 "The reason why this problem cannot be observed when uploading through the"
 " official website, is that this throttling does not apply to internal "
 "services (the Yandex.Disk website uses an intermediate internal API to "
 "obtain upload links)."
-msgstr "Причина, по которой эта проблема не наблюдается при попытке загрузить"
-" файл через официальный сайт, заключается в том, что ограничение скорости"
-" не применяется для внутренних сервисов (сайт Яндекс.Диска использует"
-" промежуточный внутренний API для получения ссылок)."
+msgstr ""
+"Причина, по которой эта проблема не наблюдается при попытке загрузить "
+"файл через официальный сайт, заключается в том, что ограничение скорости "
+"не применяется для внутренних сервисов (сайт Яндекс.Диска использует "
+"промежуточный внутренний API для получения ссылок)."
 
-#: ../../known_issues.rst:28
+#: ../../known_issues.rst:24
 msgid ""
 "While it is not clear what the purpose of this throttling is, it is "
 "certain at this point that this is not a bug."
 msgstr "Хотя и не понятно, в чем смысл такого ограничения, это точно не баг."
 
-#: ../../known_issues.rst:31
+#: ../../known_issues.rst:27
 msgid ""
 "The only known workaround is to upload files with changed filename "
 "extensions (or without them entirely). For example, if you want to upload"
@@ -94,48 +94,20 @@ msgstr ""
 "загрузки переименовать обратно в \"my_database.db\". У такого подхода "
 "есть очевидные недостатки, но по крайней мере он работает."
 
-#: ../../known_issues.rst:38
-msgid "Low Upload Speed on Windows"
-msgstr "Низкая скорость загрузки файлов на Диск под Windows"
+#: ../../known_issues.rst:34
+msgid "Low Upload Speed on Windows When Using requests"
+msgstr "Низкая скорость загрузки файлов на Диск под Windows при использовании requests"
 
-#: ../../known_issues.rst:47
+#: ../../known_issues.rst:39
 msgid ""
-"If you experience low upload speeds on Windows, the reason might be due "
-"to Python's standard library internally using :code:`select()` to wait "
-"for sockets. There are several ways around it:"
+"If you use `requests`_ and experience low upload speeds on Windows, the "
+"reason might be due to Python's standard library internally using "
+":code:`select()` to wait for sockets. The best way around it is to use a "
+"different HTTP library (e.g. `httpx`_, see "
+":doc:`/api_reference/sessions`)"
 msgstr ""
-"Если вы столкнулись с низкой скоростью загрузки файлов на Диск под "
-"Windows, то причиной может стандартная библиотека Python, которая внутри "
-"использует :code:`select()` для ожидания сокетов. В таком случае "
-"существует несколько путей обхода данной проблемы:"
-
-#: ../../known_issues.rst:51
-msgid ""
-"Monkey-patching `http.client`_ and `urllib3`_ to use bigger "
-":code:`blocksize`. See `this comment "
-"<https://github.com/urllib3/urllib3/issues/1394#issuecomment-954044006>`_"
-" for more details."
-msgstr ""
-"Monkey-patch `http.client`_ и `urllib3`_, чтобы увеличить "
-":code:`blocksize`. См. `этот комментарий "
-"<https://github.com/urllib3/urllib3/issues/1394#issuecomment-954044006>`_."
-
-#: ../../known_issues.rst:53
-msgid "Monkey-patching through a library like `eventlet`_."
-msgstr "Monkey-patch через библиотеку `eventlet`_."
-
-#: ../../known_issues.rst:54
-msgid "Using `yadisk-async`_ instead. It uses `aiohttp`_ instead of `requests`_."
-msgstr ""
-"Использование `yadisk-async`_. Эта версия использует `aiohttp`_ вместо "
-"`requests`_."
-
-#: ../../known_issues.rst:55
-msgid ""
-"Uploading files to direct links (obtained through "
-":any:`yadisk.YaDisk.get_upload_link()`) using a different library (such "
-"as `aiohttp`_)."
-msgstr ""
-"Загрузка файлов по прямым ссылкам (полученным через "
-":any:`yadisk.YaDisk.get_upload_link()`), используя другую библиотеку "
-"(например, `aiohttp`_)."
+"Если вы используете `requests`_ и столкнулись с низкой скоростью загрузки "
+"файлов на Диск под Windows, то причиной может быть стандартная библиотека "
+"Python, которая внутри использует :code:`select()` для ожидания сокетов. "
+"Наилучшее решение этой проблемы - это использовать другую HTTP библиотеку "
+"(например, `httpx`_, см. :doc:`/api_reference/sessions`)"
