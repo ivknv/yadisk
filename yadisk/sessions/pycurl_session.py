@@ -111,7 +111,9 @@ class IterableReader:
 
 class PycURLSession(Session):
     """
-        :any:`Session` implementation using the :code:`pycurl` library.
+        .. _pycurl: https://pypi.org/project/pycurl
+
+        :any:`Session` implementation using the `pycurl`_ library.
 
         To pass `pycurl`-specific arguments from :any:`Client` use :code:`curl_options` keyword argument.
 

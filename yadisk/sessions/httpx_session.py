@@ -30,7 +30,9 @@ class HTTPXResponse(Response):
 
 class HTTPXSession(Session):
     """
-        :any:`Session` implementation using the :code:`httpx` library.
+        .. _httpx: https://pypi.org/project/httpx
+
+        :any:`Session` implementation using the `httpx`_ library.
 
         .. _httpx.Client: https://www.python-httpx.org/api/#client
 

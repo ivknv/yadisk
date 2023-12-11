@@ -72,7 +72,9 @@ DEFAULT_USER_AGENT = "Python/%s.%s aiohttp/%s" % (sys.version_info.major,
 
 class AIOHTTPSession(AsyncSession):
     """
-        :any:`AsyncSession` implementation using the :code:`aiohttp` library.
+        .. _aiohttp: https://pypi.org/project/aiohttp
+
+        :any:`AsyncSession` implementation using the `aiohttp`_ library.
 
         All arguments passed in the constructor are directly forwared to :any:`aiohttp.ClientSession`.
 

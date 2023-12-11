@@ -40,7 +40,9 @@ class AsyncHTTPXResponse(AsyncResponse):
 
 class AsyncHTTPXSession(AsyncSession):
     """
-        :any:`AsyncSession` implementation using the :code:`httpx` library.
+        .. _httpx: https://pypi.org/project/httpx
+
+        :any:`AsyncSession` implementation using the `httpx`_ library.
 
         .. _httpx.AsyncClient: https://www.python-httpx.org/api/#asyncclient
 

@@ -6,7 +6,6 @@ from ..exceptions import (
 )
 
 from ..session import Session, Response
-from ..compat import Iterable
 from ..common import CaseInsensitiveDict
 from ..types import JSON, ConsumeCallback, Headers, HTTPMethod
 
@@ -51,7 +50,9 @@ class RequestsResponse(Response):
 
 class RequestsSession(Session):
     """
-        :any:`Session` implementation using the :code:`requests` library.
+        .. _requests: https://pypi.org/project/requests
+
+        :any:`Session` implementation using the `requests`_ library.
 
         All arguments passed in the constructor are directly forwared to :any:`requests.Session`.
 
