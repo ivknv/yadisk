@@ -13,7 +13,7 @@ The following HTTP client libraries are currently supported:
 
 * :code:`requests` (used by default for synchronous API)
 * :code:`httpx` (both synchronous and asynchronous, used by default for asynchronous API)
-* :code:`aiohttp` (used by default for asynchronous API)
+* :code:`aiohttp` (asynchronous only)
 * :code:`pycurl` (synchronous only)
 
 For synchronous API (installs :code:`requests`):

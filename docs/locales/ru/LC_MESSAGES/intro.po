@@ -33,43 +33,45 @@ msgstr "Установка"
 msgid ""
 ":code:`yadisk` supports multiple HTTP client libraries and has both "
 "synchronous and asynchronous API."
-msgstr ""
+msgstr ":code:`yadisk` поддерживает несколько HTTP библиотек и реализует "
+"одновременно как синхронный, так и асинхронный API."
 
 #: ../../intro.rst:12
 msgid "The following HTTP client libraries are currently supported:"
-msgstr ""
+msgstr "На данный момент поддерживаются следующие HTTP библиотеки:"
 
 #: ../../intro.rst:14
 msgid ":code:`requests` (used by default for synchronous API)"
-msgstr ""
+msgstr ":code:`requests` (используется по умолчанию для синхронного API)"
 
 #: ../../intro.rst:15
 msgid ""
 ":code:`httpx` (both synchronous and asynchronous, used by default for "
 "asynchronous API)"
-msgstr ""
+msgstr ":code:`httpx` (синхронный и асинхронный API, используется по умолчанию "
+"для асинхронного API)"
 
 #: ../../intro.rst:16
-msgid ":code:`aiohttp` (used by default for asynchronous API)"
-msgstr ""
+msgid ":code:`aiohttp` (asynchronous only)"
+msgstr ":code:`aiohttp` (асинхронный API)"
 
 #: ../../intro.rst:17
 msgid ":code:`pycurl` (synchronous only)"
-msgstr ""
+msgstr ":code:`pycurl` (синхронный API)"
 
 #: ../../intro.rst:19
 msgid "For synchronous API (installs :code:`requests`):"
-msgstr ""
+msgstr "Для синхронного API (устанавливает :code:`requests`):"
 
 #: ../../intro.rst:25
 msgid "For asynchronous API (installs :code:`aiofiles` and :code:`httpx`):"
-msgstr ""
+msgstr "Для асинхронного API (устанавливает :code:`httpx` и :code:`aiofiles`):"
 
 #: ../../intro.rst:31
 msgid ""
 "Alternatively, you can manually choose which optional libraries to "
 "install:"
-msgstr ""
+msgstr "Вы можете также вручную установить нужные библиотеки:"
 
 #: ../../intro.rst:42
 msgid "Examples"
@@ -77,7 +79,7 @@ msgstr "Примеры"
 
 #: ../../intro.rst:45
 msgid "Synchronous API"
-msgstr ""
+msgstr "Синхронный API"
 
 #: ../../intro.rst:83 ../../intro.rst:275
 msgid "Receiving token with confirmation code"
@@ -97,12 +99,8 @@ msgstr "Очищение корзины"
 
 #: ../../intro.rst:216 ../../intro.rst:447
 msgid "Specifying HTTP client library"
-msgstr ""
+msgstr "Выбор HTTP библиотеки"
 
 #: ../../intro.rst:228
 msgid "Asynchronous API"
-msgstr ""
-
-#~ msgid "or"
-#~ msgstr "или"
-
+msgstr "Асинхронный API"
