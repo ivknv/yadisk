@@ -33,19 +33,10 @@ works.
 Low Upload Speed on Windows When Using requests
 ###############################################
 
-.. _http.client: https://docs.python.org/3/library/http.client.html
-.. _urllib3: https://pypi.org/project/urllib3/
-.. _eventlet: https://pypi.org/project/eventlet
-.. _yadisk-async: https://pypi.org/project/yadisk-async
-.. _aiohttp: https://pypi.org/project/aiohttp
 .. _requests: https://pypi.org/project/requests
 .. _httpx: https://pypi.org/project/httpx
 
 If you use `requests`_ and experience low upload speeds on Windows, the reason
 might be due to Python's standard library internally using :code:`select()` to
-wait for sockets. There are several ways around it:
-
-1) Using a different HTTP library (e.g. `httpx`_, see :doc:`/api_reference/sessions`).
-2) Monkey-patching `http.client`_ and `urllib3`_ to use bigger :code:`blocksize`.
-   See `this comment <https://github.com/urllib3/urllib3/issues/1394#issuecomment-954044006>`_ for more details.
-3) Monkey-patching through a library like `eventlet`_.
+wait for sockets. The best way around it is to use a different HTTP library
+(e.g. `httpx`_, see :doc:`/api_reference/sessions`)
