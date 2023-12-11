@@ -5,12 +5,3 @@ Synchronous API
    :members:
 
 .. autoclass:: yadisk.YaDisk
-
-Session Interface
-#################
-
-.. autoclass:: yadisk.Session
-   :members:
-
-.. autoclass:: yadisk.Response
-   :members:

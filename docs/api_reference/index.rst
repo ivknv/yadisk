@@ -2,7 +2,7 @@ API Reference
 =============
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    sync_api
@@ -12,5 +12,6 @@ API Reference
    settings
    exceptions
    response_objects
+   session_interface
    utilities
    low_level_api
