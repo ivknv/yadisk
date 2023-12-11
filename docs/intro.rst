@@ -380,7 +380,7 @@ Setting custom properties of files
     import yadisk
 
     async def main():
-        async with yadiskc.AsyncClient(token="<application-token>") as client:
+        async with yadisk.AsyncClient(token="<application-token>") as client:
             path = input("Enter a path to patch: ")
             properties = {"speed_of_light":       299792458,
                           "speed_of_light_units": "meters per second",
@@ -452,5 +452,5 @@ Specifying HTTP client library
    from yadisk.sessions.aiohttp_session import AIOHTTPSession
 
    # Will use aiohttp for making requests
-   with yadisk.AsyncClient(token="<token>", session_factory=AIOHTTPSession) as client:
+   async with yadisk.AsyncClient(token="<token>", session_factory=AIOHTTPSession) as client:
        print(await client.check_token())
