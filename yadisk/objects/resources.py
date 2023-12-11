@@ -42,7 +42,7 @@ class CommentIDsObject(YaDiskObject):
         Comment IDs object.
 
         :param comment_ids: `dict` or `None`
-        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar private_resource: `str`, comment ID for private resources
         :ivar public_resource: `str`, comment ID for public resources
@@ -67,7 +67,7 @@ class EXIFObject(YaDiskObject):
         EXIF metadata object.
 
         :param exif: `dict` or `None`
-        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar date_time: :any:`datetime.datetime`, capture date
     """
@@ -86,7 +86,7 @@ class FilesResourceListObject(YaDiskObject):
         Flat list of files.
 
         :param files_resource_list: `dict` or `None`
-        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar items: `list`, flat list of files (:any:`ResourceObject`)
         :ivar limit: `int`, maximum number of elements in the list
@@ -110,7 +110,16 @@ class FilesResourceListObject(YaDiskObject):
         self.import_fields(files_resource_list)
 
 class SyncFilesResourceListObject(FilesResourceListObject):
-    """See :any:`FilesResourceListObject`."""
+    """
+        Flat list of files.
+
+        :param files_resource_list: `dict` or `None`
+        :param yadisk: :any:`Client` or `None`, `YaDisk` object
+
+        :ivar items: `list`, flat list of files (:any:`SyncResourceObject`)
+        :ivar limit: `int`, maximum number of elements in the list
+        :ivar offset: `int`, offset from the beginning of the list
+    """
 
     items: Optional[List["SyncResourceObject"]]
 
@@ -123,7 +132,16 @@ class SyncFilesResourceListObject(FilesResourceListObject):
         self.import_fields(files_resource_list)
 
 class AsyncFilesResourceListObject(FilesResourceListObject):
-    """See :any:`FilesResourceListObject`."""
+    """
+        Flat list of files.
+
+        :param files_resource_list: `dict` or `None`
+        :param yadisk: :any:`AsyncClient` or `None`, `YaDisk` object
+
+        :ivar items: `list`, flat list of files (:any:`AsyncResourceObject`)
+        :ivar limit: `int`, maximum number of elements in the list
+        :ivar offset: `int`, offset from the beginning of the list
+    """
 
     items: Optional[List["AsyncResourceObject"]]
 
@@ -140,7 +158,7 @@ class LastUploadedResourceListObject(YaDiskObject):
         List of last uploaded resources.
 
         :param last_uploaded_resources_list: `dict` or `None`
-        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar items: `list`, list of resources (:any:`ResourceObject`)
         :ivar limit: `int`, maximum number of elements in the list
@@ -160,6 +178,16 @@ class LastUploadedResourceListObject(YaDiskObject):
         self.import_fields(last_uploaded_resources_list)
 
 class SyncLastUploadedResourceListObject(LastUploadedResourceListObject):
+    """
+        List of last uploaded resources.
+
+        :param last_uploaded_resources_list: `dict` or `None`
+        :param yadisk: :any:`Client` or `None`, `YaDisk` object
+
+        :ivar items: `list`, list of resources (:any:`SyncResourceObject`)
+        :ivar limit: `int`, maximum number of elements in the list
+    """
+
     items: Optional[List["SyncResourceObject"]]
 
     def __init__(self,
@@ -171,6 +199,16 @@ class SyncLastUploadedResourceListObject(LastUploadedResourceListObject):
         self.import_fields(last_uploaded_resources_list)
 
 class AsyncLastUploadedResourceListObject(LastUploadedResourceListObject):
+    """
+        List of last uploaded resources.
+
+        :param last_uploaded_resources_list: `dict` or `None`
+        :param yadisk: :any:`AsyncClient` or `None`, `YaDisk` object
+
+        :ivar items: `list`, list of resources (:any:`AsyncResourceObject`)
+        :ivar limit: `int`, maximum number of elements in the list
+    """
+
     items: Optional[List["AsyncResourceObject"]]
 
     def __init__(self,
@@ -186,7 +224,7 @@ class LinkObject(YaDiskObject):
         Link object.
 
         :param link: `dict` or `None`
-        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar href: `str`, link URL
         :ivar method: `str`, HTTP method
@@ -214,7 +252,7 @@ class OperationLinkObject(LinkObject):
         Operation link object.
 
         :param link: `dict` or `None`
-        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar href: `str`, link URL
         :ivar method: `str`, HTTP method
@@ -224,7 +262,16 @@ class OperationLinkObject(LinkObject):
     pass
 
 class SyncOperationLinkObject(OperationLinkObject):
-    """See :any:`OperationLinkObject`."""
+    """
+        Operation link object.
+
+        :param link: `dict` or `None`
+        :param yadisk: :any:`Client` or `None`, `YaDisk` object
+
+        :ivar href: `str`, link URL
+        :ivar method: `str`, HTTP method
+        :ivar templated: `bool`, tells whether the URL is templated
+    """
 
     def get_status(self, **kwargs) -> str:
         """
@@ -250,7 +297,16 @@ class SyncOperationLinkObject(OperationLinkObject):
         return self._yadisk.get_operation_status(self.href, **kwargs)
 
 class AsyncOperationLinkObject(OperationLinkObject):
-    """See :any:`OperationLinkObject`."""
+    """
+        Operation link object.
+
+        :param link: `dict` or `None`
+        :param yadisk: :any:`AsyncClient` or `None`, `YaDisk` object
+
+        :ivar href: `str`, link URL
+        :ivar method: `str`, HTTP method
+        :ivar templated: `bool`, tells whether the URL is templated
+    """
 
     async def get_status(self, **kwargs) -> str:
         """
@@ -280,7 +336,7 @@ class PublicResourcesListObject(YaDiskObject):
         List of public resources.
 
         :param public_resources_list: `dict` or `None`
-        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar items: `list`, list of public resources (:any:`PublicResourceObject`)
         :ivar type: `str`, resource type to filter by
@@ -307,7 +363,17 @@ class PublicResourcesListObject(YaDiskObject):
         self.import_fields(public_resources_list)
 
 class SyncPublicResourcesListObject(PublicResourcesListObject):
-    """See :any:`PublicResourceListObject`."""
+    """
+        List of public resources.
+
+        :param public_resources_list: `dict` or `None`
+        :param yadisk: :any:`Client` or `None`, `YaDisk` object
+
+        :ivar items: `list`, list of public resources (:any:`SyncPublicResourceObject`)
+        :ivar type: `str`, resource type to filter by
+        :ivar limit: `int`, maximum number of elements in the list
+        :ivar offset: `int`, offset from the beginning of the list
+    """
 
     items: Optional[List["SyncPublicResourceObject"]]
 
@@ -320,7 +386,17 @@ class SyncPublicResourcesListObject(PublicResourcesListObject):
         self.import_fields(public_resources_list)
 
 class AsyncPublicResourcesListObject(PublicResourcesListObject):
-    """See :any:`PublicResourceListObject`."""
+    """
+        List of public resources.
+
+        :param public_resources_list: `dict` or `None`
+        :param yadisk: :any:`AsyncClient` or `None`, `YaDisk` object
+
+        :ivar items: `list`, list of public resources (:any:`AsyncPublicResourceObject`)
+        :ivar type: `str`, resource type to filter by
+        :ivar limit: `int`, maximum number of elements in the list
+        :ivar offset: `int`, offset from the beginning of the list
+    """
 
     items: Optional[List["AsyncPublicResourceObject"]]
 
@@ -1884,7 +1960,7 @@ class ResourceObject(YaDiskObject):
         Resource object.
 
         :param resource: `dict` or `None`
-        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar antivirus_status: `str`, antivirus check status
         :ivar file: `str`, download URL
@@ -1967,7 +2043,36 @@ class ResourceObject(YaDiskObject):
         self.import_fields(resource)
 
 class SyncResourceObject(ResourceObject, ResourceObjectMethodsMixin):
-    """See :any:`ResourceObject`."""
+    """
+        Resource object.
+
+        :param resource: `dict` or `None`
+        :param yadisk: :any:`Client` or `None`, `YaDisk` object
+
+        :ivar antivirus_status: `str`, antivirus check status
+        :ivar file: `str`, download URL
+        :ivar size: `int`, file size
+        :ivar public_key: `str`, public resource key
+        :ivar sha256: `str`, SHA256 hash
+        :ivar md5: `str`, MD5 hash
+        :ivar embedded: :any:`SyncResourceListObject`, list of nested resources
+        :ivar name: `str`, filename
+        :ivar exif: :any:`EXIFObject`, EXIF metadata
+        :ivar resource_id: `str`, resource ID
+        :ivar custom_properties: `dict`, custom resource properties
+        :ivar public_url: `str`, public URL
+        :ivar share: :any:`ShareInfoObject`, shared folder information
+        :ivar modified: :any:`datetime.datetime`, date of last modification
+        :ivar created: :any:`datetime.datetime`, date of creation
+        :ivar photoslice_time: :any:`datetime.datetime`, photo/video creation date
+        :ivar mime_type: `str`, MIME type
+        :ivar path: `str`, path to the resource
+        :ivar preview: `str`, file preview URL
+        :ivar comment_ids: :any:`CommentIDsObject`, comment IDs
+        :ivar type: `str`, type ("file" or "dir")
+        :ivar media_type: `str`, file type as determined by Yandex.Disk
+        :ivar revision: `int`, Yandex.Disk revision at the time of last modification
+    """
 
     embedded: Optional["SyncResourceListObject"]
     _embedded: Optional["SyncResourceListObject"]
@@ -1978,7 +2083,36 @@ class SyncResourceObject(ResourceObject, ResourceObjectMethodsMixin):
         self.import_fields(resource)
 
 class AsyncResourceObject(ResourceObject, AsyncResourceObjectMethodsMixin):
-    """See :any:`ResourceObject`."""
+    """
+        Resource object.
+
+        :param resource: `dict` or `None`
+        :param yadisk: :any:`AsyncClient` or `None`, `YaDisk` object
+
+        :ivar antivirus_status: `str`, antivirus check status
+        :ivar file: `str`, download URL
+        :ivar size: `int`, file size
+        :ivar public_key: `str`, public resource key
+        :ivar sha256: `str`, SHA256 hash
+        :ivar md5: `str`, MD5 hash
+        :ivar embedded: :any:`AsyncResourceListObject`, list of nested resources
+        :ivar name: `str`, filename
+        :ivar exif: :any:`EXIFObject`, EXIF metadata
+        :ivar resource_id: `str`, resource ID
+        :ivar custom_properties: `dict`, custom resource properties
+        :ivar public_url: `str`, public URL
+        :ivar share: :any:`ShareInfoObject`, shared folder information
+        :ivar modified: :any:`datetime.datetime`, date of last modification
+        :ivar created: :any:`datetime.datetime`, date of creation
+        :ivar photoslice_time: :any:`datetime.datetime`, photo/video creation date
+        :ivar mime_type: `str`, MIME type
+        :ivar path: `str`, path to the resource
+        :ivar preview: `str`, file preview URL
+        :ivar comment_ids: :any:`CommentIDsObject`, comment IDs
+        :ivar type: `str`, type ("file" or "dir")
+        :ivar media_type: `str`, file type as determined by Yandex.Disk
+        :ivar revision: `int`, Yandex.Disk revision at the time of last modification
+    """
 
     embedded: Optional["AsyncResourceListObject"]
     _embedded: Optional["AsyncResourceListObject"]
@@ -1993,7 +2127,7 @@ class ResourceLinkObject(LinkObject):
         Resource link object.
 
         :param link: `dict` or `None`
-        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar href: `str`, link URL
         :ivar method: `str`, HTTP method
@@ -2030,12 +2164,32 @@ class ResourceLinkObject(LinkObject):
             yadisk=yadisk)
 
 class SyncResourceLinkObject(ResourceLinkObject, ResourceObjectMethodsMixin):
-    """See :any:`ResourceLinkObject`."""
+    """
+        Resource link object.
+
+        :param link: `dict` or `None`
+        :param yadisk: :any:`Client` or `None`, `YaDisk` object
+
+        :ivar href: `str`, link URL
+        :ivar method: `str`, HTTP method
+        :ivar templated: `bool`, tells whether the URL is templated
+        :ivar path: `str`, path to the resource
+    """
 
     pass
 
 class AsyncResourceLinkObject(ResourceLinkObject, AsyncResourceObjectMethodsMixin):
-    """See :any:`ResourceLinkObject`."""
+    """
+        Resource link object.
+
+        :param link: `dict` or `None`
+        :param yadisk: :any:`AsyncClient` or `None`, `YaDisk` object
+
+        :ivar href: `str`, link URL
+        :ivar method: `str`, HTTP method
+        :ivar templated: `bool`, tells whether the URL is templated
+        :ivar path: `str`, path to the resource
+    """
 
     pass
 
@@ -2044,7 +2198,7 @@ class PublicResourceLinkObject(LinkObject):
         Public resource link object.
 
         :param link: `dict` or `None`
-        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar href: `str`, link URL
         :ivar method: `str`, HTTP method
@@ -2085,12 +2239,34 @@ class PublicResourceLinkObject(LinkObject):
             yadisk=yadisk)
 
 class SyncPublicResourceLinkObject(PublicResourceLinkObject, ResourceObjectMethodsMixin):
-    """See :any:`PublicResourceLinkObject`."""
+    """
+        Public resource link object.
+
+        :param link: `dict` or `None`
+        :param yadisk: :any:`Client` or `None`, `YaDisk` object
+
+        :ivar href: `str`, link URL
+        :ivar method: `str`, HTTP method
+        :ivar templated: `bool`, tells whether the URL is templated
+        :ivar public_key: `str`, public key of the resource
+        :ivar public_url: `str`, public URL of the resource
+    """
 
     pass
 
 class AsyncPublicResourceLinkObject(PublicResourceLinkObject, AsyncResourceObjectMethodsMixin):
-    """See :any:`PublicResourceLinkObject`."""
+    """
+        Public resource link object.
+
+        :param link: `dict` or `None`
+        :param yadisk: :any:`AsyncClient` or `None`, `YaDisk` object
+
+        :ivar href: `str`, link URL
+        :ivar method: `str`, HTTP method
+        :ivar templated: `bool`, tells whether the URL is templated
+        :ivar public_key: `str`, public key of the resource
+        :ivar public_url: `str`, public URL of the resource
+    """
 
     pass
 
@@ -2099,7 +2275,7 @@ class ResourceListObject(YaDiskObject):
         List of resources.
 
         :param resource_list: `dict` or `None`
-        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar sort: `str`, sort type
         :ivar items: `list`, list of resources (:any:`ResourceObject`)
@@ -2129,7 +2305,19 @@ class ResourceListObject(YaDiskObject):
         self.import_fields(resource_list)
 
 class SyncResourceListObject(ResourceListObject):
-    """See :any:`ResourceListObject`."""
+    """
+        List of resources.
+
+        :param resource_list: `dict` or `None`
+        :param yadisk: :any:`Client` or `None`, `YaDisk` object
+
+        :ivar sort: `str`, sort type
+        :ivar items: `list`, list of resources (:any:`SyncResourceObject`)
+        :ivar limit: `int`, maximum number of elements in the list
+        :ivar offset: `int`, offset from the beginning of the list
+        :ivar path: `str`, path to the directory that contains the elements of the list
+        :ivar total: `int`, number of elements in the list
+    """
 
     items: Optional[List[SyncResourceObject]]
 
@@ -2139,7 +2327,19 @@ class SyncResourceListObject(ResourceListObject):
         self.import_fields(resource_list)
 
 class AsyncResourceListObject(ResourceListObject):
-    """See :any:`ResourceListObject`."""
+    """
+        List of resources.
+
+        :param resource_list: `dict` or `None`
+        :param yadisk: :any:`AsyncClient` or `None`, `YaDisk` object
+
+        :ivar sort: `str`, sort type
+        :ivar items: `list`, list of resources (:any:`AsyncResourceObject`)
+        :ivar limit: `int`, maximum number of elements in the list
+        :ivar offset: `int`, offset from the beginning of the list
+        :ivar path: `str`, path to the directory that contains the elements of the list
+        :ivar total: `int`, number of elements in the list
+    """
 
     items: Optional[List[AsyncResourceObject]]
 
@@ -2153,7 +2353,7 @@ class ResourceUploadLinkObject(LinkObject):
         Resource upload link.
 
         :param resource_upload_link: `dict` or `None`
-        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar operation_id: `str`, ID of the upload operation
         :ivar href: `str`, link URL
@@ -2175,7 +2375,7 @@ class ResourceDownloadLinkObject(LinkObject):
         Resource download link.
 
         :param link: `dict` or `None`
-        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar href: `str`, link URL
         :ivar method: `str`, HTTP method
@@ -2189,7 +2389,7 @@ class ShareInfoObject(YaDiskObject):
         Shared folder information object.
 
         :param share_info: `dict` or `None`
-        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar is_root: `bool`, tells whether the folder is root
         :ivar is_owned: `bool`, tells whether the user is the owner of this directory
@@ -2214,7 +2414,7 @@ class PublicResourceObject(ResourceObject):
         Public resource object.
 
         :param resource: `dict` or `None`
-        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar antivirus_status: `str`, antivirus check status
         :ivar file: `str`, download URL
@@ -2258,7 +2458,38 @@ class PublicResourceObject(ResourceObject):
         self.import_fields(public_resource)
 
 class SyncPublicResourceObject(PublicResourceObject, ResourceObjectMethodsMixin):
-    """See :any:`PublicResourceObject`."""
+    """
+        Public resource object.
+
+        :param resource: `dict` or `None`
+        :param yadisk: :any:`Client` or `None`, `YaDisk` object
+
+        :ivar antivirus_status: `str`, antivirus check status
+        :ivar file: `str`, download URL
+        :ivar size: `int`, file size
+        :ivar public_key: `str`, public resource key
+        :ivar sha256: `str`, SHA256 hash
+        :ivar md5: `str`, MD5 hash
+        :ivar embedded: :any:`SyncPublicResourceObject`, list of nested resources
+        :ivar name: `str`, filename
+        :ivar exif: :any:`EXIFObject`, EXIF metadata
+        :ivar resource_id: `str`, resource ID
+        :ivar custom_properties: `dict`, custom resource properties
+        :ivar public_url: `str`, public URL
+        :ivar share: :any:`ShareInfoObject`, shared folder information
+        :ivar modified: :any:`datetime.datetime`, date of last modification
+        :ivar created: :any:`datetime.datetime`, date of creation
+        :ivar photoslice_time: :any:`datetime.datetime`, photo/video creation date
+        :ivar mime_type: `str`, MIME type
+        :ivar path: `str`, path to the resource
+        :ivar preview: `str`, file preview URL
+        :ivar comment_ids: :any:`CommentIDsObject`, comment IDs
+        :ivar type: `str`, type ("file" or "dir")
+        :ivar media_type: `str`, file type as determined by Yandex.Disk
+        :ivar revision: `int`, Yandex.Disk revision at the time of last modification
+        :ivar view_count: `int`, number of times the public resource was viewed
+        :ivar owner: :any:`UserPublicInfoObject`, owner of the public resource
+    """
 
     embedded: Optional["SyncPublicResourceListObject"]
     _embedded: Optional["SyncPublicResourceListObject"]
@@ -2269,7 +2500,38 @@ class SyncPublicResourceObject(PublicResourceObject, ResourceObjectMethodsMixin)
         self.import_fields(public_resource)
 
 class AsyncPublicResourceObject(PublicResourceObject, AsyncResourceObjectMethodsMixin):
-    """See :any:`PublicResourceObject`."""
+    """
+        Public resource object.
+
+        :param resource: `dict` or `None`
+        :param yadisk: :any:`AsyncClient` or `None`, `YaDisk` object
+
+        :ivar antivirus_status: `str`, antivirus check status
+        :ivar file: `str`, download URL
+        :ivar size: `int`, file size
+        :ivar public_key: `str`, public resource key
+        :ivar sha256: `str`, SHA256 hash
+        :ivar md5: `str`, MD5 hash
+        :ivar embedded: :any:`AsyncPublicResourceObject`, list of nested resources
+        :ivar name: `str`, filename
+        :ivar exif: :any:`EXIFObject`, EXIF metadata
+        :ivar resource_id: `str`, resource ID
+        :ivar custom_properties: `dict`, custom resource properties
+        :ivar public_url: `str`, public URL
+        :ivar share: :any:`ShareInfoObject`, shared folder information
+        :ivar modified: :any:`datetime.datetime`, date of last modification
+        :ivar created: :any:`datetime.datetime`, date of creation
+        :ivar photoslice_time: :any:`datetime.datetime`, photo/video creation date
+        :ivar mime_type: `str`, MIME type
+        :ivar path: `str`, path to the resource
+        :ivar preview: `str`, file preview URL
+        :ivar comment_ids: :any:`CommentIDsObject`, comment IDs
+        :ivar type: `str`, type ("file" or "dir")
+        :ivar media_type: `str`, file type as determined by Yandex.Disk
+        :ivar revision: `int`, Yandex.Disk revision at the time of last modification
+        :ivar view_count: `int`, number of times the public resource was viewed
+        :ivar owner: :any:`UserPublicInfoObject`, owner of the public resource
+    """
 
     embedded: Optional["AsyncPublicResourceListObject"]
     _embedded: Optional["AsyncPublicResourceListObject"]
@@ -2284,7 +2546,7 @@ class PublicResourceListObject(ResourceListObject):
         List of public resources.
 
         :param public_resource_list: `dict` or `None`
-        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar sort: `str`, sort type
         :ivar items: `list`, list of resources (:any:`ResourceObject`)
@@ -2307,7 +2569,20 @@ class PublicResourceListObject(ResourceListObject):
         self.import_fields(public_resource_list)
 
 class SyncPublicResourceListObject(PublicResourceListObject):
-    """See :any:`PublicResourceListObject`."""
+    """
+        List of public resources.
+
+        :param public_resource_list: `dict` or `None`
+        :param yadisk: :any:`Client` or `None`, `YaDisk` object
+
+        :ivar sort: `str`, sort type
+        :ivar items: `list`, list of resources (:any:`SyncResourceObject`)
+        :ivar limit: `int`, maximum number of elements in the list
+        :ivar offset: `int`, offset from the beginning of the list
+        :ivar path: `str`, path to the directory that contains the elements of the list
+        :ivar total: `int`, number of elements in the list
+        :ivar public_key: `str`, public key of the resource
+    """
 
     items: Optional[List[SyncPublicResourceObject]]
 
@@ -2317,7 +2592,20 @@ class SyncPublicResourceListObject(PublicResourceListObject):
         self.import_fields(public_resource_list)
 
 class AsyncPublicResourceListObject(PublicResourceListObject):
-    """See :any:`PublicResourceListObject`."""
+    """
+        List of public resources.
+
+        :param public_resource_list: `dict` or `None`
+        :param yadisk: :any:`AsyncClient` or `None`, `YaDisk` object
+
+        :ivar sort: `str`, sort type
+        :ivar items: `list`, list of resources (:any:`AsyncResourceObject`)
+        :ivar limit: `int`, maximum number of elements in the list
+        :ivar offset: `int`, offset from the beginning of the list
+        :ivar path: `str`, path to the directory that contains the elements of the list
+        :ivar total: `int`, number of elements in the list
+        :ivar public_key: `str`, public key of the resource
+    """
 
     items: Optional[List[AsyncPublicResourceObject]]
 
@@ -2331,7 +2619,7 @@ class TrashResourceObject(ResourceObject):
         Trash resource object.
 
         :param trash_resource: `dict` or `None`
-        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar antivirus_status: `str`, antivirus check status
         :ivar file: `str`, download URL
@@ -2375,7 +2663,38 @@ class TrashResourceObject(ResourceObject):
         self.import_fields(trash_resource)
 
 class SyncTrashResourceObject(TrashResourceObject):
-    """See :any:`TrashResourceObject`."""
+    """
+        Trash resource object.
+
+        :param trash_resource: `dict` or `None`
+        :param yadisk: :any:`Client` or `None`, `YaDisk` object
+
+        :ivar antivirus_status: `str`, antivirus check status
+        :ivar file: `str`, download URL
+        :ivar size: `int`, file size
+        :ivar public_key: `str`, public resource key
+        :ivar sha256: `str`, SHA256 hash
+        :ivar md5: `str`, MD5 hash
+        :ivar embedded: :any:`SyncTrashResourceListObject`, list of nested resources
+        :ivar name: `str`, filename
+        :ivar exif: :any:`EXIFObject`, EXIF metadata
+        :ivar resource_id: `str`, resource ID
+        :ivar custom_properties: `dict`, custom resource properties
+        :ivar public_url: `str`, public URL
+        :ivar share: :any:`ShareInfoObject`, shared folder information
+        :ivar modified: :any:`datetime.datetime`, date of last modification
+        :ivar created: :any:`datetime.datetime`, date of creation
+        :ivar photoslice_time: :any:`datetime.datetime`, photo/video creation date
+        :ivar mime_type: `str`, MIME type
+        :ivar path: `str`, path to the resource
+        :ivar preview: `str`, file preview URL
+        :ivar comment_ids: :any:`CommentIDsObject`, comment IDs
+        :ivar type: `str`, type ("file" or "dir")
+        :ivar media_type: `str`, file type as determined by Yandex.Disk
+        :ivar revision: `int`, Yandex.Disk revision at the time of last modification
+        :ivar origin_path: `str`, original path
+        :ivar deleted: :any:`datetime.datetime`, date of deletion
+    """
 
     embedded: Optional["SyncTrashResourceListObject"]
     _embedded: Optional["SyncTrashResourceListObject"]
@@ -2647,7 +2966,38 @@ class SyncTrashResourceObject(TrashResourceObject):
         return self._yadisk.restore_trash(str(path), dst_path, **kwargs)
 
 class AsyncTrashResourceObject(TrashResourceObject):
-    """See :any:`TrashResourceObject`."""
+    """
+        Trash resource object.
+
+        :param trash_resource: `dict` or `None`
+        :param yadisk: :any:`AsyncClient` or `None`, `YaDisk` object
+
+        :ivar antivirus_status: `str`, antivirus check status
+        :ivar file: `str`, download URL
+        :ivar size: `int`, file size
+        :ivar public_key: `str`, public resource key
+        :ivar sha256: `str`, SHA256 hash
+        :ivar md5: `str`, MD5 hash
+        :ivar embedded: :any:`AsyncTrashResourceListObject`, list of nested resources
+        :ivar name: `str`, filename
+        :ivar exif: :any:`EXIFObject`, EXIF metadata
+        :ivar resource_id: `str`, resource ID
+        :ivar custom_properties: `dict`, custom resource properties
+        :ivar public_url: `str`, public URL
+        :ivar share: :any:`ShareInfoObject`, shared folder information
+        :ivar modified: :any:`datetime.datetime`, date of last modification
+        :ivar created: :any:`datetime.datetime`, date of creation
+        :ivar photoslice_time: :any:`datetime.datetime`, photo/video creation date
+        :ivar mime_type: `str`, MIME type
+        :ivar path: `str`, path to the resource
+        :ivar preview: `str`, file preview URL
+        :ivar comment_ids: :any:`CommentIDsObject`, comment IDs
+        :ivar type: `str`, type ("file" or "dir")
+        :ivar media_type: `str`, file type as determined by Yandex.Disk
+        :ivar revision: `int`, Yandex.Disk revision at the time of last modification
+        :ivar origin_path: `str`, original path
+        :ivar deleted: :any:`datetime.datetime`, date of deletion
+    """
 
     embedded: Optional["AsyncTrashResourceListObject"]
     _embedded: Optional["AsyncTrashResourceListObject"]
@@ -2923,7 +3273,7 @@ class TrashResourceListObject(ResourceListObject):
         List of trash resources.
 
         :param trash_resource_list: `dict` or `None`
-        :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
+        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar sort: `str`, sort type
         :ivar items: `list`, list of resources (:any:`TrashResourceObject`)
@@ -2943,7 +3293,19 @@ class TrashResourceListObject(ResourceListObject):
         self.import_fields(trash_resource_list)
 
 class SyncTrashResourceListObject(TrashResourceListObject):
-    """See :any:`TrashResourceListObject`."""
+    """
+        List of trash resources.
+
+        :param trash_resource_list: `dict` or `None`
+        :param yadisk: :any:`Client` or `None`, `YaDisk` object
+
+        :ivar sort: `str`, sort type
+        :ivar items: `list`, list of resources (:any:`SyncTrashResourceObject`)
+        :ivar limit: `int`, maximum number of elements in the list
+        :ivar offset: `int`, offset from the beginning of the list
+        :ivar path: `str`, path to the directory that contains the elements of the list
+        :ivar total: `int`, number of elements in the list
+    """
 
     items: Optional[List[SyncTrashResourceObject]]
 
@@ -2955,7 +3317,19 @@ class SyncTrashResourceListObject(TrashResourceListObject):
         self.import_fields(trash_resource_list)
 
 class AsyncTrashResourceListObject(TrashResourceListObject):
-    """See :any:`TrashResourceListObject`."""
+    """
+        List of trash resources.
+
+        :param trash_resource_list: `dict` or `None`
+        :param yadisk: :any:`AsyncClient` or `None`, `YaDisk` object
+
+        :ivar sort: `str`, sort type
+        :ivar items: `list`, list of resources (:any:`AsyncTrashResourceObject`)
+        :ivar limit: `int`, maximum number of elements in the list
+        :ivar offset: `int`, offset from the beginning of the list
+        :ivar path: `str`, path to the directory that contains the elements of the list
+        :ivar total: `int`, number of elements in the list
+    """
 
     items: Optional[List[AsyncTrashResourceObject]]
 
