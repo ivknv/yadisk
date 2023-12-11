@@ -133,15 +133,35 @@ def _read_file_as_generator(input_file: IO[AnyStr]) -> Generator[AnyStr, None, N
 
 class Client:
     """
-        Implements access to Yandex.Disk REST API.
+        Implements access to Yandex.Disk REST API (provides synchronous API).
+
+        HTTP client implementation can be specified using the `session_factory`
+        parameter. :any:`RequestsSession` is used by default. For other options,
+        see :doc:`/api_reference/sessions`.
+
+        Almost all methods of :any:`Client` (the ones that accept `**kwargs`)
+        accept some additional arguments:
+
+        * **n_retries** - `int`, maximum number of retries for a request
+        * **retry_interval** - `float`, delay between retries (in seconds)
+        * **headers** - `dict` or `None`, additional request headers
+        * **timeout** - `tuple` (:code:`(<connect timeout>, <read timeout>)`) or
+          `float` (specifies both connect and read timeout), request timeout
+          (in seconds)
+
+        Additional parameters, specific to a given HTTP client library can also
+        be passed, see documentation for specific :any:`Session` subclasses
+        (:doc:`/api_reference/sessions`).
 
         :param id: application ID
         :param secret: application secret password
         :param token: application token
         :param default_args: `dict` or `None`, default arguments for methods.
                              Can be used to set the default timeout, headers, etc.
-        :param session_factory: `None` or a function that returns a new instance of :any:`Session`
-        :param open_file: `None` or a function that opens a file for reading or writing (`open()` by default)
+        :param session_factory: `None` or a function that returns a new instance
+                                of :any:`Session`
+        :param open_file: `None` or a function that opens a file for reading or
+                          writing (:code:`open()` by default)
 
         :ivar id: `str`, application ID
         :ivar secret: `str`, application secret password
@@ -149,7 +169,10 @@ class Client:
         :ivar default_args: `dict`, default arguments for methods. Can be used to
                             set the default timeout, headers, etc.
         :ivar session_factory: function that returns a new instance of :any:`Session`
-        :ivar open_file: function that opens a file for reading or writing (`open()` by default)
+        :ivar session: current session (:any:`Session` instance), created using
+                       the `session_factory` with filled out authentication headers
+        :ivar open_file: function that opens a file for reading or writing
+                         (:code:`open()` by default)
 
         The following exceptions may be raised by most API requests:
 

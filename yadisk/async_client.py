@@ -190,7 +190,25 @@ def _apply_default_args(args: Dict[str, Any], default_args: Dict[str, Any]) -> N
 
 class AsyncClient:
     """
-        Implements access to Yandex.Disk REST API.
+        Implements access to Yandex.Disk REST API (provides asynchronous API).
+
+        HTTP client implementation can be specified using the `session_factory`
+        parameter. :any:`AIOHTTPSession` is used by default. For other options,
+        see :doc:`/api_reference/sessions`.
+
+        Almost all methods of :any:`AsyncClient` (the ones that accept `**kwargs`)
+        accept some additional arguments:
+
+        * **n_retries** - `int`, maximum number of retries for a request
+        * **retry_interval** - `float`, delay between retries (in seconds)
+        * **headers** - `dict` or `None`, additional request headers
+        * **timeout** - `tuple` (:code:`(<connect timeout>, <read timeout>)`) or
+          `float` (specifies both connect and read timeout), request timeout
+          (in seconds)
+
+        Additional parameters, specific to a given HTTP client library can also
+        be passed, see documentation for specific :any:`AsyncSession` subclasses
+        (:doc:`/api_reference/sessions`).
 
         .. note::
            Do not forget to call :any:`AsyncClient.close` or use the `async with` statement
@@ -205,8 +223,10 @@ class AsyncClient:
         :param token: application token
         :param default_args: `dict` or `None`, default arguments for methods.
                              Can be used to set the default timeout, headers, etc.
-        :param session_factory: `None` or a function that returns a new instance of :any:`AsyncSession`
-        :param open_file: `None` or an async function that opens a file for reading or writing (`aiofiles.open()` by default)
+        :param session_factory: `None` or a function that returns a new instance
+                                of :any:`AsyncSession`
+        :param open_file: `None` or an async function that opens a file for
+                           reading or writing (:code:`aiofiles.open()` by default)
 
         :ivar id: `str`, application ID
         :ivar secret: `str`, application secret password
@@ -214,7 +234,10 @@ class AsyncClient:
         :ivar default_args: `dict`, default arguments for methods. Can be used to
                             set the default timeout, headers, etc.
         :ivar session_factory: function that returns a new instance of :any:`AsyncSession`
-        :ivar open_file: async function that opens a file for reading or writing (`aiofiles.open()` by default)
+        :ivar session: current session (:any:`AsyncSession` instance), created using
+                       the `session_factory` with filled out authentication headers
+        :ivar open_file: async function that opens a file for reading or writing
+                         (:code:`aiofiles.open()` by default)
 
         The following exceptions may be raised by most API requests:
 
@@ -727,7 +750,7 @@ class AsyncClient:
                 except KeyError:
                     temp_kwargs["headers"] = {"Connection": "close"}
 
-                data = None
+                data: Any = None
 
                 if generator_factory is None:
                     if await _is_file_seekable(file):

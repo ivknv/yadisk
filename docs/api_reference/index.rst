@@ -7,7 +7,6 @@ API Reference
 
    sync_api
    async_api
-   general_parameters
    sessions
    settings
    exceptions
