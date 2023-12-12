@@ -688,6 +688,7 @@ class Client:
         file: Any = None
         close_file = False
         file_position = 0
+        iterator_factory = None
 
         session = self.session
 
@@ -695,13 +696,16 @@ class Client:
             if isinstance(file_or_path, (str, bytes)):
                 close_file = True
                 file = self.open_file(file_or_path, "rb")
+            elif callable(file_or_path):
+                close_file = False
+                iterator_factory = file_or_path
             else:
                 close_file = False
                 file = file_or_path
 
-            if file.seekable():
+            if file is not None and file.seekable():
                 file_position = file.tell()
-            else:
+            elif iterator_factory is None:
                 n_retries, n_retries_for_upload_link = 0, n_retries
 
             def attempt():
@@ -722,7 +726,9 @@ class Client:
                 except KeyError:
                     temp_kwargs["headers"] = {"Connection": "close"}
 
-                if file.seekable():
+                if iterator_factory is not None:
+                    payload = iterator_factory()
+                elif file.seekable():
                     file.seek(file_position)
                     payload = file
                 else:

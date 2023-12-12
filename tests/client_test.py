@@ -300,6 +300,23 @@ def make_test_case(name, session_factory):
             self.assertEqual(test_input_file.tell(), 1000)
             self.assertEqual(test_output_file.tell(), 1000)
 
+        def test_upload_generator(self):
+            data = b"0" * 1000
+
+            def payload():
+                yield data[:500]
+                yield data[500:]
+
+            dst_path = posixpath.join(self.path, "zeroes.txt")
+
+            output = BytesIO()
+
+            self.client.upload(payload, dst_path).download(output).remove(permanently=True)
+
+            output.seek(0)
+
+            self.assertEqual(output.read(), data)
+
     ClientTestCase.__name__ = name
     ClientTestCase.__qualname__ = ClientTestCase.__qualname__.rpartition(".")[0] + "." + name
 

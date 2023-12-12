@@ -50,6 +50,7 @@ FileOrPath = Union[
     str,
     bytes,
     BinaryIO,
+    Callable[[], Iterator[bytes]]
 ]
 
 FileOrPathDestination = Union[
