@@ -752,7 +752,8 @@ class Client:
         """
             Upload a file to disk.
 
-            :param file_or_path: path or file-like object to be uploaded
+            :param file_or_path: path, file-like object to be uploaded or
+                                 a function that returns an iterator (or generator)
             :param dst_path: destination path
             :param overwrite: if `True`, the resource will be overwritten if it already exists,
                               an error will be raised otherwise
@@ -783,7 +784,8 @@ class Client:
         """
             Upload a file to disk using an upload link.
 
-            :param file_or_path: path or file-like object to be uploaded
+            :param file_or_path: path, file-like object to be uploaded or
+                                 a function that returns an iterator (or generator)
             :param link: upload link
             :param overwrite: if `True`, the resource will be overwritten if it already exists,
                               an error will be raised otherwise

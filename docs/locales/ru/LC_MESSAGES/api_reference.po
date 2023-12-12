@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 2.0.0\n"
+"Project-Id-Version:  2.0.0\n"
 "Report-Msgid-Bugs-To: ivknv0@gmail.com\n"
-"POT-Creation-Date: 2023-12-12 03:28+0500\n"
-"PO-Revision-Date: 2023-12-12 20:04+0500\n"
+"POT-Creation-Date: 2023-12-12 21:31+0500\n"
+"PO-Revision-Date: 2023-12-12 21:57+0500\n"
 "Last-Translator: Ivan Konovalov <ivknv0@gmail.com>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -817,8 +817,8 @@ msgstr "`float`, `tuple` или `None`, таймаут запроса"
 #: yadisk.client.Client.rename:10 yadisk.client.Client.restore_trash:10
 #: yadisk.client.Client.revoke_token:5 yadisk.client.Client.save_to_disk:12
 #: yadisk.client.Client.trash_exists:5 yadisk.client.Client.trash_listdir:10
-#: yadisk.client.Client.unpublish:6 yadisk.client.Client.upload:8
-#: yadisk.client.Client.upload_by_link:8 yadisk.client.Client.upload_url:8
+#: yadisk.client.Client.unpublish:6 yadisk.client.Client.upload:9
+#: yadisk.client.Client.upload_by_link:9 yadisk.client.Client.upload_url:8
 #: yadisk.objects.resources.AsyncOperationLinkObject.get_status:5
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy:17
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.download:12
@@ -954,8 +954,8 @@ msgstr "`dict` или `None`, дополнительные заголовки з
 #: yadisk.client.Client.rename:11 yadisk.client.Client.restore_trash:11
 #: yadisk.client.Client.revoke_token:6 yadisk.client.Client.save_to_disk:13
 #: yadisk.client.Client.trash_exists:6 yadisk.client.Client.trash_listdir:11
-#: yadisk.client.Client.unpublish:7 yadisk.client.Client.upload:9
-#: yadisk.client.Client.upload_by_link:9 yadisk.client.Client.upload_url:9
+#: yadisk.client.Client.unpublish:7 yadisk.client.Client.upload:10
+#: yadisk.client.Client.upload_by_link:10 yadisk.client.Client.upload_url:9
 #: yadisk.objects.resources.AsyncOperationLinkObject.get_status:6
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy:18
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.download:13
@@ -1092,8 +1092,8 @@ msgstr "`int`, максимальное число повторных попыт
 #: yadisk.client.Client.rename:12 yadisk.client.Client.restore_trash:12
 #: yadisk.client.Client.revoke_token:7 yadisk.client.Client.save_to_disk:14
 #: yadisk.client.Client.trash_exists:7 yadisk.client.Client.trash_listdir:12
-#: yadisk.client.Client.unpublish:8 yadisk.client.Client.upload:10
-#: yadisk.client.Client.upload_by_link:10 yadisk.client.Client.upload_url:10
+#: yadisk.client.Client.unpublish:8 yadisk.client.Client.upload:11
+#: yadisk.client.Client.upload_by_link:11 yadisk.client.Client.upload_url:10
 #: yadisk.objects.resources.AsyncOperationLinkObject.get_status:7
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy:19
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.download:14
@@ -1403,7 +1403,7 @@ msgstr "исходный путь"
 #: yadisk.async_client.AsyncClient.upload:4
 #: yadisk.async_client.AsyncClient.upload_url:4 yadisk.client.Client.copy:6
 #: yadisk.client.Client.get_upload_link:3 yadisk.client.Client.move:4
-#: yadisk.client.Client.restore_trash:5 yadisk.client.Client.upload:4
+#: yadisk.client.Client.restore_trash:5 yadisk.client.Client.upload:5
 #: yadisk.client.Client.upload_url:4
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy:11
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.move:8
@@ -1645,7 +1645,7 @@ msgstr "ресурс не был найден на Диске"
 #: yadisk.async_client.AsyncClient.upload_url:13 yadisk.client.Client.copy:17
 #: yadisk.client.Client.get_upload_link:12 yadisk.client.Client.mkdir:11
 #: yadisk.client.Client.move:14 yadisk.client.Client.rename:15
-#: yadisk.client.Client.restore_trash:15 yadisk.client.Client.upload:13
+#: yadisk.client.Client.restore_trash:15 yadisk.client.Client.upload:14
 #: yadisk.client.Client.upload_url:13
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy:22
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_upload_link:12
@@ -1727,7 +1727,7 @@ msgstr "путь назначения уже существует"
 #: yadisk.client.Client.rename:16 yadisk.client.Client.restore_trash:16
 #: yadisk.client.Client.save_to_disk:17 yadisk.client.Client.trash_exists:9
 #: yadisk.client.Client.trash_listdir:15 yadisk.client.Client.unpublish:11
-#: yadisk.client.Client.upload:15 yadisk.client.Client.upload_url:15
+#: yadisk.client.Client.upload:16 yadisk.client.Client.upload_url:15
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy:23
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.download:17
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.exists:9
@@ -1821,7 +1821,7 @@ msgstr "невозможно выполнить запрос из-за нехв�
 #: yadisk.client.Client.publish:12 yadisk.client.Client.remove:17
 #: yadisk.client.Client.remove_trash:13 yadisk.client.Client.rename:17
 #: yadisk.client.Client.restore_trash:17 yadisk.client.Client.save_to_disk:18
-#: yadisk.client.Client.unpublish:12 yadisk.client.Client.upload:16
+#: yadisk.client.Client.unpublish:12 yadisk.client.Client.upload:17
 #: yadisk.client.Client.upload_url:16
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy:25
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.download:18
@@ -1862,7 +1862,7 @@ msgstr "запрашиваемый ресурс заблокирован дру�
 #: yadisk.async_client.AsyncClient.upload:18
 #: yadisk.async_client.AsyncClient.upload_url:17 yadisk.client.Client.copy:21
 #: yadisk.client.Client.get_upload_link:16 yadisk.client.Client.save_to_disk:20
-#: yadisk.client.Client.upload:17 yadisk.client.Client.upload_url:17
+#: yadisk.client.Client.upload:18 yadisk.client.Client.upload_url:17
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy:26
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_upload_link:16
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.upload:17
@@ -2486,7 +2486,7 @@ msgstr "`bool`, определяет, перезаписывать путь на
 #: yadisk.async_client.AsyncClient.upload:13
 #: yadisk.async_client.AsyncClient.upload_url:12
 #: yadisk.client.Client.get_upload_link:11 yadisk.client.Client.mkdir:10
-#: yadisk.client.Client.upload:12 yadisk.client.Client.upload_url:12
+#: yadisk.client.Client.upload:13 yadisk.client.Client.upload_url:12
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_upload_link:11
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.mkdir:10
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.upload:12
@@ -2504,7 +2504,7 @@ msgstr "родительская папка не существует"
 #: yadisk.async_client.AsyncClient.upload_by_link:12
 #: yadisk.async_client.AsyncClient.upload_url:14
 #: yadisk.client.Client.get_upload_link:15 yadisk.client.Client.save_to_disk:19
-#: yadisk.client.Client.upload:14 yadisk.client.Client.upload_by_link:12
+#: yadisk.client.Client.upload:15 yadisk.client.Client.upload_by_link:13
 #: yadisk.client.Client.upload_url:14
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_upload_link:15
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.upload:16
@@ -2927,7 +2927,7 @@ msgstr ""
 
 #: of yadisk.async_client.AsyncClient.upload:5
 #: yadisk.async_client.AsyncClient.upload_by_link:5
-#: yadisk.client.Client.upload:5 yadisk.client.Client.upload_by_link:5
+#: yadisk.client.Client.upload:6 yadisk.client.Client.upload_by_link:6
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.upload:5
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.upload:5
 msgid ""
@@ -2948,7 +2948,7 @@ msgid "Upload a file to disk using an upload link."
 msgstr "Загружает файл на диск по уже полученной ссылке."
 
 #: of yadisk.async_client.AsyncClient.upload_by_link:4
-#: yadisk.client.Client.upload_by_link:4
+#: yadisk.client.Client.upload_by_link:5
 msgid "upload link"
 msgstr "ссылка для загрузки файла"
 
@@ -3255,8 +3255,8 @@ msgstr "`dict`, аргументы, которые будут перданы в 
 #: yadisk.client.Client.rename:9 yadisk.client.Client.restore_trash:9
 #: yadisk.client.Client.revoke_token:4 yadisk.client.Client.save_to_disk:11
 #: yadisk.client.Client.trash_exists:4 yadisk.client.Client.trash_listdir:9
-#: yadisk.client.Client.unpublish:5 yadisk.client.Client.upload:7
-#: yadisk.client.Client.upload_by_link:7 yadisk.client.Client.upload_url:7
+#: yadisk.client.Client.unpublish:5 yadisk.client.Client.upload:8
+#: yadisk.client.Client.upload_by_link:8 yadisk.client.Client.upload_url:7
 #: yadisk.objects.resources.AsyncOperationLinkObject.get_status:4
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy:16
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.download:11
@@ -4454,8 +4454,7 @@ msgstr ""
 msgid "`str` or `None`, relative path to the resource to be unpublished"
 msgstr "`str` или `None`, относительный путь к ресурсу, подлежащему депубликации"
 
-#: of yadisk.client.Client.upload:3 yadisk.client.Client.upload_by_link:3
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.upload:3
+#: of yadisk.objects.resources.AsyncResourceObjectMethodsMixin.upload:3
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.upload:3
 msgid "path or file-like object to be uploaded"
 msgstr "путь к файлу или файл-подобный объект для загрузки"
@@ -5184,7 +5183,7 @@ msgstr ""
 ":any:`SyncOperationLinkObject`, если операция выполняется асинхронно, "
 "иначе `None`"
 
-#: of yadisk.client.Client.upload:19
+#: of yadisk.client.Client.upload:20
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.upload:19
 msgid ":any:`SyncResourceLinkObject`, link to the destination resource"
 msgstr ":any:`SyncResourceLinkObject`, ссылка на загруженный ресурс"
@@ -5839,6 +5838,14 @@ msgstr ":any:`Session`"
 msgid "token to revoke"
 msgstr "токен, подлежащий отзыву"
 
+#: of yadisk.client.Client.upload:3 yadisk.client.Client.upload_by_link:3
+msgid ""
+"path, file-like object to be uploaded or a function that returns an "
+"iterator (or generator)"
+msgstr ""
+"путь, файл-подобный объект, который нужно загрузить, или функция, которая"
+" возвращает итератор (или генератор)"
+
 #: ../../api_reference/utilities.rst:2
 msgid "Utilities"
 msgstr "Вспомогательные средства"
@@ -5908,4 +5915,22 @@ msgstr "Объект исключения, подкласс :any:`YaDiskError`"
 
 #~ msgid "generator of :any:`TrashResourceObject`"
 #~ msgstr "генератор :any:`TrashResourceObject`"
+
+#~ msgid ""
+#~ "path, file-like object to be "
+#~ "uploaded or a function that returns "
+#~ "a an iterator (or generator)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "path or file-like object to be "
+#~ "uploaded or a function that returns "
+#~ "a an iterator (or generator)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "path or file-like object to be "
+#~ "uploaded or a function that returns "
+#~ "an iterator (or generator)"
+#~ msgstr ""
 
