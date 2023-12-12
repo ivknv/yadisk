@@ -154,6 +154,26 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 .. _issue #28: https://github.com/ivknv/yadisk/issues/28
 .. _issue #29: https://github.com/ivknv/yadisk/issues/29
 .. _PR #31: https://github.com/ivknv/yadisk/pull/31
+.. _Введение: https://yadisk.readthedocs.io/ru/latest/intro.html
+.. _Справочник API: https://yadisk.readthedocs.io/ru/latest/api_reference/index.html
+.. _Доступные реализации сессий: https://yadisk.readthedocs.io/ru/latest/api_reference/sessions.html
+.. _Интерфейс Session: https://yadisk.readthedocs.io/ru/latest/api_reference/session_interface.html
+.. _requests: https://pypi.org/project/requests
+
+* **Release 2.0.0 (2023-12-12)**
+
+  * Библиотека теперь предоставляет как синхронный, так и асинхронный API
+    (см. `Введение`_ и `Справочник API`_)
+  * Теперь поддерживается несколько HTTP библиотек (см.
+    `Доступные реализации сессий`_ для полного списка)
+  * Теперь возможно добавить поддержку любой HTTP библиотеки
+    (см. `Интерфейс Session`_)
+  * `requests`_ - теперь опциональная зависимость (хотя всё ещё используется
+    по умолчанию для синхронного API)
+  * Обратите внимание, что аргументы, специфичные для requests теперь передаются
+    по другому (см. `Доступные реализации сессий`_)
+  * Предпочитаемые HTTP библиотеки теперь должны быть установлены явным образом
+    (см. `Введение`_)
 
 * **Release 1.3.4 (2023-10-15)**
 

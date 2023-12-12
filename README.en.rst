@@ -150,6 +150,26 @@ Changelog
 .. _issue #28: https://github.com/ivknv/yadisk/issues/28
 .. _issue #29: https://github.com/ivknv/yadisk/issues/29
 .. _PR #31: https://github.com/ivknv/yadisk/pull/31
+.. _Introduction: https://yadisk.readthedocs.io/en/latest/intro.html
+.. _API Reference: https://yadisk.readthedocs.io/en/latest/api_reference/index.html
+.. _Available Session Implementations: https://yadisk.readthedocs.io/en/latest/api_reference/sessions.html
+.. _Session Interface: https://yadisk.readthedocs.io/en/latest/api_reference/session_interface.html
+.. _requests: https://pypi.org/project/requests
+
+* **Release 2.0.0 (2023-12-12)**
+
+  * The library now provides both synchronous and asynchronous APIs (see
+    `Introduction`_ and `API Reference`_)
+  * Multiple HTTP libraries are supported by default (see
+    `Available Session Implementations`_ for the full list)
+  * It is now possible to add support for any HTTP library (see
+    `Session Interface`_)
+  * `requests`_ is now an optional dependency (although it's still used by
+    default for synchronous API)
+  * Note that now requests-specific arguments must be passed differently
+    (see `Available Session Implementations`_)
+  * Preferred HTTP client libraries must be explicitly installed now
+    (see `Introduction`_)
 
 * **Release 1.3.4 (2023-10-15)**
 
