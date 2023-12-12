@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from typing import Optional, Any
+from typing import Optional, Any, TypeVar
 from .exceptions import YaDiskError
-from .compat import Dict, Self
+from .compat import Dict
 from .utils import get_exception
 from .objects import ErrorObject
 from .types import ConsumeCallback, JSON, HTTPMethod, Payload, TimeoutParameter
@@ -18,6 +18,8 @@ class Response:
 
         :ivar status: `int`, HTTP status code
     """
+
+    _Self = TypeVar("_Self", bound="Response")
 
     status: int
 
@@ -67,7 +69,7 @@ class Response:
         """
         raise NotImplementedError
 
-    def __enter__(self) -> Self:
+    def __enter__(self: _Self) -> _Self:
         return self
 
     def __exit__(self, *args, **kwargs) -> None:
@@ -81,6 +83,8 @@ class Session:
 
         Must be explicitly closed (can be done using the `with` statement).
     """
+
+    _Self = TypeVar("_Self", bound="Session")
 
     def set_headers(self, headers: Dict[str, str]) -> None:
         """
@@ -142,7 +146,7 @@ class Session:
         """
         raise NotImplementedError
 
-    def __enter__(self) -> Self:
+    def __enter__(self: _Self) -> _Self:
         return self
 
     def __exit__(self, *args, **kwargs) -> None:

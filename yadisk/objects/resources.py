@@ -12,9 +12,11 @@ from ..common import (
     dict_or_error, str_or_dict_or_error
 )
 
-from typing import Any, overload, Union, IO, AnyStr, Protocol, Optional, TYPE_CHECKING
+from typing import (
+    TYPE_CHECKING, Any, overload, Union, IO, AnyStr, Protocol, Optional
+)
 
-from ..compat import Generator, List, AsyncGenerator, Self
+from ..compat import Generator, List, AsyncGenerator
 
 if TYPE_CHECKING:
     import datetime
@@ -2151,7 +2153,7 @@ class ResourceLinkObject(LinkObject):
                 pass
 
     @classmethod
-    def from_path(cls, path: Optional[str], yadisk: Optional[Any] = None) -> Self:
+    def from_path(cls, path: Optional[str], yadisk: Optional[Any] = None):
         if path is None:
             return cls(yadisk=yadisk)
 
@@ -2228,7 +2230,7 @@ class PublicResourceLinkObject(LinkObject):
                 self.public_key = public_key_or_url
 
     @classmethod
-    def from_public_key(cls, public_key: Optional[str], yadisk: Optional[Any] = None) -> Self:
+    def from_public_key(cls, public_key: Optional[str], yadisk: Optional[Any] = None):
         if public_key is None:
             return cls(yadisk=yadisk)
 

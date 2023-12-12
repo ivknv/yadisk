@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from typing import TYPE_CHECKING, Any, Optional
-from .compat import Iterable, Self, Dict
+from typing import TYPE_CHECKING, Any, Optional, TypeVar
+from .compat import Dict
 from .types import (
     AsyncConsumeCallback, JSON, Headers, HTTPMethod, AsyncPayload, TimeoutParameter
 )
@@ -22,6 +22,8 @@ class AsyncResponse:
 
         :ivar status: `int`, HTTP status code
     """
+
+    _Self = TypeVar("_Self", bound="AsyncResponse")
 
     status: int
 
@@ -72,7 +74,7 @@ class AsyncResponse:
         """
         raise NotImplementedError
 
-    async def __aenter__(self) -> Self:
+    async def __aenter__(self: _Self) -> _Self:
         return self
 
     async def __aexit__(self, *args, **kwargs) -> None:
@@ -87,6 +89,8 @@ class AsyncSession:
 
         Must be explicitly closed (can be done using the `with` statement).
     """
+
+    _Self = TypeVar("_Self", bound="AsyncSession")
 
     def set_headers(self, headers: Headers) -> None:
         """
@@ -149,7 +153,7 @@ class AsyncSession:
         """
         raise NotImplementedError
 
-    async def __aenter__(self) -> Self:
+    async def __aenter__(self: _Self) -> _Self:
         return self
 
     async def __aexit__(self, *args, **kwargs) -> None:
