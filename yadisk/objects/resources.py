@@ -2137,6 +2137,11 @@ class ResourceLinkObject(LinkObject):
         :ivar path: `str`, path to the resource
     """
 
+    type: Optional[str]
+    public_key: Optional[str]
+    public_url: Optional[str]
+    file: Optional[str]
+
     path: Optional[str]
 
     def __init__(self, link: Optional[dict] = None, yadisk: Optional[Any] = None):
@@ -2144,6 +2149,8 @@ class ResourceLinkObject(LinkObject):
         self.set_field_type("path", str_or_error)
         self.set_field_type("public_key", str_or_error)
         self.set_field_type("public_url", str_or_error)
+        self.set_field_type("type", str_or_error)
+        self.set_field_type("file", str_or_error)
 
         if self.href is not None and is_resource_link(self.href):
             try:
@@ -2209,6 +2216,10 @@ class PublicResourceLinkObject(LinkObject):
         :ivar public_url: `str`, public URL of the resource
     """
 
+    type: Optional[str]
+    file: Optional[str]
+
+    path: Optional[str]
     public_key: Optional[str]
     public_url: Optional[str]
 
