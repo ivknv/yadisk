@@ -170,6 +170,8 @@ Changelog
     (see `Available Session Implementations`_)
   * Preferred HTTP client libraries must be explicitly installed now
     (see `Introduction`_)
+  * :code:`Client.upload()` and :code:`Client.upload_by_link()` can now accept
+    a function that returns an iterator (or a generator) as a payload
 
 * **Release 1.3.4 (2023-10-15)**
 

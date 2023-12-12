@@ -23,6 +23,8 @@ Changelog
     default for synchronous API)
   * Note that now requests-specific arguments must be passed differently (see :doc:`/api_reference/sessions`)
   * Preferred HTTP client libraries must be explicitly installed now (see :doc:`/intro`)
+  * :any:`Client.upload()` and :any:`Client.upload_by_link()` can now accept
+    a function that returns an iterator (or a generator) as a payload
 
 * **Release 1.3.4 (2023-10-15)**
 
