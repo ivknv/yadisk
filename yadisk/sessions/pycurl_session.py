@@ -179,9 +179,18 @@ class PycURLSession(Session):
 
             if connect_timeout is None:
                 connect_timeout = MAX_TIMEOUT
+            elif connect_timeout <= 0.001:
+                # If connect_timeout gets rounded down to 0, the default connect
+                # timeout would be applied instead by cURL
+                connect_timeout = 0.001
 
             if read_timeout is None:
-                read_timeout = MAX_TIMEOUT
+                # 0 disables LOW_SPEED_TIME
+                read_timeout = 0
+            elif read_timeout <= 1.0:
+                # If read_timeout gets rounded down to 0, the low speed time will be disabled
+                # 1 second is the lowest possible timeout
+                read_timeout = 1.0
 
             curl.setopt(pycurl.CONNECTTIMEOUT_MS, int(connect_timeout * 1000))
             curl.setopt(pycurl.LOW_SPEED_TIME, int(read_timeout))
