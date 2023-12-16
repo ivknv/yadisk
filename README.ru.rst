@@ -126,7 +126,7 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
         async with aiofiles.open("file_to_upload.txt", "rb") as f:
             await client.upload(f, "/destination.txt")
 
-        # Same thing, но с обычными файлами
+        # То же самое, но с обычными файлами
         with open("file_to_upload.txt", "rb") as f:
             await client.upload(f, "/destination.txt")
 
