@@ -51,7 +51,7 @@ class APIRequest(object):
     success_codes: Set[int] = {200}
     retry_interval: Optional[Union[int, float]] = None
 
-    data: Dict
+    data: Union[Dict, bytes]
     params: Dict[str, Any]
     send_kwargs: Dict[str, Any]
 
@@ -111,7 +111,10 @@ class APIRequest(object):
         headers.update(self.headers)
 
         if self.data:
-            data = json.dumps(self.data).encode("utf8")
+            if isinstance(self.data, Dict):
+                data = json.dumps(self.data).encode("utf8")
+            else:
+                data = self.data
         else:
             data = None
 

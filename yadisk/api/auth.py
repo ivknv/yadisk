@@ -6,6 +6,8 @@ from ..exceptions import InvalidResponseError
 
 from typing import Optional, TYPE_CHECKING
 
+from urllib.parse import urlencode
+
 if TYPE_CHECKING:
     from ..types import AnySession
 
@@ -36,10 +38,12 @@ class RefreshTokenRequest(APIRequest):
                                             "client_secret": client_secret}, **kwargs)
 
     def process_args(self, refresh_token: str, client_id: str, client_secret: str) -> None:
-        self.data["grant_type"] = "refresh_token"
-        self.data["refresh_token"] = refresh_token
-        self.data["client_id"] = client_id
-        self.data["client_secret"] = client_secret
+        self.data = urlencode({
+            "grant_type":    "refresh_token",
+            "refresh_token": refresh_token,
+            "client_id":     client_id,
+            "client_secret": client_secret,
+        }).encode("utf8")
 
     def process_json(self, js: Optional[dict]) -> TokenObject:
         if js is None:
@@ -72,9 +76,11 @@ class RevokeTokenRequest(APIRequest):
                                             "client_secret": client_secret}, **kwargs)
 
     def process_args(self, token: str, client_id: str, client_secret: str) -> None:
-        self.data["access_token"] = token
-        self.data["client_id"] = client_id
-        self.data["client_secret"] = client_secret
+        self.data = urlencode({
+            "access_token":  token,
+            "client_id":     client_id,
+            "client_secret": client_secret
+        }).encode("utf8")
 
     def process_json(self, js: Optional[dict]) -> TokenRevokeStatusObject:
         if js is None:
@@ -117,16 +123,21 @@ class GetTokenRequest(APIRequest):
                      client_secret: str,
                      device_id: Optional[str],
                      device_name: Optional[str]) -> None:
-        self.data["grant_type"] = "authorization_code"
-        self.data["code"] = code
-        self.data["client_id"] = client_id
-        self.data["client_secret"] = client_secret
+
+        data = {}
+
+        data["grant_type"] = "authorization_code"
+        data["code"] = code
+        data["client_id"] = client_id
+        data["client_secret"] = client_secret
 
         if device_id is not None:
-            self.data["device_id"] = device_id
+            data["device_id"] = device_id
 
         if device_name is not None:
-            self.data["device_name"] = device_name
+            data["device_name"] = device_name
+
+        self.data = urlencode(data).encode("utf8")
 
     def process_json(self, js: Optional[dict]) -> TokenObject:
         if js is None:
