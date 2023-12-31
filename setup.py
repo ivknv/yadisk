@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import codecs
@@ -13,7 +13,7 @@ with codecs.open(os.path.join(module_dir, "README.rst"), encoding="utf8") as f:
 
 setup(
     name="yadisk",
-    version="2.0.0",
+    version="2.0.1",
     packages=find_packages(exclude=("tests",)),
     description="Библиотека-клиент REST API Яндекс.Диска / Yandex.Disk REST API client library",
     long_description=long_description,
