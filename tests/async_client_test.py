@@ -46,8 +46,9 @@ def make_test_case(name: str, session: AsyncSessionName):
         async def asyncTearDown(self):
             await self.client.close()
 
-            # Needed for aiohttp to correctly release its resources (see https://github.com/aio-libs/aiohttp/issues/1115)
-            await asyncio.sleep(0.1)
+            if session == "aiohttp":
+                # Needed for aiohttp to correctly release its resources (see https://github.com/aio-libs/aiohttp/issues/1115)
+                await asyncio.sleep(0.1)
 
         async def test_get_meta(self):
             resource = await self.client.get_meta(self.path)
