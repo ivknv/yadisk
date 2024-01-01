@@ -24,6 +24,8 @@ from .compat import Callable, AsyncGenerator, Awaitable, Dict
 
 from .async_session import AsyncSession
 
+from .common import CaseInsensitiveDict
+
 try:
     from .sessions.async_httpx_session import AsyncHTTPXSession
 except ImportError:
@@ -1191,30 +1193,27 @@ class AsyncClient:
             :returns: `bool`
         """
 
-        _apply_default_args(kwargs, self.default_args)
-
         # Any ID will do, doesn't matter whether it exists or not
         fake_operation_id = "0000"
 
         if token is None:
             token = self.token
 
-        if token == self.token:
-            session = self.session
-        else:
-            session = self.make_session(token)
+        if not token:
+            return False
+
+        headers = CaseInsensitiveDict(kwargs.get("headers", {}));
+        headers["Authorization"] = f"OAuth {token}"
+        kwargs["headers"] = headers
 
         try:
             # get_operation_status() doesn't require any permissions, unlike most other requests
-            await self._get_operation_status(session, fake_operation_id, **kwargs)
+            await self.get_operation_status(fake_operation_id, **kwargs)
+            return True
+        except OperationNotFoundError:
             return True
         except UnauthorizedError:
             return False
-        except OperationNotFoundError:
-            return True
-        finally:
-            if session is not self.session:
-                await session.close()
 
     async def get_trash_meta(self, path: str, /, **kwargs) -> "AsyncTrashResourceObject":
         """

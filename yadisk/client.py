@@ -22,6 +22,8 @@ except ImportError:
 
 from . import settings
 
+from .common import CaseInsensitiveDict
+
 from typing import Any, Optional, IO, AnyStr, Union, Literal, TYPE_CHECKING
 from .compat import Callable, Generator, Dict
 from .types import OpenFileCallback, SessionFactory, FileOrPath, FileOrPathDestination
@@ -592,30 +594,27 @@ class Client:
             :returns: `bool`
         """
 
-        _apply_default_args(kwargs, self.default_args)
-
         # Any ID will do, doesn't matter whether it exists or not
         fake_operation_id = "0000"
 
         if token is None:
             token = self.token
 
-        if token == self.token:
-            session = self.session
-        else:
-            session = self.make_session(token)
+        if not token:
+            return False
+
+        headers = CaseInsensitiveDict(kwargs.get("headers", {}));
+        headers["Authorization"] = f"OAuth {token}"
+        kwargs["headers"] = headers
 
         try:
             # get_operation_status() doesn't require any permissions, unlike most other requests
-            self._get_operation_status(session, fake_operation_id, **kwargs)
+            self.get_operation_status(fake_operation_id, **kwargs)
+            return True
+        except OperationNotFoundError:
             return True
         except UnauthorizedError:
             return False
-        except OperationNotFoundError:
-            return True
-        finally:
-            if session is not self.session:
-                session.close()
 
     def get_disk_info(self, **kwargs) -> "DiskInfoObject":
         """
