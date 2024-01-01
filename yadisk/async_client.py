@@ -8,7 +8,8 @@ from urllib.parse import urlencode
 
 from .types import (
     AsyncFileOrPath, AsyncFileOrPathDestination,
-    AsyncOpenFileCallback, FileOpenMode, BinaryAsyncFileLike
+    AsyncOpenFileCallback, FileOpenMode, BinaryAsyncFileLike,
+    AsyncSessionName
 )
 
 from . import settings
@@ -23,17 +24,12 @@ from typing import Any, Optional, Union, IO, TYPE_CHECKING, BinaryIO, Literal
 from .compat import Callable, AsyncGenerator, Awaitable, Dict
 
 from .async_session import AsyncSession
+from .import_session import import_async_session
 
 from .common import CaseInsensitiveDict
 from .client_common import (
     _apply_default_args, _filter_request_kwargs, _replace_authorization_header
 )
-
-try:
-    from .sessions.async_httpx_session import AsyncHTTPXSession
-except ImportError:
-    # httpx is not available
-    AsyncHTTPXSession = None
 
 try:
     import aiofiles
@@ -215,7 +211,13 @@ class AsyncClient:
         :param token: application token
         :param default_args: `dict` or `None`, default arguments for methods.
                              Can be used to set the default timeout, headers, etc.
-        :param session: `None` or a an instance of :any:`AsyncSession`
+        :param session: `None`, `str` or an instance of :any:`AsyncSession`.
+                        If :code:`session` is a string, it must be one of the
+                        following values:
+
+                          * :code:`"aiohttp"` - :any:`AIOHTTPSession`
+                          * :code:`"httpx"` - :any:`AsyncHTTPXSession`
+
         :param open_file: `None` or an async function that opens a file for
                            reading or writing (:code:`aiofiles.open()` by default)
 
@@ -263,7 +265,7 @@ class AsyncClient:
                  token:  str = "",
                  *,
                  default_args:    Optional[Dict[str, Any]] = None,
-                 session:         Optional[AsyncSession] = None,
+                 session:         Optional[Union[AsyncSession, AsyncSessionName]] = None,
                  open_file:       Optional[AsyncOpenFileCallback] = None):
         self.id = id
         self.secret = secret
@@ -273,10 +275,12 @@ class AsyncClient:
         self.default_args = {} if default_args is None else default_args
 
         if session is None:
-            if AsyncHTTPXSession is None:
+            try:
+                session = import_async_session("httpx")()
+            except ImportError:
                 raise RuntimeError("httpx is not installed. Either install httpx or provide a custom session")
-
-            session = AsyncHTTPXSession()
+        elif isinstance(session, str):
+            session = import_async_session(session)()
 
         self.session = session
 

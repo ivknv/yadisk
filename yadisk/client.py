@@ -14,11 +14,7 @@ from .utils import auto_retry
 from .objects import SyncResourceLinkObject, SyncPublicResourceLinkObject, SyncTrashResourceObject
 
 from .session import Session
-
-try:
-    from .sessions.requests_session import RequestsSession
-except ImportError:
-    RequestsSession = None
+from .import_session import import_session
 
 from . import settings
 
@@ -26,7 +22,7 @@ from .common import CaseInsensitiveDict
 
 from typing import Any, Optional, Union, Literal, TYPE_CHECKING
 from .compat import Callable, Generator, Dict
-from .types import OpenFileCallback, FileOrPath, FileOrPathDestination
+from .types import OpenFileCallback, FileOrPath, FileOrPathDestination, SessionName
 
 from .client_common import (
     _apply_default_args, _filter_request_kwargs,
@@ -148,7 +144,14 @@ class Client:
         :param token: application token
         :param default_args: `dict` or `None`, default arguments for methods.
                              Can be used to set the default timeout, headers, etc.
-        :param session: `None` or an instance of :any:`Session`
+        :param session: `None`, `str` or an instance of :any:`Session`.
+                        If :code:`session` is a string, it must be one of the
+                        following values:
+
+                          * :code:`"httpx"` - :any:`HTTPXSession`
+                          * :code:`"pycurl"` - :any:`PycURLSession`
+                          * :code:`"requests"` - :any:`RequestsSession`
+
         :param open_file: `None` or a function that opens a file for reading or
                           writing (:code:`open()` by default)
 
@@ -196,7 +199,7 @@ class Client:
                  token:  str = "",
                  *,
                  default_args:    Optional[Dict[str, Any]] = None,
-                 session:         Optional[Session] = None,
+                 session:         Optional[Union[Session, SessionName]] = None,
                  open_file:       Optional[OpenFileCallback] = None):
         self.id = id
         self.secret = secret
@@ -210,10 +213,12 @@ class Client:
         self.open_file = open_file
 
         if session is None:
-            if RequestsSession is None:
+            try:
+                session = import_session("requests")()
+            except ImportError:
                 raise RuntimeError("requests is not installed. Either install requests or provide a custom session")
-
-            session = RequestsSession()
+        elif isinstance(session, str):
+            session = import_session(session)()
 
         self.session = session
         self.token = token

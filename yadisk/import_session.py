@@ -5,6 +5,7 @@ from typing import Type, TYPE_CHECKING
 if TYPE_CHECKING:
     from .session import Session
     from .async_session import AsyncSession
+    from .types import AsyncSessionName, SessionName
 
 __all__ = ["import_session", "import_async_session"]
 
@@ -19,7 +20,7 @@ async_sessions = {
     "httpx":   ("sessions.async_httpx_session", "AsyncHTTPXSession")
 }
 
-def import_session(name: str) -> Type["Session"]:
+def import_session(name: "SessionName") -> Type["Session"]:
     """
         Imports relevant session class based on provided name.
 
@@ -47,7 +48,7 @@ def import_session(name: str) -> Type["Session"]:
         class_name
     );
 
-def import_async_session(name: str) -> Type["AsyncSession"]:
+def import_async_session(name: "AsyncSessionName") -> Type["AsyncSession"]:
     """
         Imports relevant asynchronous session class based on provided name.
 

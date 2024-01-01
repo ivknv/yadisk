@@ -3,7 +3,7 @@
 import asyncio
 import os
 import tempfile
-from typing import Any, Callable
+from typing import Any
 import aiofiles
 
 import posixpath
@@ -13,10 +13,11 @@ from io import BytesIO
 import yadisk
 from yadisk.common import is_operation_link, ensure_path_has_schema
 from yadisk.api.operations import GetOperationStatusRequest
+from yadisk.types import AsyncSessionName
 
 __all__ = ["AIOHTTPTestCase", "AsyncHTTPXTestCase"]
 
-def make_test_case(name: str, session_factory: Callable):
+def make_test_case(name: str, session: AsyncSessionName):
     class AsyncClientTestCase(IsolatedAsyncioTestCase):
         client: yadisk.AsyncClient
         path: str
@@ -39,7 +40,7 @@ def make_test_case(name: str, session_factory: Callable):
                 os.environ.get("PYTHON_YADISK_APP_ID", ""),
                 os.environ.get("PYTHON_YADISK_APP_SECRET", ""),
                 os.environ["PYTHON_YADISK_APP_TOKEN"],
-                session=session_factory())
+                session=session)
             self.client.default_args["n_retries"] = 50
 
         async def asyncTearDown(self):
@@ -366,5 +367,5 @@ def make_test_case(name: str, session_factory: Callable):
 
     return AsyncClientTestCase
 
-AIOHTTPTestCase = make_test_case("AIOHTTPTestCase", yadisk.import_async_session("aiohttp"))
-AsyncHTTPXTestCase = make_test_case("AsyncHTTPXTestCase", yadisk.import_async_session("httpx"))
+AIOHTTPTestCase = make_test_case("AIOHTTPTestCase", "aiohttp")
+AsyncHTTPXTestCase = make_test_case("AsyncHTTPXTestCase", "httpx")

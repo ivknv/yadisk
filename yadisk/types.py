@@ -17,7 +17,8 @@ __all__ = [
     "AsyncPayload", "AsyncConsumeCallback", "AnyResponse", "AnyClient",
     "AsyncFileLike", "BinaryAsyncFileLike", "FileOrPath", "FileOrPathDestination",
     "AsyncFileOrPath", "AsyncFileOrPathDestination", "SessionFactory", "AsyncSessionFactory",
-    "FileOpenMode", "OpenFileCallback", "AsyncOpenFileCallback", "HTTPMethod"
+    "FileOpenMode", "OpenFileCallback", "AsyncOpenFileCallback", "HTTPMethod",
+    "SessionName", "AsyncSessionName"
 ]
 
 JSON = Union[Dict, List, str, int, float, None]
@@ -95,3 +96,6 @@ HTTPMethod = Union[
     Literal["CONNECT"],
     Literal["TRACE"],
 ]
+
+SessionName = Union[Literal["httpx"], Literal["pycurl"], Literal["requests"]]
+AsyncSessionName = Union[Literal["aiohttp"], Literal["httpx"]]
