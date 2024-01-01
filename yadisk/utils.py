@@ -19,9 +19,12 @@ EXCEPTION_MAP = {
     400: defaultdict(
         lambda: BadRequestError,
         {
-            "FieldValidationError":  FieldValidationError,
-            "authorization_pending": AuthorizationPendingError,
-            "invalid_client":        InvalidClientError
+            "FieldValidationError":   FieldValidationError,
+            "authorization_pending":  AuthorizationPendingError,
+            "invalid_client":         InvalidClientError,
+            "invalid_grant":          InvalidGrantError,
+            "bad_verification_code":  BadVerificationCodeError,
+            "unsupported_token_type": UnsupportedTokenTypeError
         }
     ),
     401: defaultdict(lambda: UnauthorizedError),

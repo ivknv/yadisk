@@ -12,7 +12,8 @@ __all__ = [
     "ParentNotFoundError", "PathExistsError", "DirectoryExistsError",
     "FieldValidationError", "ResourceIsLockedError", "MD5DifferError",
     "OperationNotFoundError", "InvalidResponseError", "AuthorizationPendingError",
-    "InvalidClientError"
+    "InvalidClientError", "InvalidGrantError", "BadVerificationCodeError",
+    "UnsupportedTokenTypeError"
 ]
 
 class YaDiskError(Exception):
@@ -176,4 +177,16 @@ class AuthorizationPendingError(BadRequestError):
 
 class InvalidClientError(BadRequestError):
     """Thrown when an invalid client ID or client secret was provided"""
+    pass
+
+class InvalidGrantError(BadRequestError):
+    """Thrown when a verification code is expired or invalid"""
+    pass
+
+class BadVerificationCodeError(BadRequestError):
+    """Thrown when a verification code has invalid format"""
+    pass
+
+class UnsupportedTokenTypeError(BadRequestError):
+    """Thrown when the specified token cannot be used in a request"""
     pass
