@@ -430,7 +430,6 @@ class Client:
             After the user has entered the code on the OAuth page, the application
             can exchange the :code:`device_code` for the token using the :any:`Client.get_token_from_device_code()`.
 
-            :param client_id: application ID
             :param device_id: unique device ID (between 6 and 50 characters)
             :param device_name: device name, should not be longer than 100 characters
             :param scope: `str`, list of permissions for the application
