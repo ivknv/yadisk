@@ -22,7 +22,7 @@ except ImportError:
 
 from . import settings
 
-from typing import Any, Optional, IO, AnyStr, Union, TYPE_CHECKING
+from typing import Any, Optional, IO, AnyStr, Union, Literal, TYPE_CHECKING
 from .compat import Callable, Generator, Dict
 from .types import OpenFileCallback, SessionFactory, FileOrPath, FileOrPathDestination
 
@@ -277,7 +277,20 @@ class Client:
 
         return session
 
-    def get_auth_url(self, **kwargs) -> str:
+    def get_auth_url(
+        self,
+        type:                  Union[Literal["code"], Literal["token"]],
+        device_id:             Optional[str] = None,
+        device_name:           Optional[str] = None,
+        display:               str = "popup",
+        login_hint:            Optional[str] = None,
+        scope:                 Optional[str] = None,
+        optional_scope:        Optional[str] = None,
+        force_confirm:         bool = True,
+        state:                 Optional[str] = None,
+        code_challenge:        Optional[str] = None,
+        code_challenge_method: Optional[Union[Literal["plain"], Literal["S256"]]] = None
+    ) -> str:
         """
             Get authentication URL for the user to go to.
             This method doesn't send any HTTP requests and merely constructs the URL.
@@ -292,22 +305,24 @@ class Client:
             :param force_confirm: if True, user will be required to confirm access to the account
                                   even if the user has already granted access for the application
             :param state: The state string, which Yandex.OAuth returns without any changes (<= 1024 characters)
+            :param code_challenge: string derived from the generated :code:`code_verifier` value
+                                   using one of the two possible transformations (plain or S256)
+            :param code_challenge_method: specifies what function was used to transform
+                                          the :code:`code_verifier` value to :code:`code_challenge`,
+                                          allowed values are :code:`"plain"` and :code:`"S256"` (recommended).
+                                          If :code:`"S256"` is used, :code:`code_challenge` must be produced
+                                          by hashing the :code:`code_verifier` value and encoding it to base64
+
+            :raises ValueError: invalid arguments were passed
 
             :returns: authentication URL
         """
 
-        type           = kwargs.get("type")
-        device_id      = kwargs.get("device_id")
-        device_name    = kwargs.get("device_name")
-        display        = kwargs.get("display", "popup")
-        login_hint     = kwargs.get("login_hint")
-        scope          = kwargs.get("scope")
-        optional_scope = kwargs.get("optional_scope")
-        force_confirm  = kwargs.get("force_confirm", True)
-        state          = kwargs.get("state")
-
-        if type not in {"code", "token"}:
+        if type not in ("code", "token"):
             raise ValueError("type must be either 'code' or 'token'")
+
+        if code_challenge_method not in (None, "plain", "S256"):
+            raise ValueError("code_challenge_method must be either 'plain' or 'S256'")
 
         params = {"response_type": type,
                   "client_id":     self.id,
@@ -332,9 +347,27 @@ class Client:
         if state is not None:
             params["state"] = state
 
+        if code_challenge is not None:
+            params["code_challenge"] = code_challenge
+
+        if code_challenge_method is not None:
+            params["code_challenge_method"] = code_challenge_method
+
         return "https://oauth.yandex.ru/authorize?" + urlencode(params)
 
-    def get_code_url(self, **kwargs) -> str:
+    def get_code_url(
+        self,
+        device_id:             Optional[str] = None,
+        device_name:           Optional[str] = None,
+        display:               str = "popup",
+        login_hint:            Optional[str] = None,
+        scope:                 Optional[str] = None,
+        optional_scope:        Optional[str] = None,
+        force_confirm:         bool = True,
+        state:                 Optional[str] = None,
+        code_challenge:        Optional[str] = None,
+        code_challenge_method: Optional[Union[Literal["plain"], Literal["S256"]]] = None
+    ) -> str:
         """
             Get the URL for the user to get the confirmation code.
             The confirmation code can later be used to get the token.
@@ -349,13 +382,32 @@ class Client:
             :param force_confirm: if True, user will be required to confirm access to the account
                                   even if the user has already granted access for the application
             :param state: The state string, which Yandex.OAuth returns without any changes (<= 1024 characters)
+            :param code_challenge: string derived from the generated :code:`code_verifier` value
+                                   using one of the two possible transformations (plain or S256)
+            :param code_challenge_method: specifies what function was used to transform
+                                          the :code:`code_verifier` value to :code:`code_challenge`,
+                                          allowed values are :code:`"plain"` and :code:`"S256"` (recommended).
+                                          If :code:`"S256"` is used, :code:`code_challenge` must be produced
+                                          by hashing the :code:`code_verifier` value and encoding it to base64
+
+            :raises ValueError: invalid arguments were passed
 
             :returns: authentication URL
         """
 
-        kwargs["type"] = "code"
-
-        return self.get_auth_url(**kwargs)
+        return self.get_auth_url(
+            "code",
+            device_id=device_id,
+            device_name=device_name,
+            display=display,
+            login_hint=login_hint,
+            scope=scope,
+            optional_scope=optional_scope,
+            force_confirm=force_confirm,
+            state=state,
+            code_challenge=code_challenge,
+            code_challenge_method=code_challenge_method
+        )
 
     def get_token(self, code: str, /, **kwargs) -> "TokenObject":
         """
@@ -363,6 +415,8 @@ class Client:
 
             :param code: confirmation code
             :param device_id: unique device ID (between 6 and 50 characters)
+            :param device_name: device name, should not be longer than 100 characters
+            :param code_verifier: `str`, verifier code, used with the PKCE authorization flow
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries

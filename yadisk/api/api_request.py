@@ -102,7 +102,7 @@ class APIRequest(object):
 
         self.process_args(**self.args)
 
-    def process_args(self) -> None:
+    def process_args(self, **kwargs) -> None:
         raise NotImplementedError
 
     def _prepare_send_args(self) -> Dict[str, Any]:
