@@ -331,7 +331,7 @@ class AsyncClient:
             Prepares a new :any:`AsyncSession` object with headers needed for API.
 
             :param token: application token, equivalent to `self.token` if `None`
-            :returns: `AsyncSession`
+            :returns: :any:`AsyncSession`
         """
 
         if token is None:
