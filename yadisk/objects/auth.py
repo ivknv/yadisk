@@ -18,12 +18,16 @@ class TokenObject(YaDiskObject):
         :ivar refresh_token: `str`, the refresh-token
         :ivar token_type: `str`, type of the token
         :ivar expires_in: `int`, amount of time before the token expires
+        :ivar scope: `str`, list of rights requested by the application,
+                     returned only if the token has a smaller set of rights
+                     than requested
     """
 
     access_token: Optional[str]
     refresh_token: Optional[str]
     token_type: Optional[str]
     expires_in: Optional[int]
+    scope: Optional[str]
 
     def __init__(self, token: Optional[dict] = None, yadisk: Optional[Any] = None):
         YaDiskObject.__init__(
@@ -31,7 +35,8 @@ class TokenObject(YaDiskObject):
             {"access_token":  str_or_error,
              "refresh_token": str_or_error,
              "token_type":    str_or_error,
-             "expires_in":    int_or_error},
+             "expires_in":    int_or_error,
+             "scope":         str_or_error},
             yadisk)
 
         self.import_fields(token)
