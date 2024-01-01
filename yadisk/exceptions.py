@@ -10,7 +10,7 @@ __all__ = ["YaDiskError", "RequestError", "YaDiskConnectionError", "TooManyRedir
            "GatewayTimeoutError", "InsufficientStorageError", "PathNotFoundError",
            "ParentNotFoundError", "PathExistsError", "DirectoryExistsError",
            "FieldValidationError", "ResourceIsLockedError", "MD5DifferError",
-           "OperationNotFoundError", "InvalidResponseError"]
+           "OperationNotFoundError", "InvalidResponseError", "AuthorizationPendingError"]
 
 class YaDiskError(Exception):
     """
@@ -165,4 +165,8 @@ class OperationNotFoundError(NotFoundError):
 
 class InvalidResponseError(YaDiskError):
     """Thrown when Yandex.Disk did not return a JSON response or if it's invalid."""
+    pass
+
+class AuthorizationPendingError(BadRequestError):
+    """Thrown when authorization is currently pending, the application has to wait."""
     pass

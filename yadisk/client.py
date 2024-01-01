@@ -30,7 +30,9 @@ if TYPE_CHECKING:
     from .objects import (
         SyncResourceObject, SyncOperationLinkObject, SyncTrashResourceObject,
         SyncPublicResourceObject, SyncPublicResourcesListObject,
-        DiskInfoObject, TokenObject, TokenRevokeStatusObject)
+        DiskInfoObject, TokenObject, TokenRevokeStatusObject,
+        DeviceCodeObject
+    )
 
 __all__ = ["Client"]
 
@@ -304,8 +306,8 @@ class Client:
                                  is used
             :param display: doesn't do anything, kept for compatibility
             :param login_hint: username or email for the account the token is being requested for
-            :param scope: list of permissions for the application
-            :param optional_scope: list of optional permissions for the application
+            :param scope: `str`, list of permissions for the application
+            :param optional_scope: `str`, list of optional permissions for the application
             :param force_confirm: if True, user will be required to confirm access to the account
                                   even if the user has already granted access for the application
             :param state: The state string, which Yandex.OAuth returns without any changes (<= 1024 characters)
@@ -387,8 +389,8 @@ class Client:
                                  is used
             :param display: doesn't do anything, kept for compatibility
             :param login_hint: username or email for the account the token is being requested for
-            :param scope: list of permissions for the application
-            :param optional_scope: list of optional permissions for the application
+            :param scope: `str`, list of permissions for the application
+            :param optional_scope: `str`, list of optional permissions for the application
             :param force_confirm: if True, user will be required to confirm access to the account
                                   even if the user has already granted access for the application
             :param state: The state string, which Yandex.OAuth returns without any changes (<= 1024 characters)
@@ -420,6 +422,33 @@ class Client:
             code_challenge_method=code_challenge_method
         )
 
+    def get_device_code(self, **kwargs) -> "DeviceCodeObject":
+        """
+            This request is used for authorization using the Yandex OAuth page.
+            In this case the user must enter the verification code (:code:`user_code`)
+            in the browser on the Yandex OAuth page.
+            After the user has entered the code on the OAuth page, the application
+            can exchange the :code:`device_code` for the token using the :any:`Client.get_token_from_device_code()`.
+
+            :param client_id: application ID
+            :param device_id: unique device ID (between 6 and 50 characters)
+            :param device_name: device name, should not be longer than 100 characters
+            :param scope: `str`, list of permissions for the application
+            :param optional_scope: `str`, list of optional permissions for the application
+
+            :raises BadRequestError: invalid request parameters
+
+            :returns: :any:`DeviceCodeObject` containing :code:`user_code` and :code:`device_code`
+        """
+
+        _apply_default_args(kwargs, self.default_args)
+
+        with self.session_factory() as session:
+            request = GetDeviceCodeRequest(session, self.id, **kwargs)
+            request.send()
+
+            return request.process()
+
     def get_token(self, code: str, /, **kwargs) -> "TokenObject":
         """
             Get a new token.
@@ -441,7 +470,48 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
 
         with self.session_factory() as session:
-            request = GetTokenRequest(session, code, self.id, self.secret, **kwargs)
+            request = GetTokenRequest(
+                session,
+                "authorization_code",
+                client_id=self.id,
+                code=code,
+                client_secret=self.secret,
+                **kwargs
+            )
+            request.send()
+
+            return request.process()
+
+    def get_token_from_device_code(self, device_code: str, /, **kwargs) -> "TokenObject":
+        """
+            Get a new token from a device code, previously obtained with :any:`Client.get_device_code()`.
+
+            :param code: confirmation code
+            :param device_id: unique device ID (between 6 and 50 characters)
+            :param device_name: device name, should not be longer than 100 characters
+            :param code_verifier: `str`, verifier code, used with the PKCE authorization flow
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises AuthorizationPendingError: user has not authorized the application yet
+            :raises BadRequestError: invalid or expired code, application ID or secret
+
+            :returns: :any:`TokenObject`
+        """
+
+        _apply_default_args(kwargs, self.default_args)
+
+        with self.session_factory() as session:
+            request = GetTokenRequest(
+                session,
+                "device_code",
+                client_id=self.id,
+                code=device_code,
+                client_secret=self.secret,
+                **kwargs
+            )
             request.send()
 
             return request.process()

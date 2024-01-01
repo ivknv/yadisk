@@ -16,7 +16,8 @@ from .types import AnyResponse
 __all__ = ["get_exception", "auto_retry", "async_auto_retry"]
 
 EXCEPTION_MAP = {400: defaultdict(lambda: BadRequestError,
-                                  {"FieldValidationError": FieldValidationError}),
+                                  {"FieldValidationError": FieldValidationError,
+                                   "authorization_pending": AuthorizationPendingError}),
                  401: defaultdict(lambda: UnauthorizedError),
                  403: defaultdict(lambda: ForbiddenError),
                  404: defaultdict(lambda: NotFoundError,
