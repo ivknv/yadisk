@@ -195,12 +195,13 @@ class Client:
     synchronous = True
 
     def __init__(self,
-                 id: str = "",
+                 id:     str = "",
                  secret: str = "",
-                 token: str = "",
-                 default_args: Optional[Dict[str, Any]] = None,
+                 token:  str = "",
+                 *,
+                 default_args:    Optional[Dict[str, Any]] = None,
                  session_factory: Optional[SessionFactory] = None,
-                 open_file: Optional[OpenFileCallback] = None):
+                 open_file:       Optional[OpenFileCallback] = None):
         self.id = id
         self.secret = secret
         self._token = ""
