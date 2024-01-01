@@ -28,3 +28,11 @@ Asynchronous Implementations
 
 .. autoclass:: yadisk.sessions.async_httpx_session.AsyncHTTPXSession
    :show-inheritance:
+
+Importing Session Classes
+#########################
+
+You can use the following functions to import a session class by name:
+
+.. autofunction:: yadisk.import_session
+.. autofunction:: yadisk.import_async_session
