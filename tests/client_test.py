@@ -9,9 +9,6 @@ from io import BytesIO
 from typing import Any
 
 import yadisk
-from yadisk.sessions.requests_session import RequestsSession
-from yadisk.sessions.httpx_session import HTTPXSession
-from yadisk.sessions.pycurl_session import PycURLSession
 
 from yadisk.common import is_operation_link, ensure_path_has_schema
 from yadisk.api.operations import GetOperationStatusRequest
@@ -327,6 +324,6 @@ def make_test_case(name: str, session: yadisk.Session):
 
     return ClientTestCase
 
-RequestsTestCase = make_test_case("RequestsTestCase", RequestsSession())
-HTTPXTestCase = make_test_case("HTTPXTestCase", HTTPXSession())
-PycURLTestCase = make_test_case("PycURLTestCase", PycURLSession())
+RequestsTestCase = make_test_case("RequestsTestCase", yadisk.import_session("requests")())
+HTTPXTestCase = make_test_case("HTTPXTestCase", yadisk.import_session("httpx")())
+PycURLTestCase = make_test_case("PycURLTestCase", yadisk.import_session("pycurl")())

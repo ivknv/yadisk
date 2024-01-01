@@ -11,8 +11,6 @@ from unittest import IsolatedAsyncioTestCase
 from io import BytesIO
 
 import yadisk
-from yadisk.sessions.aiohttp_session import AIOHTTPSession
-from yadisk.sessions.async_httpx_session import AsyncHTTPXSession
 from yadisk.common import is_operation_link, ensure_path_has_schema
 from yadisk.api.operations import GetOperationStatusRequest
 
@@ -368,5 +366,5 @@ def make_test_case(name: str, session_factory: Callable):
 
     return AsyncClientTestCase
 
-AIOHTTPTestCase = make_test_case("AIOHTTPTestCase", AIOHTTPSession)
-AsyncHTTPXTestCase = make_test_case("AsyncHTTPXTestCase", AsyncHTTPXSession)
+AIOHTTPTestCase = make_test_case("AIOHTTPTestCase", yadisk.import_async_session("aiohttp"))
+AsyncHTTPXTestCase = make_test_case("AsyncHTTPXTestCase", yadisk.import_async_session("httpx"))
