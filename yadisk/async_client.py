@@ -7,7 +7,7 @@ from pathlib import PurePosixPath
 from urllib.parse import urlencode
 
 from .types import (
-    AsyncFileOrPath, AsyncFileOrPathDestination, AsyncSessionFactory,
+    AsyncFileOrPath, AsyncFileOrPathDestination,
     AsyncOpenFileCallback, FileOpenMode, BinaryAsyncFileLike
 )
 
@@ -184,7 +184,7 @@ class AsyncClient:
     """
         Implements access to Yandex.Disk REST API (provides asynchronous API).
 
-        HTTP client implementation can be specified using the `session_factory`
+        HTTP client implementation can be specified using the :code:`session`
         parameter. :any:`AsyncHTTPXSession` is used by default. For other options,
         see :doc:`/api_reference/sessions`.
 
@@ -215,8 +215,7 @@ class AsyncClient:
         :param token: application token
         :param default_args: `dict` or `None`, default arguments for methods.
                              Can be used to set the default timeout, headers, etc.
-        :param session_factory: `None` or a function that returns a new instance
-                                of :any:`AsyncSession`
+        :param session: `None` or a an instance of :any:`AsyncSession`
         :param open_file: `None` or an async function that opens a file for
                            reading or writing (:code:`aiofiles.open()` by default)
 
@@ -225,9 +224,7 @@ class AsyncClient:
         :ivar token: `str`, application token
         :ivar default_args: `dict`, default arguments for methods. Can be used to
                             set the default timeout, headers, etc.
-        :ivar session_factory: function that returns a new instance of :any:`AsyncSession`
-        :ivar session: current session (:any:`AsyncSession` instance), created using
-                       the `session_factory` with filled out authentication headers
+        :ivar session: current session (:any:`AsyncSession` instance)
         :ivar open_file: async function that opens a file for reading or writing
                          (:code:`aiofiles.open()` by default)
 
@@ -255,7 +252,6 @@ class AsyncClient:
     id: str
     secret: str
     default_args: Dict[str, Any]
-    session_factory: AsyncSessionFactory
     session: AsyncSession
     open_file: AsyncOpenFileCallback
 
@@ -267,7 +263,7 @@ class AsyncClient:
                  token:  str = "",
                  *,
                  default_args:    Optional[Dict[str, Any]] = None,
-                 session_factory: Optional[AsyncSessionFactory] = None,
+                 session:         Optional[AsyncSession] = None,
                  open_file:       Optional[AsyncOpenFileCallback] = None):
         self.id = id
         self.secret = secret
@@ -276,15 +272,13 @@ class AsyncClient:
 
         self.default_args = {} if default_args is None else default_args
 
-        if session_factory is None:
+        if session is None:
             if AsyncHTTPXSession is None:
-                raise RuntimeError("httpx is not installed. Either install httpx or provide a custom session_factory.")
+                raise RuntimeError("httpx is not installed. Either install httpx or provide a custom session")
 
-            self.session_factory = AsyncHTTPXSession
-        else:
-            self.session_factory = session_factory
+            session = AsyncHTTPXSession()
 
-        self.session = self.make_session()
+        self.session = session
 
         if open_file is None:
             open_file = _default_open_file
@@ -318,24 +312,6 @@ class AsyncClient:
         """
 
         await self.session.close()
-
-    def make_session(self, token: Optional[str] = None) -> AsyncSession:
-        """
-            Prepares a new :any:`AsyncSession` object with headers needed for API.
-
-            :param token: application token, equivalent to `self.token` if `None`
-            :returns: :any:`AsyncSession`
-        """
-
-        if token is None:
-            token = self.token
-
-        session = self.session_factory()
-
-        if token:
-            session.set_token(token)
-
-        return session
 
     def get_auth_url(
         self,

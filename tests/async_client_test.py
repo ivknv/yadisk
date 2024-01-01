@@ -3,7 +3,7 @@
 import asyncio
 import os
 import tempfile
-from typing import Any
+from typing import Any, Callable
 import aiofiles
 
 import posixpath
@@ -18,10 +18,10 @@ from yadisk.api.operations import GetOperationStatusRequest
 
 __all__ = ["AIOHTTPTestCase", "AsyncHTTPXTestCase"]
 
-def make_test_case(name, session_factory):
+def make_test_case(name: str, session_factory: Callable):
     class AsyncClientTestCase(IsolatedAsyncioTestCase):
-        def __init__(self, *args, **kwargs):
-            IsolatedAsyncioTestCase.__init__(self, *args, **kwargs)
+        client: yadisk.AsyncClient
+        path: str
 
         async def asyncSetUp(self):
             if not os.environ.get("PYTHON_YADISK_APP_TOKEN"):
@@ -41,7 +41,7 @@ def make_test_case(name, session_factory):
                 os.environ.get("PYTHON_YADISK_APP_ID", ""),
                 os.environ.get("PYTHON_YADISK_APP_SECRET", ""),
                 os.environ["PYTHON_YADISK_APP_TOKEN"],
-                session_factory=session_factory)
+                session=session_factory())
             self.client.default_args["n_retries"] = 50
 
         async def asyncTearDown(self):

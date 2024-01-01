@@ -26,7 +26,7 @@ from .common import CaseInsensitiveDict
 
 from typing import Any, Optional, Union, Literal, TYPE_CHECKING
 from .compat import Callable, Generator, Dict
-from .types import OpenFileCallback, SessionFactory, FileOrPath, FileOrPathDestination
+from .types import OpenFileCallback, FileOrPath, FileOrPathDestination
 
 from .client_common import (
     _apply_default_args, _filter_request_kwargs,
@@ -125,7 +125,7 @@ class Client:
     """
         Implements access to Yandex.Disk REST API (provides synchronous API).
 
-        HTTP client implementation can be specified using the `session_factory`
+        HTTP client implementation can be specified using the :code:`session`
         parameter. :any:`RequestsSession` is used by default. For other options,
         see :doc:`/api_reference/sessions`.
 
@@ -148,8 +148,7 @@ class Client:
         :param token: application token
         :param default_args: `dict` or `None`, default arguments for methods.
                              Can be used to set the default timeout, headers, etc.
-        :param session_factory: `None` or a function that returns a new instance
-                                of :any:`Session`
+        :param session: `None` or an instance of :any:`Session`
         :param open_file: `None` or a function that opens a file for reading or
                           writing (:code:`open()` by default)
 
@@ -158,9 +157,7 @@ class Client:
         :ivar token: `str`, application token
         :ivar default_args: `dict`, default arguments for methods. Can be used to
                             set the default timeout, headers, etc.
-        :ivar session_factory: function that returns a new instance of :any:`Session`
-        :ivar session: current session (:any:`Session` instance), created using
-                       the `session_factory` with filled out authentication headers
+        :ivar session: current session (:any:`Session` instance)
         :ivar open_file: function that opens a file for reading or writing
                          (:code:`open()` by default)
 
@@ -188,7 +185,6 @@ class Client:
     id: str
     secret: str
     default_args: Dict[str, Any]
-    session_factory: SessionFactory
     session: Session
     open_file: OpenFileCallback
 
@@ -200,7 +196,7 @@ class Client:
                  token:  str = "",
                  *,
                  default_args:    Optional[Dict[str, Any]] = None,
-                 session_factory: Optional[SessionFactory] = None,
+                 session:         Optional[Session] = None,
                  open_file:       Optional[OpenFileCallback] = None):
         self.id = id
         self.secret = secret
@@ -208,20 +204,18 @@ class Client:
 
         self.default_args = {} if default_args is None else default_args
 
-        if session_factory is None:
-            if RequestsSession is None:
-                raise RuntimeError("requests is not installed. Either install requests or provide a custom session_factory.")
-
-            session_factory = RequestsSession
-
         if open_file is None:
             open_file = open
 
         self.open_file = open_file
 
-        self.session_factory = session_factory
-        self.session = self.make_session()
+        if session is None:
+            if RequestsSession is None:
+                raise RuntimeError("requests is not installed. Either install requests or provide a custom session")
 
+            session = RequestsSession()
+
+        self.session = session
         self.token = token
 
     @property
@@ -249,24 +243,6 @@ class Client:
         """
 
         self.session.close()
-
-    def make_session(self, token: Optional[str] = None) -> Session:
-        """
-            Prepares :any:`Session` object with headers needed for API.
-
-            :param token: application token, equivalent to `self.token` if `None`
-            :returns: :any:`Session`
-        """
-
-        if token is None:
-            token = self.token
-
-        session = self.session_factory()
-
-        if token:
-            session.set_token(token)
-
-        return session
 
     def get_auth_url(
         self,
