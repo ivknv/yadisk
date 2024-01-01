@@ -180,6 +180,7 @@ class Client:
 
         :raises RequestError: HTTP client raised an exception while making a request
         :raises BadRequestError: server returned HTTP code 400
+        :raises InvalidClientError: client ID or client secret are invalid
         :raises FieldValidationError: request contains fields with invalid data
         :raises UnauthorizedError: server returned HTTP code 401
         :raises ForbiddenError: server returned HTTP code 403
@@ -436,6 +437,7 @@ class Client:
             :param scope: `str`, list of permissions for the application
             :param optional_scope: `str`, list of optional permissions for the application
 
+            :raises InvalidClientError: invalid client ID
             :raises BadRequestError: invalid request parameters
 
             :returns: :any:`DeviceCodeObject` containing :code:`user_code` and :code:`device_code`
@@ -462,7 +464,8 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
-            :raises BadRequestError: invalid or expired code, application ID or secret
+            :raises InvalidClientError: invalid client ID or client secret
+            :raises BadRequestError: invalid or expired code
 
             :returns: :any:`TokenObject`
         """
@@ -489,13 +492,13 @@ class Client:
             :param code: confirmation code
             :param device_id: unique device ID (between 6 and 50 characters)
             :param device_name: device name, should not be longer than 100 characters
-            :param code_verifier: `str`, verifier code, used with the PKCE authorization flow
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
             :raises AuthorizationPendingError: user has not authorized the application yet
+            :raises InvalidClientError: invalid client ID or client secret
             :raises BadRequestError: invalid or expired code, application ID or secret
 
             :returns: :any:`TokenObject`
@@ -526,6 +529,7 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises InvalidClientError: invalid client ID or client secret
             :raises BadRequestError: invalid or expired refresh token, application ID or secret
 
             :returns: :any:`TokenObject`
@@ -551,6 +555,7 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises InvalidClientError: invalid client ID or client secret
             :raises BadRequestError: token cannot be revoked (not bound to this application, etc.)
 
             :returns: :any:`TokenRevokeStatusObject`

@@ -15,31 +15,50 @@ from .types import AnyResponse
 
 __all__ = ["get_exception", "auto_retry", "async_auto_retry"]
 
-EXCEPTION_MAP = {400: defaultdict(lambda: BadRequestError,
-                                  {"FieldValidationError": FieldValidationError,
-                                   "authorization_pending": AuthorizationPendingError}),
-                 401: defaultdict(lambda: UnauthorizedError),
-                 403: defaultdict(lambda: ForbiddenError),
-                 404: defaultdict(lambda: NotFoundError,
-                                  {"DiskNotFoundError": PathNotFoundError,
-                                   "DiskOperationNotFoundError": OperationNotFoundError}),
-                 406: defaultdict(lambda: NotAcceptableError),
-                 409: defaultdict(lambda: ConflictError,
-                                  {"DiskPathDoesntExistsError": ParentNotFoundError,
-                                   "DiskPathPointsToExistentDirectoryError": DirectoryExistsError,
-                                   "DiskResourceAlreadyExistsError": PathExistsError,
-                                   "MD5DifferError": MD5DifferError}),
-                 413: defaultdict(lambda: PayloadTooLargeError),
-                 415: defaultdict(lambda: UnsupportedMediaError),
-                 423: defaultdict(lambda: LockedError,
-                                  {"DiskResourceLockedError": ResourceIsLockedError,
-                                   "DiskUploadTrafficLimitExceeded": UploadTrafficLimitExceededError}),
-                 429: defaultdict(lambda: TooManyRequestsError),
-                 500: defaultdict(lambda: InternalServerError),
-                 502: defaultdict(lambda: BadGatewayError),
-                 503: defaultdict(lambda: UnavailableError),
-                 504: defaultdict(lambda: GatewayTimeoutError),
-                 507: defaultdict(lambda: InsufficientStorageError)}
+EXCEPTION_MAP = {
+    400: defaultdict(
+        lambda: BadRequestError,
+        {
+            "FieldValidationError":  FieldValidationError,
+            "authorization_pending": AuthorizationPendingError,
+            "invalid_client":        InvalidClientError
+        }
+    ),
+    401: defaultdict(lambda: UnauthorizedError),
+    403: defaultdict(lambda: ForbiddenError),
+    404: defaultdict(
+        lambda: NotFoundError,
+        {
+            "DiskNotFoundError":          PathNotFoundError,
+            "DiskOperationNotFoundError": OperationNotFoundError
+        }
+    ),
+    406: defaultdict(lambda: NotAcceptableError),
+    409: defaultdict(
+        lambda: ConflictError,
+        {
+            "DiskPathDoesntExistsError":              ParentNotFoundError,
+            "DiskPathPointsToExistentDirectoryError": DirectoryExistsError,
+            "DiskResourceAlreadyExistsError":         PathExistsError,
+            "MD5DifferError":                         MD5DifferError
+        }
+    ),
+    413: defaultdict(lambda: PayloadTooLargeError),
+    415: defaultdict(lambda: UnsupportedMediaError),
+    423: defaultdict(
+        lambda: LockedError,
+        {
+            "DiskResourceLockedError":        ResourceIsLockedError,
+            "DiskUploadTrafficLimitExceeded": UploadTrafficLimitExceededError
+        }
+    ),
+    429: defaultdict(lambda: TooManyRequestsError),
+    500: defaultdict(lambda: InternalServerError),
+    502: defaultdict(lambda: BadGatewayError),
+    503: defaultdict(lambda: UnavailableError),
+    504: defaultdict(lambda: GatewayTimeoutError),
+    507: defaultdict(lambda: InsufficientStorageError)
+}
 
 def get_exception(response: AnyResponse, error: Optional[ErrorObject]) -> YaDiskError:
     """

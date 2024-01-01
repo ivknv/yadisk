@@ -243,6 +243,7 @@ class AsyncClient:
 
         :raises RequestError: HTTP client raised an exception while making a request
         :raises BadRequestError: server returned HTTP code 400
+        :raises InvalidClientError: invalid client ID or client secret
         :raises FieldValidationError: request contains fields with invalid data
         :raises UnauthorizedError: server returned HTTP code 401
         :raises ForbiddenError: server returned HTTP code 403
@@ -501,6 +502,7 @@ class AsyncClient:
             :param scope: `str`, list of permissions for the application
             :param optional_scope: `str`, list of optional permissions for the application
 
+            :raises InvalidClientError: invalid client ID or client secret
             :raises BadRequestError: invalid request parameters
 
             :returns: :any:`DeviceCodeObject` containing :code:`user_code` and :code:`device_code`
@@ -526,7 +528,8 @@ class AsyncClient:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
-            :raises BadRequestError: invalid or expired code, application ID or secret
+            :raises InvalidClientError: invalid client ID or client secret
+            :raises BadRequestError: invalid or expired code
 
             :returns: :any:`TokenObject`
         """
@@ -560,7 +563,8 @@ class AsyncClient:
             :param retry_interval: delay between retries in seconds
 
             :raises AuthorizationPendingError: user has not authorized the application yet
-            :raises BadRequestError: invalid or expired code, application ID or secret
+            :raises InvalidClientError: invalid client ID or client secret
+            :raises BadRequestError: invalid or expired code
 
             :returns: :any:`TokenObject`
         """
@@ -590,7 +594,8 @@ class AsyncClient:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
-            :raises BadRequestError: invalid or expired refresh token, application ID or secret
+            :raises InvalidClientError: invalid client ID or client secret
+            :raises BadRequestError: invalid or expired refresh token
 
             :returns: :any:`TokenObject`
         """
@@ -614,6 +619,7 @@ class AsyncClient:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
+            :raises InvalidClientError: invalid client ID or client secret
             :raises BadRequestError: token cannot be revoked (not bound to this application, etc.)
 
             :returns: :any:`TokenRevokeStatusObject`

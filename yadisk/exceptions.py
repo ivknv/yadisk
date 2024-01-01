@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
 
-__all__ = ["YaDiskError", "RequestError", "YaDiskConnectionError", "TooManyRedirectsError",
-           "RequestTimeoutError", "RetriableYaDiskError", "UnknownYaDiskError",
-           "WrongResourceTypeError",  "BadRequestError", "UnauthorizedError",
-           "ForbiddenError", "NotFoundError", "NotAcceptableError",
-           "ConflictError", "PayloadTooLargeError", "UnsupportedMediaError",
-           "LockedError", "UploadTrafficLimitExceededError", "TooManyRequestsError",
-           "InternalServerError", "BadGatewayError", "UnavailableError",
-           "GatewayTimeoutError", "InsufficientStorageError", "PathNotFoundError",
-           "ParentNotFoundError", "PathExistsError", "DirectoryExistsError",
-           "FieldValidationError", "ResourceIsLockedError", "MD5DifferError",
-           "OperationNotFoundError", "InvalidResponseError", "AuthorizationPendingError"]
+__all__ = [
+    "YaDiskError", "RequestError", "YaDiskConnectionError", "TooManyRedirectsError",
+    "RequestTimeoutError", "RetriableYaDiskError", "UnknownYaDiskError",
+    "WrongResourceTypeError",  "BadRequestError", "UnauthorizedError",
+    "ForbiddenError", "NotFoundError", "NotAcceptableError",
+    "ConflictError", "PayloadTooLargeError", "UnsupportedMediaError",
+    "LockedError", "UploadTrafficLimitExceededError", "TooManyRequestsError",
+    "InternalServerError", "BadGatewayError", "UnavailableError",
+    "GatewayTimeoutError", "InsufficientStorageError", "PathNotFoundError",
+    "ParentNotFoundError", "PathExistsError", "DirectoryExistsError",
+    "FieldValidationError", "ResourceIsLockedError", "MD5DifferError",
+    "OperationNotFoundError", "InvalidResponseError", "AuthorizationPendingError",
+    "InvalidClientError"
+]
 
 class YaDiskError(Exception):
     """
@@ -169,4 +172,8 @@ class InvalidResponseError(YaDiskError):
 
 class AuthorizationPendingError(BadRequestError):
     """Thrown when authorization is currently pending, the application has to wait."""
+    pass
+
+class InvalidClientError(BadRequestError):
+    """Thrown when an invalid client ID or client secret was provided"""
     pass
