@@ -349,14 +349,15 @@ class AsyncClient:
         type:                  Union[Literal["code"], Literal["token"]],
         device_id:             Optional[str] = None,
         device_name:           Optional[str] = None,
-        display:               str = "popup",
+        redirect_uri:          Optional[str] = None,
         login_hint:            Optional[str] = None,
         scope:                 Optional[str] = None,
         optional_scope:        Optional[str] = None,
         force_confirm:         bool = True,
         state:                 Optional[str] = None,
         code_challenge:        Optional[str] = None,
-        code_challenge_method: Optional[Union[Literal["plain"], Literal["S256"]]] = None
+        code_challenge_method: Optional[Union[Literal["plain"], Literal["S256"]]] = None,
+        display:               None = None,
     ) -> str:
         """
             Get authentication URL for the user to go to.
@@ -365,7 +366,10 @@ class AsyncClient:
             :param type: response type ("code" to get the confirmation code or "token" to get the token automatically)
             :param device_id: unique device ID, must be between 6 and 50 characters
             :param device_name: device name, should not be longer than 100 characters
-            :param display: indicates whether to use lightweight layout, values other than "popup" are ignored
+            :param redirect_uri: the URL to redirect the user to after they allow access to the app,
+                                 by default, the first redirect URI specified in the app settings
+                                 is used
+            :param display: doesn't do anything, kept for compatibility
             :param login_hint: username or email for the account the token is being requested for
             :param scope: list of permissions for the application
             :param optional_scope: list of optional permissions for the application
@@ -393,7 +397,6 @@ class AsyncClient:
 
         params = {"response_type": type,
                   "client_id":     self.id,
-                  "display":       display,
                   "force_confirm": "yes" if force_confirm else "no"}
 
         if device_id is not None:
@@ -401,6 +404,9 @@ class AsyncClient:
 
         if device_name is not None:
             params["device_name"] = device_name
+
+        if redirect_uri is not None:
+            params["redirect_uri"] = redirect_uri
 
         if login_hint is not None:
             params["login_hint"] = login_hint
@@ -426,14 +432,15 @@ class AsyncClient:
         self,
         device_id:             Optional[str] = None,
         device_name:           Optional[str] = None,
-        display:               str = "popup",
+        redirect_uri:          Optional[str] = None,
         login_hint:            Optional[str] = None,
         scope:                 Optional[str] = None,
         optional_scope:        Optional[str] = None,
         force_confirm:         bool = True,
         state:                 Optional[str] = None,
         code_challenge:        Optional[str] = None,
-        code_challenge_method: Optional[Union[Literal["plain"], Literal["S256"]]] = None
+        code_challenge_method: Optional[Union[Literal["plain"], Literal["S256"]]] = None,
+        display:               None = None
     ) -> str:
         """
             Get the URL for the user to get the confirmation code.
@@ -442,7 +449,10 @@ class AsyncClient:
 
             :param device_id: unique device ID, must be between 6 and 50 characters
             :param device_name: device name, should not be longer than 100 characters
-            :param display: indicates whether to use lightweight layout, values other than "popup" are ignored
+            :param redirect_uri: the URL to redirect the user to after they allow access to the app,
+                                 by default, the first redirect URI specified in the app settings
+                                 is used
+            :param display: doesn't do anything, kept for compatibility
             :param login_hint: username or email for the account the token is being requested for
             :param scope: list of permissions for the application
             :param optional_scope: list of optional permissions for the application
@@ -466,6 +476,7 @@ class AsyncClient:
             "code",
             device_id=device_id,
             device_name=device_name,
+            redirect_uri=redirect_uri,
             display=display,
             login_hint=login_hint,
             scope=scope,
