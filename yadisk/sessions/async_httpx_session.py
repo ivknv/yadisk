@@ -57,10 +57,9 @@ class AsyncHTTPXSession(AsyncSession):
         .. code:: python
 
            import yadisk
-           from yadisk.sessions.async_httpx_session import AsyncHTTPXSession
 
            async def main():
-               async with yadisk.AsyncClient(..., session_factory=AsyncHTTPXSession) as client:
+               async with yadisk.AsyncClient(..., session="httpx") as client:
                    await client.get_meta(
                        "/my_file.txt",
                        n_retries=5,

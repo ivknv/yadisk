@@ -218,10 +218,9 @@ Specifying HTTP client library
 .. code:: python
 
    import yadisk
-   from yadisk.sessions.httpx_session import HTTPXSession
 
    # Will use httpx for making requests
-   with yadisk.Client(token="<token>", session_factory=HTTPXSession) as client:
+   with yadisk.Client(token="<token>", session="httpx") as client:
        print(client.check_token())
 
 Asynchronous API
@@ -449,8 +448,7 @@ Specifying HTTP client library
 .. code:: python
 
    import yadisk
-   from yadisk.sessions.aiohttp_session import AIOHTTPSession
 
    # Will use aiohttp for making requests
-   async with yadisk.AsyncClient(token="<token>", session_factory=AIOHTTPSession) as client:
+   async with yadisk.AsyncClient(token="<token>", session="aiohttp") as client:
        print(await client.check_token())

@@ -2,7 +2,7 @@ Available Session Implementations
 =================================
 
 You can choose which HTTP library will be used by :any:`Client` and :any:`AsyncClient`
-by specifying the :code:`session_factory` parameter.
+by specifying the :code:`session` parameter.
 Below you can see the list of session implementations that are shipped with the :code:`yadisk` library.
 
 Alternatively, you can make your own :any:`Session`/:any:`AsyncSession` implementation.

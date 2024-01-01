@@ -123,9 +123,8 @@ class PycURLSession(Session):
 
            import yadisk
            import pycurl
-           from yadisk.sessions.pycurl_session import PycURLSession
 
-           with yadisk.Client(..., session_factory=PycURLSession) as client:
+           with yadisk.Client(..., session="pycurl") as client:
                client.get_meta(
                    "/my_file.txt",
                    n_retries=5,

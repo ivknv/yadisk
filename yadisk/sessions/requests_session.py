@@ -71,9 +71,8 @@ class RequestsSession(Session):
         .. code:: python
 
            import yadisk
-           from yadisk.sessions.requests_session import RequestsSession
 
-           with yadisk.Client(..., session_factory=RequestsSession) as client:
+           with yadisk.Client(..., session="requests") as client:
                client.get_meta(
                    "/my_file.txt",
                    n_retries=5,

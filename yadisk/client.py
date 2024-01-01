@@ -145,7 +145,8 @@ class Client:
         :param default_args: `dict` or `None`, default arguments for methods.
                              Can be used to set the default timeout, headers, etc.
         :param session: `None`, `str` or an instance of :any:`Session`.
-                        If :code:`session` is a string, it must be one of the
+                        If :code:`session` is a string, the appropriate session
+                        class will be imported, it must be one of the
                         following values:
 
                           * :code:`"httpx"` - :any:`HTTPXSession`
