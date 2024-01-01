@@ -25,6 +25,9 @@ from .compat import Callable, AsyncGenerator, Awaitable, Dict
 from .async_session import AsyncSession
 
 from .common import CaseInsensitiveDict
+from .client_common import (
+    _apply_default_args, _filter_request_kwargs, _replace_authorization_header
+)
 
 try:
     from .sessions.async_httpx_session import AsyncHTTPXSession
@@ -137,13 +140,6 @@ async def _listdir(get_meta_function: Callable[..., Awaitable[ResourceType]],
         limit: int = result.embedded.limit
         total: int = result.embedded.total
 
-def _filter_request_kwargs(kwargs: Dict[str, Any]) -> None:
-    # Remove some of the yadisk-specific arguments from kwargs
-    keys_to_remove = ("n_retries", "retry_interval", "fields", "overwrite", "path")
-
-    for key in keys_to_remove:
-        kwargs.pop(key, None)
-
 async def read_in_chunks(file: IO, chunk_size: int = 64 * 1024) -> Union[AsyncGenerator[str, None],
                                                                          AsyncGenerator[bytes, None]]:
     while chunk := await file.read(chunk_size):
@@ -183,12 +179,6 @@ async def _is_file_seekable(file: Any) -> bool:
         return await file.seekable()
 
     return file.seekable();
-
-def _apply_default_args(args: Dict[str, Any], default_args: Dict[str, Any]) -> None:
-    new_args = dict(default_args)
-    new_args.update(args)
-    args.clear()
-    args.update(new_args)
 
 class AsyncClient:
     """
@@ -509,12 +499,12 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _replace_authorization_header(kwargs, "")
 
-        async with self.session_factory() as session:
-            request = GetDeviceCodeRequest(session, self.id, **kwargs)
-            await request.asend()
+        request = GetDeviceCodeRequest(self.session, self.id, **kwargs)
+        await request.asend()
 
-            return await request.process()
+        return await request.process()
 
     async def get_token(self, code: str, /, **kwargs) -> "TokenObject":
         """
@@ -537,19 +527,19 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _replace_authorization_header(kwargs, "")
 
-        async with self.session_factory() as session:
-            request = GetTokenRequest(
-                session,
-                "authorization_code",
-                self.id,
-                code=code,
-                client_secret=self.secret,
-                **kwargs
-            )
-            await request.asend()
+        request = GetTokenRequest(
+            self.session,
+            "authorization_code",
+            self.id,
+            code=code,
+            client_secret=self.secret,
+            **kwargs
+        )
+        await request.asend()
 
-            return await request.aprocess()
+        return await request.aprocess()
 
     async def get_token_from_device_code(self, device_code: str, /, **kwargs) -> "TokenObject":
         """
@@ -574,19 +564,19 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _replace_authorization_header(kwargs, "")
 
-        async with self.session_factory() as session:
-            request = GetTokenRequest(
-                session,
-                "device_code",
-                client_id=self.id,
-                code=device_code,
-                client_secret=self.secret,
-                **kwargs
-            )
-            await request.asend()
+        request = GetTokenRequest(
+            self.session,
+            "device_code",
+            client_id=self.id,
+            code=device_code,
+            client_secret=self.secret,
+            **kwargs
+        )
+        await request.asend()
 
-            return await request.process()
+        return await request.process()
 
     async def refresh_token(self, refresh_token: str, /, **kwargs) -> "TokenObject":
         """
@@ -607,13 +597,18 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _replace_authorization_header(kwargs, "")
 
-        async with self.session_factory() as session:
-            request = RefreshTokenRequest(
-                session, refresh_token, self.id, self.secret, **kwargs)
-            await request.asend()
+        request = RefreshTokenRequest(
+            self.session,
+            refresh_token,
+            self.id,
+            self.secret,
+            **kwargs
+        )
+        await request.asend()
 
-            return await request.aprocess()
+        return await request.aprocess()
 
     async def revoke_token(self, token: Optional[str] = None, /, **kwargs) -> "TokenRevokeStatusObject":
         """
@@ -635,16 +630,21 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _replace_authorization_header(kwargs, "")
 
         if token is None:
             token = self.token
 
-        async with self.session_factory() as session:
-            request = RevokeTokenRequest(
-                session, token, self.id, self.secret, **kwargs)
-            await request.asend()
+        request = RevokeTokenRequest(
+            self.session,
+            token,
+            self.id,
+            self.secret,
+            **kwargs
+        )
+        await request.asend()
 
-            return await request.aprocess()
+        return await request.aprocess()
 
     async def get_disk_info(self, **kwargs) -> "DiskInfoObject":
         """
@@ -861,6 +861,9 @@ class AsyncClient:
 
         kwargs["timeout"] = timeout
 
+        # Make sure we don't get any inconsistent behavior with header names
+        kwargs["headers"] = CaseInsensitiveDict(kwargs.get("headers", {}))
+
         file: Any = None
         close_file = False
         generator_factory: Optional[Callable[[], AsyncGenerator]] = None
@@ -1028,6 +1031,9 @@ class AsyncClient:
             timeout = settings.DEFAULT_TIMEOUT
 
         kwargs["timeout"] = timeout
+
+        # Make sure we don't get any inconsistent behavior with header names
+        kwargs["headers"] = CaseInsensitiveDict(kwargs.get("headers", {}))
 
         file: Any = None
         close_file = False

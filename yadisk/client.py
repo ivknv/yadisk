@@ -24,9 +24,14 @@ from . import settings
 
 from .common import CaseInsensitiveDict
 
-from typing import Any, Optional, IO, AnyStr, Union, Literal, TYPE_CHECKING
+from typing import Any, Optional, Union, Literal, TYPE_CHECKING
 from .compat import Callable, Generator, Dict
 from .types import OpenFileCallback, SessionFactory, FileOrPath, FileOrPathDestination
+
+from .client_common import (
+    _apply_default_args, _filter_request_kwargs,
+    _read_file_as_generator, _replace_authorization_header
+)
 
 if TYPE_CHECKING:
     from .objects import (
@@ -115,25 +120,6 @@ def _listdir(get_meta_function: Callable[..., ResourceType], path: str, /, **kwa
 
         limit = result.embedded.limit
         total = result.embedded.total
-
-def _apply_default_args(args: Dict[str, Any], default_args: Dict[str, Any]) -> None:
-    new_args = dict(default_args)
-    new_args.update(args)
-    args.clear()
-    args.update(new_args)
-
-def _filter_kwargs_for_requests(kwargs: Dict[str, Any]) -> None:
-    # Remove some of the yadisk-specific arguments from kwargs
-    keys_to_remove = ("n_retries", "retry_interval", "fields", "overwrite", "path")
-
-    for key in keys_to_remove:
-        kwargs.pop(key, None)
-
-def _read_file_as_generator(input_file: IO[AnyStr]) -> Generator[AnyStr, None, None]:
-    chunk_size = 8192
-
-    while chunk := input_file.read(chunk_size):
-        yield chunk
 
 class Client:
     """
@@ -444,12 +430,12 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _replace_authorization_header(kwargs, "")
 
-        with self.session_factory() as session:
-            request = GetDeviceCodeRequest(session, self.id, **kwargs)
-            request.send()
+        request = GetDeviceCodeRequest(self.session, self.id, **kwargs)
+        request.send()
 
-            return request.process()
+        return request.process()
 
     def get_token(self, code: str, /, **kwargs) -> "TokenObject":
         """
@@ -473,19 +459,19 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _replace_authorization_header(kwargs, "")
 
-        with self.session_factory() as session:
-            request = GetTokenRequest(
-                session,
-                "authorization_code",
-                client_id=self.id,
-                code=code,
-                client_secret=self.secret,
-                **kwargs
-            )
-            request.send()
+        request = GetTokenRequest(
+            self.session,
+            "authorization_code",
+            client_id=self.id,
+            code=code,
+            client_secret=self.secret,
+            **kwargs
+        )
+        request.send()
 
-            return request.process()
+        return request.process()
 
     def get_token_from_device_code(self, device_code: str, /, **kwargs) -> "TokenObject":
         """
@@ -509,19 +495,19 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _replace_authorization_header(kwargs, "")
 
-        with self.session_factory() as session:
-            request = GetTokenRequest(
-                session,
-                "device_code",
-                client_id=self.id,
-                code=device_code,
-                client_secret=self.secret,
-                **kwargs
-            )
-            request.send()
+        request = GetTokenRequest(
+            self.session,
+            "device_code",
+            client_id=self.id,
+            code=device_code,
+            client_secret=self.secret,
+            **kwargs
+        )
+        request.send()
 
-            return request.process()
+        return request.process()
 
     def refresh_token(self, refresh_token: str, /, **kwargs) -> "TokenObject":
         """
@@ -542,13 +528,18 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _replace_authorization_header(kwargs, "")
 
-        with self.session_factory() as session:
-            request = RefreshTokenRequest(
-                session, refresh_token, self.id, self.secret, **kwargs)
-            request.send()
+        request = RefreshTokenRequest(
+            self.session,
+            refresh_token,
+            self.id,
+            self.secret,
+            **kwargs
+        )
+        request.send()
 
-            return request.process()
+        return request.process()
 
     def revoke_token(self,
                      token: Optional[str] = None, /, **kwargs) -> "TokenRevokeStatusObject":
@@ -571,15 +562,15 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _replace_authorization_header(kwargs, "")
 
         if token is None:
             token = self.token
 
-        with self.session_factory() as session:
-            request = RevokeTokenRequest(session, token, self.id, self.secret, **kwargs)
-            request.send()
+        request = RevokeTokenRequest(self.session, token, self.id, self.secret, **kwargs)
+        request.send()
 
-            return request.process()
+        return request.process()
 
     def check_token(self, token: Optional[str] = None, /, **kwargs) -> bool:
         """
@@ -603,9 +594,7 @@ class Client:
         if not token:
             return False
 
-        headers = CaseInsensitiveDict(kwargs.get("headers", {}));
-        headers["Authorization"] = f"OAuth {token}"
-        kwargs["headers"] = headers
+        _replace_authorization_header(kwargs, token)
 
         try:
             # get_operation_status() doesn't require any permissions, unlike most other requests
@@ -831,6 +820,9 @@ class Client:
 
         kwargs["timeout"] = timeout
 
+        # Make sure we don't get any inconsistent behavior with header names
+        kwargs["headers"] = CaseInsensitiveDict(kwargs.get("headers", {}))
+
         file: Any = None
         close_file = False
         file_position = 0
@@ -862,7 +854,7 @@ class Client:
                 link = get_upload_link_function(dst_path, **temp_kwargs)
 
                 # session.put() doesn't accept some of the passed parameters
-                _filter_kwargs_for_requests(temp_kwargs)
+                _filter_request_kwargs(temp_kwargs)
 
                 temp_kwargs.setdefault("stream", True)
 
@@ -998,6 +990,9 @@ class Client:
 
         kwargs["timeout"] = timeout
 
+        # Make sure we don't get any inconsistent behavior with header names
+        kwargs["headers"] = CaseInsensitiveDict(kwargs.get("headers", {}))
+
         file: Any = None
         close_file = False
         file_position = 0
@@ -1024,7 +1019,7 @@ class Client:
                 link = get_download_link_function(src_path, **temp_kwargs)
 
                 # session.get() doesn't accept some of the passed parameters
-                _filter_kwargs_for_requests(temp_kwargs)
+                _filter_request_kwargs(temp_kwargs)
 
                 temp_kwargs.setdefault("stream", True)
 
@@ -1898,15 +1893,6 @@ class Client:
 
         return SyncPublicResourceLinkObject.from_public_key(public_key, yadisk=self)
 
-    def _get_operation_status(self,
-                              session: Session,
-                              operation_id: str, /, **kwargs) -> str:
-        # This method is kept for private use (such as for check_token())
-        request = GetOperationStatusRequest(session, operation_id, **kwargs)
-        request.send()
-
-        return request.process().status
-
     def get_operation_status(self, operation_id: str, /, **kwargs) -> str:
         """
             Get operation status.
@@ -1928,4 +1914,7 @@ class Client:
 
         _apply_default_args(kwargs, self.default_args)
 
-        return self._get_operation_status(self.session, operation_id, **kwargs)
+        request = GetOperationStatusRequest(self.session, operation_id, **kwargs)
+        request.send()
+
+        return request.process().status
