@@ -1960,7 +1960,7 @@ class AsyncClient:
             "", file_or_path, **kwargs)
         return AsyncPublicResourceLinkObject.from_public_key(public_key, yadisk=self)
 
-    async def get_operation_status(self, operation_id, **kwargs):
+    async def get_operation_status(self, operation_id, /, **kwargs) -> str:
         """
             Get operation status.
 
@@ -1973,7 +1973,10 @@ class AsyncClient:
 
             :raises OperationNotFoundError: requested operation was not found
 
-            :returns: `str`
+            :returns: `str`, :code:`"in-progress"` indicates that the operation
+                      is currently running, :code:`"success"` indicates that
+                      the operation was successful, :code:`"failed"` means that
+                      the operation failed
         """
 
         _apply_default_args(kwargs, self.default_args)

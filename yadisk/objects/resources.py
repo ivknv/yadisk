@@ -287,7 +287,10 @@ class SyncOperationLinkObject(OperationLinkObject):
 
             :raises OperationNotFoundError: requested operation was not found
 
-            :returns: `str`
+            :returns: `str`, :code:`"in-progress"` indicates that the operation
+                      is currently running, :code:`"success"` indicates that
+                      the operation was successful, :code:`"failed"` means that
+                      the operation failed
         """
 
         if self._yadisk is None:
@@ -322,7 +325,10 @@ class AsyncOperationLinkObject(OperationLinkObject):
 
             :raises OperationNotFoundError: requested operation was not found
 
-            :returns: `str`
+            :returns: `str`, :code:`"in-progress"` indicates that the operation
+                      is currently running, :code:`"success"` indicates that
+                      the operation was successful, :code:`"failed"` means that
+                      the operation failed
         """
 
         if self._yadisk is None:
