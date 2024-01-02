@@ -11,6 +11,28 @@ Changelog
 .. _PR #31: https://github.com/ivknv/yadisk/pull/31
 .. _requests: https://pypi.org/project/requests
 
+* **Release 2.0.1 (2024-01-02)**
+
+  * Fixed a bug where POST request parameters were not encoded correctly
+  * Fixed a bug in :code:`PycURLSession.send_request()` that made it ignore passed headers
+  * :code:`RequestsSession.close()` now closes all underlying session
+    instances, instead of only the current thread-local one
+  * All methods of :any:`Client` and :any:`AsyncClient` now use existing session
+  * Removed :code:`session_factory` attribute and :code:`make_session()` method
+    of :any:`Client` and :any:`AsyncClient`
+  * Session class can now be specified as a string (see :any:`Client`/:any:`AsyncClient`)
+  * Added :any:`Client.get_device_code()`/:any:`AsyncClient.get_device_code()` methods
+  * Added :any:`Client.get_token_from_device_code()`/:any:`AsyncClient.get_token_from_device_code()` methods
+  * Added missing :code:`redirect_uri` parameter for :any:`Client.get_auth_url()`/:any:`AsyncClient.get_auth_url()`
+    and :any:`Client.get_code_url()`/:any:`AsyncClient.get_code_url()`
+  * Added support for PKCE parameters for :any:`Client.get_auth_url()`/:any:`AsyncClient.get_auth_url()`,
+    :any:`Client.get_code_url()`/:any:`AsyncClient.get_code_url()` and
+    :any:`Client.get_token()`/:any:`AsyncClient.get_token()`
+  * Added :code:`scope` attribute for :any:`TokenObject`
+  * Added new exception classes: :any:`InvalidClientError`, :any:`InvalidGrantError`,
+    :any:`AuthorizationPendingError`, :any:`BadVerificationCodeError` and
+    :any:`UnsupportedTokenTypeError`
+
 * **Release 2.0.0 (2023-12-12)**
 
   * The library now provides both synchronous and asynchronous APIs (see
