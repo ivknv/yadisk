@@ -22,7 +22,10 @@ from .common import CaseInsensitiveDict
 
 from typing import Any, Optional, Union, Literal, TYPE_CHECKING
 from .compat import Callable, Generator, Dict
-from .types import OpenFileCallback, FileOrPath, FileOrPathDestination, SessionName
+from .types import (
+    OpenFileCallback, FileOrPath, FileOrPathDestination, SessionFactory,
+    SessionName
+)
 
 from .client_common import (
     _apply_default_args, _filter_request_kwargs,
@@ -155,6 +158,8 @@ class Client:
 
         :param open_file: `None` or a function that opens a file for reading or
                           writing (:code:`open()` by default)
+        :param session_factory: kept for compatibility, callable that returns an
+                                instance of :any:`Session`
 
         :ivar id: `str`, application ID
         :ivar secret: `str`, application secret password
@@ -201,7 +206,8 @@ class Client:
                  *,
                  default_args:    Optional[Dict[str, Any]] = None,
                  session:         Optional[Union[Session, SessionName]] = None,
-                 open_file:       Optional[OpenFileCallback] = None):
+                 open_file:       Optional[OpenFileCallback] = None,
+                 session_factory: Optional[SessionFactory] = None):
         self.id = id
         self.secret = secret
         self._token = ""
@@ -214,10 +220,13 @@ class Client:
         self.open_file = open_file
 
         if session is None:
-            try:
-                session = import_session("requests")()
-            except ImportError:
-                raise RuntimeError("requests is not installed. Either install requests or provide a custom session")
+            if session_factory is not None:
+                session = session_factory()
+            else:
+                try:
+                    session = import_session("requests")()
+                except ImportError:
+                    raise RuntimeError("requests is not installed. Either install requests or provide a custom session")
         elif isinstance(session, str):
             session = import_session(session)()
 

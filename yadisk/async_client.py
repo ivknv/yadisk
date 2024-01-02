@@ -8,7 +8,7 @@ from urllib.parse import urlencode
 
 from .types import (
     AsyncFileOrPath, AsyncFileOrPathDestination,
-    AsyncOpenFileCallback, FileOpenMode, BinaryAsyncFileLike,
+    AsyncOpenFileCallback, AsyncSessionFactory, FileOpenMode, BinaryAsyncFileLike,
     AsyncSessionName
 )
 
@@ -221,6 +221,8 @@ class AsyncClient:
 
         :param open_file: `None` or an async function that opens a file for
                            reading or writing (:code:`aiofiles.open()` by default)
+        :param session_factory: kept for compatibility, callable that returns an
+                                instance of :any:`AsyncSession`
 
         :ivar id: `str`, application ID
         :ivar secret: `str`, application secret password
@@ -267,7 +269,8 @@ class AsyncClient:
                  *,
                  default_args:    Optional[Dict[str, Any]] = None,
                  session:         Optional[Union[AsyncSession, AsyncSessionName]] = None,
-                 open_file:       Optional[AsyncOpenFileCallback] = None):
+                 open_file:       Optional[AsyncOpenFileCallback] = None,
+                 session_factory: Optional[AsyncSessionFactory] = None):
         self.id = id
         self.secret = secret
 
@@ -276,10 +279,13 @@ class AsyncClient:
         self.default_args = {} if default_args is None else default_args
 
         if session is None:
-            try:
-                session = import_async_session("httpx")()
-            except ImportError:
-                raise RuntimeError("httpx is not installed. Either install httpx or provide a custom session")
+            if session_factory is not None:
+                session = session_factory()
+            else:
+                try:
+                    session = import_async_session("httpx")()
+                except ImportError:
+                    raise RuntimeError("httpx is not installed. Either install httpx or provide a custom session")
         elif isinstance(session, str):
             session = import_async_session(session)()
 
