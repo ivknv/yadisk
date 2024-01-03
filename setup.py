@@ -25,7 +25,8 @@ setup(
     extras_require={
         "sync_defaults":  ["requests"],
         "async_defaults": ["aiofiles", "httpx"],
-        "async_files":    ["aiofiles"]
+        "async_files":    ["aiofiles"],
+        "test":           ["aiofiles", "aiofiles", "httpx", "pycurl", "requests"]
     },
     url="https://github.com/ivknv/yadisk",
     project_urls={
