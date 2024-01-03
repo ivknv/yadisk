@@ -9,39 +9,42 @@ from io import BytesIO
 from typing import Any
 
 import yadisk
-from yadisk.sessions.requests_session import RequestsSession
-from yadisk.sessions.httpx_session import HTTPXSession
-from yadisk.sessions.pycurl_session import PycURLSession
 
 from yadisk.common import is_operation_link, ensure_path_has_schema
 from yadisk.api.operations import GetOperationStatusRequest
+from yadisk.types import SessionName
 
 __all__ = ["RequestsTestCase", "HTTPXTestCase", "PycURLTestCase"]
 
-def make_test_case(name, session_factory):
+def make_test_case(name: str, session: SessionName):
     class ClientTestCase(TestCase):
-        def setUp(self):
+        client: yadisk.Client
+        path: str
+
+        @classmethod
+        def setUpClass(cls):
             if not os.environ.get("PYTHON_YADISK_APP_TOKEN"):
                 raise ValueError("Environment variable PYTHON_YADISK_APP_TOKEN must be set")
 
             if not os.environ.get("PYTHON_YADISK_TEST_ROOT"):
                 raise ValueError("Environment variable PYTHON_YADISK_TEST_ROOT must be set")
 
-            self.client = yadisk.Client(os.environ["PYTHON_YADISK_APP_ID"],
-                                        os.environ["PYTHON_YADISK_APP_SECRET"],
-                                        os.environ["PYTHON_YADISK_APP_TOKEN"],
-                                        session_factory=session_factory)
-            self.client.default_args["n_retries"] = 50
+            cls.client = yadisk.Client(os.environ["PYTHON_YADISK_APP_ID"],
+                                       os.environ["PYTHON_YADISK_APP_SECRET"],
+                                       os.environ["PYTHON_YADISK_APP_TOKEN"],
+                                       session=session)
+            cls.client.default_args["n_retries"] = 50
 
-            self.path = os.environ["PYTHON_YADISK_TEST_ROOT"]
+            cls.path = os.environ["PYTHON_YADISK_TEST_ROOT"]
 
             # Get rid of 'disk:/' prefix in the path and make it start with a slash
             # for consistency
-            if self.path.startswith("disk:/"):
-                self.path = posixpath.join("/", self.path[len("disk:/"):])
+            if cls.path.startswith("disk:/"):
+                cls.path = posixpath.join("/", cls.path[len("disk:/"):])
 
-        def tearDown(self):
-            self.client.close()
+        @classmethod
+        def tearDownClass(cls):
+            cls.client.close()
 
         def test_get_meta(self):
             resource = self.client.get_meta(self.path)
@@ -247,18 +250,18 @@ def make_test_case(name, session_factory):
 
         def test_get_operation_status_request_url(self):
             request = GetOperationStatusRequest(
-                self.client.make_session(),
+                self.client.session,
                 "https://cloud-api.yandex.net/v1/disk/operations/123asd")
             self.assertTrue(is_operation_link(request.url))
 
             request = GetOperationStatusRequest(
-                self.client.make_session(),
+                self.client.session,
                 "http://cloud-api.yandex.net/v1/disk/operations/123asd")
             self.assertTrue(is_operation_link(request.url))
             self.assertTrue(request.url.startswith("https://"))
 
             request = GetOperationStatusRequest(
-                self.client.make_session(),
+                self.client.session,
                 "https://asd8iaysd89asdgiu")
             self.assertTrue(is_operation_link(request.url))
             self.assertTrue(request.url.startswith("https://"))
@@ -322,6 +325,6 @@ def make_test_case(name, session_factory):
 
     return ClientTestCase
 
-RequestsTestCase = make_test_case("RequestsTestCase", RequestsSession)
-HTTPXTestCase = make_test_case("HTTPXTestCase", HTTPXSession)
-PycURLTestCase = make_test_case("PycURLTestCase", PycURLSession)
+RequestsTestCase = make_test_case("RequestsTestCase", "requests")
+HTTPXTestCase = make_test_case("HTTPXTestCase", "httpx")
+PycURLTestCase = make_test_case("PycURLTestCase", "pycurl")

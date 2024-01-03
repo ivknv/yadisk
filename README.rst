@@ -160,6 +160,32 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 .. _Интерфейс Session: https://yadisk.readthedocs.io/ru/latest/api_reference/session_interface.html
 .. _requests: https://pypi.org/project/requests
 
+* **Release 2.1.0 (2024-01-03)**
+
+  * Исправлен баг, из-за которого параметры в теле POST-запроса неправильно кодировались
+  * Исправлен баг в :code:`PycURLSession.send_request()`, из-за которого
+    переданные заголовки игнорировались
+  * :code:`RequestsSession.close()` теперь закрывает сессию для всех потоков
+  * Все методы :code:`Client` и :code:`AsyncClient` теперь используют
+    существующую сессию
+  * Удалены аттрибут :code:`session_factory` и метод :code:`make_session()`
+    классов :code:`Client` и :code:`AsyncClient`
+  * Класс сессии теперь может быть указан в качестве строки
+    (см. :code:`Client`/:code:`AsyncClient`)
+  * Добавлены методы :code"`Client.get_device_code()`/:code:`AsyncClient.get_device_code()`
+  * Добавлены методы :code:`Client.get_token_from_device_code()`/:code:`AsyncClient.get_token_from_device_code()`
+  * Добавлен недостающий параметр :code:`redirect_uri` для
+    :code:`Client.get_auth_url()`/:code:`AsyncClient.get_auth_url()` и
+    :code:`Client.get_code_url()`/:code:`AsyncClient.get_code_url()`
+  * Добавлена поддержка параметров PKCE для
+    :code:`Client.get_auth_url()`/:code:`AsyncClient.get_auth_url()`,
+    :code:`Client.get_code_url()`/:code:`AsyncClient.get_code_url()` и
+    :code:`Client.get_token()`/:code:`AsyncClient.get_token()`
+  * Добавлен аттрибут :code:`scope` для :code:`TokenObject`
+  * Добавлены новые классы исключений: :code:`InvalidClientError`,
+    :code:`InvalidGrantError`, :code:`AuthorizationPendingError`,
+    :code:`BadVerificationCodeError` и :code:`UnsupportedTokenTypeError`
+
 * **Release 2.0.0 (2023-12-12)**
 
   * Библиотека теперь предоставляет как синхронный, так и асинхронный API

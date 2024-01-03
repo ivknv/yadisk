@@ -123,9 +123,8 @@ class PycURLSession(Session):
 
            import yadisk
            import pycurl
-           from yadisk.sessions.pycurl_session import PycURLSession
 
-           with yadisk.Client(..., session_factory=PycURLSession) as client:
+           with yadisk.Client(..., session="pycurl") as client:
                client.get_meta(
                    "/my_file.txt",
                    n_retries=5,
@@ -196,6 +195,8 @@ class PycURLSession(Session):
             curl.setopt(pycurl.LOW_SPEED_TIME, int(read_timeout))
             curl.setopt(pycurl.LOW_SPEED_LIMIT, 64)
 
+        curl.setopt(pycurl.HTTPHEADER, [f"{k}:{v}" for k, v in headers.items() if k and v])
+
         for option, value in options.items():
             curl.setopt(option, value)
 
@@ -214,8 +215,6 @@ class PycURLSession(Session):
             curl.setopt(pycurl.READDATA, data)
 
         curl.setopt(pycurl.CUSTOMREQUEST, method)
-
-        curl.setopt(pycurl.HTTPHEADER, [f"{k}:{v}" for k, v in self._headers.items()])
 
         if not stream or uploading_file:
             try:

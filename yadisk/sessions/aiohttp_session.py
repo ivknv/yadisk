@@ -87,10 +87,9 @@ class AIOHTTPSession(AsyncSession):
         .. code:: python
 
            import yadisk
-           from yadisk.sessions.aiohttp_session import AIOHTTPSession
 
            async def main():
-               async with yadisk.AsyncClient(..., session_factory=AIOHTTPSession) as client:
+               async with yadisk.AsyncClient(..., session="aiohttp") as client:
                    await client.get_meta(
                        "/my_file.txt",
                        n_retries=5,

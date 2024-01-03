@@ -11,17 +11,16 @@ from unittest import IsolatedAsyncioTestCase
 from io import BytesIO
 
 import yadisk
-from yadisk.sessions.aiohttp_session import AIOHTTPSession
-from yadisk.sessions.async_httpx_session import AsyncHTTPXSession
 from yadisk.common import is_operation_link, ensure_path_has_schema
 from yadisk.api.operations import GetOperationStatusRequest
+from yadisk.types import AsyncSessionName
 
 __all__ = ["AIOHTTPTestCase", "AsyncHTTPXTestCase"]
 
-def make_test_case(name, session_factory):
+def make_test_case(name: str, session: AsyncSessionName):
     class AsyncClientTestCase(IsolatedAsyncioTestCase):
-        def __init__(self, *args, **kwargs):
-            IsolatedAsyncioTestCase.__init__(self, *args, **kwargs)
+        client: yadisk.AsyncClient
+        path: str
 
         async def asyncSetUp(self):
             if not os.environ.get("PYTHON_YADISK_APP_TOKEN"):
@@ -41,14 +40,15 @@ def make_test_case(name, session_factory):
                 os.environ.get("PYTHON_YADISK_APP_ID", ""),
                 os.environ.get("PYTHON_YADISK_APP_SECRET", ""),
                 os.environ["PYTHON_YADISK_APP_TOKEN"],
-                session_factory=session_factory)
+                session=session)
             self.client.default_args["n_retries"] = 50
 
         async def asyncTearDown(self):
             await self.client.close()
 
-            # Needed for aiohttp to correctly release its resources (see https://github.com/aio-libs/aiohttp/issues/1115)
-            await asyncio.sleep(0.1)
+            if session == "aiohttp":
+                # Needed for aiohttp to correctly release its resources (see https://github.com/aio-libs/aiohttp/issues/1115)
+                await asyncio.sleep(0.1)
 
         async def test_get_meta(self):
             resource = await self.client.get_meta(self.path)
@@ -368,5 +368,5 @@ def make_test_case(name, session_factory):
 
     return AsyncClientTestCase
 
-AIOHTTPTestCase = make_test_case("AIOHTTPTestCase", AIOHTTPSession)
-AsyncHTTPXTestCase = make_test_case("AsyncHTTPXTestCase", AsyncHTTPXSession)
+AIOHTTPTestCase = make_test_case("AIOHTTPTestCase", "aiohttp")
+AsyncHTTPXTestCase = make_test_case("AsyncHTTPXTestCase", "httpx")

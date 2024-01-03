@@ -12,7 +12,6 @@ from ..types import JSON, ConsumeCallback, Headers, HTTPMethod
 from typing import Union
 
 import threading
-import weakref
 
 import requests
 
@@ -62,7 +61,8 @@ class RequestsSession(Session):
            Internally, this class creates thread-local instances of
            :any:`requests.Session`, since it is not currently guaranteed to be
            thread safe.
-           Calling :any:`Session.close()` only closes the thread-local session.
+           Calling :any:`Session.close()` will close all thread-local sessions
+           managed by this object.
 
         To pass `requests`-specific arguments from :any:`Client` use :code:`requests_args` keyword argument.
 
@@ -71,9 +71,8 @@ class RequestsSession(Session):
         .. code:: python
 
            import yadisk
-           from yadisk.sessions.requests_session import RequestsSession
 
-           with yadisk.Client(..., session_factory=RequestsSession) as client:
+           with yadisk.Client(..., session="requests") as client:
                client.get_meta(
                    "/my_file.txt",
                    n_retries=5,
@@ -88,17 +87,24 @@ class RequestsSession(Session):
         self._args, self._kwargs = args, kwargs
         self._local = threading.local()
         self._headers = CaseInsensitiveDict()
+        self._sessions = []
 
     @property
     def requests_session(self) -> requests.Session:
         if not hasattr(self._local, "session"):
             self._local.session = requests.Session(*self._args, **self._kwargs)
-
-            # Session.close() only closes the thread-local session
-            # This is a simple way to ensure it gets closed eventually
-            weakref.finalize(self._local.session, self._local.session.close)
+            self._sessions.append(self._local.session)
 
         return self._local.session
+
+    def _close_local(self) -> None:
+        if not hasattr(self._local, "session"):
+            return
+
+        session = self._local.session
+
+        session.close()
+        self._sessions.remove(session)
 
     def set_headers(self, headers: Headers) -> None:
         self._headers.update(headers)
@@ -120,4 +126,6 @@ class RequestsSession(Session):
             raise convert_requests_exception(e)
 
     def close(self) -> None:
-        self.requests_session.close()
+        while self._sessions:
+            session = self._sessions.pop()
+            session.close()

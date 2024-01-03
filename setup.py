@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import codecs
@@ -13,7 +13,7 @@ with codecs.open(os.path.join(module_dir, "README.rst"), encoding="utf8") as f:
 
 setup(
     name="yadisk",
-    version="2.0.0",
+    version="2.1.0",
     packages=find_packages(exclude=("tests",)),
     description="Библиотека-клиент REST API Яндекс.Диска / Yandex.Disk REST API client library",
     long_description=long_description,
@@ -25,7 +25,8 @@ setup(
     extras_require={
         "sync_defaults":  ["requests"],
         "async_defaults": ["aiofiles", "httpx"],
-        "async_files":    ["aiofiles"]
+        "async_files":    ["aiofiles"],
+        "test":           ["aiofiles", "aiofiles", "httpx", "pycurl", "requests"]
     },
     url="https://github.com/ivknv/yadisk",
     project_urls={

@@ -14,23 +14,31 @@ from .utils import auto_retry
 from .objects import SyncResourceLinkObject, SyncPublicResourceLinkObject, SyncTrashResourceObject
 
 from .session import Session
-
-try:
-    from .sessions.requests_session import RequestsSession
-except ImportError:
-    RequestsSession = None
+from .import_session import import_session
 
 from . import settings
 
-from typing import Any, Optional, IO, AnyStr, Union, TYPE_CHECKING
+from .common import CaseInsensitiveDict
+
+from typing import Any, Optional, Union, Literal, TYPE_CHECKING
 from .compat import Callable, Generator, Dict
-from .types import OpenFileCallback, SessionFactory, FileOrPath, FileOrPathDestination
+from .types import (
+    OpenFileCallback, FileOrPath, FileOrPathDestination, SessionFactory,
+    SessionName
+)
+
+from .client_common import (
+    _apply_default_args, _filter_request_kwargs,
+    _read_file_as_generator, _replace_authorization_header
+)
 
 if TYPE_CHECKING:
     from .objects import (
         SyncResourceObject, SyncOperationLinkObject, SyncTrashResourceObject,
         SyncPublicResourceObject, SyncPublicResourcesListObject,
-        DiskInfoObject, TokenObject, TokenRevokeStatusObject)
+        DiskInfoObject, TokenObject, TokenRevokeStatusObject,
+        DeviceCodeObject
+    )
 
 __all__ = ["Client"]
 
@@ -112,30 +120,11 @@ def _listdir(get_meta_function: Callable[..., ResourceType], path: str, /, **kwa
         limit = result.embedded.limit
         total = result.embedded.total
 
-def _apply_default_args(args: Dict[str, Any], default_args: Dict[str, Any]) -> None:
-    new_args = dict(default_args)
-    new_args.update(args)
-    args.clear()
-    args.update(new_args)
-
-def _filter_kwargs_for_requests(kwargs: Dict[str, Any]) -> None:
-    # Remove some of the yadisk-specific arguments from kwargs
-    keys_to_remove = ("n_retries", "retry_interval", "fields", "overwrite", "path")
-
-    for key in keys_to_remove:
-        kwargs.pop(key, None)
-
-def _read_file_as_generator(input_file: IO[AnyStr]) -> Generator[AnyStr, None, None]:
-    chunk_size = 8192
-
-    while chunk := input_file.read(chunk_size):
-        yield chunk
-
 class Client:
     """
         Implements access to Yandex.Disk REST API (provides synchronous API).
 
-        HTTP client implementation can be specified using the `session_factory`
+        HTTP client implementation can be specified using the :code:`session`
         parameter. :any:`RequestsSession` is used by default. For other options,
         see :doc:`/api_reference/sessions`.
 
@@ -158,19 +147,26 @@ class Client:
         :param token: application token
         :param default_args: `dict` or `None`, default arguments for methods.
                              Can be used to set the default timeout, headers, etc.
-        :param session_factory: `None` or a function that returns a new instance
-                                of :any:`Session`
+        :param session: `None`, `str` or an instance of :any:`Session`.
+                        If :code:`session` is a string, the appropriate session
+                        class will be imported, it must be one of the
+                        following values:
+
+                          * :code:`"httpx"` - :any:`HTTPXSession`
+                          * :code:`"pycurl"` - :any:`PycURLSession`
+                          * :code:`"requests"` - :any:`RequestsSession`
+
         :param open_file: `None` or a function that opens a file for reading or
                           writing (:code:`open()` by default)
+        :param session_factory: kept for compatibility, callable that returns an
+                                instance of :any:`Session`
 
         :ivar id: `str`, application ID
         :ivar secret: `str`, application secret password
         :ivar token: `str`, application token
         :ivar default_args: `dict`, default arguments for methods. Can be used to
                             set the default timeout, headers, etc.
-        :ivar session_factory: function that returns a new instance of :any:`Session`
-        :ivar session: current session (:any:`Session` instance), created using
-                       the `session_factory` with filled out authentication headers
+        :ivar session: current session (:any:`Session` instance)
         :ivar open_file: function that opens a file for reading or writing
                          (:code:`open()` by default)
 
@@ -198,39 +194,43 @@ class Client:
     id: str
     secret: str
     default_args: Dict[str, Any]
-    session_factory: SessionFactory
     session: Session
     open_file: OpenFileCallback
 
     synchronous = True
 
     def __init__(self,
-                 id: str = "",
+                 id:     str = "",
                  secret: str = "",
-                 token: str = "",
-                 default_args: Optional[Dict[str, Any]] = None,
-                 session_factory: Optional[SessionFactory] = None,
-                 open_file: Optional[OpenFileCallback] = None):
+                 token:  str = "",
+                 *,
+                 default_args:    Optional[Dict[str, Any]] = None,
+                 session:         Optional[Union[Session, SessionName]] = None,
+                 open_file:       Optional[OpenFileCallback] = None,
+                 session_factory: Optional[SessionFactory] = None):
         self.id = id
         self.secret = secret
         self._token = ""
 
         self.default_args = {} if default_args is None else default_args
 
-        if session_factory is None:
-            if RequestsSession is None:
-                raise RuntimeError("requests is not installed. Either install requests or provide a custom session_factory.")
-
-            session_factory = RequestsSession
-
         if open_file is None:
             open_file = open
 
         self.open_file = open_file
 
-        self.session_factory = session_factory
-        self.session = self.make_session()
+        if session is None:
+            if session_factory is not None:
+                session = session_factory()
+            else:
+                try:
+                    session = import_session("requests")()
+                except ImportError:
+                    raise RuntimeError("requests is not installed. Either install requests or provide a custom session")
+        elif isinstance(session, str):
+            session = import_session(session)()
 
+        self.session = session
         self.token = token
 
     @property
@@ -259,25 +259,21 @@ class Client:
 
         self.session.close()
 
-    def make_session(self, token: Optional[str] = None) -> Session:
-        """
-            Prepares :any:`Session` object with headers needed for API.
-
-            :param token: application token, equivalent to `self.token` if `None`
-            :returns: :any:`Session`
-        """
-
-        if token is None:
-            token = self.token
-
-        session = self.session_factory()
-
-        if token:
-            session.set_token(token)
-
-        return session
-
-    def get_auth_url(self, **kwargs) -> str:
+    def get_auth_url(
+        self,
+        type:                  Union[Literal["code"], Literal["token"]],
+        device_id:             Optional[str] = None,
+        device_name:           Optional[str] = None,
+        redirect_uri:          Optional[str] = None,
+        login_hint:            Optional[str] = None,
+        scope:                 Optional[str] = None,
+        optional_scope:        Optional[str] = None,
+        force_confirm:         bool = True,
+        state:                 Optional[str] = None,
+        code_challenge:        Optional[str] = None,
+        code_challenge_method: Optional[Union[Literal["plain"], Literal["S256"]]] = None,
+        display:               None = None
+    ) -> str:
         """
             Get authentication URL for the user to go to.
             This method doesn't send any HTTP requests and merely constructs the URL.
@@ -285,33 +281,37 @@ class Client:
             :param type: response type ("code" to get the confirmation code or "token" to get the token automatically)
             :param device_id: unique device ID, must be between 6 and 50 characters
             :param device_name: device name, should not be longer than 100 characters
-            :param display: indicates whether to use lightweight layout, values other than "popup" are ignored
+            :param redirect_uri: the URL to redirect the user to after they allow access to the app,
+                                 by default, the first redirect URI specified in the app settings
+                                 is used
+            :param display: doesn't do anything, kept for compatibility
             :param login_hint: username or email for the account the token is being requested for
-            :param scope: list of permissions for the application
-            :param optional_scope: list of optional permissions for the application
+            :param scope: `str`, list of permissions for the application
+            :param optional_scope: `str`, list of optional permissions for the application
             :param force_confirm: if True, user will be required to confirm access to the account
                                   even if the user has already granted access for the application
             :param state: The state string, which Yandex.OAuth returns without any changes (<= 1024 characters)
+            :param code_challenge: string derived from the generated :code:`code_verifier` value
+                                   using one of the two possible transformations (plain or S256)
+            :param code_challenge_method: specifies what function was used to transform
+                                          the :code:`code_verifier` value to :code:`code_challenge`,
+                                          allowed values are :code:`"plain"` and :code:`"S256"` (recommended).
+                                          If :code:`"S256"` is used, :code:`code_challenge` must be produced
+                                          by hashing the :code:`code_verifier` value and encoding it to base64
+
+            :raises ValueError: invalid arguments were passed
 
             :returns: authentication URL
         """
 
-        type           = kwargs.get("type")
-        device_id      = kwargs.get("device_id")
-        device_name    = kwargs.get("device_name")
-        display        = kwargs.get("display", "popup")
-        login_hint     = kwargs.get("login_hint")
-        scope          = kwargs.get("scope")
-        optional_scope = kwargs.get("optional_scope")
-        force_confirm  = kwargs.get("force_confirm", True)
-        state          = kwargs.get("state")
-
-        if type not in {"code", "token"}:
+        if type not in ("code", "token"):
             raise ValueError("type must be either 'code' or 'token'")
+
+        if code_challenge_method not in (None, "plain", "S256"):
+            raise ValueError("code_challenge_method must be either 'plain' or 'S256'")
 
         params = {"response_type": type,
                   "client_id":     self.id,
-                  "display":       display,
                   "force_confirm": "yes" if force_confirm else "no"}
 
         if device_id is not None:
@@ -319,6 +319,9 @@ class Client:
 
         if device_name is not None:
             params["device_name"] = device_name
+
+        if redirect_uri is not None:
+            params["redirect_uri"] = redirect_uri
 
         if login_hint is not None:
             params["login_hint"] = login_hint
@@ -332,9 +335,28 @@ class Client:
         if state is not None:
             params["state"] = state
 
+        if code_challenge is not None:
+            params["code_challenge"] = code_challenge
+
+        if code_challenge_method is not None:
+            params["code_challenge_method"] = code_challenge_method
+
         return "https://oauth.yandex.ru/authorize?" + urlencode(params)
 
-    def get_code_url(self, **kwargs) -> str:
+    def get_code_url(
+        self,
+        device_id:             Optional[str] = None,
+        device_name:           Optional[str] = None,
+        redirect_uri:          Optional[str] = None,
+        login_hint:            Optional[str] = None,
+        scope:                 Optional[str] = None,
+        optional_scope:        Optional[str] = None,
+        force_confirm:         bool = True,
+        state:                 Optional[str] = None,
+        code_challenge:        Optional[str] = None,
+        code_challenge_method: Optional[Union[Literal["plain"], Literal["S256"]]] = None,
+        display:               None = None
+    ) -> str:
         """
             Get the URL for the user to get the confirmation code.
             The confirmation code can later be used to get the token.
@@ -342,20 +364,70 @@ class Client:
 
             :param device_id: unique device ID, must be between 6 and 50 characters
             :param device_name: device name, should not be longer than 100 characters
-            :param display: indicates whether to use lightweight layout, values other than "popup" are ignored
+            :param redirect_uri: the URL to redirect the user to after they allow access to the app,
+                                 by default, the first redirect URI specified in the app settings
+                                 is used
+            :param display: doesn't do anything, kept for compatibility
             :param login_hint: username or email for the account the token is being requested for
-            :param scope: list of permissions for the application
-            :param optional_scope: list of optional permissions for the application
+            :param scope: `str`, list of permissions for the application
+            :param optional_scope: `str`, list of optional permissions for the application
             :param force_confirm: if True, user will be required to confirm access to the account
                                   even if the user has already granted access for the application
             :param state: The state string, which Yandex.OAuth returns without any changes (<= 1024 characters)
+            :param code_challenge: string derived from the generated :code:`code_verifier` value
+                                   using one of the two possible transformations (plain or S256)
+            :param code_challenge_method: specifies what function was used to transform
+                                          the :code:`code_verifier` value to :code:`code_challenge`,
+                                          allowed values are :code:`"plain"` and :code:`"S256"` (recommended).
+                                          If :code:`"S256"` is used, :code:`code_challenge` must be produced
+                                          by hashing the :code:`code_verifier` value and encoding it to base64
+
+            :raises ValueError: invalid arguments were passed
 
             :returns: authentication URL
         """
 
-        kwargs["type"] = "code"
+        return self.get_auth_url(
+            "code",
+            device_id=device_id,
+            device_name=device_name,
+            redirect_uri=redirect_uri,
+            display=display,
+            login_hint=login_hint,
+            scope=scope,
+            optional_scope=optional_scope,
+            force_confirm=force_confirm,
+            state=state,
+            code_challenge=code_challenge,
+            code_challenge_method=code_challenge_method
+        )
 
-        return self.get_auth_url(**kwargs)
+    def get_device_code(self, **kwargs) -> "DeviceCodeObject":
+        """
+            This request is used for authorization using the Yandex OAuth page.
+            In this case the user must enter the verification code (:code:`user_code`)
+            in the browser on the Yandex OAuth page.
+            After the user has entered the code on the OAuth page, the application
+            can exchange the :code:`device_code` for the token using the :any:`Client.get_token_from_device_code()`.
+
+            :param device_id: unique device ID (between 6 and 50 characters)
+            :param device_name: device name, should not be longer than 100 characters
+            :param scope: `str`, list of permissions for the application
+            :param optional_scope: `str`, list of optional permissions for the application
+
+            :raises InvalidClientError: invalid client ID
+            :raises BadRequestError: invalid request parameters
+
+            :returns: :any:`DeviceCodeObject` containing :code:`user_code` and :code:`device_code`
+        """
+
+        _apply_default_args(kwargs, self.default_args)
+        _replace_authorization_header(kwargs, "")
+
+        request = GetDeviceCodeRequest(self.session, self.id, **kwargs)
+        request.send()
+
+        return request.process()
 
     def get_token(self, code: str, /, **kwargs) -> "TokenObject":
         """
@@ -363,23 +435,71 @@ class Client:
 
             :param code: confirmation code
             :param device_id: unique device ID (between 6 and 50 characters)
+            :param device_name: device name, should not be longer than 100 characters
+            :param code_verifier: `str`, verifier code, used with the PKCE authorization flow
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
-            :raises BadRequestError: invalid or expired code, application ID or secret
+            :raises BadVerificationCodeError: confirmation code has invalid format
+            :raises InvalidGrantError: invalid or expired confirmation code
+            :raises InvalidClientError: invalid client ID or client secret
+            :raises BadRequestError: invalid request parameters
 
             :returns: :any:`TokenObject`
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _replace_authorization_header(kwargs, "")
 
-        with self.session_factory() as session:
-            request = GetTokenRequest(session, code, self.id, self.secret, **kwargs)
-            request.send()
+        request = GetTokenRequest(
+            self.session,
+            "authorization_code",
+            client_id=self.id,
+            code=code,
+            client_secret=self.secret,
+            **kwargs
+        )
+        request.send()
 
-            return request.process()
+        return request.process()
+
+    def get_token_from_device_code(self, device_code: str, /, **kwargs) -> "TokenObject":
+        """
+            Get a new token from a device code, previously obtained with :any:`Client.get_device_code()`.
+
+            :param code: confirmation code
+            :param device_id: unique device ID (between 6 and 50 characters)
+            :param device_name: device name, should not be longer than 100 characters
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+
+            :raises AuthorizationPendingError: user has not authorized the application yet
+            :raises BadVerificationCodeError: :code:`device_code` has invalid format
+            :raises InvalidGrantError: invalid or expired :code:`device_code`
+            :raises InvalidClientError: invalid client ID or client secret
+            :raises BadRequestError: invalid request parameters
+
+            :returns: :any:`TokenObject`
+        """
+
+        _apply_default_args(kwargs, self.default_args)
+        _replace_authorization_header(kwargs, "")
+
+        request = GetTokenRequest(
+            self.session,
+            "device_code",
+            client_id=self.id,
+            code=device_code,
+            client_secret=self.secret,
+            **kwargs
+        )
+        request.send()
+
+        return request.process()
 
     def refresh_token(self, refresh_token: str, /, **kwargs) -> "TokenObject":
         """
@@ -391,19 +511,27 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
-            :raises BadRequestError: invalid or expired refresh token, application ID or secret
+            :raises InvalidGrantError: invalid or expired refresh token or it
+                                       doesn't belong to this application
+            :raises InvalidClientError: invalid client ID or client secret
+            :raises BadRequestError: invalid request parameters
 
             :returns: :any:`TokenObject`
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _replace_authorization_header(kwargs, "")
 
-        with self.session_factory() as session:
-            request = RefreshTokenRequest(
-                session, refresh_token, self.id, self.secret, **kwargs)
-            request.send()
+        request = RefreshTokenRequest(
+            self.session,
+            refresh_token,
+            self.id,
+            self.secret,
+            **kwargs
+        )
+        request.send()
 
-            return request.process()
+        return request.process()
 
     def revoke_token(self,
                      token: Optional[str] = None, /, **kwargs) -> "TokenRevokeStatusObject":
@@ -416,21 +544,25 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
 
-            :raises BadRequestError: token cannot be revoked (not bound to this application, etc.)
+            :raises InvalidGrantError: specified token doesn't belong to this application
+            :raises InvalidClientError: invalid client ID or client secret
+            :raises UnsupportedTokenTypeError: token could not be revoked because
+                                               it doesn't have a :code:`device_id`
+            :raises BadRequestError: invalid request parameters
 
             :returns: :any:`TokenRevokeStatusObject`
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _replace_authorization_header(kwargs, "")
 
         if token is None:
             token = self.token
 
-        with self.session_factory() as session:
-            request = RevokeTokenRequest(session, token, self.id, self.secret, **kwargs)
-            request.send()
+        request = RevokeTokenRequest(self.session, token, self.id, self.secret, **kwargs)
+        request.send()
 
-            return request.process()
+        return request.process()
 
     def check_token(self, token: Optional[str] = None, /, **kwargs) -> bool:
         """
@@ -445,30 +577,25 @@ class Client:
             :returns: `bool`
         """
 
-        _apply_default_args(kwargs, self.default_args)
-
         # Any ID will do, doesn't matter whether it exists or not
         fake_operation_id = "0000"
 
         if token is None:
             token = self.token
 
-        if token == self.token:
-            session = self.session
-        else:
-            session = self.make_session(token)
+        if not token:
+            return False
+
+        _replace_authorization_header(kwargs, token)
 
         try:
             # get_operation_status() doesn't require any permissions, unlike most other requests
-            self._get_operation_status(session, fake_operation_id, **kwargs)
+            self.get_operation_status(fake_operation_id, **kwargs)
+            return True
+        except OperationNotFoundError:
             return True
         except UnauthorizedError:
             return False
-        except OperationNotFoundError:
-            return True
-        finally:
-            if session is not self.session:
-                session.close()
 
     def get_disk_info(self, **kwargs) -> "DiskInfoObject":
         """
@@ -685,6 +812,9 @@ class Client:
 
         kwargs["timeout"] = timeout
 
+        # Make sure we don't get any inconsistent behavior with header names
+        kwargs["headers"] = CaseInsensitiveDict(kwargs.get("headers", {}))
+
         file: Any = None
         close_file = False
         file_position = 0
@@ -716,7 +846,7 @@ class Client:
                 link = get_upload_link_function(dst_path, **temp_kwargs)
 
                 # session.put() doesn't accept some of the passed parameters
-                _filter_kwargs_for_requests(temp_kwargs)
+                _filter_request_kwargs(temp_kwargs)
 
                 temp_kwargs.setdefault("stream", True)
 
@@ -852,6 +982,9 @@ class Client:
 
         kwargs["timeout"] = timeout
 
+        # Make sure we don't get any inconsistent behavior with header names
+        kwargs["headers"] = CaseInsensitiveDict(kwargs.get("headers", {}))
+
         file: Any = None
         close_file = False
         file_position = 0
@@ -878,7 +1011,7 @@ class Client:
                 link = get_download_link_function(src_path, **temp_kwargs)
 
                 # session.get() doesn't accept some of the passed parameters
-                _filter_kwargs_for_requests(temp_kwargs)
+                _filter_request_kwargs(temp_kwargs)
 
                 temp_kwargs.setdefault("stream", True)
 
@@ -1752,15 +1885,6 @@ class Client:
 
         return SyncPublicResourceLinkObject.from_public_key(public_key, yadisk=self)
 
-    def _get_operation_status(self,
-                              session: Session,
-                              operation_id: str, /, **kwargs) -> str:
-        # This method is kept for private use (such as for check_token())
-        request = GetOperationStatusRequest(session, operation_id, **kwargs)
-        request.send()
-
-        return request.process().status
-
     def get_operation_status(self, operation_id: str, /, **kwargs) -> str:
         """
             Get operation status.
@@ -1774,9 +1898,15 @@ class Client:
 
             :raises OperationNotFoundError: requested operation was not found
 
-            :returns: `str`
+            :returns: `str`, :code:`"in-progress"` indicates that the operation
+                      is currently running, :code:`"success"` indicates that
+                      the operation was successful, :code:`"failed"` means that
+                      the operation failed
         """
 
         _apply_default_args(kwargs, self.default_args)
 
-        return self._get_operation_status(self.session, operation_id, **kwargs)
+        request = GetOperationStatusRequest(self.session, operation_id, **kwargs)
+        request.send()
+
+        return request.process().status

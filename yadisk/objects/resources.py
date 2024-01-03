@@ -5,6 +5,7 @@ from pathlib import PurePosixPath
 from urllib.parse import urlencode, urlparse, parse_qs
 
 from .yadisk_object import YaDiskObject
+from .link_object import LinkObject
 from .disk import UserPublicInfoObject
 from ..common import (
     typed_list, yandex_date, is_resource_link, is_public_resource_link,
@@ -20,13 +21,15 @@ from ..compat import Generator, List, AsyncGenerator
 
 if TYPE_CHECKING:
     import datetime
+    from .operations import (
+        OperationLinkObject, AsyncOperationLinkObject, SyncOperationLinkObject
+    )
 
 __all__ = [
     "CommentIDsObject", "EXIFObject", "FilesResourceListObject",
     "SyncFilesResourceListObject", "AsyncFilesResourceListObject",
     "LastUploadedResourceListObject", "SyncLastUploadedResourceListObject",
-    "AsyncLastUploadedResourceListObject", "LinkObject", "OperationLinkObject",
-    "SyncOperationLinkObject", "AsyncOperationLinkObject", "PublicResourcesListObject",
+    "AsyncLastUploadedResourceListObject", "PublicResourcesListObject",
     "SyncPublicResourcesListObject", "AsyncPublicResourcesListObject",
     "ResourceListObject", "SyncResourceListObject", "AsyncResourceListObject",
     "ResourceObject", "SyncResourceObject", "AsyncResourceObject",
@@ -220,118 +223,6 @@ class AsyncLastUploadedResourceListObject(LastUploadedResourceListObject):
 
         self.set_field_type("items", typed_list(partial(AsyncResourceObject, yadisk=yadisk)))
         self.import_fields(last_uploaded_resources_list)
-
-class LinkObject(YaDiskObject):
-    """
-        Link object.
-
-        :param link: `dict` or `None`
-        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
-
-        :ivar href: `str`, link URL
-        :ivar method: `str`, HTTP method
-        :ivar templated: `bool`, tells whether the URL is templated
-    """
-
-    href: Optional[str]
-    method: Optional[str]
-    templated: Optional[bool]
-
-    def __init__(self,
-                 link: Optional[dict] = None,
-                 yadisk: Optional[Any] = None):
-        YaDiskObject.__init__(
-            self,
-            {"href":      str_or_error,
-             "method":    str_or_error,
-             "templated": bool_or_error},
-            yadisk)
-
-        self.import_fields(link)
-
-class OperationLinkObject(LinkObject):
-    """
-        Operation link object.
-
-        :param link: `dict` or `None`
-        :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
-
-        :ivar href: `str`, link URL
-        :ivar method: `str`, HTTP method
-        :ivar templated: `bool`, tells whether the URL is templated
-    """
-
-    pass
-
-class SyncOperationLinkObject(OperationLinkObject):
-    """
-        Operation link object.
-
-        :param link: `dict` or `None`
-        :param yadisk: :any:`Client` or `None`, `YaDisk` object
-
-        :ivar href: `str`, link URL
-        :ivar method: `str`, HTTP method
-        :ivar templated: `bool`, tells whether the URL is templated
-    """
-
-    def get_status(self, **kwargs) -> str:
-        """
-            Get operation status.
-
-            :param fields: list of keys to be included in the response
-            :param timeout: `float` or `tuple`, request timeout
-            :param headers: `dict` or `None`, additional request headers
-            :param n_retries: `int`, maximum number of retries
-            :param retry_interval: delay between retries in seconds
-
-            :raises OperationNotFoundError: requested operation was not found
-
-            :returns: `str`
-        """
-
-        if self._yadisk is None:
-            raise ValueError("This object is not bound to a YaDisk instance")
-
-        if self.href is None:
-            raise ValueError("OperationLinkObject has no link")
-
-        return self._yadisk.get_operation_status(self.href, **kwargs)
-
-class AsyncOperationLinkObject(OperationLinkObject):
-    """
-        Operation link object.
-
-        :param link: `dict` or `None`
-        :param yadisk: :any:`AsyncClient` or `None`, `YaDisk` object
-
-        :ivar href: `str`, link URL
-        :ivar method: `str`, HTTP method
-        :ivar templated: `bool`, tells whether the URL is templated
-    """
-
-    async def get_status(self, **kwargs) -> str:
-        """
-            Get operation status.
-
-            :param fields: list of keys to be included in the response
-            :param timeout: `float` or `tuple`, request timeout
-            :param headers: `dict` or `None`, additional request headers
-            :param n_retries: `int`, maximum number of retries
-            :param retry_interval: delay between retries in seconds
-
-            :raises OperationNotFoundError: requested operation was not found
-
-            :returns: `str`
-        """
-
-        if self._yadisk is None:
-            raise ValueError("This object is not bound to a YaDisk instance")
-
-        if self.href is None:
-            raise ValueError("OperationLinkObject has no link")
-
-        return await self._yadisk.get_operation_status(self.href, **kwargs)
 
 class PublicResourcesListObject(YaDiskObject):
     """
@@ -735,7 +626,7 @@ class ResourceObjectMethodsMixin:
 
     def upload_url(self: ResourceProtocol,
                    url: str,
-                   relative_path: Optional[str] = None, /, **kwargs) -> OperationLinkObject:
+                   relative_path: Optional[str] = None, /, **kwargs) -> "OperationLinkObject":
         """
             Upload a file from URL.
 
@@ -994,7 +885,7 @@ class ResourceObjectMethodsMixin:
         return self._yadisk.mkdir(str(path), **kwargs)
 
     def remove(self: ResourceProtocol,
-               relative_path: Optional[str] = None, /, **kwargs) -> Optional[SyncOperationLinkObject]:
+               relative_path: Optional[str] = None, /, **kwargs) -> Optional["SyncOperationLinkObject"]:
         """
             Remove the resource.
 
@@ -1029,16 +920,16 @@ class ResourceObjectMethodsMixin:
 
     @overload
     def move(self: ResourceProtocol,
-             dst_path: str, /, **kwargs) -> Union["SyncResourceLinkObject", SyncOperationLinkObject]:
+             dst_path: str, /, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
         pass
 
     @overload
     def move(self: ResourceProtocol,
              relative_path: Optional[str],
-             dst_path: str, /, **kwargs) -> Union["SyncResourceLinkObject", SyncOperationLinkObject]:
+             dst_path: str, /, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
         pass
 
-    def move(self: ResourceProtocol, *args, **kwargs) -> Union["SyncResourceLinkObject", SyncOperationLinkObject]:
+    def move(self: ResourceProtocol, *args, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
         """
             Move resource to `dst_path`.
             This method takes 1 or 2 positional arguments:
@@ -1083,16 +974,16 @@ class ResourceObjectMethodsMixin:
 
     @overload
     def rename(self: ResourceProtocol,
-               new_name: str, /, **kwargs) -> Union["SyncResourceLinkObject", SyncOperationLinkObject]:
+               new_name: str, /, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
         pass
 
     @overload
     def rename(self: ResourceProtocol,
                relative_path: Optional[str],
-               new_name: str, /, **kwargs) -> Union["SyncResourceLinkObject", SyncOperationLinkObject]:
+               new_name: str, /, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
         pass
 
-    def rename(self: ResourceProtocol, *args, **kwargs) -> Union["SyncResourceLinkObject", SyncOperationLinkObject]:
+    def rename(self: ResourceProtocol, *args, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
         """
             Rename `src_path` to have filename `new_name`.
             Does the same as `move()` but changes only the filename.
@@ -1135,16 +1026,16 @@ class ResourceObjectMethodsMixin:
 
     @overload
     def copy(self: ResourceProtocol,
-             dst_path: str, /, **kwargs) -> Union["SyncResourceLinkObject", SyncOperationLinkObject]:
+             dst_path: str, /, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
         pass
 
     @overload
     def copy(self: ResourceProtocol,
              relative_path: Optional[str],
-             dst_path: str, /, **kwargs) -> Union["SyncResourceLinkObject", SyncOperationLinkObject]:
+             dst_path: str, /, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
         pass
 
-    def copy(self: ResourceProtocol, *args, **kwargs) -> Union["SyncResourceLinkObject", SyncOperationLinkObject]:
+    def copy(self: ResourceProtocol, *args, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
         """
             Copy resource to `dst_path`.
             If the operation is performed asynchronously, returns the link to the operation,
@@ -1499,7 +1390,7 @@ class AsyncResourceObjectMethodsMixin:
 
     async def upload_url(self: ResourceProtocol,
                          url: str,
-                         relative_path: Optional[str] = None, /, **kwargs) -> AsyncOperationLinkObject:
+                         relative_path: Optional[str] = None, /, **kwargs) -> "AsyncOperationLinkObject":
         """
             Upload a file from URL.
 
@@ -1758,7 +1649,7 @@ class AsyncResourceObjectMethodsMixin:
         return await self._yadisk.mkdir(str(path), **kwargs)
 
     async def remove(self: ResourceProtocol,
-                     relative_path: Optional[str] = None, /, **kwargs) -> Optional[AsyncOperationLinkObject]:
+                     relative_path: Optional[str] = None, /, **kwargs) -> Optional["AsyncOperationLinkObject"]:
         """
             Remove the resource.
 
@@ -1793,16 +1684,16 @@ class AsyncResourceObjectMethodsMixin:
 
     @overload
     async def move(self: ResourceProtocol,
-                   dst_path: str, /, **kwargs) -> Union["AsyncResourceLinkObject", AsyncOperationLinkObject]:
+                   dst_path: str, /, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         pass
 
     @overload
     async def move(self: ResourceProtocol,
                    relative_path: Optional[str],
-                   dst_path: str, /, **kwargs) -> Union["AsyncResourceLinkObject", AsyncOperationLinkObject]:
+                   dst_path: str, /, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         pass
 
-    async def move(self: ResourceProtocol, *args, **kwargs) -> Union["AsyncResourceLinkObject", AsyncOperationLinkObject]:
+    async def move(self: ResourceProtocol, *args, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         """
             Move resource to `dst_path`.
             This method takes 1 or 2 positional arguments:
@@ -1847,16 +1738,16 @@ class AsyncResourceObjectMethodsMixin:
 
     @overload
     async def rename(self: ResourceProtocol,
-                     new_name: str, /, **kwargs) -> Union["AsyncResourceLinkObject", AsyncOperationLinkObject]:
+                     new_name: str, /, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         pass
 
     @overload
     async def rename(self: ResourceProtocol,
                      relative_path: Optional[str],
-                     new_name: str, /, **kwargs) -> Union["AsyncResourceLinkObject", AsyncOperationLinkObject]:
+                     new_name: str, /, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         pass
 
-    async def rename(self: ResourceProtocol, *args, **kwargs) -> Union["AsyncResourceLinkObject", AsyncOperationLinkObject]:
+    async def rename(self: ResourceProtocol, *args, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         """
             Rename `src_path` to have filename `new_name`.
             Does the same as `move()` but changes only the filename.
@@ -1899,16 +1790,16 @@ class AsyncResourceObjectMethodsMixin:
 
     @overload
     async def copy(self: ResourceProtocol,
-                   dst_path: str, /, **kwargs) -> Union["AsyncResourceLinkObject", AsyncOperationLinkObject]:
+                   dst_path: str, /, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         pass
 
     @overload
     async def copy(self: ResourceProtocol,
                    relative_path: Optional[str],
-                   dst_path: str, /, **kwargs) -> Union["AsyncResourceLinkObject", AsyncOperationLinkObject]:
+                   dst_path: str, /, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         pass
 
-    async def copy(self: ResourceProtocol, *args, **kwargs) -> Union["AsyncResourceLinkObject", AsyncOperationLinkObject]:
+    async def copy(self: ResourceProtocol, *args, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         """
             Copy resource to `dst_path`.
             If the operation is performed asynchronously, returns the link to the operation,
@@ -2891,7 +2782,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         return self._yadisk.trash_listdir(str(path), **kwargs)
 
     def remove(self: ResourceProtocol,
-               relative_path: Optional[str] = None, /, **kwargs) -> Optional[SyncOperationLinkObject]:
+               relative_path: Optional[str] = None, /, **kwargs) -> Optional["SyncOperationLinkObject"]:
         """
             Remove a trash resource.
 
@@ -2922,16 +2813,16 @@ class SyncTrashResourceObject(TrashResourceObject):
 
     @overload
     def restore(self: ResourceProtocol,
-                dst_path: str, /, **kwargs) -> Union[SyncResourceLinkObject, SyncOperationLinkObject]:
+                dst_path: str, /, **kwargs) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         pass
 
     @overload
     def restore(self: ResourceProtocol,
                 relative_path: Optional[str],
-                dst_path: str, /, **kwargs) -> Union[SyncResourceLinkObject, SyncOperationLinkObject]:
+                dst_path: str, /, **kwargs) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         pass
 
-    def restore(self: ResourceProtocol, *args, **kwargs) -> Union[SyncResourceLinkObject, SyncOperationLinkObject]:
+    def restore(self: ResourceProtocol, *args, **kwargs) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
             Restore a trash resource.
             Returns a link to the newly created resource or a link to the asynchronous operation.
@@ -3194,7 +3085,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         return await self._yadisk.trash_listdir(str(path), **kwargs)
 
     async def remove(self: ResourceProtocol,
-                     relative_path: Optional[str] = None, /, **kwargs) -> Optional[AsyncOperationLinkObject]:
+                     relative_path: Optional[str] = None, /, **kwargs) -> Optional["AsyncOperationLinkObject"]:
         """
             Remove a trash resource.
 
@@ -3225,16 +3116,16 @@ class AsyncTrashResourceObject(TrashResourceObject):
 
     @overload
     async def restore(self: ResourceProtocol,
-                      dst_path: str, /, **kwargs) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
+                      dst_path: str, /, **kwargs) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
         pass
 
     @overload
     async def restore(self: ResourceProtocol,
                       relative_path: Optional[str],
-                      dst_path: str, /, **kwargs) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
+                      dst_path: str, /, **kwargs) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
         pass
 
-    async def restore(self: ResourceProtocol, *args, **kwargs) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
+    async def restore(self: ResourceProtocol, *args, **kwargs) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
         """
             Restore a trash resource.
             Returns a link to the newly created resource or a link to the asynchronous operation.

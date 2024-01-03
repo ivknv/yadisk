@@ -47,9 +47,8 @@ class HTTPXSession(Session):
         .. code:: python
 
            import yadisk
-           from yadisk.sessions.httpx_session import HTTPXSession
 
-           with yadisk.Client(..., session_factory=HTTPXSession) as client:
+           with yadisk.Client(..., session="httpx") as client:
                client.get_meta(
                    "/my_file.txt",
                    n_retries=5,
