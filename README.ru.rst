@@ -172,7 +172,7 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
     классов :code:`Client` и :code:`AsyncClient`
   * Класс сессии теперь может быть указан в качестве строки
     (см. :code:`Client`/:code:`AsyncClient`)
-  * Добавлены методы :code"`Client.get_device_code()`/:code:`AsyncClient.get_device_code()`
+  * Добавлены методы :code:`Client.get_device_code()`/:code:`AsyncClient.get_device_code()`
   * Добавлены методы :code:`Client.get_token_from_device_code()`/:code:`AsyncClient.get_token_from_device_code()`
   * Добавлен недостающий параметр :code:`redirect_uri` для
     :code:`Client.get_auth_url()`/:code:`AsyncClient.get_auth_url()` и
