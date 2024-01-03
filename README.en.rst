@@ -156,7 +156,7 @@ Changelog
 .. _Session Interface: https://yadisk.readthedocs.io/en/latest/api_reference/session_interface.html
 .. _requests: https://pypi.org/project/requests
 
-* **Release 2.0.1 (2024-01-02)**
+* **Release 2.1.0 (2024-01-03)**
 
   * Fixed a bug where POST request parameters were not encoded correctly
   * Fixed a bug in :code:`PycURLSession.send_request()` that made it ignore passed headers
