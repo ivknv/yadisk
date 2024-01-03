@@ -1,20 +1,20 @@
 # api_reference/*.rst translations.
-# Copyright (C) 2023, Ivan Konovalov
+# Copyright (C) 2024, Ivan Konovalov
 # This file is distributed under the same license as the YaDisk package.
-# Ivan Konovalov <ivknv0@gmail.com>, 2023.
+# Ivan Konovalov <ivknv0@gmail.com>, 2024.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version:  2.0.0\n"
+"Project-Id-Version: YaDisk 2.0.1\n"
 "Report-Msgid-Bugs-To: ivknv0@gmail.com\n"
-"POT-Creation-Date: 2023-12-12 21:31+0500\n"
-"PO-Revision-Date: 2023-12-12 21:57+0500\n"
+"POT-Creation-Date: 2024-01-02 19:51+0500\n"
+"PO-Revision-Date: 2024-01-03 14:59+0500\n"
 "Last-Translator: Ivan Konovalov <ivknv0@gmail.com>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.0\n"
+"Generated-By: Babel 2.14.0\n"
 
 #: ../../api_reference/async_api.rst:2
 msgid "Asynchronous API"
@@ -26,12 +26,12 @@ msgstr "Реализует доступ к REST API Яндекс.Диска (р�
 
 #: of yadisk.async_client.AsyncClient:3
 msgid ""
-"HTTP client implementation can be specified using the `session_factory` "
+"HTTP client implementation can be specified using the :code:`session` "
 "parameter. :any:`AsyncHTTPXSession` is used by default. For other "
 "options, see :doc:`/api_reference/sessions`."
 msgstr ""
 "Реализация HTTP-клиента может быть указана с помощью параметра "
-"`session_factory`. По умолчанию используется :any:`AsyncHTTPXSession`. "
+":code:`session`. По умолчанию используется :any:`AsyncHTTPXSession`. "
 "см. :doc:`/api_reference/sessions` для других списка других доступных "
 "вариантов."
 
@@ -100,6 +100,8 @@ msgstr ""
 #: yadisk.api.api_request.APIRequest.aprocess
 #: yadisk.api.api_request.APIRequest.process
 #: yadisk.api.api_request.APIRequest.process_json
+#: yadisk.api.auth.GetDeviceCodeRequest
+#: yadisk.api.auth.GetDeviceCodeRequest.process_json
 #: yadisk.api.auth.GetTokenRequest yadisk.api.auth.GetTokenRequest.process_json
 #: yadisk.api.auth.RefreshTokenRequest
 #: yadisk.api.auth.RefreshTokenRequest.process_json
@@ -156,6 +158,7 @@ msgstr ""
 #: yadisk.async_client.AsyncClient.exists
 #: yadisk.async_client.AsyncClient.get_auth_url
 #: yadisk.async_client.AsyncClient.get_code_url
+#: yadisk.async_client.AsyncClient.get_device_code
 #: yadisk.async_client.AsyncClient.get_disk_info
 #: yadisk.async_client.AsyncClient.get_download_link
 #: yadisk.async_client.AsyncClient.get_files
@@ -167,6 +170,7 @@ msgstr ""
 #: yadisk.async_client.AsyncClient.get_public_resources
 #: yadisk.async_client.AsyncClient.get_public_type
 #: yadisk.async_client.AsyncClient.get_token
+#: yadisk.async_client.AsyncClient.get_token_from_device_code
 #: yadisk.async_client.AsyncClient.get_trash_meta
 #: yadisk.async_client.AsyncClient.get_trash_type
 #: yadisk.async_client.AsyncClient.get_type
@@ -178,7 +182,6 @@ msgstr ""
 #: yadisk.async_client.AsyncClient.is_trash_dir
 #: yadisk.async_client.AsyncClient.is_trash_file
 #: yadisk.async_client.AsyncClient.listdir
-#: yadisk.async_client.AsyncClient.make_session
 #: yadisk.async_client.AsyncClient.mkdir yadisk.async_client.AsyncClient.move
 #: yadisk.async_client.AsyncClient.patch
 #: yadisk.async_client.AsyncClient.public_exists
@@ -205,38 +208,45 @@ msgstr ""
 #: yadisk.client.Client.download yadisk.client.Client.download_by_link
 #: yadisk.client.Client.download_public yadisk.client.Client.exists
 #: yadisk.client.Client.get_auth_url yadisk.client.Client.get_code_url
-#: yadisk.client.Client.get_disk_info yadisk.client.Client.get_download_link
-#: yadisk.client.Client.get_files yadisk.client.Client.get_last_uploaded
-#: yadisk.client.Client.get_meta yadisk.client.Client.get_operation_status
+#: yadisk.client.Client.get_device_code yadisk.client.Client.get_disk_info
+#: yadisk.client.Client.get_download_link yadisk.client.Client.get_files
+#: yadisk.client.Client.get_last_uploaded yadisk.client.Client.get_meta
+#: yadisk.client.Client.get_operation_status
 #: yadisk.client.Client.get_public_download_link
 #: yadisk.client.Client.get_public_meta
 #: yadisk.client.Client.get_public_resources
 #: yadisk.client.Client.get_public_type yadisk.client.Client.get_token
+#: yadisk.client.Client.get_token_from_device_code
 #: yadisk.client.Client.get_trash_meta yadisk.client.Client.get_trash_type
 #: yadisk.client.Client.get_type yadisk.client.Client.get_upload_link
 #: yadisk.client.Client.is_dir yadisk.client.Client.is_file
 #: yadisk.client.Client.is_public_dir yadisk.client.Client.is_public_file
 #: yadisk.client.Client.is_trash_dir yadisk.client.Client.is_trash_file
-#: yadisk.client.Client.listdir yadisk.client.Client.make_session
-#: yadisk.client.Client.mkdir yadisk.client.Client.move
-#: yadisk.client.Client.patch yadisk.client.Client.public_exists
-#: yadisk.client.Client.public_listdir yadisk.client.Client.publish
-#: yadisk.client.Client.refresh_token yadisk.client.Client.remove
-#: yadisk.client.Client.remove_trash yadisk.client.Client.rename
-#: yadisk.client.Client.restore_trash yadisk.client.Client.revoke_token
-#: yadisk.client.Client.save_to_disk yadisk.client.Client.trash_exists
-#: yadisk.client.Client.trash_listdir yadisk.client.Client.unpublish
-#: yadisk.client.Client.upload yadisk.client.Client.upload_by_link
-#: yadisk.client.Client.upload_url yadisk.exceptions.YaDiskError
+#: yadisk.client.Client.listdir yadisk.client.Client.mkdir
+#: yadisk.client.Client.move yadisk.client.Client.patch
+#: yadisk.client.Client.public_exists yadisk.client.Client.public_listdir
+#: yadisk.client.Client.publish yadisk.client.Client.refresh_token
+#: yadisk.client.Client.remove yadisk.client.Client.remove_trash
+#: yadisk.client.Client.rename yadisk.client.Client.restore_trash
+#: yadisk.client.Client.revoke_token yadisk.client.Client.save_to_disk
+#: yadisk.client.Client.trash_exists yadisk.client.Client.trash_listdir
+#: yadisk.client.Client.unpublish yadisk.client.Client.upload
+#: yadisk.client.Client.upload_by_link yadisk.client.Client.upload_url
+#: yadisk.exceptions.YaDiskError yadisk.import_session.import_async_session
+#: yadisk.import_session.import_session yadisk.objects.auth.DeviceCodeObject
 #: yadisk.objects.auth.TokenObject yadisk.objects.auth.TokenRevokeStatusObject
 #: yadisk.objects.disk.DiskInfoObject yadisk.objects.disk.SystemFoldersObject
 #: yadisk.objects.disk.UserObject yadisk.objects.disk.UserPublicInfoObject
 #: yadisk.objects.error_object.ErrorObject
+#: yadisk.objects.link_object.LinkObject
+#: yadisk.objects.operations.AsyncOperationLinkObject
+#: yadisk.objects.operations.AsyncOperationLinkObject.get_status
+#: yadisk.objects.operations.OperationLinkObject
 #: yadisk.objects.operations.OperationStatusObject
+#: yadisk.objects.operations.SyncOperationLinkObject
+#: yadisk.objects.operations.SyncOperationLinkObject.get_status
 #: yadisk.objects.resources.AsyncFilesResourceListObject
 #: yadisk.objects.resources.AsyncLastUploadedResourceListObject
-#: yadisk.objects.resources.AsyncOperationLinkObject
-#: yadisk.objects.resources.AsyncOperationLinkObject.get_status
 #: yadisk.objects.resources.AsyncPublicResourceLinkObject
 #: yadisk.objects.resources.AsyncPublicResourceListObject
 #: yadisk.objects.resources.AsyncPublicResourceObject
@@ -279,8 +289,6 @@ msgstr ""
 #: yadisk.objects.resources.EXIFObject
 #: yadisk.objects.resources.FilesResourceListObject
 #: yadisk.objects.resources.LastUploadedResourceListObject
-#: yadisk.objects.resources.LinkObject
-#: yadisk.objects.resources.OperationLinkObject
 #: yadisk.objects.resources.PublicResourceLinkObject
 #: yadisk.objects.resources.PublicResourceListObject
 #: yadisk.objects.resources.PublicResourceObject
@@ -314,8 +322,6 @@ msgstr ""
 #: yadisk.objects.resources.ShareInfoObject
 #: yadisk.objects.resources.SyncFilesResourceListObject
 #: yadisk.objects.resources.SyncLastUploadedResourceListObject
-#: yadisk.objects.resources.SyncOperationLinkObject
-#: yadisk.objects.resources.SyncOperationLinkObject.get_status
 #: yadisk.objects.resources.SyncPublicResourceLinkObject
 #: yadisk.objects.resources.SyncPublicResourceListObject
 #: yadisk.objects.resources.SyncPublicResourceObject
@@ -349,9 +355,9 @@ msgstr ""
 msgid "Parameters"
 msgstr "Параметры"
 
-#: of yadisk.api.auth.GetTokenRequest:5 yadisk.api.auth.RefreshTokenRequest:5
-#: yadisk.api.auth.RevokeTokenRequest:5 yadisk.async_client.AsyncClient:29
-#: yadisk.client.Client:21
+#: of yadisk.api.auth.GetDeviceCodeRequest:8 yadisk.api.auth.GetTokenRequest:5
+#: yadisk.api.auth.RefreshTokenRequest:5 yadisk.api.auth.RevokeTokenRequest:5
+#: yadisk.async_client.AsyncClient:29 yadisk.client.Client:21
 msgid "application ID"
 msgstr "идентификатор приложения"
 
@@ -374,10 +380,35 @@ msgstr ""
 "использовать, чтобы задать стандартный таймаут, заголовки и т.д."
 
 #: of yadisk.async_client.AsyncClient:34
-msgid "`None` or a function that returns a new instance of :any:`AsyncSession`"
-msgstr "`None` или функция, которая возвращает новый экземпляр :any:`AsyncSession`"
+msgid ""
+"`None`, `str` or an instance of :any:`AsyncSession`. If :code:`session` "
+"is a string, the appropriate session class will be imported, it must be "
+"one of the following values:    * :code:`\"aiohttp\"` - "
+":any:`AIOHTTPSession`   * :code:`\"httpx\"` - :any:`AsyncHTTPXSession`"
+msgstr "`None`, `str` или объект :any:`AsyncSession`. Если :code:`session` "
+"- строка, то нужный класс будет автоматически импортирован, допустимые значения:"
+"    * :code:`\"aiohttp\"` - "
+":any:`AIOHTTPSession`   * :code:`\"httpx\"` - :any:`AsyncHTTPXSession`"
 
-#: of yadisk.async_client.AsyncClient:36
+#: of yadisk.async_client.AsyncClient:34
+msgid ""
+"`None`, `str` or an instance of :any:`AsyncSession`. If :code:`session` "
+"is a string, the appropriate session class will be imported, it must be "
+"one of the following values:"
+msgstr "`None`, `str` или объект :any:`AsyncSession`. Если :code:`session` "
+"- строка, то нужный класс будет автоматически импортирован, допустимые значения:"
+
+#: of yadisk.async_client.AsyncClient:39
+#: yadisk.import_session.import_async_session:7
+msgid ":code:`\"aiohttp\"` - :any:`AIOHTTPSession`"
+msgstr ":code:`\"aiohttp\"` - :any:`AIOHTTPSession`"
+
+#: of yadisk.async_client.AsyncClient:40
+#: yadisk.import_session.import_async_session:8
+msgid ":code:`\"httpx\"` - :any:`AsyncHTTPXSession`"
+msgstr ":code:`\"httpx\"` - :any:`AsyncHTTPXSession`"
+
+#: of yadisk.async_client.AsyncClient:42
 msgid ""
 "`None` or an async function that opens a file for reading or writing "
 "(:code:`aiofiles.open()` by default)"
@@ -385,17 +416,26 @@ msgstr ""
 "`None` или асинхронная функция, которая открывает файл для чтения или "
 "записи (:code:`aiofiles.open()` по умолчанию)"
 
+#: of yadisk.async_client.AsyncClient:44
+msgid ""
+"kept for compatibility, callable that returns an instance of "
+":any:`AsyncSession`"
+msgstr "оставлен для совместимости, функция, возвращающая объект :any:`AsyncSession`"
+
 #: of yadisk.api.api_request.APIRequest yadisk.async_client.AsyncClient
 #: yadisk.async_session.AsyncResponse yadisk.client.Client
-#: yadisk.exceptions.YaDiskError yadisk.objects.auth.TokenObject
-#: yadisk.objects.auth.TokenRevokeStatusObject
+#: yadisk.exceptions.YaDiskError yadisk.objects.auth.DeviceCodeObject
+#: yadisk.objects.auth.TokenObject yadisk.objects.auth.TokenRevokeStatusObject
 #: yadisk.objects.disk.DiskInfoObject yadisk.objects.disk.SystemFoldersObject
 #: yadisk.objects.disk.UserObject yadisk.objects.disk.UserPublicInfoObject
 #: yadisk.objects.error_object.ErrorObject
+#: yadisk.objects.link_object.LinkObject
+#: yadisk.objects.operations.AsyncOperationLinkObject
+#: yadisk.objects.operations.OperationLinkObject
 #: yadisk.objects.operations.OperationStatusObject
+#: yadisk.objects.operations.SyncOperationLinkObject
 #: yadisk.objects.resources.AsyncFilesResourceListObject
 #: yadisk.objects.resources.AsyncLastUploadedResourceListObject
-#: yadisk.objects.resources.AsyncOperationLinkObject
 #: yadisk.objects.resources.AsyncPublicResourceLinkObject
 #: yadisk.objects.resources.AsyncPublicResourceListObject
 #: yadisk.objects.resources.AsyncPublicResourceObject
@@ -409,8 +449,6 @@ msgstr ""
 #: yadisk.objects.resources.EXIFObject
 #: yadisk.objects.resources.FilesResourceListObject
 #: yadisk.objects.resources.LastUploadedResourceListObject
-#: yadisk.objects.resources.LinkObject
-#: yadisk.objects.resources.OperationLinkObject
 #: yadisk.objects.resources.PublicResourceLinkObject
 #: yadisk.objects.resources.PublicResourceListObject
 #: yadisk.objects.resources.PublicResourceObject
@@ -423,7 +461,6 @@ msgstr ""
 #: yadisk.objects.resources.ShareInfoObject
 #: yadisk.objects.resources.SyncFilesResourceListObject
 #: yadisk.objects.resources.SyncLastUploadedResourceListObject
-#: yadisk.objects.resources.SyncOperationLinkObject
 #: yadisk.objects.resources.SyncPublicResourceLinkObject
 #: yadisk.objects.resources.SyncPublicResourceListObject
 #: yadisk.objects.resources.SyncPublicResourceObject
@@ -442,19 +479,19 @@ msgstr ""
 msgid "Variables"
 msgstr "Аттрибуты"
 
-#: of yadisk.async_client.AsyncClient:39 yadisk.client.Client:31
+#: of yadisk.async_client.AsyncClient:47 yadisk.client.Client:40
 msgid "`str`, application ID"
 msgstr "`str`, идентификатор приложения"
 
-#: of yadisk.async_client.AsyncClient:40 yadisk.client.Client:32
+#: of yadisk.async_client.AsyncClient:48 yadisk.client.Client:41
 msgid "`str`, application secret password"
 msgstr "`str`, пароль приложения"
 
-#: of yadisk.async_client.AsyncClient:41 yadisk.client.Client:33
+#: of yadisk.async_client.AsyncClient:49 yadisk.client.Client:42
 msgid "`str`, application token"
 msgstr "`str`, токен"
 
-#: of yadisk.async_client.AsyncClient:42 yadisk.client.Client:34
+#: of yadisk.async_client.AsyncClient:50 yadisk.client.Client:43
 msgid ""
 "`dict`, default arguments for methods. Can be used to set the default "
 "timeout, headers, etc."
@@ -462,19 +499,11 @@ msgstr ""
 "`dict`, аргументы по умолчанию для методов. Можно использовать, чтобы "
 "задать стандартный таймаут, заголовки и т.д."
 
-#: of yadisk.async_client.AsyncClient:44
-msgid "function that returns a new instance of :any:`AsyncSession`"
-msgstr "функция, которая возвращает новый экземпляр :any:`AsyncSession`"
+#: of yadisk.async_client.AsyncClient:52
+msgid "current session (:any:`AsyncSession` instance)"
+msgstr "текущая сессия (объект :any:`AsyncSession`)"
 
-#: of yadisk.async_client.AsyncClient:45
-msgid ""
-"current session (:any:`AsyncSession` instance), created using the "
-"`session_factory` with filled out authentication headers"
-msgstr ""
-"текущая сессия (экземпляр :any:`AsyncSession`), созданная с помощью "
-"`session_factory` с заполненными заголовками аутентификации"
-
-#: of yadisk.async_client.AsyncClient:47
+#: of yadisk.async_client.AsyncClient:53
 msgid ""
 "async function that opens a file for reading or writing "
 "(:code:`aiofiles.open()` by default)"
@@ -482,7 +511,7 @@ msgstr ""
 "асинхронная функция, которая открывает файл для чтения или записи "
 "(:code:`aiofiles.open()` по умолчанию)"
 
-#: of yadisk.async_client.AsyncClient:50 yadisk.client.Client:42
+#: of yadisk.async_client.AsyncClient:56 yadisk.client.Client:49
 msgid "The following exceptions may be raised by most API requests:"
 msgstr "Большинство запросов к API могут вызвать следующие исключения:"
 
@@ -490,6 +519,9 @@ msgstr "Большинство запросов к API могут вызвать
 #: yadisk.async_client.AsyncClient.download
 #: yadisk.async_client.AsyncClient.download_public
 #: yadisk.async_client.AsyncClient.exists
+#: yadisk.async_client.AsyncClient.get_auth_url
+#: yadisk.async_client.AsyncClient.get_code_url
+#: yadisk.async_client.AsyncClient.get_device_code
 #: yadisk.async_client.AsyncClient.get_disk_info
 #: yadisk.async_client.AsyncClient.get_download_link
 #: yadisk.async_client.AsyncClient.get_files
@@ -501,6 +533,7 @@ msgstr "Большинство запросов к API могут вызвать
 #: yadisk.async_client.AsyncClient.get_public_resources
 #: yadisk.async_client.AsyncClient.get_public_type
 #: yadisk.async_client.AsyncClient.get_token
+#: yadisk.async_client.AsyncClient.get_token_from_device_code
 #: yadisk.async_client.AsyncClient.get_trash_meta
 #: yadisk.async_client.AsyncClient.get_trash_type
 #: yadisk.async_client.AsyncClient.get_type
@@ -532,13 +565,16 @@ msgstr "Большинство запросов к API могут вызвать
 #: yadisk.async_client.AsyncClient.upload_url yadisk.client.Client
 #: yadisk.client.Client.copy yadisk.client.Client.download
 #: yadisk.client.Client.download_public yadisk.client.Client.exists
-#: yadisk.client.Client.get_disk_info yadisk.client.Client.get_download_link
-#: yadisk.client.Client.get_files yadisk.client.Client.get_last_uploaded
-#: yadisk.client.Client.get_meta yadisk.client.Client.get_operation_status
+#: yadisk.client.Client.get_auth_url yadisk.client.Client.get_code_url
+#: yadisk.client.Client.get_device_code yadisk.client.Client.get_disk_info
+#: yadisk.client.Client.get_download_link yadisk.client.Client.get_files
+#: yadisk.client.Client.get_last_uploaded yadisk.client.Client.get_meta
+#: yadisk.client.Client.get_operation_status
 #: yadisk.client.Client.get_public_download_link
 #: yadisk.client.Client.get_public_meta
 #: yadisk.client.Client.get_public_resources
 #: yadisk.client.Client.get_public_type yadisk.client.Client.get_token
+#: yadisk.client.Client.get_token_from_device_code
 #: yadisk.client.Client.get_trash_meta yadisk.client.Client.get_trash_type
 #: yadisk.client.Client.get_type yadisk.client.Client.get_upload_link
 #: yadisk.client.Client.is_dir yadisk.client.Client.is_file
@@ -554,7 +590,10 @@ msgstr "Большинство запросов к API могут вызвать
 #: yadisk.client.Client.trash_exists yadisk.client.Client.trash_listdir
 #: yadisk.client.Client.unpublish yadisk.client.Client.upload
 #: yadisk.client.Client.upload_by_link yadisk.client.Client.upload_url
-#: yadisk.objects.resources.AsyncOperationLinkObject.get_status
+#: yadisk.import_session.import_async_session
+#: yadisk.import_session.import_session
+#: yadisk.objects.operations.AsyncOperationLinkObject.get_status
+#: yadisk.objects.operations.SyncOperationLinkObject.get_status
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.download
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.exists
@@ -605,7 +644,6 @@ msgstr "Большинство запросов к API могут вызвать
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.unpublish
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.upload
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.upload_url
-#: yadisk.objects.resources.SyncOperationLinkObject.get_status
 #: yadisk.objects.resources.SyncTrashResourceObject.exists
 #: yadisk.objects.resources.SyncTrashResourceObject.get_meta
 #: yadisk.objects.resources.SyncTrashResourceObject.get_type
@@ -617,71 +655,71 @@ msgstr "Большинство запросов к API могут вызвать
 msgid "Raises"
 msgstr "Вызывает"
 
-#: of yadisk.async_client.AsyncClient:52 yadisk.client.Client:44
+#: of yadisk.async_client.AsyncClient:58 yadisk.client.Client:51
 msgid "HTTP client raised an exception while making a request"
 msgstr "HTTP-клиент вызвал исключение во время отправления запроса"
 
-#: of yadisk.async_client.AsyncClient:53 yadisk.client.Client:45
+#: of yadisk.async_client.AsyncClient:59 yadisk.client.Client:52
 msgid "server returned HTTP code 400"
 msgstr "сервер вернул код 400."
 
-#: of yadisk.async_client.AsyncClient:54 yadisk.client.Client:46
+#: of yadisk.async_client.AsyncClient:60 yadisk.client.Client:53
 msgid "request contains fields with invalid data"
 msgstr "запрос содежит поля с некорректными данными."
 
-#: of yadisk.async_client.AsyncClient:55 yadisk.client.Client:47
+#: of yadisk.async_client.AsyncClient:61 yadisk.client.Client:54
 msgid "server returned HTTP code 401"
 msgstr "сервер вернул код 401."
 
-#: of yadisk.async_client.AsyncClient:56 yadisk.client.Client:48
+#: of yadisk.async_client.AsyncClient:62 yadisk.client.Client:55
 msgid "server returned HTTP code 403"
 msgstr "сервер вернул код 403."
 
-#: of yadisk.async_client.AsyncClient:57 yadisk.client.Client:49
+#: of yadisk.async_client.AsyncClient:63 yadisk.client.Client:56
 msgid "server returned HTTP code 406"
 msgstr "сервер вернул код 406."
 
-#: of yadisk.async_client.AsyncClient:58 yadisk.client.Client:50
+#: of yadisk.async_client.AsyncClient:64 yadisk.client.Client:57
 msgid "server returned HTTP code 409"
 msgstr "сервер вернул код 409."
 
-#: of yadisk.async_client.AsyncClient:59 yadisk.client.Client:51
+#: of yadisk.async_client.AsyncClient:65 yadisk.client.Client:58
 msgid "server returned code 413"
 msgstr "сервер вернул код 413."
 
-#: of yadisk.async_client.AsyncClient:60 yadisk.client.Client:52
+#: of yadisk.async_client.AsyncClient:66 yadisk.client.Client:59
 msgid "server returned HTTP code 415"
 msgstr "сервер вернул код 415."
 
-#: of yadisk.async_client.AsyncClient:61 yadisk.client.Client:53
+#: of yadisk.async_client.AsyncClient:67 yadisk.client.Client:60
 msgid "server returned HTTP code 423"
 msgstr "сервер вернул код 423."
 
-#: of yadisk.async_client.AsyncClient:62 yadisk.client.Client:54
+#: of yadisk.async_client.AsyncClient:68 yadisk.client.Client:61
 msgid "server returned HTTP code 429"
 msgstr "сервер вернул код 429."
 
-#: of yadisk.async_client.AsyncClient:63 yadisk.client.Client:55
+#: of yadisk.async_client.AsyncClient:69 yadisk.client.Client:62
 msgid "server returned HTTP code 500"
 msgstr "сервер вернул код 500."
 
-#: of yadisk.async_client.AsyncClient:64 yadisk.client.Client:56
+#: of yadisk.async_client.AsyncClient:70 yadisk.client.Client:63
 msgid "server returned HTTP code 502"
 msgstr "сервер вернул код 502."
 
-#: of yadisk.async_client.AsyncClient:65 yadisk.client.Client:57
+#: of yadisk.async_client.AsyncClient:71 yadisk.client.Client:64
 msgid "server returned HTTP code 503"
 msgstr "сервер вернул код 503."
 
-#: of yadisk.async_client.AsyncClient:66 yadisk.client.Client:58
+#: of yadisk.async_client.AsyncClient:72 yadisk.client.Client:65
 msgid "server returned HTTP code 504"
 msgstr "сервер вернул код 504."
 
-#: of yadisk.async_client.AsyncClient:67 yadisk.client.Client:59
+#: of yadisk.async_client.AsyncClient:73 yadisk.client.Client:66
 msgid "server returned HTTP code 509"
 msgstr "сервер вернул код 509."
 
-#: of yadisk.async_client.AsyncClient:68 yadisk.client.Client:60
+#: of yadisk.async_client.AsyncClient:74 yadisk.client.Client:67
 msgid "other unknown error"
 msgstr "другая неизвестная ошибка"
 
@@ -711,7 +749,7 @@ msgstr "токен, подлежащий проверке, то же самое,
 #: yadisk.async_client.AsyncClient.get_public_meta:13
 #: yadisk.async_client.AsyncClient.get_public_resources:9
 #: yadisk.async_client.AsyncClient.get_public_type:5
-#: yadisk.async_client.AsyncClient.get_token:5
+#: yadisk.async_client.AsyncClient.get_token:6
 #: yadisk.async_client.AsyncClient.get_trash_meta:10
 #: yadisk.async_client.AsyncClient.get_trash_type:4
 #: yadisk.async_client.AsyncClient.get_type:4
@@ -762,7 +800,8 @@ msgstr "`float`, `tuple` или `None`, таймаут запроса"
 #: yadisk.async_client.AsyncClient.get_public_meta:14
 #: yadisk.async_client.AsyncClient.get_public_resources:10
 #: yadisk.async_client.AsyncClient.get_public_type:6
-#: yadisk.async_client.AsyncClient.get_token:6
+#: yadisk.async_client.AsyncClient.get_token:7
+#: yadisk.async_client.AsyncClient.get_token_from_device_code:8
 #: yadisk.async_client.AsyncClient.get_trash_meta:11
 #: yadisk.async_client.AsyncClient.get_trash_type:5
 #: yadisk.async_client.AsyncClient.get_type:5
@@ -803,7 +842,8 @@ msgstr "`float`, `tuple` или `None`, таймаут запроса"
 #: yadisk.client.Client.get_public_download_link:7
 #: yadisk.client.Client.get_public_meta:14
 #: yadisk.client.Client.get_public_resources:10
-#: yadisk.client.Client.get_public_type:6 yadisk.client.Client.get_token:6
+#: yadisk.client.Client.get_public_type:6 yadisk.client.Client.get_token:8
+#: yadisk.client.Client.get_token_from_device_code:7
 #: yadisk.client.Client.get_trash_meta:11 yadisk.client.Client.get_trash_type:5
 #: yadisk.client.Client.get_type:5 yadisk.client.Client.get_upload_link:7
 #: yadisk.client.Client.is_dir:5 yadisk.client.Client.is_file:5
@@ -819,7 +859,8 @@ msgstr "`float`, `tuple` или `None`, таймаут запроса"
 #: yadisk.client.Client.trash_exists:5 yadisk.client.Client.trash_listdir:10
 #: yadisk.client.Client.unpublish:6 yadisk.client.Client.upload:9
 #: yadisk.client.Client.upload_by_link:9 yadisk.client.Client.upload_url:8
-#: yadisk.objects.resources.AsyncOperationLinkObject.get_status:5
+#: yadisk.objects.operations.AsyncOperationLinkObject.get_status:5
+#: yadisk.objects.operations.SyncOperationLinkObject.get_status:5
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy:17
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.download:12
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.exists:5
@@ -870,7 +911,6 @@ msgstr "`float`, `tuple` или `None`, таймаут запроса"
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.unpublish:6
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.upload:8
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.upload_url:8
-#: yadisk.objects.resources.SyncOperationLinkObject.get_status:5
 #: yadisk.objects.resources.SyncTrashResourceObject.exists:5
 #: yadisk.objects.resources.SyncTrashResourceObject.get_meta:11
 #: yadisk.objects.resources.SyncTrashResourceObject.get_type:5
@@ -899,7 +939,8 @@ msgstr "`dict` или `None`, дополнительные заголовки з
 #: yadisk.async_client.AsyncClient.get_public_meta:15
 #: yadisk.async_client.AsyncClient.get_public_resources:11
 #: yadisk.async_client.AsyncClient.get_public_type:7
-#: yadisk.async_client.AsyncClient.get_token:7
+#: yadisk.async_client.AsyncClient.get_token:8
+#: yadisk.async_client.AsyncClient.get_token_from_device_code:9
 #: yadisk.async_client.AsyncClient.get_trash_meta:12
 #: yadisk.async_client.AsyncClient.get_trash_type:6
 #: yadisk.async_client.AsyncClient.get_type:6
@@ -940,7 +981,8 @@ msgstr "`dict` или `None`, дополнительные заголовки з
 #: yadisk.client.Client.get_public_download_link:8
 #: yadisk.client.Client.get_public_meta:15
 #: yadisk.client.Client.get_public_resources:11
-#: yadisk.client.Client.get_public_type:7 yadisk.client.Client.get_token:7
+#: yadisk.client.Client.get_public_type:7 yadisk.client.Client.get_token:9
+#: yadisk.client.Client.get_token_from_device_code:8
 #: yadisk.client.Client.get_trash_meta:12 yadisk.client.Client.get_trash_type:6
 #: yadisk.client.Client.get_type:6 yadisk.client.Client.get_upload_link:8
 #: yadisk.client.Client.is_dir:6 yadisk.client.Client.is_file:6
@@ -956,7 +998,8 @@ msgstr "`dict` или `None`, дополнительные заголовки з
 #: yadisk.client.Client.trash_exists:6 yadisk.client.Client.trash_listdir:11
 #: yadisk.client.Client.unpublish:7 yadisk.client.Client.upload:10
 #: yadisk.client.Client.upload_by_link:10 yadisk.client.Client.upload_url:9
-#: yadisk.objects.resources.AsyncOperationLinkObject.get_status:6
+#: yadisk.objects.operations.AsyncOperationLinkObject.get_status:6
+#: yadisk.objects.operations.SyncOperationLinkObject.get_status:6
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy:18
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.download:13
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.exists:6
@@ -1007,7 +1050,6 @@ msgstr "`dict` или `None`, дополнительные заголовки з
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.unpublish:7
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.upload:9
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.upload_url:9
-#: yadisk.objects.resources.SyncOperationLinkObject.get_status:6
 #: yadisk.objects.resources.SyncTrashResourceObject.exists:6
 #: yadisk.objects.resources.SyncTrashResourceObject.get_meta:12
 #: yadisk.objects.resources.SyncTrashResourceObject.get_type:6
@@ -1037,7 +1079,8 @@ msgstr "`int`, максимальное число повторных попыт
 #: yadisk.async_client.AsyncClient.get_public_meta:16
 #: yadisk.async_client.AsyncClient.get_public_resources:12
 #: yadisk.async_client.AsyncClient.get_public_type:8
-#: yadisk.async_client.AsyncClient.get_token:8
+#: yadisk.async_client.AsyncClient.get_token:9
+#: yadisk.async_client.AsyncClient.get_token_from_device_code:10
 #: yadisk.async_client.AsyncClient.get_trash_meta:13
 #: yadisk.async_client.AsyncClient.get_trash_type:7
 #: yadisk.async_client.AsyncClient.get_type:7
@@ -1078,7 +1121,8 @@ msgstr "`int`, максимальное число повторных попыт
 #: yadisk.client.Client.get_public_download_link:9
 #: yadisk.client.Client.get_public_meta:16
 #: yadisk.client.Client.get_public_resources:12
-#: yadisk.client.Client.get_public_type:8 yadisk.client.Client.get_token:8
+#: yadisk.client.Client.get_public_type:8 yadisk.client.Client.get_token:10
+#: yadisk.client.Client.get_token_from_device_code:9
 #: yadisk.client.Client.get_trash_meta:13 yadisk.client.Client.get_trash_type:7
 #: yadisk.client.Client.get_type:7 yadisk.client.Client.get_upload_link:9
 #: yadisk.client.Client.is_dir:7 yadisk.client.Client.is_file:7
@@ -1094,7 +1138,8 @@ msgstr "`int`, максимальное число повторных попыт
 #: yadisk.client.Client.trash_exists:7 yadisk.client.Client.trash_listdir:12
 #: yadisk.client.Client.unpublish:8 yadisk.client.Client.upload:11
 #: yadisk.client.Client.upload_by_link:11 yadisk.client.Client.upload_url:10
-#: yadisk.objects.resources.AsyncOperationLinkObject.get_status:7
+#: yadisk.objects.operations.AsyncOperationLinkObject.get_status:7
+#: yadisk.objects.operations.SyncOperationLinkObject.get_status:7
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy:19
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.download:14
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.exists:7
@@ -1145,7 +1190,6 @@ msgstr "`int`, максимальное число повторных попыт
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.unpublish:8
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.upload:10
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.upload_url:10
-#: yadisk.objects.resources.SyncOperationLinkObject.get_status:7
 #: yadisk.objects.resources.SyncTrashResourceObject.exists:7
 #: yadisk.objects.resources.SyncTrashResourceObject.get_meta:13
 #: yadisk.objects.resources.SyncTrashResourceObject.get_type:7
@@ -1161,8 +1205,9 @@ msgstr "задержка между повторными попытками в �
 #: yadisk.api.api_request.APIRequest.asend
 #: yadisk.api.api_request.APIRequest.process
 #: yadisk.api.api_request.APIRequest.process_json
-#: yadisk.api.api_request.APIRequest.send yadisk.api.auth.GetTokenRequest
-#: yadisk.api.auth.GetTokenRequest.process_json
+#: yadisk.api.api_request.APIRequest.send
+#: yadisk.api.auth.GetDeviceCodeRequest.process_json
+#: yadisk.api.auth.GetTokenRequest yadisk.api.auth.GetTokenRequest.process_json
 #: yadisk.api.auth.RefreshTokenRequest
 #: yadisk.api.auth.RefreshTokenRequest.process_json
 #: yadisk.api.auth.RevokeTokenRequest
@@ -1217,6 +1262,7 @@ msgstr "задержка между повторными попытками в �
 #: yadisk.async_client.AsyncClient.exists
 #: yadisk.async_client.AsyncClient.get_auth_url
 #: yadisk.async_client.AsyncClient.get_code_url
+#: yadisk.async_client.AsyncClient.get_device_code
 #: yadisk.async_client.AsyncClient.get_disk_info
 #: yadisk.async_client.AsyncClient.get_download_link
 #: yadisk.async_client.AsyncClient.get_files
@@ -1228,6 +1274,7 @@ msgstr "задержка между повторными попытками в �
 #: yadisk.async_client.AsyncClient.get_public_resources
 #: yadisk.async_client.AsyncClient.get_public_type
 #: yadisk.async_client.AsyncClient.get_token
+#: yadisk.async_client.AsyncClient.get_token_from_device_code
 #: yadisk.async_client.AsyncClient.get_trash_meta
 #: yadisk.async_client.AsyncClient.get_trash_type
 #: yadisk.async_client.AsyncClient.get_type
@@ -1239,7 +1286,6 @@ msgstr "задержка между повторными попытками в �
 #: yadisk.async_client.AsyncClient.is_trash_dir
 #: yadisk.async_client.AsyncClient.is_trash_file
 #: yadisk.async_client.AsyncClient.listdir
-#: yadisk.async_client.AsyncClient.make_session
 #: yadisk.async_client.AsyncClient.mkdir yadisk.async_client.AsyncClient.move
 #: yadisk.async_client.AsyncClient.patch
 #: yadisk.async_client.AsyncClient.public_exists
@@ -1262,30 +1308,33 @@ msgstr "задержка между повторными попытками в �
 #: yadisk.client.Client.check_token yadisk.client.Client.copy
 #: yadisk.client.Client.download yadisk.client.Client.download_public
 #: yadisk.client.Client.exists yadisk.client.Client.get_auth_url
-#: yadisk.client.Client.get_code_url yadisk.client.Client.get_disk_info
-#: yadisk.client.Client.get_download_link yadisk.client.Client.get_files
-#: yadisk.client.Client.get_last_uploaded yadisk.client.Client.get_meta
-#: yadisk.client.Client.get_operation_status
+#: yadisk.client.Client.get_code_url yadisk.client.Client.get_device_code
+#: yadisk.client.Client.get_disk_info yadisk.client.Client.get_download_link
+#: yadisk.client.Client.get_files yadisk.client.Client.get_last_uploaded
+#: yadisk.client.Client.get_meta yadisk.client.Client.get_operation_status
 #: yadisk.client.Client.get_public_download_link
 #: yadisk.client.Client.get_public_meta
 #: yadisk.client.Client.get_public_resources
 #: yadisk.client.Client.get_public_type yadisk.client.Client.get_token
+#: yadisk.client.Client.get_token_from_device_code
 #: yadisk.client.Client.get_trash_meta yadisk.client.Client.get_trash_type
 #: yadisk.client.Client.get_type yadisk.client.Client.get_upload_link
 #: yadisk.client.Client.is_dir yadisk.client.Client.is_file
 #: yadisk.client.Client.is_public_dir yadisk.client.Client.is_public_file
 #: yadisk.client.Client.is_trash_dir yadisk.client.Client.is_trash_file
-#: yadisk.client.Client.listdir yadisk.client.Client.make_session
-#: yadisk.client.Client.mkdir yadisk.client.Client.move
-#: yadisk.client.Client.patch yadisk.client.Client.public_exists
-#: yadisk.client.Client.public_listdir yadisk.client.Client.publish
-#: yadisk.client.Client.refresh_token yadisk.client.Client.remove
-#: yadisk.client.Client.remove_trash yadisk.client.Client.rename
-#: yadisk.client.Client.restore_trash yadisk.client.Client.revoke_token
-#: yadisk.client.Client.save_to_disk yadisk.client.Client.trash_exists
-#: yadisk.client.Client.trash_listdir yadisk.client.Client.unpublish
-#: yadisk.client.Client.upload yadisk.client.Client.upload_url
-#: yadisk.objects.resources.AsyncOperationLinkObject.get_status
+#: yadisk.client.Client.listdir yadisk.client.Client.mkdir
+#: yadisk.client.Client.move yadisk.client.Client.patch
+#: yadisk.client.Client.public_exists yadisk.client.Client.public_listdir
+#: yadisk.client.Client.publish yadisk.client.Client.refresh_token
+#: yadisk.client.Client.remove yadisk.client.Client.remove_trash
+#: yadisk.client.Client.rename yadisk.client.Client.restore_trash
+#: yadisk.client.Client.revoke_token yadisk.client.Client.save_to_disk
+#: yadisk.client.Client.trash_exists yadisk.client.Client.trash_listdir
+#: yadisk.client.Client.unpublish yadisk.client.Client.upload
+#: yadisk.client.Client.upload_url yadisk.import_session.import_async_session
+#: yadisk.import_session.import_session
+#: yadisk.objects.operations.AsyncOperationLinkObject.get_status
+#: yadisk.objects.operations.SyncOperationLinkObject.get_status
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.download
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.exists
@@ -1336,7 +1385,6 @@ msgstr "задержка между повторными попытками в �
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.unpublish
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.upload
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.upload_url
-#: yadisk.objects.resources.SyncOperationLinkObject.get_status
 #: yadisk.objects.resources.SyncTrashResourceObject.exists
 #: yadisk.objects.resources.SyncTrashResourceObject.get_meta
 #: yadisk.objects.resources.SyncTrashResourceObject.get_type
@@ -1515,7 +1563,8 @@ msgstr "заставляет выполнять операцию асинхро�
 #: yadisk.client.Client.rename:8 yadisk.client.Client.restore_trash:8
 #: yadisk.client.Client.save_to_disk:10 yadisk.client.Client.trash_listdir:8
 #: yadisk.client.Client.unpublish:4 yadisk.client.Client.upload_url:6
-#: yadisk.objects.resources.AsyncOperationLinkObject.get_status:3
+#: yadisk.objects.operations.AsyncOperationLinkObject.get_status:3
+#: yadisk.objects.operations.SyncOperationLinkObject.get_status:3
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy:15
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_download_link:4
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_meta:9
@@ -1550,7 +1599,6 @@ msgstr "заставляет выполнять операцию асинхро�
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.rename:8
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.unpublish:4
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.upload_url:6
-#: yadisk.objects.resources.SyncOperationLinkObject.get_status:3
 #: yadisk.objects.resources.SyncTrashResourceObject.get_meta:9
 #: yadisk.objects.resources.SyncTrashResourceObject.listdir:8
 #: yadisk.objects.resources.SyncTrashResourceObject.remove:5
@@ -1973,10 +2021,15 @@ msgid "path to the resource"
 msgstr "путь к ресурсу"
 
 #: of yadisk.async_client.AsyncClient.get_auth_url:1
-msgid "Get authentication URL for the user to go to."
-msgstr "Получает URL для аутентификации для пользователя."
+#: yadisk.client.Client.get_auth_url:1
+msgid ""
+"Get authentication URL for the user to go to. This method doesn't send "
+"any HTTP requests and merely constructs the URL."
+msgstr ""
+"Получает URL для аутентификации для пользователя. Данный метод не "
+"отправляет никаких HTTP запросов."
 
-#: of yadisk.async_client.AsyncClient.get_auth_url:3
+#: of yadisk.async_client.AsyncClient.get_auth_url:4
 #: yadisk.client.Client.get_auth_url:4
 msgid ""
 "response type (\"code\" to get the confirmation code or \"token\" to get "
@@ -1985,49 +2038,66 @@ msgstr ""
 "тип ответа (\"code\", чтобы получить код подтверждения или \"token\", "
 "чтобы получить токен автоматически)"
 
-#: of yadisk.async_client.AsyncClient.get_auth_url:4
-#: yadisk.async_client.AsyncClient.get_code_url:4
+#: of yadisk.async_client.AsyncClient.get_auth_url:5
+#: yadisk.async_client.AsyncClient.get_code_url:5
 #: yadisk.client.Client.get_auth_url:5 yadisk.client.Client.get_code_url:5
 msgid "unique device ID, must be between 6 and 50 characters"
 msgstr "уникальный идентификатор устройства, от 6 до 50 символов"
 
-#: of yadisk.async_client.AsyncClient.get_auth_url:5
-#: yadisk.async_client.AsyncClient.get_code_url:5
+#: of yadisk.api.auth.GetDeviceCodeRequest:10 yadisk.api.auth.GetTokenRequest:8
+#: yadisk.async_client.AsyncClient.get_auth_url:6
+#: yadisk.async_client.AsyncClient.get_code_url:6
+#: yadisk.async_client.AsyncClient.get_device_code:8
+#: yadisk.async_client.AsyncClient.get_token_from_device_code:5
 #: yadisk.client.Client.get_auth_url:6 yadisk.client.Client.get_code_url:6
+#: yadisk.client.Client.get_device_code:8 yadisk.client.Client.get_token:5
+#: yadisk.client.Client.get_token_from_device_code:5
 msgid "device name, should not be longer than 100 characters"
 msgstr "имя устройства, не более 100 символов"
 
-#: of yadisk.async_client.AsyncClient.get_auth_url:6
-#: yadisk.async_client.AsyncClient.get_code_url:6
-#: yadisk.client.Client.get_auth_url:7 yadisk.client.Client.get_code_url:7
-msgid ""
-"indicates whether to use lightweight layout, values other than \"popup\" "
-"are ignored"
-msgstr ""
-"указывает использовать облегчённую вёрстку, обрабатывает только "
-"\"popup\", остальные значения игнорируются"
-
 #: of yadisk.async_client.AsyncClient.get_auth_url:7
 #: yadisk.async_client.AsyncClient.get_code_url:7
-#: yadisk.client.Client.get_auth_url:8 yadisk.client.Client.get_code_url:8
-msgid "username or email for the account the token is being requested for"
-msgstr "username или email аккаунта, для которого будет получен токен"
-
-#: of yadisk.async_client.AsyncClient.get_auth_url:8
-#: yadisk.async_client.AsyncClient.get_code_url:8
-#: yadisk.client.Client.get_auth_url:9 yadisk.client.Client.get_code_url:9
-msgid "list of permissions for the application"
-msgstr "список разрешений для приложения"
-
-#: of yadisk.async_client.AsyncClient.get_auth_url:9
-#: yadisk.async_client.AsyncClient.get_code_url:9
-#: yadisk.client.Client.get_auth_url:10 yadisk.client.Client.get_code_url:10
-msgid "list of optional permissions for the application"
-msgstr "список опциональных разрешений для приложения"
+#: yadisk.client.Client.get_auth_url:7 yadisk.client.Client.get_code_url:7
+msgid ""
+"the URL to redirect the user to after they allow access to the app, by "
+"default, the first redirect URI specified in the app settings is used"
+msgstr "URL на который пользователь будет перенаправлен после предоставления "
+"доступа приложению, по умолчанию используется первый URI, указанный в "
+"настройках приложения"
 
 #: of yadisk.async_client.AsyncClient.get_auth_url:10
 #: yadisk.async_client.AsyncClient.get_code_url:10
+#: yadisk.client.Client.get_auth_url:10 yadisk.client.Client.get_code_url:10
+msgid "doesn't do anything, kept for compatibility"
+msgstr "ничего не делает, оставлен для совместимости"
+
+#: of yadisk.async_client.AsyncClient.get_auth_url:11
+#: yadisk.async_client.AsyncClient.get_code_url:11
 #: yadisk.client.Client.get_auth_url:11 yadisk.client.Client.get_code_url:11
+msgid "username or email for the account the token is being requested for"
+msgstr "username или email аккаунта, для которого будет получен токен"
+
+#: of yadisk.api.auth.GetDeviceCodeRequest:11
+#: yadisk.async_client.AsyncClient.get_auth_url:12
+#: yadisk.async_client.AsyncClient.get_code_url:12
+#: yadisk.async_client.AsyncClient.get_device_code:9
+#: yadisk.client.Client.get_auth_url:12 yadisk.client.Client.get_code_url:12
+#: yadisk.client.Client.get_device_code:9
+msgid "`str`, list of permissions for the application"
+msgstr "`str`, список разрешений для приложения"
+
+#: of yadisk.api.auth.GetDeviceCodeRequest:12
+#: yadisk.async_client.AsyncClient.get_auth_url:13
+#: yadisk.async_client.AsyncClient.get_code_url:13
+#: yadisk.async_client.AsyncClient.get_device_code:10
+#: yadisk.client.Client.get_auth_url:13 yadisk.client.Client.get_code_url:13
+#: yadisk.client.Client.get_device_code:10
+msgid "`str`, list of optional permissions for the application"
+msgstr "`str`, список опциональных разрешений для приложения"
+
+#: of yadisk.async_client.AsyncClient.get_auth_url:14
+#: yadisk.async_client.AsyncClient.get_code_url:14
+#: yadisk.client.Client.get_auth_url:14 yadisk.client.Client.get_code_url:14
 msgid ""
 "if True, user will be required to confirm access to the account even if "
 "the user has already granted access for the application"
@@ -2035,9 +2105,9 @@ msgstr ""
 "Если `True`, пользователь должен будет разрешить доступ к аккаунту, даже "
 "если он уже это сделал до этого"
 
-#: of yadisk.async_client.AsyncClient.get_auth_url:12
-#: yadisk.async_client.AsyncClient.get_code_url:12
-#: yadisk.client.Client.get_auth_url:13 yadisk.client.Client.get_code_url:13
+#: of yadisk.async_client.AsyncClient.get_auth_url:16
+#: yadisk.async_client.AsyncClient.get_code_url:16
+#: yadisk.client.Client.get_auth_url:16 yadisk.client.Client.get_code_url:16
 msgid ""
 "The state string, which Yandex.OAuth returns without any changes (<= 1024"
 " characters)"
@@ -2045,19 +2115,106 @@ msgstr ""
 "Строка состояния, которую Яндекс.OAuth возвращает без изменений (<= 1024 "
 "символов)"
 
-#: of yadisk.async_client.AsyncClient.get_auth_url:14
-#: yadisk.async_client.AsyncClient.get_code_url:14
-#: yadisk.client.Client.get_auth_url:15 yadisk.client.Client.get_code_url:15
+#: of yadisk.async_client.AsyncClient.get_auth_url:17
+#: yadisk.async_client.AsyncClient.get_code_url:17
+#: yadisk.client.Client.get_auth_url:17 yadisk.client.Client.get_code_url:17
+msgid ""
+"string derived from the generated :code:`code_verifier` value using one "
+"of the two possible transformations (plain or S256)"
+msgstr "строка, полученная из сгенерированного значения :code:`code_verifier` "
+"с помощью одного из двух возможных преобразований (plain или S256)"
+
+#: of yadisk.async_client.AsyncClient.get_auth_url:19
+#: yadisk.async_client.AsyncClient.get_code_url:19
+#: yadisk.client.Client.get_auth_url:19 yadisk.client.Client.get_code_url:19
+msgid ""
+"specifies what function was used to transform the :code:`code_verifier` "
+"value to :code:`code_challenge`, allowed values are :code:`\"plain\"` and"
+" :code:`\"S256\"` (recommended). If :code:`\"S256\"` is used, "
+":code:`code_challenge` must be produced by hashing the "
+":code:`code_verifier` value and encoding it to base64"
+msgstr "Указывает функцию, которая будет использована для преобразования "
+"значения :code:`code_verifier`, возможные значения: :code:`\"plain\"` и "
+":code:`\"S256\"` (рекомендуется). Если используется :code:`\"S256\"`, "
+"значение :code:`code_challenge` должно быть получено путём хэширования "
+"значения :code:`code_verifier` и кодирования в base64"
+
+#: of yadisk.async_client.AsyncClient.get_auth_url:25
+#: yadisk.async_client.AsyncClient.get_code_url:25
+#: yadisk.client.Client.get_auth_url:25 yadisk.client.Client.get_code_url:25
+msgid "invalid arguments were passed"
+msgstr "были переданы неправильные аргументы"
+
+#: of yadisk.async_client.AsyncClient.get_auth_url:27
+#: yadisk.async_client.AsyncClient.get_code_url:27
+#: yadisk.client.Client.get_auth_url:27 yadisk.client.Client.get_code_url:27
 msgid "authentication URL"
 msgstr "URL для аутентификации"
 
 #: of yadisk.async_client.AsyncClient.get_code_url:1
+#: yadisk.client.Client.get_code_url:1
 msgid ""
 "Get the URL for the user to get the confirmation code. The confirmation "
-"code can later be used to get the token."
+"code can later be used to get the token. This method doesn't send any "
+"HTTP requests and merely constructs the URL."
 msgstr ""
 "Получает URL для получения пользователем кода подтверждения. Он может "
-"быть использован для получения токена."
+"быть использован для получения токена. Данный метод не отправляет никаких"
+" HTTP запросов."
+
+#: of yadisk.async_client.AsyncClient.get_device_code:1
+msgid ""
+"This request is used for authorization using the Yandex OAuth page. In "
+"this case the user must enter the verification code (:code:`user_code`) "
+"in the browser on the Yandex OAuth page. After the user has entered the "
+"code on the OAuth page, the application can exchange the "
+":code:`device_code` for the token using the "
+":any:`AsyncClient.get_token_from_device_code()`."
+msgstr "Данный запрос используется для авторизации с помощью страницы Яндекс OAuth. "
+"В данном случае пользователь должен ввести код подтверждения (:code:`user_code`) "
+"в браузере на странице Яндекс OAuth. После того как пользователь ввёл код, "
+"приложение может обменять :code:`device_code` на токен с помощью метода "
+":any:`AsyncClient.get_token_from_device_code()`."
+
+#: of yadisk.api.auth.GetDeviceCodeRequest:9 yadisk.api.auth.GetTokenRequest:7
+#: yadisk.async_client.AsyncClient.get_device_code:7
+#: yadisk.async_client.AsyncClient.get_token:4
+#: yadisk.async_client.AsyncClient.get_token_from_device_code:4
+#: yadisk.client.Client.get_device_code:7 yadisk.client.Client.get_token:4
+#: yadisk.client.Client.get_token_from_device_code:4
+msgid "unique device ID (between 6 and 50 characters)"
+msgstr "уникальный идентификатор устройства (между 6 и 50 символами)"
+
+#: of yadisk.async_client.AsyncClient.get_device_code:12
+#: yadisk.async_client.AsyncClient.get_token:13
+#: yadisk.async_client.AsyncClient.get_token_from_device_code:15
+#: yadisk.async_client.AsyncClient.refresh_token:11
+#: yadisk.async_client.AsyncClient.revoke_token:10
+#: yadisk.client.Client.get_token:14
+#: yadisk.client.Client.get_token_from_device_code:14
+#: yadisk.client.Client.refresh_token:11 yadisk.client.Client.revoke_token:10
+msgid "invalid client ID or client secret"
+msgstr "неправильный идентификатор или пароль приложения"
+
+#: of yadisk.async_client.AsyncClient.get_device_code:13
+#: yadisk.async_client.AsyncClient.get_token:14
+#: yadisk.async_client.AsyncClient.get_token_from_device_code:16
+#: yadisk.async_client.AsyncClient.refresh_token:12
+#: yadisk.async_client.AsyncClient.revoke_token:13
+#: yadisk.client.Client.get_device_code:13 yadisk.client.Client.get_token:15
+#: yadisk.client.Client.get_token_from_device_code:15
+#: yadisk.client.Client.refresh_token:12 yadisk.client.Client.revoke_token:13
+msgid "invalid request parameters"
+msgstr "неправильные параметры запроса"
+
+#: of yadisk.async_client.AsyncClient.get_device_code:15
+#: yadisk.client.Client.get_device_code:15
+msgid ""
+":any:`DeviceCodeObject` containing :code:`user_code` and "
+":code:`device_code`"
+msgstr ""
+":any:`DeviceCodeObject`, содержащий :code:`user_code` и "
+":code:`device_code`"
 
 #: of yadisk.async_client.AsyncClient.get_disk_info:1
 #: yadisk.client.Client.get_disk_info:1
@@ -2078,19 +2235,15 @@ msgid "Get a download link for a file (or a directory)."
 msgstr "Получает ссылку на скачивание файла (или папки)."
 
 #: of yadisk.async_client.AsyncClient.get_download_link:14
-#: yadisk.async_client.AsyncClient.get_operation_status:12
 #: yadisk.async_client.AsyncClient.get_public_download_link:15
 #: yadisk.async_client.AsyncClient.get_upload_link:18
 #: yadisk.client.Client.get_download_link:14
-#: yadisk.client.Client.get_operation_status:12
 #: yadisk.client.Client.get_public_download_link:15
 #: yadisk.client.Client.get_upload_link:18
-#: yadisk.objects.resources.AsyncOperationLinkObject.get_status:11
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_download_link:14
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_upload_link:18
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.get_download_link:14
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.get_upload_link:18
-#: yadisk.objects.resources.SyncOperationLinkObject.get_status:11
 #: yadisk.objects.yadisk_object.YaDiskObject.remove_alias:3
 #: yadisk.objects.yadisk_object.YaDiskObject.remove_field:3
 #: yadisk.objects.yadisk_object.YaDiskObject.set_field_type:3
@@ -2283,8 +2436,8 @@ msgstr ":any:`AsyncResourceObject`"
 
 #: of yadisk.async_client.AsyncClient.get_operation_status:1
 #: yadisk.client.Client.get_operation_status:1
-#: yadisk.objects.resources.AsyncOperationLinkObject.get_status:1
-#: yadisk.objects.resources.SyncOperationLinkObject.get_status:1
+#: yadisk.objects.operations.AsyncOperationLinkObject.get_status:1
+#: yadisk.objects.operations.SyncOperationLinkObject.get_status:1
 msgid "Get operation status."
 msgstr "Получает статус операции."
 
@@ -2295,10 +2448,22 @@ msgstr "идентификатор операции или ссылка на н�
 
 #: of yadisk.async_client.AsyncClient.get_operation_status:10
 #: yadisk.client.Client.get_operation_status:10
-#: yadisk.objects.resources.AsyncOperationLinkObject.get_status:9
-#: yadisk.objects.resources.SyncOperationLinkObject.get_status:9
+#: yadisk.objects.operations.AsyncOperationLinkObject.get_status:9
+#: yadisk.objects.operations.SyncOperationLinkObject.get_status:9
 msgid "requested operation was not found"
 msgstr "указанная операция не найдена"
+
+#: of yadisk.async_client.AsyncClient.get_operation_status:12
+#: yadisk.client.Client.get_operation_status:12
+#: yadisk.objects.operations.AsyncOperationLinkObject.get_status:11
+#: yadisk.objects.operations.SyncOperationLinkObject.get_status:11
+msgid ""
+"`str`, :code:`\"in-progress\"` indicates that the operation is currently "
+"running, :code:`\"success\"` indicates that the operation was successful,"
+" :code:`\"failed\"` means that the operation failed"
+msgstr "`str`, :code:`\"in-progress\"` означает, что операция в процессе, "
+":code:`\"success\"` означает, что операция успешно завершилась, "
+":code:`\"failed\"` означает, что операция завершилась с ошибкой"
 
 #: of yadisk.async_client.AsyncClient.get_public_download_link:1
 #: yadisk.client.Client.get_public_download_link:1
@@ -2399,26 +2564,153 @@ msgid "Get a new token."
 msgstr "Получает новый токен."
 
 #: of yadisk.api.auth.GetTokenRequest:4
-#: yadisk.async_client.AsyncClient.get_token:3 yadisk.client.Client.get_token:3
+#: yadisk.async_client.AsyncClient.get_token:3
+#: yadisk.async_client.AsyncClient.get_token_from_device_code:3
+#: yadisk.client.Client.get_token:3
+#: yadisk.client.Client.get_token_from_device_code:3
 msgid "confirmation code"
 msgstr "код подтверждения"
 
-#: of yadisk.api.auth.GetTokenRequest:7
-#: yadisk.async_client.AsyncClient.get_token:4 yadisk.client.Client.get_token:4
-msgid "unique device ID (between 6 and 50 characters)"
-msgstr "уникальный идентификатор устройства (между 6 и 50 символами)"
+#: of yadisk.api.auth.GetTokenRequest:9
+#: yadisk.async_client.AsyncClient.get_token:5
+#: yadisk.async_client.AsyncClient.get_token_from_device_code:6
+#: yadisk.client.Client.get_token:6
+msgid "`str`, verifier code, used with the PKCE authorization flow"
+msgstr "`str`, код верификатора, используемый при авторизации с PKCE"
 
-#: of yadisk.async_client.AsyncClient.get_token:10
-#: yadisk.client.Client.get_token:10
-msgid "invalid or expired code, application ID or secret"
-msgstr "неправильный или истекший код, идентификатор или пароль приложения"
+#: of yadisk.async_client.AsyncClient.get_token:11
+#: yadisk.client.Client.get_token:12
+msgid "confirmation code has invalid format"
+msgstr "неправильный формат кода подтверждения"
 
-#: of yadisk.api.auth.GetTokenRequest:9 yadisk.api.auth.RefreshTokenRequest:8
-#: yadisk.async_client.AsyncClient.get_token:12
-#: yadisk.async_client.AsyncClient.refresh_token:11
-#: yadisk.client.Client.get_token:12 yadisk.client.Client.refresh_token:11
+#: of yadisk.async_client.AsyncClient.get_token:12
+#: yadisk.client.Client.get_token:13
+msgid "invalid or expired confirmation code"
+msgstr "неправильный или истекший код"
+
+#: of yadisk.api.auth.GetTokenRequest:11 yadisk.api.auth.RefreshTokenRequest:8
+#: yadisk.async_client.AsyncClient.get_token:16
+#: yadisk.async_client.AsyncClient.get_token_from_device_code:18
+#: yadisk.async_client.AsyncClient.refresh_token:14
+#: yadisk.client.Client.get_token:17
+#: yadisk.client.Client.get_token_from_device_code:17
+#: yadisk.client.Client.refresh_token:14
 msgid ":any:`TokenObject`"
 msgstr ":any:`TokenObject`"
+
+#: of yadisk.async_client.AsyncClient.get_token_from_device_code:1
+msgid ""
+"Get a new token from a device code, previously obtained with "
+":any:`AsyncClient.get_device_code()`."
+msgstr "Получает новый токен с помощью кода устройства (device_code), полученного"
+"с помощью :any:`AsyncClient.get_device_code()`"
+
+#: of yadisk.api.api_request.APIRequest:5 yadisk.api.api_request.APIRequest:14
+#: yadisk.async_client.AsyncClient.get_token_from_device_code:7
+#: yadisk.client.Client.check_token:4 yadisk.client.Client.copy:11
+#: yadisk.client.Client.download:5 yadisk.client.Client.download_by_link:5
+#: yadisk.client.Client.download_public:6 yadisk.client.Client.exists:4
+#: yadisk.client.Client.get_disk_info:4
+#: yadisk.client.Client.get_download_link:5 yadisk.client.Client.get_files:10
+#: yadisk.client.Client.get_last_uploaded:8 yadisk.client.Client.get_meta:10
+#: yadisk.client.Client.get_operation_status:5
+#: yadisk.client.Client.get_public_download_link:6
+#: yadisk.client.Client.get_public_meta:13
+#: yadisk.client.Client.get_public_resources:9
+#: yadisk.client.Client.get_public_type:5 yadisk.client.Client.get_token:7
+#: yadisk.client.Client.get_token_from_device_code:6
+#: yadisk.client.Client.get_trash_meta:10 yadisk.client.Client.get_trash_type:4
+#: yadisk.client.Client.get_type:4 yadisk.client.Client.get_upload_link:6
+#: yadisk.client.Client.is_dir:4 yadisk.client.Client.is_file:4
+#: yadisk.client.Client.is_public_dir:5 yadisk.client.Client.is_public_file:5
+#: yadisk.client.Client.is_trash_dir:4 yadisk.client.Client.is_trash_file:4
+#: yadisk.client.Client.listdir:9 yadisk.client.Client.mkdir:5
+#: yadisk.client.Client.move:8 yadisk.client.Client.patch:6
+#: yadisk.client.Client.public_exists:5 yadisk.client.Client.public_listdir:12
+#: yadisk.client.Client.publish:5 yadisk.client.Client.refresh_token:4
+#: yadisk.client.Client.remove:9 yadisk.client.Client.remove_trash:6
+#: yadisk.client.Client.rename:9 yadisk.client.Client.restore_trash:9
+#: yadisk.client.Client.revoke_token:4 yadisk.client.Client.save_to_disk:11
+#: yadisk.client.Client.trash_exists:4 yadisk.client.Client.trash_listdir:9
+#: yadisk.client.Client.unpublish:5 yadisk.client.Client.upload:8
+#: yadisk.client.Client.upload_by_link:8 yadisk.client.Client.upload_url:7
+#: yadisk.objects.operations.AsyncOperationLinkObject.get_status:4
+#: yadisk.objects.operations.SyncOperationLinkObject.get_status:4
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy:16
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.download:11
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.exists:4
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_download_link:5
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_meta:10
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_public_meta:10
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_type:4
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_upload_link:6
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.is_dir:4
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.is_file:4
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.listdir:9
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.mkdir:5
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.move:12
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.patch:10
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.public_listdir:9
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.publish:5
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.remove:9
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.rename:9
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.unpublish:5
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.upload:7
+#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.upload_url:7
+#: yadisk.objects.resources.AsyncTrashResourceObject.exists:4
+#: yadisk.objects.resources.AsyncTrashResourceObject.get_meta:10
+#: yadisk.objects.resources.AsyncTrashResourceObject.get_type:4
+#: yadisk.objects.resources.AsyncTrashResourceObject.is_dir:4
+#: yadisk.objects.resources.AsyncTrashResourceObject.is_file:4
+#: yadisk.objects.resources.AsyncTrashResourceObject.listdir:9
+#: yadisk.objects.resources.AsyncTrashResourceObject.remove:6
+#: yadisk.objects.resources.AsyncTrashResourceObject.restore:14
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.copy:16
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.download:11
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.exists:4
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.get_download_link:5
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.get_meta:10
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.get_public_meta:10
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.get_type:4
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.get_upload_link:6
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.is_dir:4
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.is_file:4
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.listdir:9
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.mkdir:5
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.move:12
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.patch:10
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.public_listdir:9
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.publish:5
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.remove:9
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.rename:9
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.unpublish:5
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.upload:7
+#: yadisk.objects.resources.ResourceObjectMethodsMixin.upload_url:7
+#: yadisk.objects.resources.SyncTrashResourceObject.exists:4
+#: yadisk.objects.resources.SyncTrashResourceObject.get_meta:10
+#: yadisk.objects.resources.SyncTrashResourceObject.get_type:4
+#: yadisk.objects.resources.SyncTrashResourceObject.is_dir:4
+#: yadisk.objects.resources.SyncTrashResourceObject.is_file:4
+#: yadisk.objects.resources.SyncTrashResourceObject.listdir:9
+#: yadisk.objects.resources.SyncTrashResourceObject.remove:6
+#: yadisk.objects.resources.SyncTrashResourceObject.restore:14
+msgid "`float` or `tuple`, request timeout"
+msgstr "`float` или `tuple`, таймаут запроса"
+
+#: of yadisk.async_client.AsyncClient.get_token_from_device_code:12
+#: yadisk.client.Client.get_token_from_device_code:11
+msgid "user has not authorized the application yet"
+msgstr "пользователь ещё не авторизовал приложение"
+
+#: of yadisk.async_client.AsyncClient.get_token_from_device_code:13
+#: yadisk.client.Client.get_token_from_device_code:12
+msgid ":code:`device_code` has invalid format"
+msgstr "неправильный формат :code:`device_code`"
+
+#: of yadisk.async_client.AsyncClient.get_token_from_device_code:14
+#: yadisk.client.Client.get_token_from_device_code:13
+msgid "invalid or expired :code:`device_code`"
+msgstr "неправильный или истекший :code:`device_code`"
 
 #: of yadisk.async_client.AsyncClient.get_trash_meta:1
 #: yadisk.client.Client.get_trash_meta:1
@@ -2607,21 +2899,6 @@ msgstr "путь к папке"
 msgid "resource is not a directory"
 msgstr "указанный ресурс не является папкой"
 
-#: of yadisk.async_client.AsyncClient.make_session:1
-msgid "Prepares a new :any:`AsyncSession` object with headers needed for API."
-msgstr ""
-"Готовит новый объект :any:`AsyncSession` с заголовками, необходимыми для "
-"API."
-
-#: of yadisk.async_client.AsyncClient.make_session:3
-#: yadisk.client.Client.make_session:3
-msgid "application token, equivalent to `self.token` if `None`"
-msgstr "токен, то же самое, что `self.token`, если `None`"
-
-#: of yadisk.async_client.AsyncClient.make_session:4
-msgid "`AsyncSession`"
-msgstr "`AsyncSession`"
-
 #: of yadisk.async_client.AsyncClient.mkdir:1 yadisk.client.Client.mkdir:1
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.mkdir:1
 #: yadisk.objects.resources.ResourceObjectMethodsMixin.mkdir:1
@@ -2721,10 +2998,8 @@ msgstr "refresh-токен, полученный вместе с токеном"
 
 #: of yadisk.async_client.AsyncClient.refresh_token:9
 #: yadisk.client.Client.refresh_token:9
-msgid "invalid or expired refresh token, application ID or secret"
-msgstr ""
-"неправильный или истекший refresh-токен, идентификатор или пароль "
-"приложения"
+msgid "invalid or expired refresh token or it doesn't belong to this application"
+msgstr "неправильный или истекший refresh-токен или он не принадлежит этому приложению"
 
 #: of yadisk.async_client.AsyncClient.remove:1 yadisk.client.Client.remove:1
 #: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.remove:1
@@ -2841,14 +3116,17 @@ msgstr "токен, подлежащий отзыву, то же самое, ч�
 
 #: of yadisk.async_client.AsyncClient.revoke_token:9
 #: yadisk.client.Client.revoke_token:9
-msgid "token cannot be revoked (not bound to this application, etc.)"
-msgstr ""
-"токен не может быть отозван (например, если не привязан к данному "
-"приложению)"
+msgid "specified token doesn't belong to this application"
+msgstr "указанный токен не принадлежит данному приложению"
+
+#: of yadisk.async_client.AsyncClient.revoke_token:11
+#: yadisk.client.Client.revoke_token:11
+msgid "token could not be revoked because it doesn't have a :code:`device_id`"
+msgstr "не удалось отозвать токен, потому что у него нет :code:`device_id`"
 
 #: of yadisk.api.auth.RevokeTokenRequest:8
-#: yadisk.async_client.AsyncClient.revoke_token:11
-#: yadisk.client.Client.revoke_token:11
+#: yadisk.async_client.AsyncClient.revoke_token:15
+#: yadisk.client.Client.revoke_token:15
 msgid ":any:`TokenRevokeStatusObject`"
 msgstr ":any:`TokenRevokeStatusObject`"
 
@@ -2984,6 +3262,21 @@ msgstr ":any:`AsyncOperationLinkObject`, ссылка на асинхронну�
 msgid "Exceptions"
 msgstr "Исключения"
 
+#: of yadisk.exceptions.AuthorizationPendingError:1
+#: yadisk.exceptions.BadVerificationCodeError:1
+#: yadisk.exceptions.FieldValidationError:1
+#: yadisk.exceptions.InvalidClientError:1 yadisk.exceptions.InvalidGrantError:1
+#: yadisk.exceptions.UnsupportedTokenTypeError:1
+msgid "Bases: :py:class:`~yadisk.exceptions.BadRequestError`"
+msgstr "Базовые классы: :py:class:`~yadisk.exceptions.BadRequestError`"
+
+#: of yadisk.exceptions.AuthorizationPendingError:1
+msgid ""
+"Thrown when authorization is currently pending, the application has to "
+"wait."
+msgstr "Вызывается, когда авторизация находится в процессе, приложение должно "
+"подождать."
+
 #: of yadisk.exceptions.BadGatewayError:1
 #: yadisk.exceptions.GatewayTimeoutError:1
 #: yadisk.exceptions.InternalServerError:1 yadisk.exceptions.UnavailableError:1
@@ -3013,6 +3306,10 @@ msgstr "Базовые классы: :py:class:`~yadisk.exceptions.YaDiskError`"
 msgid "Thrown when the server returns code 400."
 msgstr "Вызывается, когда сервер вернул код 400."
 
+#: of yadisk.exceptions.BadVerificationCodeError:1
+msgid "Thrown when a verification code has invalid format"
+msgstr "Вызывается, когда у кода подтверждения неправильный формат"
+
 #: of yadisk.exceptions.ConflictError:1
 msgid "Thrown when the server returns code 409."
 msgstr "Вызывается, когда сервер вернул код 409."
@@ -3024,10 +3321,6 @@ msgstr "Базовые классы: :py:class:`~yadisk.exceptions.PathExistsErr
 #: of yadisk.exceptions.DirectoryExistsError:1
 msgid "Thrown when the directory already exists."
 msgstr "Вызывается, когда папка уже существует."
-
-#: of yadisk.exceptions.FieldValidationError:1
-msgid "Bases: :py:class:`~yadisk.exceptions.BadRequestError`"
-msgstr "Базовые классы: :py:class:`~yadisk.exceptions.BadRequestError`"
 
 #: of yadisk.exceptions.FieldValidationError:1
 msgid "Thrown when the request contains fields with invalid data."
@@ -3048,6 +3341,14 @@ msgstr "Вызывается, когда сервер вернул код 507."
 #: of yadisk.exceptions.InternalServerError:1
 msgid "Thrown when the server returns code 500."
 msgstr "Вызывается, когда сервер вернул код 500."
+
+#: of yadisk.exceptions.InvalidClientError:1
+msgid "Thrown when an invalid client ID or client secret was provided"
+msgstr "Вызывается, когда был указан неправильный идентификатор или пароль приложения"
+
+#: of yadisk.exceptions.InvalidGrantError:1
+msgid "Thrown when a verification code is expired or invalid"
+msgstr "Вызывается при неверном или просроченном коде подтверждения"
 
 #: of yadisk.exceptions.InvalidResponseError:1
 msgid "Thrown when Yandex.Disk did not return a JSON response or if it's invalid."
@@ -3166,6 +3467,10 @@ msgstr "Вызывается, когда запрос не удался, но н
 msgid "Thrown when the server returns code 415."
 msgstr "Вызывается, когда сервер вернул код 415."
 
+#: of yadisk.exceptions.UnsupportedTokenTypeError:1
+msgid "Thrown when the specified token cannot be used in a request"
+msgstr "Вызывается, когда указанный токен не может быть использован в запросе"
+
 #: of yadisk.exceptions.UploadTrafficLimitExceededError:1
 msgid "Thrown when upload limit has been exceeded."
 msgstr "Вызывается, когда превышен лимит на загрузку файлов."
@@ -3230,96 +3535,6 @@ msgstr "объект :any:`Session`"
 msgid "`dict` of arguments, that will be passed to `process_args`"
 msgstr "`dict`, аргументы, которые будут перданы в `process_args`"
 
-#: of yadisk.api.api_request.APIRequest:5 yadisk.api.api_request.APIRequest:14
-#: yadisk.client.Client.check_token:4 yadisk.client.Client.copy:11
-#: yadisk.client.Client.download:5 yadisk.client.Client.download_by_link:5
-#: yadisk.client.Client.download_public:6 yadisk.client.Client.exists:4
-#: yadisk.client.Client.get_disk_info:4
-#: yadisk.client.Client.get_download_link:5 yadisk.client.Client.get_files:10
-#: yadisk.client.Client.get_last_uploaded:8 yadisk.client.Client.get_meta:10
-#: yadisk.client.Client.get_operation_status:5
-#: yadisk.client.Client.get_public_download_link:6
-#: yadisk.client.Client.get_public_meta:13
-#: yadisk.client.Client.get_public_resources:9
-#: yadisk.client.Client.get_public_type:5 yadisk.client.Client.get_token:5
-#: yadisk.client.Client.get_trash_meta:10 yadisk.client.Client.get_trash_type:4
-#: yadisk.client.Client.get_type:4 yadisk.client.Client.get_upload_link:6
-#: yadisk.client.Client.is_dir:4 yadisk.client.Client.is_file:4
-#: yadisk.client.Client.is_public_dir:5 yadisk.client.Client.is_public_file:5
-#: yadisk.client.Client.is_trash_dir:4 yadisk.client.Client.is_trash_file:4
-#: yadisk.client.Client.listdir:9 yadisk.client.Client.mkdir:5
-#: yadisk.client.Client.move:8 yadisk.client.Client.patch:6
-#: yadisk.client.Client.public_exists:5 yadisk.client.Client.public_listdir:12
-#: yadisk.client.Client.publish:5 yadisk.client.Client.refresh_token:4
-#: yadisk.client.Client.remove:9 yadisk.client.Client.remove_trash:6
-#: yadisk.client.Client.rename:9 yadisk.client.Client.restore_trash:9
-#: yadisk.client.Client.revoke_token:4 yadisk.client.Client.save_to_disk:11
-#: yadisk.client.Client.trash_exists:4 yadisk.client.Client.trash_listdir:9
-#: yadisk.client.Client.unpublish:5 yadisk.client.Client.upload:8
-#: yadisk.client.Client.upload_by_link:8 yadisk.client.Client.upload_url:7
-#: yadisk.objects.resources.AsyncOperationLinkObject.get_status:4
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.copy:16
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.download:11
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.exists:4
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_download_link:5
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_meta:10
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_public_meta:10
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_type:4
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.get_upload_link:6
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.is_dir:4
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.is_file:4
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.listdir:9
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.mkdir:5
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.move:12
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.patch:10
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.public_listdir:9
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.publish:5
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.remove:9
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.rename:9
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.unpublish:5
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.upload:7
-#: yadisk.objects.resources.AsyncResourceObjectMethodsMixin.upload_url:7
-#: yadisk.objects.resources.AsyncTrashResourceObject.exists:4
-#: yadisk.objects.resources.AsyncTrashResourceObject.get_meta:10
-#: yadisk.objects.resources.AsyncTrashResourceObject.get_type:4
-#: yadisk.objects.resources.AsyncTrashResourceObject.is_dir:4
-#: yadisk.objects.resources.AsyncTrashResourceObject.is_file:4
-#: yadisk.objects.resources.AsyncTrashResourceObject.listdir:9
-#: yadisk.objects.resources.AsyncTrashResourceObject.remove:6
-#: yadisk.objects.resources.AsyncTrashResourceObject.restore:14
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.copy:16
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.download:11
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.exists:4
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.get_download_link:5
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.get_meta:10
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.get_public_meta:10
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.get_type:4
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.get_upload_link:6
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.is_dir:4
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.is_file:4
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.listdir:9
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.mkdir:5
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.move:12
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.patch:10
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.public_listdir:9
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.publish:5
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.remove:9
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.rename:9
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.unpublish:5
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.upload:7
-#: yadisk.objects.resources.ResourceObjectMethodsMixin.upload_url:7
-#: yadisk.objects.resources.SyncOperationLinkObject.get_status:4
-#: yadisk.objects.resources.SyncTrashResourceObject.exists:4
-#: yadisk.objects.resources.SyncTrashResourceObject.get_meta:10
-#: yadisk.objects.resources.SyncTrashResourceObject.get_type:4
-#: yadisk.objects.resources.SyncTrashResourceObject.is_dir:4
-#: yadisk.objects.resources.SyncTrashResourceObject.is_file:4
-#: yadisk.objects.resources.SyncTrashResourceObject.listdir:9
-#: yadisk.objects.resources.SyncTrashResourceObject.remove:6
-#: yadisk.objects.resources.SyncTrashResourceObject.restore:14
-msgid "`float` or `tuple`, request timeout"
-msgstr "`float` или `tuple`, таймаут запроса"
-
 #: of yadisk.api.api_request.APIRequest:9
 msgid "other arguments for :any:`Session.send_request`"
 msgstr "другие аргументы для :any:`Session.send_request`"
@@ -3356,6 +3571,7 @@ msgstr "Обрабатывает ответ."
 #: of yadisk.api.api_request.APIRequest.aprocess:3
 #: yadisk.api.api_request.APIRequest.process:3
 #: yadisk.api.api_request.APIRequest.process_json:4
+#: yadisk.api.auth.GetDeviceCodeRequest.process_json:4
 #: yadisk.api.auth.GetTokenRequest.process_json:4
 #: yadisk.api.auth.RefreshTokenRequest.process_json:4
 #: yadisk.api.auth.RevokeTokenRequest.process_json:4
@@ -3399,6 +3615,7 @@ msgid ":any:`AsyncResponse` (`self.response`)"
 msgstr ":any:`AsyncResponse` (`self.response`)"
 
 #: of yadisk.api.api_request.APIRequest.process_json:1
+#: yadisk.api.auth.GetDeviceCodeRequest.process_json:1
 #: yadisk.api.auth.GetTokenRequest.process_json:1
 #: yadisk.api.auth.RefreshTokenRequest.process_json:1
 #: yadisk.api.auth.RevokeTokenRequest.process_json:1
@@ -3428,6 +3645,7 @@ msgid "Process the JSON response."
 msgstr "Обрабатывает JSON ответ."
 
 #: of yadisk.api.api_request.APIRequest.process_json:3
+#: yadisk.api.auth.GetDeviceCodeRequest.process_json:3
 #: yadisk.api.auth.GetTokenRequest.process_json:3
 #: yadisk.api.auth.RefreshTokenRequest.process_json:3
 #: yadisk.api.auth.RevokeTokenRequest.process_json:3
@@ -3457,6 +3675,7 @@ msgid "`dict` or `None`, JSON response"
 msgstr "`dict` или `None`, JSON ответ"
 
 #: of yadisk.api.api_request.APIRequest.process_json:6
+#: yadisk.api.auth.GetDeviceCodeRequest.process_json:6
 #: yadisk.api.auth.GetTokenRequest.process_json:6
 #: yadisk.api.auth.RefreshTokenRequest.process_json:6
 #: yadisk.api.auth.RevokeTokenRequest.process_json:6
@@ -3489,8 +3708,9 @@ msgstr "обработанный ответ, может быть что угод
 msgid ":any:`Response` (`self.response`)"
 msgstr ":any:`Response` (`self.response`)"
 
-#: of yadisk.api.auth.GetTokenRequest:1 yadisk.api.auth.RefreshTokenRequest:1
-#: yadisk.api.auth.RevokeTokenRequest:1 yadisk.api.disk.DiskInfoRequest:1
+#: of yadisk.api.auth.GetDeviceCodeRequest:1 yadisk.api.auth.GetTokenRequest:1
+#: yadisk.api.auth.RefreshTokenRequest:1 yadisk.api.auth.RevokeTokenRequest:1
+#: yadisk.api.disk.DiskInfoRequest:1
 #: yadisk.api.operations.GetOperationStatusRequest:1
 #: yadisk.api.resources.CopyRequest:1 yadisk.api.resources.DeleteRequest:1
 #: yadisk.api.resources.DeleteTrashRequest:1
@@ -3512,12 +3732,21 @@ msgstr ":any:`Response` (`self.response`)"
 msgid "Bases: :py:class:`~yadisk.api.api_request.APIRequest`"
 msgstr "Базовые классы: :py:class:`~yadisk.api.api_request.APIRequest`"
 
-#: of yadisk.api.auth.GetTokenRequest:1
-msgid "A request to get the token."
-msgstr "Запрос для получения токена."
+#: of yadisk.api.auth.GetDeviceCodeRequest:1
+msgid ""
+"This request is used for authorization using the Yandex OAuth page. In "
+"this case the user must enter the verification code (:code:`user_code`) "
+"in the browser on the Yandex OAuth page. After the user has entered the "
+"code on the OAuth page, the application can exchange the "
+":code:`device_code` for the token."
+msgstr "Данный запрос используется для авторизации с помощью страницы Яндекс OAuth. "
+"В данном случае пользователь должен ввести код подтверждения (:code:`user_code`) "
+"в браузере на странице Яндекс OAuth. После того как пользователь ввёл код, "
+"приложение может обменять :code:`device_code` на токен."
 
-#: of yadisk.api.auth.GetTokenRequest:3 yadisk.api.auth.RefreshTokenRequest:3
-#: yadisk.api.auth.RevokeTokenRequest:3 yadisk.api.disk.DiskInfoRequest:3
+#: of yadisk.api.auth.GetDeviceCodeRequest:7 yadisk.api.auth.GetTokenRequest:3
+#: yadisk.api.auth.RefreshTokenRequest:3 yadisk.api.auth.RevokeTokenRequest:3
+#: yadisk.api.disk.DiskInfoRequest:3
 #: yadisk.api.operations.GetOperationStatusRequest:3
 #: yadisk.api.resources.CopyRequest:3 yadisk.api.resources.DeleteRequest:3
 #: yadisk.api.resources.DeleteTrashRequest:3
@@ -3539,6 +3768,10 @@ msgid "an instance of :any:`Session` or :any:`AsyncSession` with prepared header
 msgstr ""
 "объект :any:`Session` или :any:`AsyncSession` с подготовленными "
 "заголовками"
+
+#: of yadisk.api.auth.GetTokenRequest:1
+msgid "A request to get the token."
+msgstr "Запрос для получения токена."
 
 #: of yadisk.api.auth.RefreshTokenRequest:1
 msgid "A request to refresh an existing token."
@@ -3743,16 +3976,19 @@ msgstr ""
 "API Яндекс.Диска. У наследующего объекта фиксированное количество полей, "
 "каждое со своим типом. Поддерживает доступ по индексу и через точку."
 
-#: of yadisk.objects.auth.TokenObject:3
+#: of yadisk.objects.auth.DeviceCodeObject:3 yadisk.objects.auth.TokenObject:3
 #: yadisk.objects.auth.TokenRevokeStatusObject:3
 #: yadisk.objects.disk.DiskInfoObject:3
 #: yadisk.objects.disk.SystemFoldersObject:3 yadisk.objects.disk.UserObject:3
 #: yadisk.objects.disk.UserPublicInfoObject:4
 #: yadisk.objects.error_object.ErrorObject:3
+#: yadisk.objects.link_object.LinkObject:3
+#: yadisk.objects.operations.AsyncOperationLinkObject:3
+#: yadisk.objects.operations.OperationLinkObject:3
 #: yadisk.objects.operations.OperationStatusObject:3
+#: yadisk.objects.operations.SyncOperationLinkObject:3
 #: yadisk.objects.resources.AsyncFilesResourceListObject:3
 #: yadisk.objects.resources.AsyncLastUploadedResourceListObject:3
-#: yadisk.objects.resources.AsyncOperationLinkObject:3
 #: yadisk.objects.resources.AsyncPublicResourceLinkObject:3
 #: yadisk.objects.resources.AsyncPublicResourceListObject:3
 #: yadisk.objects.resources.AsyncPublicResourceObject:3
@@ -3766,8 +4002,6 @@ msgstr ""
 #: yadisk.objects.resources.EXIFObject:3
 #: yadisk.objects.resources.FilesResourceListObject:3
 #: yadisk.objects.resources.LastUploadedResourceListObject:3
-#: yadisk.objects.resources.LinkObject:3
-#: yadisk.objects.resources.OperationLinkObject:3
 #: yadisk.objects.resources.PublicResourceLinkObject:3
 #: yadisk.objects.resources.PublicResourceListObject:3
 #: yadisk.objects.resources.PublicResourceObject:3
@@ -3780,7 +4014,6 @@ msgstr ""
 #: yadisk.objects.resources.ShareInfoObject:3
 #: yadisk.objects.resources.SyncFilesResourceListObject:3
 #: yadisk.objects.resources.SyncLastUploadedResourceListObject:3
-#: yadisk.objects.resources.SyncOperationLinkObject:3
 #: yadisk.objects.resources.SyncPublicResourceLinkObject:3
 #: yadisk.objects.resources.SyncPublicResourceListObject:3
 #: yadisk.objects.resources.SyncPublicResourceObject:3
@@ -3796,7 +4029,7 @@ msgstr ""
 msgid "`dict` or `None`"
 msgstr "`dict` или `None`"
 
-#: of yadisk.objects.auth.TokenObject:4
+#: of yadisk.objects.auth.DeviceCodeObject:4 yadisk.objects.auth.TokenObject:4
 #: yadisk.objects.auth.TokenRevokeStatusObject:4
 #: yadisk.objects.disk.DiskInfoObject:4
 #: yadisk.objects.disk.SystemFoldersObject:4 yadisk.objects.disk.UserObject:4
@@ -3854,17 +4087,17 @@ msgstr "Задаёт типы полей объекта"
 msgid "`dict`, where keys are the field names and values are types (or factories)"
 msgstr "`dict`, где ключи - это наименования полей, а значения - это типы"
 
-#: of yadisk.objects.auth.TokenObject:1
+#: of yadisk.objects.auth.DeviceCodeObject:1 yadisk.objects.auth.TokenObject:1
 #: yadisk.objects.auth.TokenRevokeStatusObject:1
 #: yadisk.objects.disk.DiskInfoObject:1
 #: yadisk.objects.disk.SystemFoldersObject:1 yadisk.objects.disk.UserObject:1
 #: yadisk.objects.error_object.ErrorObject:1
+#: yadisk.objects.link_object.LinkObject:1
 #: yadisk.objects.operations.OperationStatusObject:1
 #: yadisk.objects.resources.CommentIDsObject:1
 #: yadisk.objects.resources.EXIFObject:1
 #: yadisk.objects.resources.FilesResourceListObject:1
 #: yadisk.objects.resources.LastUploadedResourceListObject:1
-#: yadisk.objects.resources.LinkObject:1
 #: yadisk.objects.resources.PublicResourcesListObject:1
 #: yadisk.objects.resources.ResourceListObject:1
 #: yadisk.objects.resources.ResourceObject:1
@@ -3892,6 +4125,40 @@ msgstr "`str`, техническое описание ошибки"
 msgid "`str`, error code"
 msgstr "`str`, уникальный код ошибки"
 
+#: of yadisk.objects.auth.DeviceCodeObject:1
+msgid ""
+"Result of :any:`Client.get_device_code()` / "
+":any:`AsyncClient.get_device_code()`."
+msgstr "Результат :any:`Client.get_device_code()` / "
+":any:`AsyncClient.get_device_code()`."
+
+#: of yadisk.objects.auth.DeviceCodeObject:6
+msgid "`str`, device code that can be used for obtaining the token"
+msgstr "`str`, код устройства, который может быть использован для получения токена"
+
+#: of yadisk.objects.auth.DeviceCodeObject:7
+msgid "`str`, code that the user should enter on the OAuth page"
+msgstr "`str`, код, который пользователь должен ввести на странице OAuth"
+
+#: of yadisk.objects.auth.DeviceCodeObject:8
+msgid ""
+"`str`, URL of the OAuth page where user is expected to enter the "
+":code:`user_code`"
+msgstr "`str`, URL страницы OAuth, на которой пользователь должен ввести :code:`user_code`"
+
+#: of yadisk.objects.auth.DeviceCodeObject:10
+msgid ""
+"`int`, the minimum interval (in seconds) with which the app must request "
+"an OAuth token. If requests come more often, Yandex OAuth may respond "
+"with an error"
+msgstr "`int`, минимальный интервал времени (в секундах), с которым приложение "
+"должно запрашивать OAuth токен. Если запросы будут поступать чаще, Яндекс OAuth "
+"может вернуть ошибку"
+
+#: of yadisk.objects.auth.DeviceCodeObject:13
+msgid "`int`, amount of time before the codes expire"
+msgstr "`int`, количество времени, после которого коды истекают"
+
 #: of yadisk.objects.auth.TokenObject:1
 msgid "Token object."
 msgstr "Объект токена."
@@ -3911,6 +4178,13 @@ msgstr "`str`, тип токена"
 #: of yadisk.objects.auth.TokenObject:9
 msgid "`int`, amount of time before the token expires"
 msgstr "`int`, количество времени, на которое выдаётся токен"
+
+#: of yadisk.objects.auth.TokenObject:10
+msgid ""
+"`str`, list of rights requested by the application, returned only if the "
+"token has a smaller set of rights than requested"
+msgstr "`str`, список прав, запрашиваемых приложением, возвращается только если "
+"токен обладает меньшим набором прав, чем было запрошено"
 
 #: of yadisk.objects.auth.TokenRevokeStatusObject:1
 msgid "Result of token revocation request."
@@ -4079,9 +4353,9 @@ msgstr ""
 msgid "Flat list of files."
 msgstr "Плоский список файлов."
 
-#: of yadisk.objects.resources.AsyncFilesResourceListObject:4
+#: of yadisk.objects.operations.AsyncOperationLinkObject:4
+#: yadisk.objects.resources.AsyncFilesResourceListObject:4
 #: yadisk.objects.resources.AsyncLastUploadedResourceListObject:4
-#: yadisk.objects.resources.AsyncOperationLinkObject:4
 #: yadisk.objects.resources.AsyncPublicResourceLinkObject:4
 #: yadisk.objects.resources.AsyncPublicResourceListObject:4
 #: yadisk.objects.resources.AsyncPublicResourceObject:4
@@ -4158,64 +4432,6 @@ msgstr "Список последних загруженных файлов."
 msgid "`list`, list of resources (:any:`AsyncResourceObject`)"
 msgstr "`list`, список ресурсов (:any:`AsyncResourceObject`)"
 
-#: of yadisk.objects.resources.AsyncOperationLinkObject:1
-#: yadisk.objects.resources.SyncOperationLinkObject:1
-msgid "Bases: :py:class:`~yadisk.objects.resources.OperationLinkObject`"
-msgstr "Базовые классы: :py:class:`~yadisk.objects.resources.OperationLinkObject`"
-
-#: of yadisk.objects.resources.AsyncOperationLinkObject:1
-#: yadisk.objects.resources.OperationLinkObject:1
-#: yadisk.objects.resources.SyncOperationLinkObject:1
-msgid "Operation link object."
-msgstr "Объект ссылки на операцию."
-
-#: of yadisk.objects.resources.AsyncOperationLinkObject:6
-#: yadisk.objects.resources.AsyncPublicResourceLinkObject:6
-#: yadisk.objects.resources.AsyncResourceLinkObject:6
-#: yadisk.objects.resources.LinkObject:6
-#: yadisk.objects.resources.OperationLinkObject:6
-#: yadisk.objects.resources.PublicResourceLinkObject:6
-#: yadisk.objects.resources.ResourceDownloadLinkObject:6
-#: yadisk.objects.resources.ResourceLinkObject:6
-#: yadisk.objects.resources.ResourceUploadLinkObject:7
-#: yadisk.objects.resources.SyncOperationLinkObject:6
-#: yadisk.objects.resources.SyncPublicResourceLinkObject:6
-#: yadisk.objects.resources.SyncResourceLinkObject:6
-msgid "`str`, link URL"
-msgstr "`str`, URL ссылки"
-
-#: of yadisk.async_session.AsyncSession.send_request:10
-#: yadisk.objects.resources.AsyncOperationLinkObject:7
-#: yadisk.objects.resources.AsyncPublicResourceLinkObject:7
-#: yadisk.objects.resources.AsyncResourceLinkObject:7
-#: yadisk.objects.resources.LinkObject:7
-#: yadisk.objects.resources.OperationLinkObject:7
-#: yadisk.objects.resources.PublicResourceLinkObject:7
-#: yadisk.objects.resources.ResourceDownloadLinkObject:7
-#: yadisk.objects.resources.ResourceLinkObject:7
-#: yadisk.objects.resources.ResourceUploadLinkObject:8
-#: yadisk.objects.resources.SyncOperationLinkObject:7
-#: yadisk.objects.resources.SyncPublicResourceLinkObject:7
-#: yadisk.objects.resources.SyncResourceLinkObject:7
-#: yadisk.session.Session.send_request:10
-msgid "`str`, HTTP method"
-msgstr "`str`, HTTP метод"
-
-#: of yadisk.objects.resources.AsyncOperationLinkObject:8
-#: yadisk.objects.resources.AsyncPublicResourceLinkObject:8
-#: yadisk.objects.resources.AsyncResourceLinkObject:8
-#: yadisk.objects.resources.LinkObject:8
-#: yadisk.objects.resources.OperationLinkObject:8
-#: yadisk.objects.resources.PublicResourceLinkObject:8
-#: yadisk.objects.resources.ResourceDownloadLinkObject:8
-#: yadisk.objects.resources.ResourceLinkObject:8
-#: yadisk.objects.resources.ResourceUploadLinkObject:9
-#: yadisk.objects.resources.SyncOperationLinkObject:8
-#: yadisk.objects.resources.SyncPublicResourceLinkObject:8
-#: yadisk.objects.resources.SyncResourceLinkObject:8
-msgid "`bool`, tells whether the URL is templated"
-msgstr "`bool`, признак шаблонизированного URL"
-
 #: of yadisk.objects.resources.AsyncPublicResourceLinkObject:1
 msgid ""
 "Bases: :py:class:`~yadisk.objects.resources.PublicResourceLinkObject`, "
@@ -4230,6 +4446,53 @@ msgstr ""
 #: yadisk.objects.resources.SyncPublicResourceLinkObject:1
 msgid "Public resource link object."
 msgstr "Объект ссылки на публичный ресурс."
+
+#: of yadisk.objects.link_object.LinkObject:6
+#: yadisk.objects.operations.AsyncOperationLinkObject:6
+#: yadisk.objects.operations.OperationLinkObject:6
+#: yadisk.objects.operations.SyncOperationLinkObject:6
+#: yadisk.objects.resources.AsyncPublicResourceLinkObject:6
+#: yadisk.objects.resources.AsyncResourceLinkObject:6
+#: yadisk.objects.resources.PublicResourceLinkObject:6
+#: yadisk.objects.resources.ResourceDownloadLinkObject:6
+#: yadisk.objects.resources.ResourceLinkObject:6
+#: yadisk.objects.resources.ResourceUploadLinkObject:7
+#: yadisk.objects.resources.SyncPublicResourceLinkObject:6
+#: yadisk.objects.resources.SyncResourceLinkObject:6
+msgid "`str`, link URL"
+msgstr "`str`, URL ссылки"
+
+#: of yadisk.async_session.AsyncSession.send_request:10
+#: yadisk.objects.link_object.LinkObject:7
+#: yadisk.objects.operations.AsyncOperationLinkObject:7
+#: yadisk.objects.operations.OperationLinkObject:7
+#: yadisk.objects.operations.SyncOperationLinkObject:7
+#: yadisk.objects.resources.AsyncPublicResourceLinkObject:7
+#: yadisk.objects.resources.AsyncResourceLinkObject:7
+#: yadisk.objects.resources.PublicResourceLinkObject:7
+#: yadisk.objects.resources.ResourceDownloadLinkObject:7
+#: yadisk.objects.resources.ResourceLinkObject:7
+#: yadisk.objects.resources.ResourceUploadLinkObject:8
+#: yadisk.objects.resources.SyncPublicResourceLinkObject:7
+#: yadisk.objects.resources.SyncResourceLinkObject:7
+#: yadisk.session.Session.send_request:10
+msgid "`str`, HTTP method"
+msgstr "`str`, HTTP метод"
+
+#: of yadisk.objects.link_object.LinkObject:8
+#: yadisk.objects.operations.AsyncOperationLinkObject:8
+#: yadisk.objects.operations.OperationLinkObject:8
+#: yadisk.objects.operations.SyncOperationLinkObject:8
+#: yadisk.objects.resources.AsyncPublicResourceLinkObject:8
+#: yadisk.objects.resources.AsyncResourceLinkObject:8
+#: yadisk.objects.resources.PublicResourceLinkObject:8
+#: yadisk.objects.resources.ResourceDownloadLinkObject:8
+#: yadisk.objects.resources.ResourceLinkObject:8
+#: yadisk.objects.resources.ResourceUploadLinkObject:9
+#: yadisk.objects.resources.SyncPublicResourceLinkObject:8
+#: yadisk.objects.resources.SyncResourceLinkObject:8
+msgid "`bool`, tells whether the URL is templated"
+msgstr "`bool`, признак шаблонизированного URL"
 
 #: of yadisk.objects.resources.AsyncPublicResourceLinkObject:9
 #: yadisk.objects.resources.AsyncPublicResourceListObject:12
@@ -4985,12 +5248,12 @@ msgstr "`str` или `None`, относительный путь к восста
 msgid "Comment IDs object."
 msgstr "Список идентификаторов комментариев."
 
-#: of yadisk.objects.resources.CommentIDsObject:4
+#: of yadisk.objects.link_object.LinkObject:4
+#: yadisk.objects.operations.OperationLinkObject:4
+#: yadisk.objects.resources.CommentIDsObject:4
 #: yadisk.objects.resources.EXIFObject:4
 #: yadisk.objects.resources.FilesResourceListObject:4
 #: yadisk.objects.resources.LastUploadedResourceListObject:4
-#: yadisk.objects.resources.LinkObject:4
-#: yadisk.objects.resources.OperationLinkObject:4
 #: yadisk.objects.resources.PublicResourceLinkObject:4
 #: yadisk.objects.resources.PublicResourceListObject:4
 #: yadisk.objects.resources.PublicResourceObject:4
@@ -5032,17 +5295,13 @@ msgstr "`list`, плоский список файлов (:any:`ResourceObject`)
 msgid "`list`, list of resources (:any:`ResourceObject`)"
 msgstr "`list`, список ресурсов (:any:`ResourceObject`)"
 
-#: of yadisk.objects.resources.LinkObject:1
-msgid "Link object."
-msgstr "Объект ссылки."
-
-#: of yadisk.objects.resources.OperationLinkObject:1
+#: of yadisk.objects.operations.OperationLinkObject:1
 #: yadisk.objects.resources.PublicResourceLinkObject:1
 #: yadisk.objects.resources.ResourceDownloadLinkObject:1
 #: yadisk.objects.resources.ResourceLinkObject:1
 #: yadisk.objects.resources.ResourceUploadLinkObject:1
-msgid "Bases: :py:class:`~yadisk.objects.resources.LinkObject`"
-msgstr "Базовые классы: :py:class:`~yadisk.objects.resources.LinkObject`"
+msgid "Bases: :py:class:`~yadisk.objects.link_object.LinkObject`"
+msgstr "Базовые классы: :py:class:`~yadisk.objects.link_object.LinkObject`"
 
 #: of yadisk.objects.resources.PublicResourceObject:1
 #: yadisk.objects.resources.TrashResourceObject:1
@@ -5089,9 +5348,9 @@ msgstr "`bool`, признак того, что пользователь явл�
 msgid "`str`, access rights"
 msgstr "`str`, права доступа"
 
-#: of yadisk.objects.resources.SyncFilesResourceListObject:4
+#: of yadisk.objects.operations.SyncOperationLinkObject:4
+#: yadisk.objects.resources.SyncFilesResourceListObject:4
 #: yadisk.objects.resources.SyncLastUploadedResourceListObject:4
-#: yadisk.objects.resources.SyncOperationLinkObject:4
 #: yadisk.objects.resources.SyncPublicResourceLinkObject:4
 #: yadisk.objects.resources.SyncPublicResourceListObject:4
 #: yadisk.objects.resources.SyncPublicResourceObject:4
@@ -5255,6 +5514,21 @@ msgstr "`list`, список ресурсов (:any:`TrashResourceObject`)"
 #: of yadisk.objects.resources.TrashResourceObject:12
 msgid ":any:`TrashResourceListObject`, list of nested resources"
 msgstr ":any:`ResourceListObject`, список вложенных ресурсов"
+
+#: of yadisk.objects.link_object.LinkObject:1
+msgid "Link object."
+msgstr "Объект ссылки."
+
+#: of yadisk.objects.operations.AsyncOperationLinkObject:1
+#: yadisk.objects.operations.SyncOperationLinkObject:1
+msgid "Bases: :py:class:`~yadisk.objects.operations.OperationLinkObject`"
+msgstr "Базовые классы: :py:class:`~yadisk.objects.operations.OperationLinkObject`"
+
+#: of yadisk.objects.operations.AsyncOperationLinkObject:1
+#: yadisk.objects.operations.OperationLinkObject:1
+#: yadisk.objects.operations.SyncOperationLinkObject:1
+msgid "Operation link object."
+msgstr "Объект ссылки на операцию."
 
 #: of yadisk.objects.operations.OperationStatusObject:1
 msgid "Operation status object."
@@ -5489,13 +5763,13 @@ msgstr "Доступные реализации сессий"
 #: ../../api_reference/sessions.rst:4
 msgid ""
 "You can choose which HTTP library will be used by :any:`Client` and "
-":any:`AsyncClient` by specifying the :code:`session_factory` parameter. "
-"Below you can see the list of session implementations that are shipped "
-"with the :code:`yadisk` library."
+":any:`AsyncClient` by specifying the :code:`session` parameter. Below you"
+" can see the list of session implementations that are shipped with the "
+":code:`yadisk` library."
 msgstr ""
 "Вы можете выбрать, какая HTTP библиотека будет использоваться в "
 ":any:`Client` и :any:`AsyncClient`, указав параметр "
-":code:`session_factory`. Ниже вы можете найти список реализаций сессий, "
+":code:`session`. Ниже вы можете найти список реализаций сессий, "
 "поставляемых вместе с библиотекой."
 
 #: ../../api_reference/sessions.rst:8
@@ -5538,15 +5812,15 @@ msgstr "лежащий в основе объект :any:`requests.Session`"
 msgid ""
 "Internally, this class creates thread-local instances of "
 ":any:`requests.Session`, since it is not currently guaranteed to be "
-"thread safe. Calling :any:`Session.close()` only closes the thread-local "
-"session."
+"thread safe. Calling :any:`Session.close()` will close all thread-local "
+"sessions managed by this object."
 msgstr ""
 "Внутри данный класс создаёт локальные для потоков экземпляры "
 ":any:`requests.Session`, т.к. на данный момент нет гарантии их "
-"потокобезопасности. Вызов :any:`Session.close()` закрывает только сессию "
-"текущего потока."
+"потокобезопасности. Вызов :any:`Session.close()` закрывает все сессии, "
+"управляемые данным объектом."
 
-#: of yadisk.sessions.requests_session.RequestsSession:15
+#: of yadisk.sessions.requests_session.RequestsSession:16
 msgid ""
 "To pass `requests`-specific arguments from :any:`Client` use "
 ":code:`requests_args` keyword argument."
@@ -5558,7 +5832,7 @@ msgstr ""
 #: yadisk.sessions.async_httpx_session.AsyncHTTPXSession:13
 #: yadisk.sessions.httpx_session.HTTPXSession:13
 #: yadisk.sessions.pycurl_session.PycURLSession:7
-#: yadisk.sessions.requests_session.RequestsSession:17
+#: yadisk.sessions.requests_session.RequestsSession:18
 msgid "Usage example:"
 msgstr "Пример использования:"
 
@@ -5655,6 +5929,62 @@ msgstr ""
 "Для того чтобы передать специфичные для `httpx` аргументы из "
 ":any:`AsyncClient` используйте keyword-аргумент :code:`httpx_args`."
 
+#: ../../api_reference/sessions.rst:33
+msgid "Importing Session Classes"
+msgstr "Импортирование классов сессий"
+
+#: ../../api_reference/sessions.rst:35
+msgid "You can use the following functions to import a session class by name:"
+msgstr "Вы можете использовать следующие функции, чтобы импортировать класс сессии по именsи:"
+
+#: of yadisk.import_session.import_session:1
+msgid "Imports relevant session class based on provided name."
+msgstr "Импортирует релевантный класс сессии на основе указанного имени."
+
+#: of yadisk.import_session.import_async_session:5
+#: yadisk.import_session.import_session:3
+msgid "The following sessions are available:"
+msgstr "Доступны следующие сессии:"
+
+#: of yadisk.client.Client:31 yadisk.import_session.import_session:5
+msgid ":code:`\"httpx\"` - :any:`HTTPXSession`"
+msgstr ":code:`\"httpx\"` - :any:`HTTPXSession`"
+
+#: of yadisk.client.Client:32 yadisk.import_session.import_session:6
+msgid ":code:`\"pycurl\"` - :any:`PycURLSession`"
+msgstr ":code:`\"pycurl\"` - :any:`PycURLSession`"
+
+#: of yadisk.client.Client:33 yadisk.import_session.import_session:7
+msgid ":code:`\"requests\"` - :any:`RequestsSession`"
+msgstr ":code:`\"requests\"` - :any:`RequestsSession`"
+
+#: of yadisk.import_session.import_async_session:3
+#: yadisk.import_session.import_session:9
+msgid "`str`, session name"
+msgstr "`str`, имя сессии"
+
+#: of yadisk.import_session.import_async_session:10
+#: yadisk.import_session.import_session:11
+msgid "could not import module"
+msgstr "не удалось импортировать модуль"
+
+#: of yadisk.import_session.import_async_session:11
+#: yadisk.import_session.import_session:12
+msgid "unknown name"
+msgstr "неизвестное имя"
+
+#: of yadisk.import_session.import_session:14
+msgid "subclass of :any:`Session`"
+msgstr "класс, наследующийся от :any:`Session`"
+
+#: of yadisk.import_session.import_async_session:1
+msgid "Imports relevant asynchronous session class based on provided name."
+msgstr "Импортирует релевантный класс асинхронной сессии на основе указанного имени."
+
+#: of yadisk.import_session.import_async_session:13
+msgid "subclass of :any:`AsyncSession`"
+msgstr "класс, наследующийся от :any:`AsyncSession`"
+
 #: ../../api_reference/settings.rst:2
 msgid "Settings"
 msgstr "Настройки"
@@ -5715,12 +6045,12 @@ msgstr "Реализует доступ к REST API Яндекс.Диска (п�
 
 #: of yadisk.client.Client:3
 msgid ""
-"HTTP client implementation can be specified using the `session_factory` "
+"HTTP client implementation can be specified using the :code:`session` "
 "parameter. :any:`RequestsSession` is used by default. For other options, "
 "see :doc:`/api_reference/sessions`."
 msgstr ""
 "Реализация HTTP-клиента может быть указана с помощью параметра "
-"`session_factory`. По умолчанию используется :any:`RequestsSession`. см. "
+"`session`. По умолчанию используется :any:`RequestsSession`. см. "
 ":doc:`/api_reference/sessions` для других списка других доступных "
 "вариантов."
 
@@ -5743,10 +6073,27 @@ msgstr ""
 ":any:`Session` (:doc:`/api_reference/sessions`)."
 
 #: of yadisk.client.Client:26
-msgid "`None` or a function that returns a new instance of :any:`Session`"
-msgstr "`None` или функция, которая возващает новый экземпляр :any:`Session`"
+msgid ""
+"`None`, `str` or an instance of :any:`Session`. If :code:`session` is a "
+"string, the appropriate session class will be imported, it must be one of"
+" the following values:    * :code:`\"httpx\"` - :any:`HTTPXSession`   * "
+":code:`\"pycurl\"` - :any:`PycURLSession`   * :code:`\"requests\"` - "
+":any:`RequestsSession`"
+msgstr "`None`, `str` или объект :any:`Session`. Если :code:`session` "
+"- строка, то нужный класс будет автоматически импортирован, допустимые значения:"
+"    * :code:`\"httpx\"` - :any:`HTTPXSession`   * "
+":code:`\"pycurl\"` - :any:`PycURLSession`   * :code:`\"requests\"` - "
+":any:`RequestsSession`"
 
-#: of yadisk.client.Client:28
+#: of yadisk.client.Client:26
+msgid ""
+"`None`, `str` or an instance of :any:`Session`. If :code:`session` is a "
+"string, the appropriate session class will be imported, it must be one of"
+" the following values:"
+msgstr "`None`, `str` или объект :any:`Session`. Если :code:`session` "
+"- строка, то нужный класс будет автоматически импортирован, допустимые значения:"
+
+#: of yadisk.client.Client:35
 msgid ""
 "`None` or a function that opens a file for reading or writing "
 "(:code:`open()` by default)"
@@ -5754,19 +6101,17 @@ msgstr ""
 "`None` или функция, которая открывает файл для чтения или записи "
 "(:code:`open()` по умолчанию)"
 
-#: of yadisk.client.Client:36
-msgid "function that returns a new instance of :any:`Session`"
-msgstr "функция, которая возващает новый экземпляр :any:`Session`"
-
 #: of yadisk.client.Client:37
 msgid ""
-"current session (:any:`Session` instance), created using the "
-"`session_factory` with filled out authentication headers"
-msgstr ""
-"текущая сессия (экземпляр :any:`Session`), созданная с помощью "
-"`session_factory` с заполненными заголовками аутентификации"
+"kept for compatibility, callable that returns an instance of "
+":any:`Session`"
+msgstr "оставлен для совместимости, функция, возвращающая объект :any:`Session`"
 
-#: of yadisk.client.Client:39
+#: of yadisk.client.Client:45
+msgid "current session (:any:`Session` instance)"
+msgstr "текущая сессия (объект :any:`Session`)"
+
+#: of yadisk.client.Client:46
 msgid ""
 "function that opens a file for reading or writing (:code:`open()` by "
 "default)"
@@ -5791,23 +6136,23 @@ msgstr "публичный ключ или URL к публичному ресу�
 msgid ":any:`SyncPublicResourceLinkObject`"
 msgstr ":any:`SyncPublicResourceLinkObject`"
 
-#: of yadisk.client.Client.get_auth_url:1
+#: of yadisk.client.Client.get_device_code:1
 msgid ""
-"Get authentication URL for the user to go to. This method doesn't send "
-"any HTTP requests and merely constructs the URL."
-msgstr ""
-"Получает URL для аутентификации для пользователя. Данный метод не "
-"отправляет никаких HTTP запросов."
+"This request is used for authorization using the Yandex OAuth page. In "
+"this case the user must enter the verification code (:code:`user_code`) "
+"in the browser on the Yandex OAuth page. After the user has entered the "
+"code on the OAuth page, the application can exchange the "
+":code:`device_code` for the token using the "
+":any:`Client.get_token_from_device_code()`."
+msgstr "Данный запрос используется для авторизации с помощью страницы Яндекс OAuth. "
+"В данном случае пользователь должен ввести код подтверждения (:code:`user_code`) "
+"в браузере на странице Яндекс OAuth. После того как пользователь ввёл код, "
+"приложение может обменять :code:`device_code` на токен с помощью метода "
+":any:`Client.get_token_from_device_code()`."
 
-#: of yadisk.client.Client.get_code_url:1
-msgid ""
-"Get the URL for the user to get the confirmation code. The confirmation "
-"code can later be used to get the token. This method doesn't send any "
-"HTTP requests and merely constructs the URL."
-msgstr ""
-"Получает URL для получения пользователем кода подтверждения. Он может "
-"быть использован для получения токена. Данный метод не отправляет никаких"
-" HTTP запросов."
+#: of yadisk.client.Client.get_device_code:12
+msgid "invalid client ID"
+msgstr "неправильный идентификатор приложения"
 
 #: of yadisk.client.Client.get_files:17
 #: yadisk.client.Client.get_last_uploaded:15 yadisk.client.Client.listdir:18
@@ -5818,6 +6163,13 @@ msgstr "генератор :any:`ResourceObject`"
 msgid ":any:`SyncPublicResourcesListObject`"
 msgstr ":any:`SyncPublicResourceObject`"
 
+#: of yadisk.client.Client.get_token_from_device_code:1
+msgid ""
+"Get a new token from a device code, previously obtained with "
+":any:`Client.get_device_code()`."
+msgstr "Получает новый токен с помощью кода устройства (device_code), полученного"
+"с помощью :any:`Client.get_device_code()`"
+
 #: of yadisk.client.Client.is_public_dir:1
 msgid "Check whether the public resource is a public directory."
 msgstr "Проверяет, является ли публичный ресурс публичной папкой."
@@ -5825,14 +6177,6 @@ msgstr "Проверяет, является ли публичный ресур�
 #: of yadisk.client.Client.is_public_file:1
 msgid "Check whether the public resource is a public file."
 msgstr "Проверяет, является ли публичный ресурс публичным файлом."
-
-#: of yadisk.client.Client.make_session:1
-msgid "Prepares :any:`Session` object with headers needed for API."
-msgstr "Готовит объект :any:`Session` с заголовками, необходимыми для API."
-
-#: of yadisk.client.Client.make_session:4
-msgid ":any:`Session`"
-msgstr ":any:`Session`"
 
 #: of yadisk.client.Client.revoke_token:3
 msgid "token to revoke"
@@ -5933,4 +6277,84 @@ msgstr "Объект исключения, подкласс :any:`YaDiskError`"
 #~ "uploaded or a function that returns "
 #~ "an iterator (or generator)"
 #~ msgstr ""
+
+#~ msgid "`None` or a function that returns a new instance of :any:`AsyncSession`"
+#~ msgstr ""
+#~ "`None` или функция, которая возвращает "
+#~ "новый экземпляр :any:`AsyncSession`"
+
+#~ msgid "function that returns a new instance of :any:`AsyncSession`"
+#~ msgstr "функция, которая возвращает новый экземпляр :any:`AsyncSession`"
+
+#~ msgid ""
+#~ "current session (:any:`AsyncSession` instance), "
+#~ "created using the `session_factory` with "
+#~ "filled out authentication headers"
+#~ msgstr ""
+#~ "текущая сессия (экземпляр :any:`AsyncSession`), "
+#~ "созданная с помощью `session_factory` с "
+#~ "заполненными заголовками аутентификации"
+
+#~ msgid "Get authentication URL for the user to go to."
+#~ msgstr "Получает URL для аутентификации для пользователя."
+
+#~ msgid ""
+#~ "indicates whether to use lightweight "
+#~ "layout, values other than \"popup\" are"
+#~ " ignored"
+#~ msgstr ""
+#~ "указывает использовать облегчённую вёрстку, "
+#~ "обрабатывает только \"popup\", остальные "
+#~ "значения игнорируются"
+
+#~ msgid ""
+#~ "Get the URL for the user to "
+#~ "get the confirmation code. The "
+#~ "confirmation code can later be used "
+#~ "to get the token."
+#~ msgstr ""
+#~ "Получает URL для получения пользователем "
+#~ "кода подтверждения. Он может быть "
+#~ "использован для получения токена."
+
+#~ msgid "Prepares a new :any:`AsyncSession` object with headers needed for API."
+#~ msgstr ""
+#~ "Готовит новый объект :any:`AsyncSession` с "
+#~ "заголовками, необходимыми для API."
+
+#~ msgid "application token, equivalent to `self.token` if `None`"
+#~ msgstr "токен, то же самое, что `self.token`, если `None`"
+
+#~ msgid "`AsyncSession`"
+#~ msgstr "`AsyncSession`"
+
+#~ msgid "token cannot be revoked (not bound to this application, etc.)"
+#~ msgstr ""
+#~ "токен не может быть отозван (например,"
+#~ " если не привязан к данному "
+#~ "приложению)"
+
+#~ msgid "Bases: :py:class:`~yadisk.objects.resources.LinkObject`"
+#~ msgstr "Базовые классы: :py:class:`~yadisk.objects.resources.LinkObject`"
+
+#~ msgid "`None` or a function that returns a new instance of :any:`Session`"
+#~ msgstr "`None` или функция, которая возващает новый экземпляр :any:`Session`"
+
+#~ msgid "function that returns a new instance of :any:`Session`"
+#~ msgstr "функция, которая возващает новый экземпляр :any:`Session`"
+
+#~ msgid ""
+#~ "current session (:any:`Session` instance), "
+#~ "created using the `session_factory` with "
+#~ "filled out authentication headers"
+#~ msgstr ""
+#~ "текущая сессия (экземпляр :any:`Session`), "
+#~ "созданная с помощью `session_factory` с "
+#~ "заполненными заголовками аутентификации"
+
+#~ msgid "Prepares :any:`Session` object with headers needed for API."
+#~ msgstr "Готовит объект :any:`Session` с заголовками, необходимыми для API."
+
+#~ msgid ":any:`Session`"
+#~ msgstr ":any:`Session`"
 
