@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: YaDisk 2.0.1\n"
+"Project-Id-Version: YaDisk 2.1.0\n"
 "Report-Msgid-Bugs-To: ivknv0@gmail.com\n"
-"POT-Creation-Date: 2024-01-02 19:51+0500\n"
-"PO-Revision-Date: 2024-01-03 15:22+0500\n"
+"POT-Creation-Date: 2024-01-03 16:44+0500\n"
+"PO-Revision-Date: 2024-01-03 16:44+0500\n"
 "Last-Translator: Ivan Konovalov <ivknv0@gmail.com>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -21,18 +21,21 @@ msgid "Changelog"
 msgstr "История изменений"
 
 #: ../../changelog.rst:14
-msgid "**Release 2.0.1 (2024-01-02)**"
-msgstr "**Release 2.0.1 (2024-01-02)**"
+msgid "**Release 2.1.0 (2024-01-03)**"
+msgstr "**Release 2.1.0 (2024-01-03)**"
 
 #: ../../changelog.rst:16
 msgid "Fixed a bug where POST request parameters were not encoded correctly"
-msgstr "Исправлен баг, из-за которого параметры в теле POST-запроса неправильно кодировались"
+msgstr ""
+"Исправлен баг, из-за которого параметры в теле POST-запроса неправильно "
+"кодировались"
 
 #: ../../changelog.rst:17
 msgid ""
 "Fixed a bug in :code:`PycURLSession.send_request()` that made it ignore "
 "passed headers"
-msgstr "Исправлен баг в :code:`PycURLSession.send_request()`, из-за которого "
+msgstr ""
+"Исправлен баг в :code:`PycURLSession.send_request()`, из-за которого "
 "переданные заголовки игнорировались"
 
 #: ../../changelog.rst:18
@@ -45,20 +48,24 @@ msgstr ":code:`RequestsSession.close()` теперь закрывает сесс
 msgid ""
 "All methods of :any:`Client` and :any:`AsyncClient` now use existing "
 "session"
-msgstr "Все методы :any:`Client` и :any:`AsyncClient` теперь используют существующую сессию"
+msgstr ""
+"Все методы :any:`Client` и :any:`AsyncClient` теперь используют "
+"существующую сессию"
 
 #: ../../changelog.rst:21
 msgid ""
 "Removed :code:`session_factory` attribute and :code:`make_session()` "
 "method of :any:`Client` and :any:`AsyncClient`"
-msgstr "Удалены аттрибут :code:`session_factory` и метод :code:`make_session()` "
+msgstr ""
+"Удалены аттрибут :code:`session_factory` и метод :code:`make_session()` "
 "классов :any:`Client` и :any:`AsyncClient`"
 
 #: ../../changelog.rst:23
 msgid ""
 "Session class can now be specified as a string (see "
 ":any:`Client`/:any:`AsyncClient`)"
-msgstr "Класс сессии теперь может быть указан в качестве строки (см. "
+msgstr ""
+"Класс сессии теперь может быть указан в качестве строки (см. "
 ":any:`Client`/:any:`AsyncClient`)"
 
 #: ../../changelog.rst:24
@@ -66,21 +73,26 @@ msgid ""
 "Added "
 ":any:`Client.get_device_code()`/:any:`AsyncClient.get_device_code()` "
 "methods"
-msgstr "Добавлены методы :any:`Client.get_device_code()`/:any:`AsyncClient.get_device_code()`"
+msgstr ""
+"Добавлены методы "
+":any:`Client.get_device_code()`/:any:`AsyncClient.get_device_code()`"
 
 #: ../../changelog.rst:25
 msgid ""
 "Added "
 ":any:`Client.get_token_from_device_code()`/:any:`AsyncClient.get_token_from_device_code()`"
 " methods"
-msgstr "Добавлены методы :any:`Client.get_token_from_device_code()`/:any:`AsyncClient.get_token_from_device_code()`"
+msgstr ""
+"Добавлены методы "
+":any:`Client.get_token_from_device_code()`/:any:`AsyncClient.get_token_from_device_code()`"
 
 #: ../../changelog.rst:26
 msgid ""
 "Added missing :code:`redirect_uri` parameter for "
 ":any:`Client.get_auth_url()`/:any:`AsyncClient.get_auth_url()` and "
 ":any:`Client.get_code_url()`/:any:`AsyncClient.get_code_url()`"
-msgstr "Добавлен недостающий параметр :code:`redirect_uri` для "
+msgstr ""
+"Добавлен недостающий параметр :code:`redirect_uri` для "
 ":any:`Client.get_auth_url()`/:any:`AsyncClient.get_auth_url()` и "
 ":any:`Client.get_code_url()`/:any:`AsyncClient.get_code_url()`"
 
@@ -90,7 +102,8 @@ msgid ""
 ":any:`Client.get_auth_url()`/:any:`AsyncClient.get_auth_url()`, "
 ":any:`Client.get_code_url()`/:any:`AsyncClient.get_code_url()` and "
 ":any:`Client.get_token()`/:any:`AsyncClient.get_token()`"
-msgstr "Добавлена поддержка параметров PKCE для "
+msgstr ""
+"Добавлена поддержка параметров PKCE для "
 ":any:`Client.get_auth_url()`/:any:`AsyncClient.get_auth_url()`, "
 ":any:`Client.get_code_url()`/:any:`AsyncClient.get_code_url()` и "
 ":any:`Client.get_token()`/:any:`AsyncClient.get_token()`"
@@ -104,7 +117,8 @@ msgid ""
 "Added new exception classes: :any:`InvalidClientError`, "
 ":any:`InvalidGrantError`, :any:`AuthorizationPendingError`, "
 ":any:`BadVerificationCodeError` and :any:`UnsupportedTokenTypeError`"
-msgstr "Добавлены новые классы исключений: :any:`InvalidClientError`, "
+msgstr ""
+"Добавлены новые классы исключений: :any:`InvalidClientError`, "
 ":any:`InvalidGrantError`, :any:`AuthorizationPendingError`, "
 ":any:`BadVerificationCodeError` и :any:`UnsupportedTokenTypeError`"
 
