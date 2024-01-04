@@ -15,7 +15,6 @@ assignees: ''
 
 **Ожидаемое поведение**
 Четкое и краткое описание ожидаемого поведения.
-A clear and concise description of what you expected to happen.
 
 **Информация о вашей системе (заполните следующую информацию):**
  - ОС: [например, Windows, Linux, Mac OS]
