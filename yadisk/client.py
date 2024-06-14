@@ -66,7 +66,7 @@ def _get_type(get_meta_function: Callable[..., ResourceType], /, *args, **kwargs
     return type
 
 def _listdir(get_meta_function: Callable[..., ResourceType], path: str, /, **kwargs) -> Generator[Any, None, None]:
-    kwargs.setdefault("limit", 10000)
+    kwargs.setdefault("limit", 500)
 
     if kwargs.get("fields") is None:
         kwargs["fields"] = []
