@@ -9,7 +9,7 @@ from urllib.parse import urlencode
 from .types import (
     AsyncFileOrPath, AsyncFileOrPathDestination,
     AsyncOpenFileCallback, AsyncSessionFactory, FileOpenMode, BinaryAsyncFileLike,
-    AsyncSessionName
+    AsyncSessionName, OperationStatus
 )
 
 from . import settings
@@ -1958,7 +1958,7 @@ class AsyncClient:
             "", file_or_path, **kwargs)
         return AsyncPublicResourceLinkObject.from_public_key(public_key, yadisk=self)
 
-    async def get_operation_status(self, operation_id, /, **kwargs) -> str:
+    async def get_operation_status(self, operation_id: str, /, **kwargs) -> OperationStatus:
         """
             Get operation status.
 
@@ -1979,10 +1979,7 @@ class AsyncClient:
 
         _apply_default_args(kwargs, self.default_args)
 
-        return await self._get_operation_status(self.session, operation_id, **kwargs)
-
-    async def _get_operation_status(self, session: AsyncSession, operation_id: str, **kwargs) -> str:
-        request = GetOperationStatusRequest(session, operation_id, **kwargs)
+        request = GetOperationStatusRequest(self.session, operation_id, **kwargs)
         await request.asend()
 
         return (await request.aprocess()).status

@@ -23,8 +23,8 @@ from .common import CaseInsensitiveDict
 from typing import Any, Optional, Union, Literal, TYPE_CHECKING
 from .compat import Callable, Generator, Dict
 from .types import (
-    OpenFileCallback, FileOrPath, FileOrPathDestination, SessionFactory,
-    SessionName
+    OpenFileCallback, FileOrPath, FileOrPathDestination, OperationStatus,
+    SessionFactory, SessionName
 )
 
 from .client_common import (
@@ -1891,7 +1891,7 @@ class Client:
 
         return SyncPublicResourceLinkObject.from_public_key(public_key, yadisk=self)
 
-    def get_operation_status(self, operation_id: str, /, **kwargs) -> str:
+    def get_operation_status(self, operation_id: str, /, **kwargs) -> OperationStatus:
         """
             Get operation status.
 

@@ -54,8 +54,7 @@ class GetOperationStatusRequest(APIRequest):
         if js is None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
-        if "items" in js and isinstance(js["items"], list):
-            if js["items"]:
-                return OperationStatusObject(js["items"][0])
+        if js.get("status") not in ("in-progress", "success", "failed"):
+            raise InvalidResponseError(f"Yandex.Disk returned invalid operation status object: {js}")
 
         return OperationStatusObject(js)

@@ -5,6 +5,7 @@ from functools import partial
 from .yadisk_object import YaDiskObject
 from .link_object import LinkObject
 from ..common import str_or_error, dict_or_error
+from ..types import OperationStatus
 
 from typing import Any, Optional
 
@@ -20,23 +21,17 @@ class OperationStatusObject(YaDiskObject):
         :param operation_status: `dict` or `None`
         :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
 
-        :ivar type: `str`, type of the operation
         :ivar status: `str`, status of the operation
-        :ivar operation_id: `str`, ID of the operation
-        :ivar link: :any:`LinkObject`, link to the operation
-        :ivar data: `dict`, other information about the operation
     """
+
+    status: OperationStatus
 
     def __init__(self,
                  operation_status: Optional[dict] = None,
                  yadisk: Optional[Any] = None):
         YaDiskObject.__init__(
             self,
-            {"type":         str_or_error,
-             "status":       str_or_error,
-             "operation_id": str_or_error,
-             "link":         partial(LinkObject, yadisk=yadisk),
-             "data":         dict_or_error},
+            {"status": str_or_error},
             yadisk)
 
         self.import_fields(operation_status)
@@ -67,7 +62,7 @@ class SyncOperationLinkObject(OperationLinkObject):
         :ivar templated: `bool`, tells whether the URL is templated
     """
 
-    def get_status(self, **kwargs) -> str:
+    def get_status(self, **kwargs) -> OperationStatus:
         """
             Get operation status.
 
@@ -105,7 +100,7 @@ class AsyncOperationLinkObject(OperationLinkObject):
         :ivar templated: `bool`, tells whether the URL is templated
     """
 
-    async def get_status(self, **kwargs) -> str:
+    async def get_status(self, **kwargs) -> OperationStatus:
         """
             Get operation status.
 
