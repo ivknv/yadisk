@@ -46,7 +46,7 @@ def import_session(name: "SessionName") -> Type["Session"]:
     return getattr(
         __import__(module_path, globals(), locals(), level=1, fromlist=(class_name,)),
         class_name
-    );
+    )
 
 def import_async_session(name: "AsyncSessionName") -> Type["AsyncSession"]:
     """
@@ -73,4 +73,4 @@ def import_async_session(name: "AsyncSessionName") -> Type["AsyncSession"]:
     return getattr(
         __import__(module_path, globals(), locals(), level=1, fromlist=(class_name,)),
         class_name
-    );
+    )
