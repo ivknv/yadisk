@@ -230,9 +230,9 @@ class Client:
                         raise ModuleNotFoundError(
                             "requests is not installed. Either install requests or provide a custom session",
                             name=e.name,
-                            path=e.path)
+                            path=e.path) from e
                     else:
-                        raise e
+                        raise
         elif isinstance(session, str):
             session = import_session(session)()
 

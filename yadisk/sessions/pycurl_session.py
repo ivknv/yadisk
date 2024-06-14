@@ -44,7 +44,7 @@ class PycurlResponse(Response):
             try:
                 self._response = self._curl.perform_rb()
             except pycurl.error as e:
-                raise convert_curl_error(e)
+                raise convert_curl_error(e) from e
 
         return json.loads(self._response)
 
@@ -58,7 +58,7 @@ class PycurlResponse(Response):
         try:
             self._curl.perform()
         except pycurl.error as e:
-            raise convert_curl_error(e)
+            raise convert_curl_error(e) from e
 
     def close(self) -> None:
         self._curl.close()
@@ -220,7 +220,7 @@ class PycURLSession(Session):
             try:
                 response = curl.perform_rb()
             except pycurl.error as e:
-                raise convert_curl_error(e)
+                raise convert_curl_error(e) from e
         else:
             response = b""
 

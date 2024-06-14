@@ -33,7 +33,7 @@ class AsyncHTTPXResponse(AsyncResponse):
                 async for chunk in self._response.aiter_bytes(8192):
                     callback(chunk)
         except httpx.HTTPError as e:
-            raise convert_httpx_exception(e)
+            raise convert_httpx_exception(e) from e
 
     async def close(self) -> None:
         await self._response.aclose()
@@ -93,7 +93,7 @@ class AsyncHTTPXSession(AsyncSession):
             request = self._session.build_request(method, url, **request_kwargs)
             return AsyncHTTPXResponse(await self._session.send(request, **send_kwargs))
         except httpx.HTTPError as e:
-            raise convert_httpx_exception(e)
+            raise convert_httpx_exception(e) from e
 
     async def close(self) -> None:
         await self._session.aclose()

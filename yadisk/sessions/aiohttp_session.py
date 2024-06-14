@@ -50,7 +50,7 @@ class AIOHTTPResponse(AsyncResponse):
                 async for chunk in self._response.content.iter_chunked(8192):
                     callback(chunk)
         except aiohttp.ClientError as e:
-            raise convert_aiohttp_exception(e)
+            raise convert_aiohttp_exception(e) from e
 
     async def close(self) -> None:
         await self._response.release()
@@ -136,7 +136,7 @@ class AIOHTTPSession(AsyncSession):
         try:
             return AIOHTTPResponse(await self._session.request(method, url, **kwargs))
         except aiohttp.ClientError as e:
-            raise convert_aiohttp_exception(e)
+            raise convert_aiohttp_exception(e) from e
 
     async def close(self) -> None:
         await self._session.close()

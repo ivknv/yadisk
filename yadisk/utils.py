@@ -116,9 +116,9 @@ def auto_retry(func: Callable[[], T],
     for i in range(n_retries + 1):
         try:
             return func()
-        except (RequestError, RetriableYaDiskError) as e:
+        except (RequestError, RetriableYaDiskError):
             if i == n_retries:
-                raise e
+                raise
 
         if retry_interval:
             time.sleep(retry_interval)
@@ -157,9 +157,9 @@ async def async_auto_retry(func: Union[Callable[[], T], Callable[[], Awaitable[T
                 return await callback()
             else:
                 return callback()
-        except (RequestError, RetriableYaDiskError) as e:
+        except (RequestError, RetriableYaDiskError):
             if i == n_retries:
-                raise e
+                raise
 
         if retry_interval:
             await asyncio.sleep(retry_interval)

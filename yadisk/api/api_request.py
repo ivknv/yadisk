@@ -195,7 +195,7 @@ class APIRequest(object):
         try:
             return self.process_json(result, **kwargs)
         except ValueError as e:
-            raise InvalidResponseError(f"Server returned invalid response: {e}")
+            raise InvalidResponseError(f"Server returned invalid response: {e}") from e
 
     async def asend(self) -> "AsyncResponse":
         """
@@ -229,4 +229,4 @@ class APIRequest(object):
         try:
             return self.process_json(result, **kwargs)
         except ValueError as e:
-            raise InvalidResponseError(f"Server returned invalid response: {e}")
+            raise InvalidResponseError(f"Server returned invalid response: {e}") from e

@@ -23,7 +23,7 @@ class HTTPXResponse(Response):
             for chunk in self._response.iter_bytes(8192):
                 consume_callback(chunk)
         except httpx.HTTPError as e:
-            raise convert_httpx_exception(e)
+            raise convert_httpx_exception(e) from e
 
     def close(self) -> None:
         self._response.close()
@@ -77,7 +77,7 @@ class HTTPXSession(Session):
             request = self._client.build_request(method, url, **request_kwargs)
             return HTTPXResponse(self._client.send(request, **send_kwargs))
         except httpx.HTTPError as e:
-            raise convert_httpx_exception(e)
+            raise convert_httpx_exception(e) from e
 
     def close(self) -> None:
         self._client.close()

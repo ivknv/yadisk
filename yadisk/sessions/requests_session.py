@@ -42,7 +42,7 @@ class RequestsResponse(Response):
             for chunk in self._response.iter_content(8192):
                 consume_callback(chunk)
         except requests.RequestException as e:
-            raise convert_requests_exception(e)
+            raise convert_requests_exception(e) from e
 
     def close(self) -> None:
         self._response.close()
@@ -123,7 +123,7 @@ class RequestsSession(Session):
         try:
             return RequestsResponse(self.requests_session.request(method, url, **kwargs))
         except requests.exceptions.RequestException as e:
-            raise convert_requests_exception(e)
+            raise convert_requests_exception(e) from e
 
     def close(self) -> None:
         while self._sessions:
