@@ -225,8 +225,14 @@ class Client:
             else:
                 try:
                     session = import_session("requests")()
-                except ImportError:
-                    raise RuntimeError("requests is not installed. Either install requests or provide a custom session")
+                except ModuleNotFoundError as e:
+                    if e.name == "requests":
+                        raise ModuleNotFoundError(
+                            "requests is not installed. Either install requests or provide a custom session",
+                            name=e.name,
+                            path=e.path)
+                    else:
+                        raise e
         elif isinstance(session, str):
             session = import_session(session)()
 

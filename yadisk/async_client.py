@@ -284,8 +284,14 @@ class AsyncClient:
             else:
                 try:
                     session = import_async_session("httpx")()
-                except ImportError:
-                    raise RuntimeError("httpx is not installed. Either install httpx or provide a custom session")
+                except ModuleNotFoundError as e:
+                    if e.name == "httpx":
+                        raise ModuleNotFoundError(
+                            "httpx is not installed. Either install httpx or provide a custom session",
+                            name=e.name,
+                            path=e.path)
+                    else:
+                        raise e
         elif isinstance(session, str):
             session = import_async_session(session)()
 
