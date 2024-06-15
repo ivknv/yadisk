@@ -31,14 +31,14 @@ class RefreshTokenRequest(APIRequest):
     """
 
     method = "POST"
+    base_url = settings.BASE_OAUTH_API_URL
+    path = "/token"
 
     def __init__(self,
                  session: "AnySession",
                  refresh_token: str,
                  client_id: str,
                  client_secret: str, **kwargs):
-        self.url = f"{settings.BASE_OAUTH_API_URL}/token"
-
         APIRequest.__init__(self, session, {"refresh_token": refresh_token,
                                             "client_id":     client_id,
                                             "client_secret": client_secret}, **kwargs)
@@ -70,14 +70,14 @@ class RevokeTokenRequest(APIRequest):
     """
 
     method = "POST"
+    base_url = settings.BASE_OAUTH_API_URL
+    path = "/revoke_token"
 
     def __init__(self,
                  session: "AnySession",
                  token: str,
                  client_id: str,
                  client_secret: str, **kwargs):
-        self.url = f"{settings.BASE_OAUTH_API_URL}/revoke_token"
-
         APIRequest.__init__(self, session, {"token":         token,
                                             "client_id":     client_id,
                                             "client_secret": client_secret}, **kwargs)
@@ -111,6 +111,8 @@ class GetTokenRequest(APIRequest):
     """
 
     method = "POST"
+    base_url = settings.BASE_OAUTH_API_URL
+    path = "/token"
 
     def __init__(
         self,
@@ -129,8 +131,6 @@ class GetTokenRequest(APIRequest):
         code_verifier: Optional[str] = None,
         **kwargs
     ):
-        self.url = f"{settings.BASE_OAUTH_API_URL}/token"
-
         APIRequest.__init__(
             self,
             session,
@@ -205,6 +205,8 @@ class GetDeviceCodeRequest(APIRequest):
     """
 
     method = "POST"
+    base_url = settings.BASE_OAUTH_API_URL
+    path = "/device/code"
 
     def __init__(
         self,
@@ -216,8 +218,6 @@ class GetDeviceCodeRequest(APIRequest):
         optional_scope: Optional[str] = None,
         **kwargs
     ):
-        self.url = f"{settings.BASE_OAUTH_API_URL}/device/code"
-
         APIRequest.__init__(
             self,
             session,

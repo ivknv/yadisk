@@ -29,7 +29,8 @@ from .types import (
 
 from .client_common import (
     _apply_default_args, _filter_request_kwargs,
-    _read_file_as_generator, _replace_authorization_header
+    _read_file_as_generator, _replace_authorization_header,
+    _map_base_url_for_auth, _map_base_url_for_disk
 )
 
 if TYPE_CHECKING:
@@ -428,6 +429,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_auth(kwargs)
         _replace_authorization_header(kwargs, "")
 
         request = GetDeviceCodeRequest(self.session, self.id, **kwargs)
@@ -447,6 +449,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param auth_base_url: `str`, base URL for the authentication API
 
             :raises BadVerificationCodeError: confirmation code has invalid format
             :raises InvalidGrantError: invalid or expired confirmation code
@@ -457,6 +460,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_auth(kwargs)
         _replace_authorization_header(kwargs, "")
 
         request = GetTokenRequest(
@@ -482,6 +486,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param auth_base_url: `str`, base URL for the authentication API
 
             :raises AuthorizationPendingError: user has not authorized the application yet
             :raises BadVerificationCodeError: :code:`device_code` has invalid format
@@ -493,6 +498,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_auth(kwargs)
         _replace_authorization_header(kwargs, "")
 
         request = GetTokenRequest(
@@ -516,6 +522,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param auth_base_url: `str`, base URL for the authentication API
 
             :raises InvalidGrantError: invalid or expired refresh token or it
                                        doesn't belong to this application
@@ -526,6 +533,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_auth(kwargs)
         _replace_authorization_header(kwargs, "")
 
         request = RefreshTokenRequest(
@@ -549,6 +557,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param auth_base_url: `str`, base URL for the authentication API
 
             :raises InvalidGrantError: specified token doesn't belong to this application
             :raises InvalidClientError: invalid client ID or client secret
@@ -560,6 +569,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_auth(kwargs)
         _replace_authorization_header(kwargs, "")
 
         if token is None:
@@ -579,6 +589,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :returns: `bool`
         """
@@ -612,6 +623,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
@@ -619,6 +631,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = DiskInfoRequest(self.session, **kwargs)
         request.send()
@@ -640,6 +653,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -648,6 +662,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = GetMetaRequest(self.session, path, **kwargs)
         request.send()
@@ -663,13 +678,12 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `bool`
         """
-
-        _apply_default_args(kwargs, self.default_args)
 
         return _exists(self.get_meta, path, **kwargs)
 
@@ -682,14 +696,13 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: "file" or "dir"
         """
-
-        _apply_default_args(kwargs, self.default_args)
 
         return _get_type(self.get_meta, path, **kwargs)
 
@@ -702,13 +715,12 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `True` if `path` is a file, `False` otherwise (even if it doesn't exist)
         """
-
-        _apply_default_args(kwargs, self.default_args)
 
         try:
             return self.get_type(path, **kwargs) == "file"
@@ -724,13 +736,12 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
         """
-
-        _apply_default_args(kwargs, self.default_args)
 
         try:
             return self.get_type(path, **kwargs) == "dir"
@@ -751,6 +762,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -758,8 +770,6 @@ class Client:
 
             :returns: generator of :any:`ResourceObject`
         """
-
-        _apply_default_args(kwargs, self.default_args)
 
         return _listdir(self.get_meta, path, **kwargs)
 
@@ -774,6 +784,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises ParentNotFoundError: parent directory doesn't exist
             :raises PathExistsError: destination path already exists
@@ -786,6 +797,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = GetUploadLinkRequest(self.session, path, **kwargs)
         request.send()
@@ -897,6 +909,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises ParentNotFoundError: parent directory doesn't exist
             :raises PathExistsError: destination path already exists
@@ -909,6 +922,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         self._upload(self.get_upload_link, file_or_path, dst_path, **kwargs)
 
@@ -929,11 +943,13 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises InsufficientStorageError: cannot upload file due to lack of storage space
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         self._upload(lambda *args, **kwargs: link, file_or_path, "", **kwargs)
 
@@ -947,6 +963,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -956,6 +973,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = GetDownloadLinkRequest(self.session, path, **kwargs)
         request.send()
@@ -1053,6 +1071,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1062,6 +1081,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         self._download(self.get_download_link, src_path, file_or_path, **kwargs)
 
@@ -1079,9 +1099,11 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         self._download(lambda *args, **kwargs: link, "", file_or_path, **kwargs)
 
@@ -1099,6 +1121,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1109,6 +1132,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = DeleteRequest(self.session, path, **kwargs)
 
@@ -1126,6 +1150,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises ParentNotFoundError: parent directory doesn't exist
             :raises DirectoryExistsError: destination path already exists
@@ -1137,6 +1162,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = MkdirRequest(self.session, path, **kwargs)
         request.send()
@@ -1158,6 +1184,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1166,6 +1193,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = GetTrashRequest(self.session, path, **kwargs)
         request.send()
@@ -1181,6 +1209,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
@@ -1188,6 +1217,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         return _exists(self.get_trash_meta, path, **kwargs)
 
@@ -1209,6 +1239,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises PathExistsError: destination path already exists
@@ -1221,6 +1252,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = CopyRequest(self.session, src_path, dst_path, **kwargs)
         request.send()
@@ -1243,6 +1275,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises PathExistsError: destination path already exists
@@ -1253,6 +1286,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         kwargs["dst_path"] = dst_path
 
@@ -1276,6 +1310,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises PathExistsError: destination path already exists
@@ -1286,6 +1321,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = MoveRequest(self.session, src_path, dst_path, **kwargs)
         request.send()
@@ -1306,6 +1342,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises PathExistsError: destination path already exists
@@ -1315,8 +1352,6 @@ class Client:
 
             :returns: :any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`
         """
-
-        _apply_default_args(kwargs, self.default_args)
 
         new_name = new_name.rstrip("/")
 
@@ -1338,6 +1373,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1347,6 +1383,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = DeleteTrashRequest(self.session, path, **kwargs)
         request.send()
@@ -1363,6 +1400,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1372,6 +1410,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = PublishRequest(self.session, path, **kwargs)
         request.send()
@@ -1388,6 +1427,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1397,6 +1437,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = UnpublishRequest(self.session, path, **kwargs)
         request.send()
@@ -1420,6 +1461,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1431,6 +1473,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = SaveToDiskRequest(self.session, public_key, **kwargs)
         request.send()
@@ -1456,6 +1499,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1464,6 +1508,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = GetPublicMetaRequest(self.session, public_key, **kwargs)
         request.send()
@@ -1480,13 +1525,12 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `bool`
         """
-
-        _apply_default_args(kwargs, self.default_args)
 
         return _exists(self.get_public_meta, public_key, **kwargs)
 
@@ -1508,6 +1552,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1515,8 +1560,6 @@ class Client:
 
             :returns: generator of :any:`SyncPublicResourceObject`
         """
-
-        _apply_default_args(kwargs, self.default_args)
 
         return _listdir(self.get_public_meta, public_key, **kwargs)
 
@@ -1530,14 +1573,13 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: "file" or "dir"
         """
-
-        _apply_default_args(kwargs, self.default_args)
 
         return _get_type(self.get_public_meta, public_key, **kwargs)
 
@@ -1551,13 +1593,12 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `True` if `public_key` is a directory, `False` otherwise (even if it doesn't exist)
         """
-
-        _apply_default_args(kwargs, self.default_args)
 
         try:
             return self.get_public_type(public_key, **kwargs) == "dir"
@@ -1574,13 +1615,12 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `True` if `public_key` is a file, `False` otherwise (even if it doesn't exist)
         """
-
-        _apply_default_args(kwargs, self.default_args)
 
         try:
             return self.get_public_type(public_key, **kwargs) == "file"
@@ -1602,6 +1642,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1609,8 +1650,6 @@ class Client:
 
             :returns: generator of :any:`SyncTrashResourceObject`
         """
-
-        _apply_default_args(kwargs, self.default_args)
 
         return _listdir(self.get_trash_meta, path, **kwargs)
 
@@ -1623,14 +1662,13 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: "file" or "dir"
         """
-
-        _apply_default_args(kwargs, self.default_args)
 
         return _get_type(self.get_trash_meta, path, **kwargs)
 
@@ -1643,13 +1681,12 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `True` if `path` is a directory, `False` otherwise (even if it doesn't exist)
         """
-
-        _apply_default_args(kwargs, self.default_args)
 
         try:
             return self.get_trash_type(path, **kwargs) == "dir"
@@ -1665,13 +1702,12 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
             :returns: `True` if `path` is a file, `False` otherwise (even if it doesn't exist)
         """
-
-        _apply_default_args(kwargs, self.default_args)
 
         try:
             return self.get_trash_type(path, **kwargs) == "file"
@@ -1692,6 +1728,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
@@ -1699,6 +1736,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = GetPublicResourcesRequest(self.session, **kwargs)
         request.send()
@@ -1718,6 +1756,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1727,6 +1766,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = PatchRequest(self.session, path, properties, **kwargs)
         request.send()
@@ -1748,6 +1788,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
@@ -1755,6 +1796,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         if kwargs.get("limit") is not None:
             request = FilesRequest(self.session, **kwargs)
@@ -1792,6 +1834,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
@@ -1799,6 +1842,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = LastUploadedRequest(self.session, **kwargs)
         request.send()
@@ -1818,6 +1862,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises ParentNotFoundError: parent directory doesn't exist
             :raises PathExistsError: destination path already exists
@@ -1830,6 +1875,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = UploadURLRequest(self.session, url, path, **kwargs)
         request.send()
@@ -1847,6 +1893,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1856,6 +1903,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = GetPublicDownloadLinkRequest(self.session, public_key, **kwargs)
         request.send()
@@ -1875,6 +1923,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1884,6 +1933,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         self._download(
             lambda *args, **kwargs: self.get_public_download_link(public_key, **kwargs),
@@ -1901,6 +1951,7 @@ class Client:
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
+            :param disk_base_url: `str`, base URL for the Disk API
 
             :raises OperationNotFoundError: requested operation was not found
 
@@ -1911,6 +1962,7 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _map_base_url_for_disk(kwargs)
 
         request = GetOperationStatusRequest(self.session, operation_id, **kwargs)
         request.send()

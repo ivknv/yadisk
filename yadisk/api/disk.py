@@ -3,7 +3,6 @@
 from .api_request import APIRequest
 from ..objects import DiskInfoObject
 from ..exceptions import InvalidResponseError
-from .. import settings
 
 from typing import Optional, TYPE_CHECKING
 from ..compat import Iterable
@@ -24,11 +23,11 @@ class DiskInfoRequest(APIRequest):
     """
 
     method = "GET"
+    path = "/v1/disk"
 
     def __init__(self,
                  session: "AnySession",
                  fields: Optional[Iterable[str]] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk"
         APIRequest.__init__(self, session, {"fields": fields}, **kwargs)
 
     def process_args(self, fields: Optional[Iterable[str]]) -> None:

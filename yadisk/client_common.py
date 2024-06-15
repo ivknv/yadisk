@@ -7,7 +7,8 @@ from typing import Any, AnyStr, IO, Optional
 
 __all__ = [
     "_apply_default_args", "_filter_request_kwargs",
-    "_read_file_as_generator", "_replace_authorization_header"
+    "_read_file_as_generator", "_replace_authorization_header",
+    "_map_base_url_for_auth", "_map_base_url_for_disk"
 ]
 
 def _apply_default_args(args: Dict[str, Any], default_args: Dict[str, Any]) -> None:
@@ -18,7 +19,9 @@ def _apply_default_args(args: Dict[str, Any], default_args: Dict[str, Any]) -> N
 
 def _filter_request_kwargs(kwargs: Dict[str, Any]) -> None:
     # Remove some of the yadisk-specific arguments from kwargs
-    keys_to_remove = ("n_retries", "retry_interval", "fields", "overwrite", "path")
+    keys_to_remove = (
+        "n_retries", "retry_interval", "fields", "overwrite", "path", "base_url"
+    )
 
     for key in keys_to_remove:
         kwargs.pop(key, None)
@@ -38,3 +41,15 @@ def _replace_authorization_header(kwargs: Dict[str, Any], new_token: Optional[st
         headers["Authorization"] = None
 
     kwargs["headers"] = headers
+
+def _map_base_url_for_auth(kwargs: Dict[str, Any]) -> None:
+    if "auth_base_url" in kwargs:
+        kwargs["base_url"] = kwargs.pop("auth_base_url")
+
+    kwargs.pop("disk_base_url", None)
+
+def _map_base_url_for_disk(kwargs: Dict[str, Any]) -> None:
+    if "disk_base_url" in kwargs:
+        kwargs["base_url"] = kwargs.pop("disk_base_url")
+
+    kwargs.pop("auth_base_url", None)

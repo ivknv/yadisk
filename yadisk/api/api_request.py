@@ -32,9 +32,12 @@ class APIRequest(object):
         :param headers: `dict` or `None`, additional request headers
         :param n_retries: `int`, maximum number of retries
         :param retry_interval: delay between retries in seconds
+        :param base_url: `str`, base URL for sending the request
         :param kwargs: other arguments for :any:`Session.send_request`
 
+        :ivar base_url: `str`, base URL for sending the request
         :ivar url: `str`, request URL
+        :ivar path: `str`, URL path for the request
         :ivar method: `str`, request method
         :ivar content_type: `str`, Content-Type header ("application/x-www-form-urlencoded" by default)
         :ivar timeout: `float` or `tuple`, request timeout
@@ -43,7 +46,9 @@ class APIRequest(object):
         :ivar retry_interval: `float`, delay between retries in seconds
     """
 
+    base_url: str = ""
     url: str = ""
+    path: str = ""
     method: Optional[HTTPMethod] = None
     content_type: str = "application/x-www-form-urlencoded"
     timeout = _DEFAULT_TIMEOUT
@@ -61,6 +66,7 @@ class APIRequest(object):
     T = TypeVar("T")
 
     def __init__(self, session: AnySession, args: dict, **kwargs):
+        base_url = kwargs.pop("base_url", self.base_url) or settings.BASE_API_URL
         n_retries = kwargs.pop("n_retries", None)
         retry_interval = kwargs.pop("retry_interval", None)
         headers = kwargs.pop("headers", {})
@@ -91,6 +97,7 @@ class APIRequest(object):
         self.session = session
         self.args = args
         self.send_kwargs = kwargs
+        self.base_url = base_url
         self.timeout = timeout
         self.n_retries = n_retries
         self.retry_interval = retry_interval
@@ -99,6 +106,9 @@ class APIRequest(object):
         self.data = {}
         self.content = None
         self.params = {}
+
+        if not self.url:
+            self.url = f"{self.base_url}/{self.path.lstrip('/')}"
 
         self.process_args(**self.args)
 

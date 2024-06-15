@@ -6,7 +6,6 @@ from .api_request import APIRequest
 from ..objects import OperationStatusObject
 from ..common import is_operation_link
 from ..exceptions import InvalidResponseError
-from .. import settings
 
 from typing import Optional, TYPE_CHECKING
 from ..compat import Iterable
@@ -44,7 +43,7 @@ class GetOperationStatusRequest(APIRequest):
         else:
             operation_id = quote(operation_id)
 
-        self.url = f"{settings.BASE_API_URL}/v1/disk/operations/{operation_id}"
+        self.path = f"/v1/disk/operations/{operation_id}"
 
         APIRequest.__init__(self, session, {"fields": fields}, **kwargs)
 

@@ -14,7 +14,6 @@ from ..objects import (
 
 from ..common import is_operation_link, ensure_path_has_schema
 from ..exceptions import InvalidResponseError
-from .. import settings
 
 from ..compat import Iterable, Dict, List
 from typing import Optional, Union, TYPE_CHECKING
@@ -50,6 +49,7 @@ class GetPublicResourcesRequest(APIRequest):
     """
 
     method = "GET"
+    path = "/v1/disk/resources/public"
 
     def __init__(self,
                  session: "AnySession",
@@ -59,8 +59,6 @@ class GetPublicResourcesRequest(APIRequest):
                  preview_crop: Optional[bool] = None,
                  type: Optional[str] = None,
                  fields: Optional[Iterable[str]] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/public"
-
         APIRequest.__init__(self, session, {"offset":       offset,
                                             "limit":        limit,
                                             "preview_size": preview_size,
@@ -113,13 +111,12 @@ class UnpublishRequest(APIRequest):
     """
 
     method = "PUT"
+    path = "/v1/disk/resources/unpublish"
 
     def __init__(self,
                  session: "AnySession",
                  path: str,
                  fields: Optional[Iterable[str]] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/unpublish"
-
         APIRequest.__init__(self, session, {"path":   path,
                                             "fields": fields}, **kwargs)
 
@@ -152,13 +149,12 @@ class GetDownloadLinkRequest(APIRequest):
     """
 
     method = "GET"
+    path = "/v1/disk/resources/download"
 
     def __init__(self,
                  session: "AnySession",
                  path: str,
                  fields: Optional[Iterable[str]] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/download"
-
         APIRequest.__init__(
             self, session, {"path": path, "fields": fields}, **kwargs)
 
@@ -192,6 +188,7 @@ class GetTrashRequest(APIRequest):
     """
 
     method = "GET"
+    path = "/v1/disk/trash/resources"
 
     def __init__(self,
                  session: "AnySession",
@@ -202,8 +199,6 @@ class GetTrashRequest(APIRequest):
                  preview_size: Optional[str] = None,
                  preview_crop: Optional[bool] = None,
                  fields: Optional[Iterable[str]] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/trash/resources"
-
         APIRequest.__init__(self, session, {"path":         path,
                                             "offset":       offset,
                                             "limit":        limit,
@@ -264,6 +259,7 @@ class RestoreTrashRequest(APIRequest):
     """
 
     method = "PUT"
+    path = "/v1/disk/trash/resources/restore"
     success_codes = {201, 202}
 
     def __init__(self,
@@ -273,8 +269,6 @@ class RestoreTrashRequest(APIRequest):
                  force_async: bool = False,
                  overwrite: bool = False,
                  fields: Optional[Iterable[str]] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/trash/resources/restore"
-
         APIRequest.__init__(self, session, {"path":        path,
                                             "dst_path":    dst_path,
                                             "overwrite":   overwrite,
@@ -327,6 +321,7 @@ class DeleteTrashRequest(APIRequest):
     """
 
     method = "DELETE"
+    path = "/v1/disk/trash/resources"
     success_codes = {202, 204}
 
     def __init__(self,
@@ -334,8 +329,6 @@ class DeleteTrashRequest(APIRequest):
                  path: Optional[str] = None,
                  force_async: bool = False,
                  fields: Optional[Iterable[str]] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/trash/resources"
-
         APIRequest.__init__(self, session, {"path":        path,
                                             "force_async": force_async,
                                             "fields":      fields}, **kwargs)
@@ -376,6 +369,7 @@ class LastUploadedRequest(APIRequest):
     """
 
     method = "GET"
+    path = "/v1/disk/resources/last-uploaded"
 
     def __init__(self,
                  session: "AnySession",
@@ -384,8 +378,6 @@ class LastUploadedRequest(APIRequest):
                  preview_size: Optional[str] = None,
                  preview_crop: Optional[bool] = None,
                  fields: Optional[Iterable[str]] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/last-uploaded"
-
         APIRequest.__init__(self, session, {"limit":        limit,
                                             "media_type":   media_type,
                                             "preview_size": preview_size,
@@ -445,6 +437,7 @@ class CopyRequest(APIRequest):
     """
 
     method = "POST"
+    path = "/v1/disk/resources/copy"
     success_codes = {201, 202}
 
     def __init__(self,
@@ -454,8 +447,6 @@ class CopyRequest(APIRequest):
                  overwrite: bool = False,
                  force_async: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/copy"
-
         APIRequest.__init__(self, session, {"src_path":    src_path,
                                             "dst_path":    dst_path,
                                             "overwrite":   overwrite,
@@ -510,6 +501,7 @@ class GetMetaRequest(APIRequest):
     """
 
     method = "GET"
+    path = "/v1/disk/resources"
 
     def __init__(self,
                  session: "AnySession",
@@ -520,8 +512,6 @@ class GetMetaRequest(APIRequest):
                  preview_crop: Optional[bool] = None,
                  sort: Optional[str] = None,
                  fields: Optional[Fields] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/resources"
-
         APIRequest.__init__(self, session,
                             {"path":         path,
                              "limit":        limit,
@@ -585,14 +575,13 @@ class GetUploadLinkRequest(APIRequest):
     """
 
     method = "GET"
+    path = "/v1/disk/resources/upload"
 
     def __init__(self,
                  session: "AnySession",
                  path: str,
                  overwrite: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/upload"
-
         APIRequest.__init__(self, session, {"path":      path,
                                             "overwrite": overwrite,
                                             "fields":    fields}, **kwargs)
@@ -623,14 +612,13 @@ class MkdirRequest(APIRequest):
     """
 
     method = "PUT"
+    path = "/v1/disk/resources"
     success_codes = {201}
 
     def __init__(self,
                  session: "AnySession",
                  path: str,
                  fields: Optional[Fields] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/resources"
-
         APIRequest.__init__(self, session, {"path": path, "fields": fields},
                             **kwargs)
 
@@ -663,13 +651,12 @@ class PublishRequest(APIRequest):
     """
 
     method = "PUT"
+    path = "/v1/disk/resources/publish"
 
     def __init__(self,
                  session: "AnySession",
                  path: str,
                  fields: Optional[Fields] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/publish"
-
         APIRequest.__init__(self, session, {"path":   path,
                                             "fields": fields}, **kwargs)
 
@@ -704,6 +691,7 @@ class UploadURLRequest(APIRequest):
     """
 
     method = "POST"
+    path = "/v1/disk/resources/upload"
     success_codes = {202}
 
     def __init__(self,
@@ -712,8 +700,6 @@ class UploadURLRequest(APIRequest):
                  path: str,
                  disable_redirects: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/upload"
-
         APIRequest.__init__(self, session, {"url":               url,
                                             "path":              path,
                                             "disable_redirects": disable_redirects,
@@ -758,6 +744,7 @@ class DeleteRequest(APIRequest):
     """
 
     method = "DELETE"
+    path = "/v1/disk/resources"
     success_codes = {202, 204}
 
     def __init__(self,
@@ -767,8 +754,6 @@ class DeleteRequest(APIRequest):
                  md5: Optional[str] = None,
                  force_async: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/resources"
-
         APIRequest.__init__(self, session, {"path":        path,
                                             "permanently": permanently,
                                             "md5":         md5,
@@ -816,6 +801,7 @@ class SaveToDiskRequest(APIRequest):
     """
 
     method = "POST"
+    path = "/v1/disk/resources/save-to-disk"
     success_codes = {201, 202}
 
     def __init__(self,
@@ -826,8 +812,6 @@ class SaveToDiskRequest(APIRequest):
                  save_path: Optional[str] = None,
                  force_async: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/save-to-disk"
-
         APIRequest.__init__(self, session, {"public_key":  public_key,
                                             "name":        name,
                                             "path":        path,
@@ -895,6 +879,7 @@ class GetPublicMetaRequest(APIRequest):
     """
 
     method = "GET"
+    path = "/v1/disk/public/resources"
 
     def __init__(self,
                  session: "AnySession",
@@ -906,8 +891,6 @@ class GetPublicMetaRequest(APIRequest):
                  preview_size: Optional[str] = None,
                  preview_crop: Optional[bool] = None,
                  fields: Optional[Fields] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/public/resources"
-
         APIRequest.__init__(self, session, {"public_key":   public_key,
                                             "offset":       offset,
                                             "limit":        limit,
@@ -972,14 +955,13 @@ class GetPublicDownloadLinkRequest(APIRequest):
     """
 
     method = "GET"
+    path = "/v1/disk/public/resources/download"
 
     def __init__(self,
                  session: "AnySession",
                  public_key: str,
                  path: Optional[str] = None,
                  fields: Optional[Fields] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/public/resources/download"
-
         APIRequest.__init__(self, session, {"public_key": public_key,
                                             "path":       path,
                                             "fields":     fields}, **kwargs)
@@ -1019,6 +1001,7 @@ class MoveRequest(APIRequest):
     """
 
     method = "POST"
+    path = "/v1/disk/resources/move"
     success_codes = {201, 202}
 
     def __init__(self,
@@ -1028,8 +1011,6 @@ class MoveRequest(APIRequest):
                  force_async: bool = False,
                  overwrite: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/move"
-
         APIRequest.__init__(self, session, {"src_path":    src_path,
                                             "dst_path":    dst_path,
                                             "force_async": force_async,
@@ -1084,6 +1065,7 @@ class FilesRequest(APIRequest):
     """
 
     method = "GET"
+    path = "/v1/disk/resources/files"
 
     def __init__(self,
                  session: "AnySession",
@@ -1094,8 +1076,6 @@ class FilesRequest(APIRequest):
                  preview_crop: Optional[bool] = None,
                  sort: Optional[str] = None,
                  fields: Optional[Fields] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/files"
-
         APIRequest.__init__(self, session, {"offset":       offset,
                                             "limit":        limit,
                                             "media_type":   media_type,
@@ -1160,6 +1140,7 @@ class PatchRequest(APIRequest):
     """
 
     method = "PATCH"
+    path = "/v1/disk/resources"
     content_type = "application/json"
 
     def __init__(self,
@@ -1167,8 +1148,6 @@ class PatchRequest(APIRequest):
                  path: str,
                  properties: dict,
                  fields: Optional[Fields] = None, **kwargs):
-        self.url = f"{settings.BASE_API_URL}/v1/disk/resources"
-
         APIRequest.__init__(self, session, {"path":       path,
                                             "properties": properties,
                                             "fields":     fields}, **kwargs)
