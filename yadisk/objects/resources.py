@@ -13,6 +13,8 @@ from ..common import (
     dict_or_error, str_or_dict_or_error
 )
 
+from .. import settings
+
 from typing import (
     TYPE_CHECKING, Any, overload, Union, IO, AnyStr, Protocol, Optional
 )
@@ -2059,7 +2061,7 @@ class ResourceLinkObject(LinkObject):
 
         return cls(
             {"method": "GET",
-             "href": "https://cloud-api.yandex.net/v1/disk/resources?" + urlencode({"path": path}),
+             "href": f"{settings.BASE_API_URL}/v1/disk/resources?{urlencode({'path': path})}",
              "templated": False},
             yadisk=yadisk)
 
@@ -2138,7 +2140,7 @@ class PublicResourceLinkObject(LinkObject):
 
         return cls(
             {"method": "GET",
-             "href": "https://cloud-api.yandex.net/v1/disk/public/resources?" + urlencode({"public_key": public_key}),
+             "href": f"{settings.BASE_API_URL}/v1/disk/public/resources?{urlencode({'public_key': public_key})}",
              "templated": False},
             yadisk=yadisk)
 
