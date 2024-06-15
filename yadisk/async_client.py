@@ -29,7 +29,8 @@ from .import_session import import_async_session
 from .common import CaseInsensitiveDict
 from .client_common import (
     _apply_default_args, _filter_request_kwargs, _replace_authorization_header,
-    _map_base_url_for_auth, _map_base_url_for_disk
+    _map_base_url_for_auth, _map_base_url_for_disk, _replace_url_domain,
+    _replace_upload_url_domain
 )
 
 try:
@@ -821,6 +822,7 @@ class AsyncClient:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param disk_base_url: `str`, base URL for the Disk API
+            :param upload_base_url: `str`, base URL for the upload link
 
             :raises ParentNotFoundError: parent directory doesn't exist
             :raises PathExistsError: destination path already exists
@@ -833,12 +835,19 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+
+        upload_base_url = kwargs.pop("upload_base_url", None)
         _map_base_url_for_disk(kwargs)
 
         request = GetUploadLinkRequest(self.session, path, **kwargs)
         await request.asend()
 
-        return (await request.aprocess(yadisk=self)).href
+        href = (await request.aprocess(yadisk=self)).href
+
+        if upload_base_url:
+            return _replace_upload_url_domain(href, upload_base_url)
+
+        return href
 
     async def _upload(self,
                       get_upload_link_function: Callable[..., Awaitable[str]],
@@ -958,7 +967,6 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
-        _map_base_url_for_disk(kwargs)
 
         await self._upload(self.get_upload_link, path_or_file, dst_path, **kwargs)
         return AsyncResourceLinkObject.from_path(dst_path, yadisk=self)
@@ -1001,6 +1009,7 @@ class AsyncClient:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param disk_base_url: `str`, base URL for the Disk API
+            :param download_base_url: `str`, base URL for the download link
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1010,12 +1019,19 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+
+        download_base_url = kwargs.pop("download_base_url", None)
         _map_base_url_for_disk(kwargs)
 
         request = GetDownloadLinkRequest(self.session, path, **kwargs)
         await request.asend()
 
-        return (await request.aprocess(yadisk=self)).href
+        href = (await request.aprocess(yadisk=self)).href
+
+        if download_base_url:
+            return _replace_url_domain(href, download_base_url)
+
+        return href
 
     async def _download(self,
                         get_download_link_function: Callable[..., Awaitable[str]],
@@ -1107,6 +1123,7 @@ class AsyncClient:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param disk_base_url: `str`, base URL for the Disk API
+            :param download_base_url: `str`, base URL for the download link
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1116,7 +1133,6 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
-        _map_base_url_for_disk(kwargs)
 
         await self._download(self.get_download_link, src_path, path_or_file, **kwargs)
         return AsyncResourceLinkObject.from_path(src_path, yadisk=self)
@@ -1959,6 +1975,7 @@ class AsyncClient:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param disk_base_url: `str`, base URL for the Disk API
+            :param download_base_url: `str`, base URL for the download link
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1968,12 +1985,19 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+
+        download_base_url = kwargs.pop("download_base_url", None)
         _map_base_url_for_disk(kwargs)
 
         request = GetPublicDownloadLinkRequest(self.session, public_key, **kwargs)
         await request.asend()
 
-        return (await request.aprocess(yadisk=self)).href
+        href = (await request.aprocess(yadisk=self)).href
+
+        if download_base_url:
+            return _replace_url_domain(href, download_base_url)
+
+        return href
 
     async def download_public(self,
                               public_key: str,
@@ -1989,6 +2013,7 @@ class AsyncClient:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param disk_base_url: `str`, base URL for the Disk API
+            :param download_base_url: `str`, base URL for the download link
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1998,7 +2023,6 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
-        _map_base_url_for_disk(kwargs)
 
         await self._download(
             lambda *args, **kwargs: self.get_public_download_link(public_key, **kwargs),
