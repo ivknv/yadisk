@@ -5,6 +5,7 @@ import datetime
 import inspect
 
 from .compat import Callable, List
+from . import settings
 
 from typing import Optional, TypeVar, Any, Union
 
@@ -60,26 +61,26 @@ def str_or_dict_or_error(x: Any) -> Union[str, dict]:
 def yandex_date(string: str) -> datetime.datetime:
     return datetime.datetime.strptime(string[:-3] + string[-2:], "%Y-%m-%dT%H:%M:%S%z")
 
-def is_operation_link(link: str) -> bool:
-    if link.startswith("https://cloud-api.yandex.net/v1/disk/operations/"):
-        return True
+def _is_endpoint_link(link: str, base_endpoint_url: str) -> bool:
+    link_schema, _, link = link.partition("://")
+    endpoint_schema, _, base_endpoint_url = base_endpoint_url.partition("://")
 
-    # Same but http:// version
-    return link.startswith("http://cloud-api.yandex.net/v1/disk/operations/")
+    if link_schema not in ("http", "https") or endpoint_schema not in ("http", "https"):
+        return False
+
+    if not base_endpoint_url.endswith("/") and not base_endpoint_url.endswith("?"):
+        base_endpoint_url += "/"
+
+    return link.startswith(base_endpoint_url)
+
+def is_operation_link(link: str) -> bool:
+    return _is_endpoint_link(link, f"{settings.BASE_API_URL}/v1/disk/operations/")
 
 def is_resource_link(url: str) -> bool:
-    if url.startswith("https://cloud-api.yandex.net/v1/disk/resources?"):
-        return True
-
-    # Check also for HTTP version
-    return url.startswith("http://cloud-api.yandex.net/v1/disk/resources?")
+    return _is_endpoint_link(url, f"{settings.BASE_API_URL}/v1/disk/resources?")
 
 def is_public_resource_link(url: str) -> bool:
-    if url.startswith("https://cloud-api.yandex.net/v1/disk/public/resources?"):
-        return True
-
-    # Check also for HTTP version
-    return url.startswith("http://cloud-api.yandex.net/v1/disk/public/resources?")
+    return _is_endpoint_link(url, f"{settings.BASE_API_URL}/v1/disk/public/resources?")
 
 def ensure_path_has_schema(path: str, default_schema: str = "disk") -> str:
     # Modifies path to always have a schema (disk:/, trash:/ or app:/).

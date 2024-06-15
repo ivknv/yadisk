@@ -6,6 +6,7 @@ from .api_request import APIRequest
 from ..objects import OperationStatusObject
 from ..common import is_operation_link
 from ..exceptions import InvalidResponseError
+from .. import settings
 
 from typing import Optional, TYPE_CHECKING
 from ..compat import Iterable
@@ -34,7 +35,7 @@ class GetOperationStatusRequest(APIRequest):
                  fields: Optional[Iterable[str]] = None, **kwargs):
         if is_operation_link(operation_id):
             parsed_url = urlparse(operation_id)
-            self.url = "https://" + parsed_url.netloc + parsed_url.path
+            operation_id = parsed_url.path.rpartition("/")[2]
 
             params = parse_qs(parsed_url.query)
 
@@ -42,7 +43,8 @@ class GetOperationStatusRequest(APIRequest):
                 fields = params.get("fields", [None])[0]
         else:
             operation_id = quote(operation_id)
-            self.url = "https://cloud-api.yandex.net/v1/disk/operations/%s" % (operation_id,)
+
+        self.url = f"{settings.BASE_API_URL}/v1/disk/operations/{operation_id}"
 
         APIRequest.__init__(self, session, {"fields": fields}, **kwargs)
 

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import json
-
 from .api_request import APIRequest
 from ..objects import (
     PublicResourcesListObject, SyncPublicResourcesListObject, AsyncPublicResourcesListObject,
@@ -16,6 +14,7 @@ from ..objects import (
 
 from ..common import is_operation_link, ensure_path_has_schema
 from ..exceptions import InvalidResponseError
+from .. import settings
 
 from ..compat import Iterable, Dict, List
 from typing import Optional, Union, TYPE_CHECKING
@@ -50,7 +49,6 @@ class GetPublicResourcesRequest(APIRequest):
         :returns: :any:`PublicResourcesListObject`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/resources/public"
     method = "GET"
 
     def __init__(self,
@@ -61,6 +59,8 @@ class GetPublicResourcesRequest(APIRequest):
                  preview_crop: Optional[bool] = None,
                  type: Optional[str] = None,
                  fields: Optional[Iterable[str]] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/public"
+
         APIRequest.__init__(self, session, {"offset":       offset,
                                             "limit":        limit,
                                             "preview_size": preview_size,
@@ -112,13 +112,14 @@ class UnpublishRequest(APIRequest):
         :returns: :any:`ResourceLinkObject`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/resources/unpublish"
     method = "PUT"
 
     def __init__(self,
                  session: "AnySession",
                  path: str,
                  fields: Optional[Iterable[str]] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/unpublish"
+
         APIRequest.__init__(self, session, {"path":   path,
                                             "fields": fields}, **kwargs)
 
@@ -150,13 +151,14 @@ class GetDownloadLinkRequest(APIRequest):
         :returns: :any:`ResourceDownloadLinkObject`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/resources/download"
     method = "GET"
 
     def __init__(self,
                  session: "AnySession",
                  path: str,
                  fields: Optional[Iterable[str]] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/download"
+
         APIRequest.__init__(
             self, session, {"path": path, "fields": fields}, **kwargs)
 
@@ -189,7 +191,6 @@ class GetTrashRequest(APIRequest):
         :returns: :any:`TrashResourceObject`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/trash/resources"
     method = "GET"
 
     def __init__(self,
@@ -201,6 +202,8 @@ class GetTrashRequest(APIRequest):
                  preview_size: Optional[str] = None,
                  preview_crop: Optional[bool] = None,
                  fields: Optional[Iterable[str]] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/trash/resources"
+
         APIRequest.__init__(self, session, {"path":         path,
                                             "offset":       offset,
                                             "limit":        limit,
@@ -260,7 +263,6 @@ class RestoreTrashRequest(APIRequest):
         :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/trash/resources/restore"
     method = "PUT"
     success_codes = {201, 202}
 
@@ -271,6 +273,8 @@ class RestoreTrashRequest(APIRequest):
                  force_async: bool = False,
                  overwrite: bool = False,
                  fields: Optional[Iterable[str]] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/trash/resources/restore"
+
         APIRequest.__init__(self, session, {"path":        path,
                                             "dst_path":    dst_path,
                                             "overwrite":   overwrite,
@@ -322,7 +326,6 @@ class DeleteTrashRequest(APIRequest):
         :returns: :any:`OperationLinkObject` or `None`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/trash/resources"
     method = "DELETE"
     success_codes = {202, 204}
 
@@ -331,6 +334,8 @@ class DeleteTrashRequest(APIRequest):
                  path: Optional[str] = None,
                  force_async: bool = False,
                  fields: Optional[Iterable[str]] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/trash/resources"
+
         APIRequest.__init__(self, session, {"path":        path,
                                             "force_async": force_async,
                                             "fields":      fields}, **kwargs)
@@ -370,7 +375,6 @@ class LastUploadedRequest(APIRequest):
         :returns: :any:`LastUploadedResourceListObject`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/resources/last-uploaded"
     method = "GET"
 
     def __init__(self,
@@ -380,6 +384,8 @@ class LastUploadedRequest(APIRequest):
                  preview_size: Optional[str] = None,
                  preview_crop: Optional[bool] = None,
                  fields: Optional[Iterable[str]] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/last-uploaded"
+
         APIRequest.__init__(self, session, {"limit":        limit,
                                             "media_type":   media_type,
                                             "preview_size": preview_size,
@@ -438,7 +444,6 @@ class CopyRequest(APIRequest):
         :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/resources/copy"
     method = "POST"
     success_codes = {201, 202}
 
@@ -449,6 +454,8 @@ class CopyRequest(APIRequest):
                  overwrite: bool = False,
                  force_async: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/copy"
+
         APIRequest.__init__(self, session, {"src_path":    src_path,
                                             "dst_path":    dst_path,
                                             "overwrite":   overwrite,
@@ -502,7 +509,6 @@ class GetMetaRequest(APIRequest):
         :returns: :any:`ResourceObject`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/resources"
     method = "GET"
 
     def __init__(self,
@@ -514,6 +520,8 @@ class GetMetaRequest(APIRequest):
                  preview_crop: Optional[bool] = None,
                  sort: Optional[str] = None,
                  fields: Optional[Fields] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/resources"
+
         APIRequest.__init__(self, session,
                             {"path":         path,
                              "limit":        limit,
@@ -576,7 +584,6 @@ class GetUploadLinkRequest(APIRequest):
         :returns: :any:`ResourceUploadLinkObject`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/resources/upload"
     method = "GET"
 
     def __init__(self,
@@ -584,6 +591,8 @@ class GetUploadLinkRequest(APIRequest):
                  path: str,
                  overwrite: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/upload"
+
         APIRequest.__init__(self, session, {"path":      path,
                                             "overwrite": overwrite,
                                             "fields":    fields}, **kwargs)
@@ -613,7 +622,6 @@ class MkdirRequest(APIRequest):
         :returns: :any:`ResourceLinkObject`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/resources"
     method = "PUT"
     success_codes = {201}
 
@@ -621,6 +629,8 @@ class MkdirRequest(APIRequest):
                  session: "AnySession",
                  path: str,
                  fields: Optional[Fields] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/resources"
+
         APIRequest.__init__(self, session, {"path": path, "fields": fields},
                             **kwargs)
 
@@ -652,13 +662,14 @@ class PublishRequest(APIRequest):
         :returns: :any:`ResourceLinkObject`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/resources/publish"
     method = "PUT"
 
     def __init__(self,
                  session: "AnySession",
                  path: str,
                  fields: Optional[Fields] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/publish"
+
         APIRequest.__init__(self, session, {"path":   path,
                                             "fields": fields}, **kwargs)
 
@@ -692,7 +703,6 @@ class UploadURLRequest(APIRequest):
         :returns: :any:`OperationLinkObject`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/resources/upload"
     method = "POST"
     success_codes = {202}
 
@@ -702,6 +712,8 @@ class UploadURLRequest(APIRequest):
                  path: str,
                  disable_redirects: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/upload"
+
         APIRequest.__init__(self, session, {"url":               url,
                                             "path":              path,
                                             "disable_redirects": disable_redirects,
@@ -745,7 +757,6 @@ class DeleteRequest(APIRequest):
         :returns: :any:`OperationLinkObject` or `None`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/resources"
     method = "DELETE"
     success_codes = {202, 204}
 
@@ -756,6 +767,8 @@ class DeleteRequest(APIRequest):
                  md5: Optional[str] = None,
                  force_async: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/resources"
+
         APIRequest.__init__(self, session, {"path":        path,
                                             "permanently": permanently,
                                             "md5":         md5,
@@ -802,7 +815,6 @@ class SaveToDiskRequest(APIRequest):
         :returns: :any:`ResourceLinkObject` or :any:`OperationLinkObject`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/public/resources/save-to-disk"
     method = "POST"
     success_codes = {201, 202}
 
@@ -814,6 +826,8 @@ class SaveToDiskRequest(APIRequest):
                  save_path: Optional[str] = None,
                  force_async: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/save-to-disk"
+
         APIRequest.__init__(self, session, {"public_key":  public_key,
                                             "name":        name,
                                             "path":        path,
@@ -880,7 +894,6 @@ class GetPublicMetaRequest(APIRequest):
         :returns: :any:`PublicResourceObject`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/public/resources"
     method = "GET"
 
     def __init__(self,
@@ -893,6 +906,8 @@ class GetPublicMetaRequest(APIRequest):
                  preview_size: Optional[str] = None,
                  preview_crop: Optional[bool] = None,
                  fields: Optional[Fields] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/public/resources"
+
         APIRequest.__init__(self, session, {"public_key":   public_key,
                                             "offset":       offset,
                                             "limit":        limit,
@@ -956,7 +971,6 @@ class GetPublicDownloadLinkRequest(APIRequest):
         :returns: :any:`ResourceDownloadLinkObject`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/public/resources/download"
     method = "GET"
 
     def __init__(self,
@@ -964,6 +978,8 @@ class GetPublicDownloadLinkRequest(APIRequest):
                  public_key: str,
                  path: Optional[str] = None,
                  fields: Optional[Fields] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/public/resources/download"
+
         APIRequest.__init__(self, session, {"public_key": public_key,
                                             "path":       path,
                                             "fields":     fields}, **kwargs)
@@ -1002,7 +1018,6 @@ class MoveRequest(APIRequest):
         :returns: :any:`OperationLinkObject` or :any:`ResourceLinkObject`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/resources/move"
     method = "POST"
     success_codes = {201, 202}
 
@@ -1013,6 +1028,8 @@ class MoveRequest(APIRequest):
                  force_async: bool = False,
                  overwrite: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/move"
+
         APIRequest.__init__(self, session, {"src_path":    src_path,
                                             "dst_path":    dst_path,
                                             "force_async": force_async,
@@ -1066,7 +1083,6 @@ class FilesRequest(APIRequest):
         :returns: :any:`FilesResourceListObject`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/resources/files"
     method = "GET"
 
     def __init__(self,
@@ -1078,6 +1094,8 @@ class FilesRequest(APIRequest):
                  preview_crop: Optional[bool] = None,
                  sort: Optional[str] = None,
                  fields: Optional[Fields] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/resources/files"
+
         APIRequest.__init__(self, session, {"offset":       offset,
                                             "limit":        limit,
                                             "media_type":   media_type,
@@ -1141,7 +1159,6 @@ class PatchRequest(APIRequest):
         :returns: :any:`ResourceObject`
     """
 
-    url = "https://cloud-api.yandex.net/v1/disk/resources"
     method = "PATCH"
     content_type = "application/json"
 
@@ -1150,6 +1167,8 @@ class PatchRequest(APIRequest):
                  path: str,
                  properties: dict,
                  fields: Optional[Fields] = None, **kwargs):
+        self.url = f"{settings.BASE_API_URL}/v1/disk/resources"
+
         APIRequest.__init__(self, session, {"path":       path,
                                             "properties": properties,
                                             "fields":     fields}, **kwargs)

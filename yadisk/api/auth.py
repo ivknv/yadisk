@@ -4,6 +4,7 @@ from .api_request import APIRequest
 from ..objects import TokenObject, TokenRevokeStatusObject, DeviceCodeObject
 from ..exceptions import InvalidResponseError
 from ..types import JSON
+from .. import settings
 
 from typing import Optional, Union, Literal, TYPE_CHECKING
 
@@ -29,7 +30,6 @@ class RefreshTokenRequest(APIRequest):
         :returns: :any:`TokenObject`
     """
 
-    url = "https://oauth.yandex.ru/token"
     method = "POST"
 
     def __init__(self,
@@ -37,6 +37,8 @@ class RefreshTokenRequest(APIRequest):
                  refresh_token: str,
                  client_id: str,
                  client_secret: str, **kwargs):
+        self.url = f"{settings.BASE_OAUTH_API_URL}/token"
+
         APIRequest.__init__(self, session, {"refresh_token": refresh_token,
                                             "client_id":     client_id,
                                             "client_secret": client_secret}, **kwargs)
@@ -67,7 +69,6 @@ class RevokeTokenRequest(APIRequest):
         :returns: :any:`TokenRevokeStatusObject`
     """
 
-    url = "https://oauth.yandex.ru/revoke_token"
     method = "POST"
 
     def __init__(self,
@@ -75,6 +76,8 @@ class RevokeTokenRequest(APIRequest):
                  token: str,
                  client_id: str,
                  client_secret: str, **kwargs):
+        self.url = f"{settings.BASE_OAUTH_API_URL}/revoke_token"
+
         APIRequest.__init__(self, session, {"token":         token,
                                             "client_id":     client_id,
                                             "client_secret": client_secret}, **kwargs)
@@ -107,7 +110,6 @@ class GetTokenRequest(APIRequest):
         :returns: :any:`TokenObject`
     """
 
-    url = "https://oauth.yandex.ru/token"
     method = "POST"
 
     def __init__(
@@ -127,6 +129,8 @@ class GetTokenRequest(APIRequest):
         code_verifier: Optional[str] = None,
         **kwargs
     ):
+        self.url = f"{settings.BASE_OAUTH_API_URL}/token"
+
         APIRequest.__init__(
             self,
             session,
@@ -200,7 +204,6 @@ class GetDeviceCodeRequest(APIRequest):
         :param optional_scope: `str`, list of optional permissions for the application
     """
 
-    url = "https://oauth.yandex.ru/device/code"
     method = "POST"
 
     def __init__(
@@ -213,6 +216,8 @@ class GetDeviceCodeRequest(APIRequest):
         optional_scope: Optional[str] = None,
         **kwargs
     ):
+        self.url = f"{settings.BASE_OAUTH_API_URL}/device/code"
+
         APIRequest.__init__(
             self,
             session,
