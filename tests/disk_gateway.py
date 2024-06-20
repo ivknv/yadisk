@@ -1,0 +1,459 @@
+# -*- coding: utf-8 -*-
+
+import argparse
+from typing import Any
+from urllib.parse import urlencode
+import base64
+import asyncio
+import zlib
+import contextlib
+import json
+
+import httpx
+
+from starlette.applications import Starlette
+from starlette.responses import JSONResponse, Response
+from starlette.requests import Request
+from starlette.routing import Route
+
+import uvicorn
+
+__all__ = ["DiskGateway", "DiskGatewayClient", "main"]
+
+YADISK_BASE_URL = "https://cloud-api.yandex.net"
+AUTH_BASE_URL = "https://oauth.yandex.ru"
+DOWNLOAD_BASE_URL = "https://downloader.disk.yandex.ru"
+
+RELEVANT_REQUEST_HEADERS = ["content-type", "connection", "authorization"]
+RELEVANT_RESPONSE_HEADERS = ["content-type", "content-length"]
+
+def get_upload_base_url(subdomain: str) -> str:
+    return f"https://{subdomain}.disk.yandex.net:443"
+
+def select_keys(d, keys):
+    return {key: d[key] for key in keys if key in d}
+
+def serialize_content(content: bytes) -> str:
+    return base64.b64encode(zlib.compress(content)).decode("utf8")
+
+def deserialize_content(content: str) -> bytes:
+    return zlib.decompress(base64.b64decode(content))
+
+def serialize_request(request: httpx.Request, response: httpx.Response):
+    headers = select_keys(request.headers, RELEVANT_REQUEST_HEADERS)
+    if "x-test-authorization" in request.headers:
+        headers["authorization"] = request.headers["x-test-authorization"]
+
+    return {
+        "method":   request.method,
+        "url":      str(request.url),
+        "headers":  headers,
+        "content":  serialize_content(request.content),
+        "response": serialize_response(response)
+    }
+
+def deserialize_request(request: dict):
+    return (
+        httpx.Request(
+            request["method"],
+            request["url"],
+            headers=request["headers"],
+            content=deserialize_content(request["content"])
+        ),
+        deserialize_response(request["response"])
+    )
+
+def deserialize_response(response: dict) -> httpx.Response:
+    return httpx.Response(
+        status_code=response["status_code"],
+        headers=response["headers"],
+        content=deserialize_content(response["content"])
+    )
+
+def serialize_response(response: httpx.Response):
+    return {
+        "status_code": response.status_code,
+        "headers":     select_keys(response.headers, RELEVANT_RESPONSE_HEADERS),
+        "content":     serialize_content(response.content)
+    }
+
+class DiskGateway:
+    def __init__(self):
+        self.routes = [
+            Route(
+                "/forward/disk",
+                endpoint=self.disk_gateway,
+                methods=["GET", "POST", "PUT", "DELETE", "PATCH"]
+            ),
+            Route(
+                "/forward/disk/{path:path}",
+                endpoint=self.disk_gateway,
+                methods=["GET", "POST", "PUT", "DELETE", "PATCH"]
+            ),
+
+            Route("/forward/auth",             endpoint=self.auth_gateway, methods=["POST"]),
+            Route("/forward/auth/{path:path}", endpoint=self.auth_gateway, methods=["POST"]),
+
+            Route("/forward/download",             endpoint=self.download_gateway, methods=["GET"]),
+            Route("/forward/download/{path:path}", endpoint=self.download_gateway, methods=["GET"]),
+
+            Route(
+                "/forward/upload/{subdomain}",
+                endpoint=self.upload_gateway,
+                methods=["PUT"]
+            ),
+            Route(
+                "/forward/upload/{subdomain}/{path:path}",
+                endpoint=self.upload_gateway,
+                methods=["PUT"]
+            ),
+
+            Route("/record/start", endpoint=self.start_recording,         methods=["POST"]),
+            Route("/record/stop",  endpoint=self.stop_recording,          methods=["POST"]),
+            Route("/record/clear", endpoint=self.clear_recorded_requests, methods=["POST"]),
+            Route("/record/json",  endpoint=self.dump_recorded_requests,  methods=["GET"]),
+
+            Route("/replay/set/{index:int}", endpoint=self.set_replay_index, methods=["POST"]),
+            Route("/replay/set",             endpoint=self.set_replay,       methods=["POST"]),
+
+            Route(
+                "/replay/response/disk",
+                endpoint=self.disk_replay,
+                methods=["GET", "POST", "PUT", "DELETE", "PATCH"]
+            ),
+            Route(
+                "/replay/response/disk/{path:path}",
+                endpoint=self.disk_replay,
+                methods=["GET", "POST", "PUT", "DELETE", "PATCH"]
+            ),
+
+            Route("/replay/response/auth",             endpoint=self.auth_replay, methods=["POST"]),
+            Route("/replay/response/auth/{path:path}", endpoint=self.auth_replay, methods=["POST"]),
+
+            Route("/replay/response/download",             endpoint=self.download_replay, methods=["GET"]),
+            Route("/replay/response/download/{path:path}", endpoint=self.download_replay, methods=["GET"]),
+
+            Route(
+                "/replay/response/upload/{subdomain}",
+                endpoint=self.upload_replay,
+                methods=["PUT"]
+            ),
+            Route(
+                "/replay/response/upload/{subdomain}/{path:path}",
+                endpoint=self.upload_replay,
+                methods=["PUT"]
+            ),
+
+            Route("/status", endpoint=self.check_status, methods=["GET"])
+        ]
+
+        @contextlib.asynccontextmanager
+        async def lifespan(_: Starlette):
+            async with self.client:
+                yield
+
+        self.app = Starlette(debug=True, routes=self.routes, lifespan=lifespan)
+
+        self.client = httpx.AsyncClient()
+        self.recorded_requests = []
+        self.recording_enabled = False
+        self.current_request_index = 0
+        self.server_task = None
+
+    async def on_shutdown(self):
+        await self.client.aclose()
+
+    async def forward_request(self, request: Request, base_url: str):
+        path: str = request.path_params.get("path", "")
+        content: bytes = await request.body()
+
+        outgoing_request = httpx.Request(
+            request.method,
+            f"{base_url}/{path}",
+            params=request.query_params,
+            content=content,
+            headers=select_keys(request.headers, RELEVANT_REQUEST_HEADERS)
+        )
+
+        authorization_header = request.headers.get("authorization", "")
+        test_authorization_header = request.headers.get("x-test-authorization", "")
+
+        outgoing_request.headers["authorization"] = test_authorization_header
+
+        server_response = await self.client.send(outgoing_request, follow_redirects=True)
+
+        response = Response(
+            content=server_response.content,
+            status_code=server_response.status_code
+        )
+
+        if "content-type" in server_response.headers:
+            response.headers["Content-Type"] = server_response.headers["content-type"]
+
+        if self.recording_enabled:
+            outgoing_request.headers["authorization"] = authorization_header
+            self.recorded_requests.append(serialize_request(outgoing_request, server_response))
+
+        return response
+
+    async def replay_response(self, request: Request, base_url: str):
+        try:
+            serialized_request = self.recorded_requests[self.current_request_index]
+        except IndexError:
+            return Response(status_code=501)
+
+        path = request.path_params.get("path", "")
+
+        content: bytes = await request.body()
+        headers = select_keys(request.headers, RELEVANT_REQUEST_HEADERS)
+
+        url = f"{base_url}/{path}"
+
+        if request.query_params:
+            url += "?" + urlencode(request.query_params)
+
+        expected_request, expected_response = deserialize_request(serialized_request)
+
+        expected_headers = select_keys(expected_request.headers, RELEVANT_REQUEST_HEADERS)
+
+        for key, value in expected_headers.items():
+            key = key.lower()
+
+            if key not in headers or headers[key] != value:
+                return Response(status_code=501)
+
+        for key, value in headers.items():
+            key = key.lower()
+
+            if key not in expected_headers or expected_headers[key] != value:
+                return Response(status_code=501)
+
+        if (url            == expected_request.url     and
+            request.method == expected_request.method  and
+            content        == expected_request.content
+        ):
+            self.current_request_index += 1
+
+            return Response(
+                content=expected_response.content,
+                status_code=expected_response.status_code,
+                headers=expected_response.headers
+            )
+
+        return Response(status_code=501)
+
+    async def disk_gateway(self, request: Request):
+        return await self.forward_request(request, YADISK_BASE_URL)
+
+    async def auth_gateway(self, request: Request):
+        return await self.forward_request(request, AUTH_BASE_URL)
+
+    async def download_gateway(self, request: Request):
+        return await self.forward_request(request, DOWNLOAD_BASE_URL)
+
+    async def upload_gateway(self, request: Request):
+        subdomain = request.path_params["subdomain"]
+
+        return await self.forward_request(request, get_upload_base_url(subdomain))
+
+    async def disk_replay(self, request: Request):
+        return await self.replay_response(request, YADISK_BASE_URL)
+
+    async def auth_replay(self, request: Request):
+        return await self.replay_response(request, AUTH_BASE_URL)
+
+    async def download_replay(self, request: Request):
+        return await self.replay_response(request, DOWNLOAD_BASE_URL)
+
+    async def upload_replay(self, request: Request):
+        subdomain = request.path_params["subdomain"]
+
+        return await self.replay_response(request, get_upload_base_url(subdomain))
+
+    async def start_recording(self, request: Request):
+        self.recording_enabled = True
+
+        return Response(status_code=204)
+
+    async def stop_recording(self, request: Request):
+        self.recording_enabled = False
+
+        return Response(status_code=204)
+
+    async def clear_recorded_requests(self, request: Request):
+        self.recorded_requests.clear()
+        self.current_request_index = 0
+
+        return Response(status_code=204)
+
+    async def dump_recorded_requests(self, request: Request):
+        return JSONResponse(self.recorded_requests)
+
+    async def set_replay_index(self, request: Request):
+        self.current_request_index = int(request.path_params.get("index", "0"))
+
+        return Response(status_code=204)
+
+    async def set_replay(self, request: Request):
+        self.recorded_requests = await request.json()
+        self.current_request_index = 0
+
+        return Response(status_code=204)
+
+    async def check_status(self, request: Request):
+        return Response(status_code=204)
+
+    def stop(self):
+        if self.server_task is not None:
+            self.server_task.cancel()
+
+    async def run(self, host: str, port: int):
+        config = uvicorn.Config(self.app, host=host, port=port, log_level="error")
+        server = uvicorn.Server(config)
+
+        self.server_task = asyncio.create_task(server.serve())
+
+        try:
+            await self.server_task
+        except asyncio.CancelledError:
+            await server.shutdown()
+
+async def main(args: list) -> None:
+    parser = argparse.ArgumentParser(description="Yandex.Disk test gateway")
+    parser.add_argument("--host", default="0.0.0.0", help="Server host")
+    parser.add_argument("--port", type=int, default=8080, help="Server port")
+
+    ns = parser.parse_args(args)
+
+    await DiskGateway().run(ns.host, ns.port)
+
+class DiskGatewayClient:
+    def __init__(self, base_url: str):
+        self.base_url = base_url
+        self._client = httpx.Client()
+
+    def __enter__(self):
+        self._client.__enter__()
+        return self
+
+    def __exit__(self, *args, **kwargs):
+        self._client.__exit__(*args, **kwargs)
+
+    def close(self):
+        self._client.close()
+
+    def start_recording(self):
+        self._client.post(f"{self.base_url}/record/start").raise_for_status()
+
+    def stop_recording(self):
+        self._client.post(f"{self.base_url}/record/stop").raise_for_status()
+
+    def clear_recorded_requests(self):
+        self._client.post(f"{self.base_url}/record/clear").raise_for_status()
+
+    def dump_recorded_requests(self):
+        return self._client.get(f"{self.base_url}/record/json").json()
+
+    def set_replay_index(self, index: int):
+        self._client.get(f"{self.base_url}/replay/set/{index}").raise_for_status()
+
+    def set_replay(self, json: Any):
+        self._client.post(f"{self.base_url}/replay/set", json=json).raise_for_status()
+
+    def is_running(self) -> bool:
+        try:
+            return self._client.get(f"{self.base_url}/status").status_code == 204
+        except httpx.ConnectError:
+            return False
+
+    @contextlib.contextmanager
+    def record_as(self, filename: str):
+        self.start_recording()
+        yield
+
+        self.stop_recording()
+        recorded_requests = self.dump_recorded_requests()
+
+        with open(filename, "w") as output:
+            json.dump(recorded_requests, output, indent=4)
+
+        self.clear_recorded_requests()
+
+    @contextlib.contextmanager
+    def replay(self, filename: str):
+        with open(filename, "r") as in_file:
+            recorded_requests = json.load(in_file)
+            self.set_replay(recorded_requests)
+
+        yield
+
+        self.clear_recorded_requests()
+
+class AsyncDiskGatewayClient:
+    def __init__(self, base_url: str):
+        self.base_url = base_url
+        self._client = httpx.AsyncClient()
+
+    async def __aenter__(self):
+        await self._client.__aenter__()
+        return self
+
+    async def __aexit__(self, *args, **kwargs):
+        await self._client.__aexit__(*args, **kwargs)
+
+    async def close(self):
+        await self._client.aclose()
+
+    async def start_recording(self):
+        (await self._client.post(f"{self.base_url}/record/start")).raise_for_status()
+
+    async def stop_recording(self):
+        (await self._client.post(f"{self.base_url}/record/stop")).raise_for_status()
+
+    async def clear_recorded_requests(self):
+        (await self._client.post(f"{self.base_url}/record/clear")).raise_for_status()
+
+    async def dump_recorded_requests(self):
+        return (await self._client.get(f"{self.base_url}/record/json")).json()
+
+    async def set_replay_index(self, index: int):
+        (await self._client.get(f"{self.base_url}/replay/set/{index}")).raise_for_status()
+
+    async def set_replay(self, json: Any):
+        (await self._client.post(f"{self.base_url}/replay/set", json=json)).raise_for_status()
+
+    async def is_running(self) -> bool:
+        try:
+            return (await self._client.get(f"{self.base_url}/status")).status_code == 204
+        except httpx.ConnectError:
+            return False
+
+    @contextlib.asynccontextmanager
+    async def record_as(self, filename: str):
+        await self.start_recording()
+        yield
+
+        await self.stop_recording()
+        recorded_requests = await self.dump_recorded_requests()
+
+        with open(filename, "w") as output:
+            json.dump(recorded_requests, output, indent=4)
+
+        await self.clear_recorded_requests()
+
+    @contextlib.asynccontextmanager
+    async def replay(self, filename: str):
+        with open(filename, "r") as in_file:
+            recorded_requests = json.load(in_file)
+            await self.set_replay(recorded_requests)
+
+        yield
+
+        await self.clear_recorded_requests()
+
+if __name__ == "__main__":
+    import logging
+    import sys
+
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+    asyncio.run(main(sys.argv[1:]))

@@ -3,3 +3,4 @@ aiohttp
 httpx
 pycurl
 requests
+starlette

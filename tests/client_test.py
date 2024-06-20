@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from collections.abc import Callable
 import os
 import tempfile
 
@@ -14,26 +15,105 @@ from yadisk.common import is_operation_link, ensure_path_has_schema
 from yadisk.api.operations import GetOperationStatusRequest
 from yadisk.types import SessionName
 
+from .test_session import TestSession
+from .disk_gateway import DiskGateway, DiskGatewayClient
+import threading
+
+import asyncio
+import time
+
 __all__ = ["RequestsTestCase", "HTTPXTestCase", "PycURLTestCase"]
 
-def make_test_case(name: str, session: SessionName):
+class BackgroundGatewayThread:
+    def __init__(self, host: str, port: int):
+        self.disk_gateway = DiskGateway()
+
+        self.client = DiskGatewayClient(f"http://{host}:{port}")
+
+        self.server_thread = threading.Thread(
+            target=asyncio.run,
+            args=(self.disk_gateway.run(host, port),)
+        )
+
+    def start(self):
+        self.server_thread.start()
+
+        while not self.client.is_running():
+            time.sleep(0.01)
+
+    def stop(self):
+        self.disk_gateway.stop()
+        self.client.close()
+
+def make_test_case(name: str, session_name: SessionName):
     class ClientTestCase(TestCase):
         client: yadisk.Client
         path: str
+        gateway: BackgroundGatewayThread
+        recording_enabled: bool
+        replay_enabled: bool
+
+        def record_or_replay(func: Callable):
+            def decorated_test(self):
+                directory = os.path.join("tests", "recorded", "sync", self.__class__.__name__)
+
+                if self.recording_enabled:
+                    os.makedirs(directory, exist_ok=True)
+
+                    with self.gateway.client.record_as(os.path.join(directory, f"{func.__name__}.json")):
+                        func(self)
+                elif self.replay_enabled:
+                    with self.gateway.client.replay(os.path.join(directory, f"{func.__name__}.json")):
+                        func(self)
+                else:
+                    func(self)
+
+            return decorated_test
 
         @classmethod
         def setUpClass(cls):
+            gateway_host = os.environ.get("PYTHON_YADISK_GATEWAY_HOST", "0.0.0.0")
+            gateway_port = int(os.environ.get("PYTHON_YADISK_GATEWAY_HOST", "8080"))
+
+            cls.replay_enabled = os.environ.get("PYTHON_YADISK_REPLAY_ENABLED", "0") == "1"
+            cls.recording_enabled = os.environ.get("PYTHON_YADISK_RECORDING_ENABLED", "0") == "1"
+
+            base_gateway_url = f"http://{gateway_host}:{gateway_port}"
+
+            cls.gateway = BackgroundGatewayThread(gateway_host, gateway_port)
+            cls.gateway.start()
+
             if not os.environ.get("PYTHON_YADISK_APP_TOKEN"):
                 raise ValueError("Environment variable PYTHON_YADISK_APP_TOKEN must be set")
 
             if not os.environ.get("PYTHON_YADISK_TEST_ROOT"):
                 raise ValueError("Environment variable PYTHON_YADISK_TEST_ROOT must be set")
 
-            cls.client = yadisk.Client(os.environ["PYTHON_YADISK_APP_ID"],
-                                       os.environ["PYTHON_YADISK_APP_SECRET"],
-                                       os.environ["PYTHON_YADISK_APP_TOKEN"],
-                                       session=session)
-            cls.client.default_args["n_retries"] = 50
+            if cls.replay_enabled:
+                test_session = TestSession(
+                    yadisk.import_session(session_name)(),
+                    disk_base_url=f"{base_gateway_url}/replay/response/disk",
+                    auth_base_url=f"{base_gateway_url}/replay/response/auth",
+                    download_base_url=f"{base_gateway_url}/replay/response/download",
+                    upload_base_url=f"{base_gateway_url}/replay/response/upload"
+                )
+            else:
+                test_session = TestSession(
+                    yadisk.import_session(session_name)(),
+                    disk_base_url=f"{base_gateway_url}/forward/disk",
+                    auth_base_url=f"{base_gateway_url}/forward/auth",
+                    download_base_url=f"{base_gateway_url}/forward/download",
+                    upload_base_url=f"{base_gateway_url}/forward/upload"
+                )
+
+            cls.client = yadisk.Client(
+                os.environ["PYTHON_YADISK_APP_ID"],
+                os.environ["PYTHON_YADISK_APP_SECRET"],
+                os.environ["PYTHON_YADISK_APP_TOKEN"],
+                session=test_session
+            )
+
+            cls.client.default_args.update({"n_retries": 50})
 
             cls.path = os.environ["PYTHON_YADISK_TEST_ROOT"]
 
@@ -44,8 +124,10 @@ def make_test_case(name: str, session: SessionName):
 
         @classmethod
         def tearDownClass(cls):
+            cls.gateway.stop()
             cls.client.close()
 
+        @record_or_replay
         def test_get_meta(self):
             resource = self.client.get_meta(self.path)
 
@@ -53,6 +135,7 @@ def make_test_case(name: str, session: SessionName):
             self.assertEqual(resource.type, "dir")
             self.assertEqual(resource.name, posixpath.split(self.path)[1])
 
+        @record_or_replay
         def test_listdir(self):
             names = ["dir1", "dir2", "dir3"]
 
@@ -70,6 +153,7 @@ def make_test_case(name: str, session: SessionName):
 
             self.assertEqual(result, names)
 
+        @record_or_replay
         def test_listdir_fields(self):
             names = ["dir1", "dir2", "dir3"]
 
@@ -87,6 +171,7 @@ def make_test_case(name: str, session: SessionName):
 
             self.assertEqual(result, [(name, "dir", None) for name in names])
 
+        @record_or_replay
         def test_listdir_on_file(self):
             buf = BytesIO()
             buf.write(b"0" * 1000)
@@ -101,6 +186,7 @@ def make_test_case(name: str, session: SessionName):
 
             self.client.remove(path, permanently=True)
 
+        @record_or_replay
         def test_listdir_with_limits(self):
             names = ["dir1", "dir2", "dir3"]
 
@@ -118,6 +204,7 @@ def make_test_case(name: str, session: SessionName):
 
             self.assertEqual(result, names)
 
+        @record_or_replay
         def test_mkdir_and_exists(self):
             names = ["dir1", "dir2"]
 
@@ -130,6 +217,7 @@ def make_test_case(name: str, session: SessionName):
                 self.client.remove(path, permanently=True)
                 self.assertFalse(self.client.exists(path))
 
+        @record_or_replay
         def test_upload_and_download(self):
             buf1 = BytesIO()
             buf2 = tempfile.NamedTemporaryFile("w+b")
@@ -148,10 +236,12 @@ def make_test_case(name: str, session: SessionName):
 
             self.assertEqual(buf1.read(), buf2.read())
 
+        @record_or_replay
         def test_check_token(self):
             self.assertTrue(self.client.check_token())
             self.assertFalse(self.client.check_token("asdasdasd"))
 
+        @record_or_replay
         def test_permanent_remove(self):
             path = posixpath.join(self.path, "dir")
             origin_path = "disk:" + path
@@ -162,6 +252,7 @@ def make_test_case(name: str, session: SessionName):
             for i in self.client.trash_listdir("/"):
                 self.assertFalse(i.origin_path == origin_path)
 
+        @record_or_replay
         def test_restore_trash(self):
             path = posixpath.join(self.path, "dir")
             origin_path = "disk:" + path
@@ -182,6 +273,7 @@ def make_test_case(name: str, session: SessionName):
             self.assertTrue(self.client.exists(path))
             self.client.remove(path, permanently=True)
 
+        @record_or_replay
         def test_move(self):
             path1 = posixpath.join(self.path, "dir1")
             path2 = posixpath.join(self.path, "dir2")
@@ -192,6 +284,7 @@ def make_test_case(name: str, session: SessionName):
 
             self.client.remove(path2, permanently=True)
 
+        @record_or_replay
         def test_remove_trash(self):
             path = posixpath.join(self.path, "dir-to-remove")
             origin_path = "disk:" + path
@@ -211,6 +304,7 @@ def make_test_case(name: str, session: SessionName):
             self.client.remove_trash(trash_path)
             self.assertFalse(self.client.trash_exists(trash_path))
 
+        @record_or_replay
         def test_publish_unpublish(self):
             path = self.path
 
@@ -220,6 +314,7 @@ def make_test_case(name: str, session: SessionName):
             self.client.unpublish(path)
             self.assertIsNone(self.client.get_meta(path).public_url)
 
+        @record_or_replay
         def test_patch(self):
             path = self.path
 
@@ -233,6 +328,7 @@ def make_test_case(name: str, session: SessionName):
             self.client.patch(path, {"test_property": None})
             self.assertIsNone(self.client.get_meta(path).custom_properties)
 
+        @record_or_replay
         def test_issue7(self):
             # See https://github.com/ivknv/yadisk/issues/7
 
@@ -248,6 +344,7 @@ def make_test_case(name: str, session: SessionName):
             self.assertFalse(is_operation_link("https://asd8iaysd89asdgiu"))
             self.assertFalse(is_operation_link("http://asd8iaysd89asdgiu"))
 
+        @record_or_replay
         def test_get_operation_status_request_url(self):
             request = GetOperationStatusRequest(
                 self.client.session,
@@ -276,6 +373,7 @@ def make_test_case(name: str, session: SessionName):
             self.assertEqual(ensure_path_has_schema("example/path"), "disk:/example/path")
             self.assertEqual(ensure_path_has_schema("app:/test"), "app:/test")
 
+        @record_or_replay
         def test_upload_download_non_seekable(self):
             # It should be possible to upload/download non-seekable file objects (such as sys.stdin/sys.stdout)
             # See https://github.com/ivknv/yadisk/pull/31 for more details
@@ -303,6 +401,7 @@ def make_test_case(name: str, session: SessionName):
             self.assertEqual(test_input_file.tell(), 1000)
             self.assertEqual(test_output_file.tell(), 1000)
 
+        @record_or_replay
         def test_upload_generator(self):
             data = b"0" * 1000
 

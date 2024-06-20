@@ -4,6 +4,7 @@ import asyncio
 import os
 import tempfile
 from typing import Any
+from collections.abc import Callable
 import aiofiles
 
 import posixpath
@@ -15,14 +16,70 @@ from yadisk.common import is_operation_link, ensure_path_has_schema
 from yadisk.api.operations import GetOperationStatusRequest
 from yadisk.types import AsyncSessionName
 
+from .disk_gateway import DiskGateway, AsyncDiskGatewayClient
+from .test_session import AsyncTestSession
+
 __all__ = ["AIOHTTPTestCase", "AsyncHTTPXTestCase"]
 
-def make_test_case(name: str, session: AsyncSessionName):
+class BackgroundGatewayTask:
+    def __init__(self, host: str, port: int):
+        self.disk_gateway = DiskGateway()
+
+        self.client = AsyncDiskGatewayClient(f"http://{host}:{port}")
+        self.host = host
+        self.port = port
+        self.server_task = None
+
+    async def start(self):
+        self.server_task = asyncio.create_task(self.disk_gateway.run(self.host, self.port))
+
+        while not await self.client.is_running():
+            await asyncio.sleep(0.01)
+
+    async def stop(self):
+        self.disk_gateway.stop()
+        await self.client.close()
+
+        if self.server_task is not None:
+            await self.server_task
+
+def make_test_case(name: str, session_name: AsyncSessionName):
     class AsyncClientTestCase(IsolatedAsyncioTestCase):
         client: yadisk.AsyncClient
         path: str
+        gateway: BackgroundGatewayTask
+        recording_enabled: bool
+        replay_enabled: bool
+
+        def record_or_replay(func: Callable):
+            async def decorated_test(self):
+                directory = os.path.join("tests", "recorded", "async", self.__class__.__name__)
+
+                if self.recording_enabled:
+                    os.makedirs(directory, exist_ok=True)
+
+                    async with self.gateway.client.record_as(os.path.join(directory, f"{func.__name__}.json")):
+                        await func(self)
+                elif self.replay_enabled:
+                    async with self.gateway.client.replay(os.path.join(directory, f"{func.__name__}.json")):
+                        await func(self)
+                else:
+                    await func(self)
+
+            return decorated_test
 
         async def asyncSetUp(self):
+            gateway_host = os.environ.get("PYTHON_YADISK_GATEWAY_HOST", "0.0.0.0")
+            gateway_port = int(os.environ.get("PYTHON_YADISK_GATEWAY_HOST", "8080"))
+
+            self.replay_enabled = os.environ.get("PYTHON_YADISK_REPLAY_ENABLED", "0") == "1"
+            self.recording_enabled = os.environ.get("PYTHON_YADISK_RECORDING_ENABLED", "0") == "1"
+
+            base_gateway_url = f"http://{gateway_host}:{gateway_port}"
+
+            self.gateway = BackgroundGatewayTask(gateway_host, gateway_port)
+            await self.gateway.start()
+
             if not os.environ.get("PYTHON_YADISK_APP_TOKEN"):
                 raise ValueError("Environment variable PYTHON_YADISK_APP_TOKEN must be set")
 
@@ -36,20 +93,41 @@ def make_test_case(name: str, session: AsyncSessionName):
             if self.path.startswith("disk:/"):
                 self.path = posixpath.join("/", self.path[len("disk:/"):])
 
-            self.client: yadisk.AsyncClient = yadisk.AsyncClient(
+            if self.replay_enabled:
+                test_session = AsyncTestSession(
+                    yadisk.import_async_session(session_name)(),
+                    disk_base_url=f"{base_gateway_url}/replay/response/disk",
+                    auth_base_url=f"{base_gateway_url}/replay/response/auth",
+                    download_base_url=f"{base_gateway_url}/replay/response/download",
+                    upload_base_url=f"{base_gateway_url}/replay/response/upload"
+                )
+            else:
+                test_session = AsyncTestSession(
+                    yadisk.import_async_session(session_name)(),
+                    disk_base_url=f"{base_gateway_url}/forward/disk",
+                    auth_base_url=f"{base_gateway_url}/forward/auth",
+                    download_base_url=f"{base_gateway_url}/forward/download",
+                    upload_base_url=f"{base_gateway_url}/forward/upload"
+                )
+
+            self.client = yadisk.AsyncClient(
                 os.environ.get("PYTHON_YADISK_APP_ID", ""),
                 os.environ.get("PYTHON_YADISK_APP_SECRET", ""),
                 os.environ["PYTHON_YADISK_APP_TOKEN"],
-                session=session)
-            self.client.default_args["n_retries"] = 50
+                session=test_session
+            )
+
+            self.client.default_args.update({"n_retries": 50})
 
         async def asyncTearDown(self):
             await self.client.close()
+            await self.gateway.stop()
 
-            if session == "aiohttp":
+            if session_name == "aiohttp":
                 # Needed for aiohttp to correctly release its resources (see https://github.com/aio-libs/aiohttp/issues/1115)
                 await asyncio.sleep(0.1)
 
+        @record_or_replay
         async def test_get_meta(self):
             resource = await self.client.get_meta(self.path)
 
@@ -57,30 +135,31 @@ def make_test_case(name: str, session: AsyncSessionName):
             self.assertEqual(resource.type, "dir")
             self.assertEqual(resource.name, posixpath.split(self.path)[1])
 
+        @record_or_replay
         async def test_listdir(self):
             names = ["dir1", "dir2", "dir3"]
             paths = [posixpath.join(self.path, name) for name in names]
-            mkdir_tasks = [self.client.mkdir(path) for path in paths]
 
-            await asyncio.gather(*mkdir_tasks)
+            for path in paths:
+                await self.client.mkdir(path)
 
             async def get_result():
                 return [i.name async for i in await self.client.listdir(self.path)]
 
             result = await get_result()
 
-            remove_tasks = [self.client.remove(path, permanently=True) for path in paths]
-
-            await asyncio.gather(*remove_tasks)
+            for path in paths:
+                await self.client.remove(path, permanently=True)
 
             self.assertEqual(result, names)
 
+        @record_or_replay
         async def test_listdir_fields(self):
             names = ["dir1", "dir2", "dir3"]
             paths = [posixpath.join(self.path, name) for name in names]
-            mkdir_tasks = [self.client.mkdir(path) for path in paths]
 
-            await asyncio.gather(*mkdir_tasks)
+            for path in paths:
+                await self.client.mkdir(path)
 
             async def get_result():
                 return [(i.name, i.type, i.file)
@@ -88,12 +167,12 @@ def make_test_case(name: str, session: AsyncSessionName):
 
             result = await get_result()
 
-            remove_tasks = [self.client.remove(path, permanently=True) for path in paths]
-
-            await asyncio.gather(*remove_tasks)
+            for path in paths:
+                await self.client.remove(path, permanently=True)
 
             self.assertEqual(result, [(name, "dir", None) for name in names])
 
+        @record_or_replay
         async def test_listdir_on_file(self):
             buf = BytesIO()
             buf.write(b"0" * 1000)
@@ -108,24 +187,25 @@ def make_test_case(name: str, session: AsyncSessionName):
 
             await self.client.remove(path, permanently=True)
 
+        @record_or_replay
         async def test_listdir_with_limits(self):
             names = ["dir1", "dir2", "dir3"]
             paths = [posixpath.join(self.path, name) for name in names]
-            mkdir_tasks = [self.client.mkdir(path) for path in paths]
 
-            await asyncio.gather(*mkdir_tasks)
+            for path in paths:
+                await self.client.mkdir(path)
 
             async def get_result():
                 return [i.name async for i in await self.client.listdir(self.path, limit=1)]
 
             result = await get_result()
 
-            remove_tasks = [self.client.remove(path, permanently=True) for path in paths]
-
-            await asyncio.gather(*remove_tasks)
+            for path in paths:
+                await self.client.remove(path, permanently=True)
 
             self.assertEqual(result, names)
 
+        @record_or_replay
         async def test_mkdir_and_exists(self):
             names = ["dir1", "dir2", "dir3"]
             paths = [posixpath.join(self.path, name) for name in names]
@@ -137,10 +217,10 @@ def make_test_case(name: str, session: AsyncSessionName):
                 await self.client.remove(path, permanently=True)
                 self.assertFalse(await self.client.exists(path))
 
-            tasks = [check_existence(path) for path in paths]
+            for path in paths:
+                await check_existence(path)
 
-            await asyncio.gather(*tasks)
-
+        @record_or_replay
         async def test_upload_and_download(self):
             buf1 = BytesIO()
             buf2 = tempfile.NamedTemporaryFile("w+b")
@@ -164,6 +244,7 @@ def make_test_case(name: str, session: AsyncSessionName):
 
             self.assertEqual(buf1.read(), buf2.read())
 
+        @record_or_replay
         async def test_upload_and_download_async(self):
             content = b"0" * 1024 ** 2
             async with aiofiles.tempfile.NamedTemporaryFile("wb+") as source:
@@ -196,10 +277,12 @@ def make_test_case(name: str, session: AsyncSessionName):
                 self.assertEqual(content, await destination.read())
                 await self.client.remove(path2, permanently=True)
 
+        @record_or_replay
         async def test_check_token(self):
             self.assertTrue(await self.client.check_token())
             self.assertFalse(await self.client.check_token("asdasdasd"))
 
+        @record_or_replay
         async def test_permanent_remove(self):
             path = posixpath.join(self.path, "dir")
             origin_path = "disk:" + path
@@ -210,6 +293,7 @@ def make_test_case(name: str, session: AsyncSessionName):
             async for i in await self.client.trash_listdir("/"):
                 self.assertFalse(i.origin_path == origin_path)
 
+        @record_or_replay
         async def test_restore_trash(self):
             path = posixpath.join(self.path, "dir")
             origin_path = "disk:" + path
@@ -230,6 +314,7 @@ def make_test_case(name: str, session: AsyncSessionName):
             self.assertTrue(await self.client.exists(path))
             await self.client.remove(path, permanently=True)
 
+        @record_or_replay
         async def test_move(self):
             path1 = posixpath.join(self.path, "dir1")
             path2 = posixpath.join(self.path, "dir2")
@@ -240,6 +325,7 @@ def make_test_case(name: str, session: AsyncSessionName):
 
             await self.client.remove(path2, permanently=True)
 
+        @record_or_replay
         async def test_remove_trash(self):
             path = posixpath.join(self.path, "dir-to-remove")
             origin_path = "disk:" + path
@@ -259,6 +345,7 @@ def make_test_case(name: str, session: AsyncSessionName):
             await self.client.remove_trash(trash_path)
             self.assertFalse(await self.client.trash_exists(trash_path))
 
+        @record_or_replay
         async def test_publish_unpublish(self):
             path = self.path
 
@@ -268,6 +355,7 @@ def make_test_case(name: str, session: AsyncSessionName):
             await self.client.unpublish(path)
             self.assertIsNone((await self.client.get_meta(path)).public_url)
 
+        @record_or_replay
         async def test_patch(self):
             path = self.path
 
@@ -280,6 +368,7 @@ def make_test_case(name: str, session: AsyncSessionName):
             await self.client.patch(path, {"test_property": None})
             self.assertIsNone((await self.client.get_meta(path)).custom_properties)
 
+        @record_or_replay
         async def test_issue7(self):
             # See https://github.com/ivknv/yadisk/issues/7
 
@@ -295,6 +384,7 @@ def make_test_case(name: str, session: AsyncSessionName):
             self.assertFalse(is_operation_link("https://asd8iaysd89asdgiu"))
             self.assertFalse(is_operation_link("http://asd8iaysd89asdgiu"))
 
+        @record_or_replay
         async def test_get_operation_status_request_url(self):
             request = GetOperationStatusRequest(
                 self.client.session,
@@ -313,6 +403,7 @@ def make_test_case(name: str, session: AsyncSessionName):
             self.assertTrue(is_operation_link(request.url))
             self.assertTrue(request.url.startswith("https://"))
 
+        @record_or_replay
         async def test_is_file(self):
             # See https://github.com/ivknv/yadisk-async/pull/6
             buf1 = BytesIO()
@@ -336,6 +427,7 @@ def make_test_case(name: str, session: AsyncSessionName):
             self.assertEqual(ensure_path_has_schema("example/path"), "disk:/example/path")
             self.assertEqual(ensure_path_has_schema("app:/test"), "app:/test")
 
+        @record_or_replay
         async def test_upload_download_non_seekable(self):
             # It should be possible to upload/download non-seekable file objects (such as stdin/stdout)
             # See https://github.com/ivknv/yadisk/pull/31 for more details
