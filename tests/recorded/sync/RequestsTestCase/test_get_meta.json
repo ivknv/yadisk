@@ -1,0 +1,20 @@
+[
+    {
+        "method": "GET",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 200,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "591"
+            },
+            "content": "eJy1kcFOxCAQht+Fq20cKLSUs4+wF2NMQ8sQiaU0QDeazb67syaaePCmJyb8/8yfb+bCJowzOoeOmQsrKVdmGGtYqBgLM0/PDVtDDPQroGHJ+4JUU7nb+kJWF8qruX+0D/SesFRqranalTzXhm02Ipl+yPgWPGWRmrGkIy84BQpnUql+UHwQxncanZz9KLXlbh6wB6+FHsGBm5deDuh66xZuAaS0oNXYebA9H9Erz7WikOUoNcVpz2nHXAMSynasKwkZbb3BMgFCtKBbUCcBRoHh4g7AAFB7TC748GWTLfStgBPXRvSmg2/b7ztYUoy4VSIrt73uOZwpdvoi/mvc/ZjXsPzTeLpUfd/xEzSz29nOoYS0McMHTnOGcZSyU71Q1w9gcq3q"
+        }
+    }
+]

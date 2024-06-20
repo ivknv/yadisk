@@ -1,0 +1,88 @@
+[
+    {
+        "method": "GET",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&overwrite=false",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 200,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "241"
+            },
+            "content": "eJwtj8tuwyAURP+FdYMB8zD+ii7SdXSB69j1A8vcRE6r/nup1OWckc5ovlne8QCa8nabEusZRu+lclLE5ECaTlojtVEQEqB10emhktQpsK1L0djgIQVnXLDQBdUBe2PjgUM1jUR76ZvmsS8ZEh72k6epzPwFW8KTb0i91u1/fSE47kiNEkoLq8RVSem15EYb/qDEg3idcTrMeZYs76V8DeuT2nOeLnP1tq3wvjOujq9IY/478v5xrZFw3RcgrGSApeDPLw7ZS4E="
+        }
+    },
+    {
+        "method": "PUT",
+        "url": "https://uploader6j.disk.yandex.net/upload-target/20240620T211941.545.utd.b0yxcir5xxso1gsszfmvt3xki-k6j.33099857",
+        "headers": {
+            "content-type": "application/octet-stream",
+            "connection": "close",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwzMBgFo2AUDHcAAK0au4E=",
+        "response": {
+            "status_code": 201,
+            "headers": {},
+            "content": "eJwDAAAAAAE="
+        }
+    },
+    {
+        "method": "GET",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources/download?path=disk%3A%2FYaDiskTest%2Fzeroes.txt",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 200,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "480"
+            },
+            "content": "eJxdkctu2zAQRf/FQLRqLJKiKDKAUKAvpymQNo4DB90EY3IYMZYoVaRl2UX/PUy7KzCbe2Ywdx6/F82IdnG1aGIcwlWem/7o2x4Mjkvjwn55Am9wXo6H/E3mCFJxw4jVrDBEA+NCcWSEC9RcK76DUoLSlJKq4iBLwVOVRVoBoSCIyIVIHKzNfbj+usfHbx7Wq2Fz8uTBrX/Zm9m+bJ9v79R5vg03s96sqK7uo/t4/726m9RI8Mc2zGq97aZLWXw4Ty8Pg/x5GNePR3N5uj5eFJ9SvD84U/OyFFVJK5ZZ16KHDuszjj2GZZxjlrYZ+uCi630NMYJuOvQxayA0dda6zsWaZLr3MdGneBqwjjjHC/ZlaMH5LF0Jx6f/bII7Y00JIVmTElaxAqwsLakYU4JjwRmzQqlK0FIoknVoHPzrbXp9+Osf936qJ5ZhhOdayt1OKChNiYShrsCWVkgjmcUdtdQs3i06jE1v0v9WnzdJRuzSfBETsdAG/PMKoWycuA=="
+        }
+    },
+    {
+        "method": "GET",
+        "url": "https://downloader.disk.yandex.ru/disk/ea894d20fc23d0ca24694e2046ec4c94ba58a9c110774a8564d0cfe17a01a606/6674aaff/nsHIkeXKnaRGpTyn0UiRqfJxfjWgNQ9zxNsJxcTG1c7StiCSO7Qv9r0ePWsx9RWmv-83BzvjUp8ZurRXwd-yHw==?uid=455675172&filename=zeroes.txt&disposition=attachment&hash=&limit=0&content_type=text%2Fplain&owner_uid=455675172&fsize=1000&hid=f923af85f0722964e3422f6997615690&media_type=document&tknv=v2&etag=88bb69a5d5e02ec7af5f68d82feb1f1d",
+        "headers": {
+            "connection": "close",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 200,
+            "headers": {
+                "content-type": "text/plain",
+                "content-length": "1000"
+            },
+            "content": "eJwzMBgFo2AUDHcAAK0au4E="
+        }
+    },
+    {
+        "method": "DELETE",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&permanently=true&force_async=false",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 204,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "0"
+            },
+            "content": "eJwDAAAAAAE="
+        }
+    }
+]

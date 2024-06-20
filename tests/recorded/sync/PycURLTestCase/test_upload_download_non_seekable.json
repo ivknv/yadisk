@@ -1,0 +1,84 @@
+[
+    {
+        "method": "GET",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&overwrite=false",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 200,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "243"
+            },
+            "content": "eJwtT8tuwyAQ/BfODYYF1sZf0UN6rpbsUjvxqzZRX+q/l0iV5jIz0jx+1LrJTmVcl9eRVa8Igu8QJafcIjimCgnkknXonEWOZIiwCza1+dLF2NnsrGe6cBuZrXpSwy65Jg2lbEffNPdtWollD3jVPB43/UULy6depPTeu3//VGh/k9KAAW8QzBksoA/amqDvhTXKd7JpWN7z1Nn5ChgC0YcRON0ewXVabCFCrZ+lDOvjyvPLudIi8zZRkapkmg75/QN3r0pz"
+        }
+    },
+    {
+        "method": "PUT",
+        "url": "https://uploader56j.disk.yandex.net/upload-target/20240620T212645.105.utd.6ezb1bhnqfl81mj2655aaw0e2-k56j.33197292",
+        "headers": {
+            "connection": "close",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwzMBgFo2AUDHcAAK0au4E=",
+        "response": {
+            "status_code": 201,
+            "headers": {},
+            "content": "eJwDAAAAAAE="
+        }
+    },
+    {
+        "method": "GET",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources/download?path=disk%3A%2FYaDiskTest%2Fzeroes.txt",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 200,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "480"
+            },
+            "content": "eJxdUV2L2zAQ/C+B81OJJdv68IEpadMmRznShPQjfQkraXVWY0uureSSK/3vVdu3wrIws7AzO/tz1o5oZ/ezNsZhus9zE559F8DgODduOs1v4A1e5+M5/wNzZgmvgVoCJeqacCUsAkPLWak5UsYUVVSmzpXGSknCBJfCMAmcAdU051xUoIHnflo/nPDrBw+71bC/efLJ7X58+9Ifr+phuaCPS/aZLDaXN6PcfOy24/fd21W5XotDWA03N40HxRaLQLeS13r/+FSdD+NQbrZ35TLV67MzTcUYF4yKIrOuQw89Ni84Bpzm8RqzdM0QJhdd8A3ECLrt0ceshaltss71LjYk08HHxB7jbcAm4jXeFe+HDpzPUko4Hv+TmdwLNpQQkrVpYOuiBCtTYqIoal5hWRWF5XUtOGW8JlmPxsG/3Sbo81/9ePKX5lJkGOGpkVKplDYzDEmBWoBllksjC4uKWmpmr2Y9xjaY9L/Vu32CEfvkL2JiLHQT/voN96SbOQ=="
+        }
+    },
+    {
+        "method": "GET",
+        "url": "https://downloader.disk.yandex.ru/disk/5f069a1f0a3ec906b7fea5ef653c6e155b1b185b16bce4b8057687d58a65a1c1/6674aca6/nsHIkeXKnaRGpTyn0UiRqZWm_xbIDA1MD5V0AOvBr8OPlQrjRCG3HH7YoGpyisrYb5AAo1Q869cTMg4uYrp3OQ==?uid=455675172&filename=zeroes.txt&disposition=attachment&hash=&limit=0&content_type=text%2Fplain&owner_uid=455675172&fsize=1000&hid=f923af85f0722964e3422f6997615690&media_type=document&tknv=v2&etag=88bb69a5d5e02ec7af5f68d82feb1f1d",
+        "headers": {
+            "connection": "close",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 200,
+            "headers": {
+                "content-type": "text/plain",
+                "content-length": "1000"
+            },
+            "content": "eJwzMBgFo2AUDHcAAK0au4E="
+        }
+    },
+    {
+        "method": "DELETE",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&permanently=true&force_async=false",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 204,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "0"
+            },
+            "content": "eJwDAAAAAAE="
+        }
+    }
+]

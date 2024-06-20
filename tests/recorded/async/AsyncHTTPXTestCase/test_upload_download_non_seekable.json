@@ -1,0 +1,87 @@
+[
+    {
+        "method": "GET",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&overwrite=false",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 200,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "243"
+            },
+            "content": "eJwtj8tuwyAURP+FdYOBy9NfkUW6rsBcaicO2AZXtar+ex2pyzkjndH8kLLg5ttU8scUSU90cIELbRXDoNB65cFgEKCYg4FLZeVgkkhcc0gIDrzwJgXHQIWYnBnIGxk3TKdpbG2pfdfty1x8xM24O41TfdDD54jfNGPrpYT//tL89omtE0xIpgW7CS4YWGoso3uL1OSyarat9z1XHQrGI1R3rF/p8niJgWthlGXn/BPbWF5Xru+3MzZ8LrNveJLk54q/f11OS2g="
+        }
+    },
+    {
+        "method": "PUT",
+        "url": "https://uploader79j.disk.yandex.net/upload-target/20240620T212038.780.utd.7noq60rqjuns6boedybs9yqvf-k79j.31627580",
+        "headers": {
+            "connection": "close",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwzMBgFo2AUDHcAAK0au4E=",
+        "response": {
+            "status_code": 201,
+            "headers": {},
+            "content": "eJwDAAAAAAE="
+        }
+    },
+    {
+        "method": "GET",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources/download?path=disk%3A%2FYaDiskTest%2Fzeroes.txt",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 200,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "480"
+            },
+            "content": "eJxdUdtq20AQ/RdB9FSs1Wov2oAoponTkJgSY5fEL2alna02klaKNHZkh/57t+1bYF7OGZhzmY+oHsFG11GNOEzXSWL6d9/22sC4MG5qFmftDcyL8Zj8hQmTUNLUMGUrRlVJDLBc5FRblZlUZ8qYikklgFV5WdJMCmUFlQwyrkVqcpUIIZkuM5n46ft9A88PXm/uhu3Zk53bvO3T9XrbrN4vHNqZk1Xz9HqwitY3y3757XX947Bju5q3Lwzhfn7E0/ATH1+W9f7h7Vbsq83m6Sq7CfP16EzBOBeSp5LG1rXgdQfFBcYepgXOGIc0Qz85dL0vNKKu6g48xrWe6iJuXeewIHHVewzsAc8DFAgzXtHV0Grn49ASjIdPMpO7QJESQuI6LILvTNucWyIpVSJ0wCi1QikpUi4UiTswTv+/bfrq+E8fG38qTjQG1L+KPHQolOaGA6FQSW25FbnJqYUytamJvkQdYN2b8L+7222ACF3whxAYq9sJfv8BVoObqQ=="
+        }
+    },
+    {
+        "method": "GET",
+        "url": "https://downloader.disk.yandex.ru/disk/47eb21d49fc429b0de48682af93d1a39ddc4796e4c8bb23769f6274e35a61d89/6674ab37/nsHIkeXKnaRGpTyn0UiRqZ1MMTkFwz5elx50FkQj_f92hDAoACjMO_U4Uh5lY4teIxLtvpVtLYAhZKqE6ZcRRQ==?uid=455675172&filename=zeroes.txt&disposition=attachment&hash=&limit=0&content_type=text%2Fplain&owner_uid=455675172&fsize=1000&hid=f923af85f0722964e3422f6997615690&media_type=document&tknv=v2&etag=88bb69a5d5e02ec7af5f68d82feb1f1d",
+        "headers": {
+            "connection": "close",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 200,
+            "headers": {
+                "content-type": "text/plain",
+                "content-length": "1000"
+            },
+            "content": "eJwzMBgFo2AUDHcAAK0au4E="
+        }
+    },
+    {
+        "method": "DELETE",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&permanently=true&force_async=false",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 204,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "0"
+            },
+            "content": "eJwDAAAAAAE="
+        }
+    }
+]

@@ -1,0 +1,92 @@
+[
+    {
+        "method": "PUT",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Fdir-to-remove",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 201,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "132"
+            },
+            "content": "eJwVjUEKwjAUBe8S6M40aHcFEUHrBbrp8tO8kmDShPzfooh3N+5mZjMf5QoW1Ssnkrk3Zg5ps5qyb9+0WrzaFWL2o7Gen6aA01Zm8CWTuPO/Nd21OQ0T3SqPYKlifdGSdEFMO9RBRYhLtj4e97GqIOZAgloWCozvDwfLLek="
+        }
+    },
+    {
+        "method": "DELETE",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Fdir-to-remove&permanently=false&force_async=false",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 204,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "0"
+            },
+            "content": "eJwDAAAAAAE="
+        }
+    },
+    {
+        "method": "GET",
+        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2F&offset=0&limit=10000&fields=type%2C_embedded%2C_embedded.offset%2C_embedded.limit%2C_embedded.total%2C_embedded.items",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 200,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "680"
+            },
+            "content": "eJy1ks9qAyEQh9/Fa7NknHV113MfIZdSyuLq2Ej3T1ATWsK+e01JCymUXlovKn7z82OYM8tvB2KauRDZhvU0DeQcOabPLGSaEtOPZzab6cpUeakiTcuJCk2vwRdw3TAbyeRLFUNAUYGsEHa81Qga8Q5AAxTe0Ug/UfUXtcTwHOb+YPL+48/0orcP5r7sO0p5+11iWlzw4dfUSGk5Rkt9uJCiaaRquEKNHQk+NB1KHAaUrpVcDG6wRjiqlVMWQZIjLtCiBeIkGmm8l3UnpMW2K9FX0xxN2utbv752A3SKWy6tcl5ArYwVruEtCAQQjYfaqJp8ibHLNNGci2C6dP8Qw6n0tP8U/3Pr4zAG+0/xZSRu5irSKaSwzExzxdsOlMS6VLdcrE8FXbIZy9OGjWEKuZygrDIJ3icqV1jXd/gSxKA="
+        }
+    },
+    {
+        "method": "DELETE",
+        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_3db0971c16c7df4037ac4d5180420045f03a73ef&force_async=false",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 204,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "0"
+            },
+            "content": "eJwDAAAAAAE="
+        }
+    },
+    {
+        "method": "GET",
+        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_3db0971c16c7df4037ac4d5180420045f03a73ef&offset=0&limit=0",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 404,
+            "headers": {
+                "content-type": "application/json",
+                "content-length": "145"
+            },
+            "content": "eJyrVspNLS5OTE9VslK6MPfCVoWLzRe2XNhwYfeFfRcbL/YoXNgL5Oy82HRhh8KF7UDm/osNQJmOC1uBEnsvdl/YqQAU2ApU2nyx4WKjnpKOUkpqcXJRZkFJZn4e0Myg1OL80qLkVIW8/BKFtPzSvBSQmtSiovwioKxLZnG2X36JG0jcFSxWCwATl0jR"
+        }
+    }
+]
