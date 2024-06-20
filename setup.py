@@ -21,7 +21,7 @@ setup(
     author_email="ivknv0@gmail.com",
     license="LGPLv3",
     python_requires=">=3.8",
-    install_requires=[],
+    install_requires=["typing_extensions"],
     extras_require={
         "sync_defaults":  ["requests"],
         "async_defaults": ["aiofiles", "httpx"],
