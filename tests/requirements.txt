@@ -4,3 +4,4 @@ httpx
 pycurl
 requests
 starlette
+uvicorn
