@@ -701,7 +701,7 @@ class ResourceObjectMethodsMixin:
                  dst_path_or_file: Union[str, IO[AnyStr]], /, **kwargs) -> "SyncResourceLinkObject":
         pass
 
-    def download(self: ResourceProtocol, *args, **kwargs) -> "SyncResourceLinkObject":
+    def download(self: ResourceProtocol, /, *args, **kwargs) -> "SyncResourceLinkObject":
         """
             Download the file. This method takes 1 or 2 positional arguments:
 
@@ -931,7 +931,7 @@ class ResourceObjectMethodsMixin:
              dst_path: str, /, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
         pass
 
-    def move(self: ResourceProtocol, *args, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
+    def move(self: ResourceProtocol, /, *args, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
         """
             Move resource to `dst_path`.
             This method takes 1 or 2 positional arguments:
@@ -985,7 +985,7 @@ class ResourceObjectMethodsMixin:
                new_name: str, /, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
         pass
 
-    def rename(self: ResourceProtocol, *args, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
+    def rename(self: ResourceProtocol, /, *args, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
         """
             Rename `src_path` to have filename `new_name`.
             Does the same as `move()` but changes only the filename.
@@ -1037,7 +1037,7 @@ class ResourceObjectMethodsMixin:
              dst_path: str, /, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
         pass
 
-    def copy(self: ResourceProtocol, *args, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
+    def copy(self: ResourceProtocol, /, *args, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
         """
             Copy resource to `dst_path`.
             If the operation is performed asynchronously, returns the link to the operation,
@@ -1465,7 +1465,7 @@ class AsyncResourceObjectMethodsMixin:
                        dst_path_or_file: Union[str, IO[AnyStr]], /, **kwargs) -> "AsyncResourceLinkObject":
         pass
 
-    async def download(self: ResourceProtocol, *args, **kwargs) -> "AsyncResourceLinkObject":
+    async def download(self: ResourceProtocol, /, *args, **kwargs) -> "AsyncResourceLinkObject":
         """
             Download the file. This method takes 1 or 2 positional arguments:
 
@@ -1695,7 +1695,7 @@ class AsyncResourceObjectMethodsMixin:
                    dst_path: str, /, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         pass
 
-    async def move(self: ResourceProtocol, *args, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
+    async def move(self: ResourceProtocol, /, *args, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         """
             Move resource to `dst_path`.
             This method takes 1 or 2 positional arguments:
@@ -1749,7 +1749,7 @@ class AsyncResourceObjectMethodsMixin:
                      new_name: str, /, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         pass
 
-    async def rename(self: ResourceProtocol, *args, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
+    async def rename(self: ResourceProtocol, /, *args, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         """
             Rename `src_path` to have filename `new_name`.
             Does the same as `move()` but changes only the filename.
@@ -1801,7 +1801,7 @@ class AsyncResourceObjectMethodsMixin:
                    dst_path: str, /, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         pass
 
-    async def copy(self: ResourceProtocol, *args, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
+    async def copy(self: ResourceProtocol, /, *args, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         """
             Copy resource to `dst_path`.
             If the operation is performed asynchronously, returns the link to the operation,
@@ -1969,8 +1969,8 @@ class SyncResourceObject(ResourceObject, ResourceObjectMethodsMixin):
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
     """
 
-    embedded: Optional["SyncResourceListObject"]
-    _embedded: Optional["SyncResourceListObject"]
+    embedded: Optional["SyncResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
+    _embedded: Optional["SyncResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
 
     def __init__(self, resource: Optional[dict] = None, yadisk: Optional[Any] = None):
         ResourceObject.__init__(self, None, yadisk)
@@ -2009,8 +2009,8 @@ class AsyncResourceObject(ResourceObject, AsyncResourceObjectMethodsMixin):
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
     """
 
-    embedded: Optional["AsyncResourceListObject"]
-    _embedded: Optional["AsyncResourceListObject"]
+    embedded: Optional["AsyncResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
+    _embedded: Optional["AsyncResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
 
     def __init__(self, resource: Optional[dict] = None, yadisk: Optional[Any] = None):
         ResourceObject.__init__(self, None, yadisk)
@@ -2351,8 +2351,8 @@ class PublicResourceObject(ResourceObject):
 
     views_count: Optional[int]
     view_count: Optional[int]
-    embedded: Optional["PublicResourceListObject"]
-    _embedded: Optional["PublicResourceListObject"]
+    embedded: Optional["PublicResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
+    _embedded: Optional["PublicResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
     owner: Optional[UserPublicInfoObject]
 
     def __init__(self, public_resource=None, yadisk=None):
@@ -2397,8 +2397,8 @@ class SyncPublicResourceObject(PublicResourceObject, ResourceObjectMethodsMixin)
         :ivar owner: :any:`UserPublicInfoObject`, owner of the public resource
     """
 
-    embedded: Optional["SyncPublicResourceListObject"]
-    _embedded: Optional["SyncPublicResourceListObject"]
+    embedded: Optional["SyncPublicResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
+    _embedded: Optional["SyncPublicResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
 
     def __init__(self, public_resource: Optional[dict] = None, yadisk: Optional[Any] = None):
         PublicResourceObject.__init__(self, None, yadisk)
@@ -2439,8 +2439,8 @@ class AsyncPublicResourceObject(PublicResourceObject, AsyncResourceObjectMethods
         :ivar owner: :any:`UserPublicInfoObject`, owner of the public resource
     """
 
-    embedded: Optional["AsyncPublicResourceListObject"]
-    _embedded: Optional["AsyncPublicResourceListObject"]
+    embedded: Optional["AsyncPublicResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
+    _embedded: Optional["AsyncPublicResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
 
     def __init__(self, public_resource: Optional[dict] = None, yadisk: Optional[Any] = None):
         PublicResourceObject.__init__(self, None, yadisk)
@@ -2554,8 +2554,8 @@ class TrashResourceObject(ResourceObject):
         :ivar deleted: :any:`datetime.datetime`, date of deletion
     """
 
-    embedded: Optional["TrashResourceListObject"]
-    _embedded: Optional["TrashResourceListObject"]
+    embedded: Optional["TrashResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
+    _embedded: Optional["TrashResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
     origin_path: Optional[str]
     deleted: Optional["datetime.datetime"]
 
@@ -2602,8 +2602,8 @@ class SyncTrashResourceObject(TrashResourceObject):
         :ivar deleted: :any:`datetime.datetime`, date of deletion
     """
 
-    embedded: Optional["SyncTrashResourceListObject"]
-    _embedded: Optional["SyncTrashResourceListObject"]
+    embedded: Optional["SyncTrashResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
+    _embedded: Optional["SyncTrashResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
 
     def __init__(self,
                  trash_resource: Optional[dict] = None,
@@ -2824,7 +2824,7 @@ class SyncTrashResourceObject(TrashResourceObject):
                 dst_path: str, /, **kwargs) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         pass
 
-    def restore(self: ResourceProtocol, *args, **kwargs) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
+    def restore(self: ResourceProtocol, /, *args, **kwargs) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
             Restore a trash resource.
             Returns a link to the newly created resource or a link to the asynchronous operation.
@@ -2905,8 +2905,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
         :ivar deleted: :any:`datetime.datetime`, date of deletion
     """
 
-    embedded: Optional["AsyncTrashResourceListObject"]
-    _embedded: Optional["AsyncTrashResourceListObject"]
+    embedded: Optional["AsyncTrashResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
+    _embedded: Optional["AsyncTrashResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
 
     def __init__(self,
                  trash_resource: Optional[dict] = None,
@@ -3127,7 +3127,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
                       dst_path: str, /, **kwargs) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
         pass
 
-    async def restore(self: ResourceProtocol, *args, **kwargs) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
+    async def restore(self: ResourceProtocol, /, *args, **kwargs) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
         """
             Restore a trash resource.
             Returns a link to the newly created resource or a link to the asynchronous operation.
