@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from typing import Any, Optional, Union, TYPE_CHECKING, Protocol, BinaryIO, Literal
+from typing_extensions import TypeAlias
 from .compat import (
     Dict, List, Tuple, Callable, Awaitable,
     Iterator, AsyncIterator
@@ -21,19 +22,19 @@ __all__ = [
     "SessionName", "AsyncSessionName", "OperationStatus"
 ]
 
-JSON = Union[Dict, List, str, int, float, None]
-TimeoutParameter = Optional[Union[float, Tuple[Optional[float], Optional[float]]]]
-Headers = Dict[str, str]
+JSON: TypeAlias = Union[Dict, List, str, int, float, None]
+TimeoutParameter: TypeAlias = Optional[Union[float, Tuple[Optional[float], Optional[float]]]]
+Headers: TypeAlias = Dict[str, str]
 
-Payload = Union[bytes, Iterator[bytes]]
-ConsumeCallback = Callable[[bytes], None]
+Payload: TypeAlias = Union[bytes, Iterator[bytes]]
+ConsumeCallback: TypeAlias = Callable[[bytes], None]
 
-AsyncPayload = Union[bytes, Iterator[bytes], AsyncIterator[bytes]]
-AsyncConsumeCallback = Union[Callable[[bytes], None], Callable[[bytes], Awaitable[None]]]
+AsyncPayload: TypeAlias = Union[bytes, Iterator[bytes], AsyncIterator[bytes]]
+AsyncConsumeCallback: TypeAlias = Union[Callable[[bytes], None], Callable[[bytes], Awaitable[None]]]
 
-AnyResponse = Union["Response", "AsyncResponse"]
-AnySession = Union["Session", "AsyncSession"]
-AnyClient = Union["Client", "AsyncClient"]
+AnyResponse: TypeAlias = Union["Response", "AsyncResponse"]
+AnySession: TypeAlias = Union["Session", "AsyncSession"]
+AnyClient: TypeAlias = Union["Client", "AsyncClient"]
 
 class AsyncFileLike(Protocol):
     async def read(self, size: int = ..., /) -> Union[str, bytes]: ...
@@ -47,20 +48,20 @@ class BinaryAsyncFileLike(Protocol):
     async def seek(self, pos: int, whence: int = ..., /) -> int: ...
     async def tell(self) -> int: ...
 
-FileOrPath = Union[
+FileOrPath: TypeAlias = Union[
     str,
     bytes,
     BinaryIO,
     Callable[[], Iterator[bytes]]
 ]
 
-FileOrPathDestination = Union[
+FileOrPathDestination: TypeAlias = Union[
     str,
     bytes,
     BinaryIO,
 ]
 
-AsyncFileOrPath = Union[
+AsyncFileOrPath: TypeAlias = Union[
     str,
     bytes,
     BinaryIO,
@@ -68,24 +69,24 @@ AsyncFileOrPath = Union[
     Callable[[], AsyncIterator[bytes]]
 ]
 
-AsyncFileOrPathDestination = Union[
+AsyncFileOrPathDestination: TypeAlias = Union[
     str,
     bytes,
     BinaryIO,
     BinaryAsyncFileLike
 ]
 
-SessionFactory = Callable[[], "Session"]
-AsyncSessionFactory = Callable[[], "AsyncSession"]
+SessionFactory: TypeAlias = Callable[[], "Session"]
+AsyncSessionFactory: TypeAlias = Callable[[], "AsyncSession"]
 
-FileOpenMode = Union[Literal["rb"], Literal["wb"]]
-OpenFileCallback = Callable[[Union[str, bytes], FileOpenMode], BinaryIO]
-AsyncOpenFileCallback = Union[
+FileOpenMode: TypeAlias = Union[Literal["rb"], Literal["wb"]]
+OpenFileCallback: TypeAlias = Callable[[Union[str, bytes], FileOpenMode], BinaryIO]
+AsyncOpenFileCallback: TypeAlias = Union[
     Callable[[Union[str, bytes], FileOpenMode], Awaitable[BinaryAsyncFileLike]],
     Callable[[Union[str, bytes], FileOpenMode], Awaitable[BinaryIO]],
 ]
 
-HTTPMethod = Union[
+HTTPMethod: TypeAlias = Union[
     Literal["GET"],
     Literal["POST"],
     Literal["PUT"],
@@ -97,7 +98,7 @@ HTTPMethod = Union[
     Literal["TRACE"],
 ]
 
-SessionName = Union[Literal["httpx"], Literal["pycurl"], Literal["requests"]]
-AsyncSessionName = Union[Literal["aiohttp"], Literal["httpx"]]
+SessionName: TypeAlias = Union[Literal["httpx"], Literal["pycurl"], Literal["requests"]]
+AsyncSessionName: TypeAlias = Union[Literal["aiohttp"], Literal["httpx"]]
 
-OperationStatus = Union[Literal["in-progress"], Literal["success"], Literal["failed"]]
+OperationStatus: TypeAlias = Union[Literal["in-progress"], Literal["success"], Literal["failed"]]
