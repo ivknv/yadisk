@@ -119,6 +119,9 @@ def make_test_case(name: str, session_name: AsyncSessionName):
 
             self.client.default_args.update({"n_retries": 50})
 
+            # Make sure the actual API token won't be exposed in the recorded requests
+            await self.gateway.client.update_token_map({self.client.token: "supposedly_valid_token"})
+
         async def asyncTearDown(self):
             await self.client.close()
             await self.gateway.stop()

@@ -122,6 +122,9 @@ def make_test_case(name: str, session_name: SessionName):
             if cls.path.startswith("disk:/"):
                 cls.path = posixpath.join("/", cls.path[len("disk:/"):])
 
+            # Make sure the actual API token won't be exposed in the recorded requests
+            cls.gateway.client.update_token_map({cls.client.token: "supposedly_valid_token"})
+
         @classmethod
         def tearDownClass(cls):
             cls.gateway.stop()

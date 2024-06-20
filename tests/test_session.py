@@ -35,8 +35,7 @@ class TestSession(yadisk.Session):
         return self._session.set_headers(headers)
 
     def set_token(self, token: str) -> None:
-        self.set_headers({"x-test-authorization": f"OAuth {token}"})
-        super().set_token(self.test_token)
+        self._session.set_token(token)
 
     def send_request(self, method, url: str, **kwargs) -> yadisk.Response:
         url_parsed = urlparse(url)
@@ -64,11 +63,6 @@ class TestSession(yadisk.Session):
             if url_parsed.query:
                 url += "?" + url_parsed.query
 
-            if "authorization" in kwargs["headers"]:
-                kwargs["headers"]["x-test-authorization"] = kwargs["headers"]["authorization"]
-        else:
-            kwargs["headers"]["x-test-authorization"] = None
-
         return self._session.send_request(method, url, **kwargs)
 
     def close(self) -> None:
@@ -95,8 +89,7 @@ class AsyncTestSession(yadisk.AsyncSession):
         return self._session.set_headers(headers)
 
     def set_token(self, token: str) -> None:
-        self.set_headers({"x-test-authorization": f"OAuth {token}"})
-        super().set_token(self.test_token)
+        self._session.set_token(token)
 
     async def send_request(self, method, url: str, **kwargs) -> yadisk.AsyncResponse:
         url_parsed = urlparse(url)
@@ -123,11 +116,6 @@ class AsyncTestSession(yadisk.AsyncSession):
             url = urljoin(_ensure_trailing_slash(new_base_url), url_parsed.path.lstrip("/"))
             if url_parsed.query:
                 url += "?" + url_parsed.query
-
-            if "authorization" in kwargs["headers"]:
-                kwargs["headers"]["x-test-authorization"] = kwargs["headers"]["authorization"]
-        else:
-            kwargs["headers"]["x-test-authorization"] = None
 
         return await self._session.send_request(method, url, **kwargs)
 

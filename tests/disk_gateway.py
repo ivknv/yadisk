@@ -40,14 +40,10 @@ def deserialize_content(content: str) -> bytes:
     return zlib.decompress(base64.b64decode(content))
 
 def serialize_request(request: httpx.Request, response: httpx.Response):
-    headers = select_keys(request.headers, RELEVANT_REQUEST_HEADERS)
-    if "x-test-authorization" in request.headers:
-        headers["authorization"] = request.headers["x-test-authorization"]
-
     return {
         "method":   request.method,
         "url":      str(request.url),
-        "headers":  headers,
+        "headers":  select_keys(request.headers, RELEVANT_REQUEST_HEADERS),
         "content":  serialize_content(request.content),
         "response": serialize_response(response)
     }
@@ -144,7 +140,10 @@ class DiskGateway:
                 methods=["PUT"]
             ),
 
-            Route("/status", endpoint=self.check_status, methods=["GET"])
+            Route("/status", endpoint=self.check_status, methods=["GET"]),
+
+            Route("/tokens/update", endpoint=self.update_token_map, methods=["POST"]),
+            Route("/tokens/clear", endpoint=self.clear_token_map, methods=["POST"])
         ]
 
         @contextlib.asynccontextmanager
@@ -160,12 +159,39 @@ class DiskGateway:
         self.current_request_index = 0
         self.server_task = None
 
+        # This is used to substitute real OAuth token values for fake ones to
+        # not expose them
+        # Keys are actual OAuth tokens that will be sent to the Yandex.Disk API,
+        # values are made up values that will be put in the recorded requests
+        self.tokens = {}
+
     async def on_shutdown(self):
         await self.client.aclose()
+
+    async def update_token_map(self, request: Request):
+        js = await request.json()
+
+        # We expect a JSON object like {"real token": "token substitute"}
+        if not isinstance(js, dict):
+            return Response(status_code=422)
+
+        # This doesn't look thread-safe, but it's not important for testing anyway
+        self.tokens.update(js)
+
+        return Response(status_code=204)
+
+    async def clear_token_map(self, request: Request):
+        self.tokens.clear()
+        return Response(status_code=204)
 
     async def forward_request(self, request: Request, base_url: str):
         path: str = request.path_params.get("path", "")
         content: bytes = await request.body()
+
+        authorization_header = request.headers.get("authorization", "")
+
+        _, _, real_token = authorization_header.rpartition(" ")
+        test_token = self.tokens.get(real_token, real_token)
 
         outgoing_request = httpx.Request(
             request.method,
@@ -174,11 +200,6 @@ class DiskGateway:
             content=content,
             headers=select_keys(request.headers, RELEVANT_REQUEST_HEADERS)
         )
-
-        authorization_header = request.headers.get("authorization", "")
-        test_authorization_header = request.headers.get("x-test-authorization", "")
-
-        outgoing_request.headers["authorization"] = test_authorization_header
 
         server_response = await self.client.send(outgoing_request, follow_redirects=True)
 
@@ -191,7 +212,9 @@ class DiskGateway:
             response.headers["Content-Type"] = server_response.headers["content-type"]
 
         if self.recording_enabled:
-            outgoing_request.headers["authorization"] = authorization_header
+            # Substitute the Authorization header to hide the OAuth token
+            outgoing_request.headers["authorization"] = f"OAuth {test_token}"
+
             self.recorded_requests.append(serialize_request(outgoing_request, server_response))
 
         return response
@@ -206,6 +229,14 @@ class DiskGateway:
 
         content: bytes = await request.body()
         headers = select_keys(request.headers, RELEVANT_REQUEST_HEADERS)
+
+        # Substitute the real token for the test one
+        # Recorded requests contain a test OAuth token instead of the real one
+        authorization_header = request.headers.get("authorization", "")
+        _, _, real_token = authorization_header.rpartition(" ")
+        test_token = self.tokens.get(real_token, real_token)
+
+        headers["authorization"] = f"OAuth {test_token}"
 
         url = f"{base_url}/{path}"
 
@@ -366,6 +397,12 @@ class DiskGatewayClient:
         except httpx.ConnectError:
             return False
 
+    def update_token_map(self, tokens: dict):
+        return self._client.post(f"{self.base_url}/tokens/update", json=tokens).raise_for_status()
+
+    def clear_token_map(self):
+        return self._client.post(f"{self.base_url}/tokens/clear").raise_for_status()
+
     @contextlib.contextmanager
     def record_as(self, filename: str):
         self.start_recording()
@@ -427,6 +464,12 @@ class AsyncDiskGatewayClient:
             return (await self._client.get(f"{self.base_url}/status")).status_code == 204
         except httpx.ConnectError:
             return False
+
+    async def update_token_map(self, tokens: dict):
+        return (await self._client.post(f"{self.base_url}/tokens/update", json=tokens)).raise_for_status()
+
+    async def clear_token_map(self):
+        return (await self._client.post(f"{self.base_url}/tokens/clear")).raise_for_status()
 
     @contextlib.asynccontextmanager
     async def record_as(self, filename: str):
