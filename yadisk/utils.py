@@ -8,14 +8,14 @@ from .objects import ErrorObject
 from .exceptions import *
 from . import settings
 
-from typing import Any, Optional, Union, TypeVar
+from typing import Any, Optional, Type, Union, TypeVar
 
-from .compat import Callable, Awaitable
+from .compat import Callable, Awaitable, Dict
 from .types import AnyResponse
 
 __all__ = ["get_exception", "auto_retry", "async_auto_retry"]
 
-EXCEPTION_MAP = {
+EXCEPTION_MAP: Dict[int, Dict[str, Type[YaDiskError]]] = {
     400: defaultdict(
         lambda: BadRequestError,
         {
