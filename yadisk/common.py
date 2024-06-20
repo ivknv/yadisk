@@ -102,40 +102,37 @@ def ensure_path_has_schema(path: str, default_schema: str = "disk") -> str:
 
 # https://stackoverflow.com/a/32888599/3653520
 class CaseInsensitiveDict(dict):
-    K = TypeVar("K")
-
     @classmethod
-    def _k(cls, key: K) -> K:
-        return key.lower() if isinstance(key, str) else key
+    def _k(cls, key: str) -> str:
+        return key.lower()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._convert_keys()
 
-    def __getitem__(self, key: K) -> Any:
+    def __getitem__(self, key: str) -> Any:
         return super().__getitem__(self.__class__._k(key))
 
-    def __setitem__(self, key: K, value: Any) -> None:
+    def __setitem__(self, key: str, value: Any) -> None:
         super().__setitem__(self.__class__._k(key), value)
 
-    def __delitem__(self, key: K) -> Any:
+    def __delitem__(self, key: str) -> Any:
         return super().__delitem__(self.__class__._k(key))
 
-    def __contains__(self, key: K) -> bool:
+    def __contains__(self, key: Any) -> bool:
         return super().__contains__(self.__class__._k(key))
 
-    def pop(self, key: K, /, *args, **kwargs) -> Any:
+    def pop(self, key: str, /, *args, **kwargs) -> Any:
         return super().pop(self.__class__._k(key), *args, **kwargs)
 
-    def get(self, key: K, /, *args, **kwargs) -> Any:
+    def get(self, key: str, /, *args, **kwargs) -> Any:
         return super().get(self.__class__._k(key), *args, **kwargs)
 
-    def setdefault(self, key: K, *args, **kwargs) -> Any:
+    def setdefault(self, key: str, *args, **kwargs) -> Any:
         return super().setdefault(self.__class__._k(key), *args, **kwargs)
 
-    def update(self, E: dict = {}, **F) -> None:
-        super().update(self.__class__(E))
-        super().update(self.__class__(**F))
+    def update(self, *args, **kwargs) -> None:
+        super().update(*(self.__class__(arg) for arg in args), **self.__class__(kwargs))
 
     def _convert_keys(self) -> None:
         for k in list(self.keys()):
