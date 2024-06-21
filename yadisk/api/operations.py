@@ -11,7 +11,7 @@ from typing import Optional, TYPE_CHECKING
 from ..compat import Iterable
 
 if TYPE_CHECKING:
-    from ..types import AnySession
+    from ..types import AnySession, JSON
 
 __all__ = ["GetOperationStatusRequest"]
 
@@ -51,8 +51,8 @@ class GetOperationStatusRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: Optional[dict]) -> OperationStatusObject:
-        if js is None:
+    def process_json(self, js: "JSON", **kwargs) -> OperationStatusObject:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if js.get("status") not in ("in-progress", "success", "failed"):

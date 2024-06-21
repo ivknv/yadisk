@@ -8,7 +8,7 @@ from typing import Optional, TYPE_CHECKING
 from ..compat import Iterable
 
 if TYPE_CHECKING:
-    from ..types import AnySession
+    from ..types import AnySession, JSON
 
 __all__ = ["DiskInfoRequest"]
 
@@ -34,8 +34,8 @@ class DiskInfoRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: Optional[dict]) -> DiskInfoObject:
-        if js is None:
+    def process_json(self, js: "JSON", **kwargs) -> DiskInfoObject:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         return DiskInfoObject(js)

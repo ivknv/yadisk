@@ -19,7 +19,7 @@ from ..compat import Iterable, Dict, List
 from typing import Optional, Union, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ..types import AnySession, AnyClient
+    from ..types import AnySession, AnyClient, JSON
 
 __all__ = ["GetPublicResourcesRequest", "UnpublishRequest", "GetDownloadLinkRequest",
            "GetTrashRequest", "RestoreTrashRequest", "DeleteTrashRequest",
@@ -88,10 +88,13 @@ class GetPublicResourcesRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> PublicResourcesListObject:
-        if js is None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> PublicResourcesListObject:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if yadisk is None or yadisk.synchronous:
@@ -126,10 +129,13 @@ class UnpublishRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> ResourceLinkObject:
-        if js is None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> ResourceLinkObject:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if yadisk is None or yadisk.synchronous:
@@ -164,10 +170,13 @@ class GetDownloadLinkRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> ResourceDownloadLinkObject:
-        if js is None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> ResourceDownloadLinkObject:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         return ResourceDownloadLinkObject(js, yadisk)
@@ -233,10 +242,13 @@ class GetTrashRequest(APIRequest):
 
             self.params["fields"] = ",".join(_substitute_keys(fields, sub_map))
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> TrashResourceObject:
-        if js is None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> TrashResourceObject:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if yadisk is None or yadisk.synchronous:
@@ -291,10 +303,13 @@ class RestoreTrashRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> Union[OperationLinkObject, ResourceLinkObject]:
-        if js is None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> Union[OperationLinkObject, ResourceLinkObject]:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if is_operation_link(js.get("href", "")):
@@ -345,14 +360,22 @@ class DeleteTrashRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> Optional[OperationLinkObject]:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> Optional[OperationLinkObject]:
         if js is not None:
+            if not isinstance(js, dict):
+                raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
             if yadisk is None or yadisk.synchronous:
                 return SyncOperationLinkObject(js, yadisk)
             else:
                 return AsyncOperationLinkObject(js, yadisk)
+
+        return None
 
 class LastUploadedRequest(APIRequest):
     """
@@ -410,10 +433,13 @@ class LastUploadedRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> LastUploadedResourceListObject:
-        if js is None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> LastUploadedResourceListObject:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if yadisk is None or yadisk.synchronous:
@@ -467,10 +493,13 @@ class CopyRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> Union[OperationLinkObject, ResourceLinkObject]:
-        if js is None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> Union[OperationLinkObject, ResourceLinkObject]:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if is_operation_link(js.get("href", "")):
@@ -551,10 +580,13 @@ class GetMetaRequest(APIRequest):
 
             self.params["fields"] = ",".join(_substitute_keys(fields, sub_map))
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> ResourceObject:
-        if js is None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> ResourceObject:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if yadisk is None or yadisk.synchronous:
@@ -593,10 +625,13 @@ class GetUploadLinkRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> ResourceUploadLinkObject:
-        if js is None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> ResourceUploadLinkObject:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         return ResourceUploadLinkObject(js, yadisk)
@@ -628,10 +663,13 @@ class MkdirRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> ResourceLinkObject:
-        if js is None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> ResourceLinkObject:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if yadisk is None or yadisk.synchronous:
@@ -666,10 +704,13 @@ class PublishRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> ResourceLinkObject:
-        if js is None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> ResourceLinkObject:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if yadisk is None or yadisk.synchronous:
@@ -717,10 +758,13 @@ class UploadURLRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> OperationLinkObject:
-        if js is None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> OperationLinkObject:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if yadisk is None or yadisk.synchronous:
@@ -776,14 +820,21 @@ class DeleteRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> Optional[OperationLinkObject]:
-        if js is not None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> Optional[OperationLinkObject]:
+        if isinstance(js, dict):
             if yadisk is None or yadisk.synchronous:
                 return SyncOperationLinkObject(js, yadisk)
             else:
                 return AsyncOperationLinkObject(js, yadisk)
+        elif js is not None:
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
+        return None
 
 class SaveToDiskRequest(APIRequest):
     """
@@ -842,10 +893,13 @@ class SaveToDiskRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> Union[OperationLinkObject, ResourceLinkObject]:
-        if js is None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> Union[OperationLinkObject, ResourceLinkObject]:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if is_operation_link(js.get("href", "")):
@@ -931,10 +985,13 @@ class GetPublicMetaRequest(APIRequest):
 
             self.params["fields"] = ",".join(_substitute_keys(fields, sub_map))
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> PublicResourceObject:
-        if js is None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> PublicResourceObject:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if yadisk is None or yadisk.synchronous:
@@ -978,10 +1035,13 @@ class GetPublicDownloadLinkRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> ResourceDownloadLinkObject:
-        if js is None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> ResourceDownloadLinkObject:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         return ResourceDownloadLinkObject(js, yadisk)
@@ -1031,10 +1091,13 @@ class MoveRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> Union[OperationLinkObject, ResourceLinkObject]:
-        if js is None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> Union[OperationLinkObject, ResourceLinkObject]:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if is_operation_link(js.get("href", "")):
@@ -1116,10 +1179,13 @@ class FilesRequest(APIRequest):
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> FilesResourceListObject:
-        if js is None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> FilesResourceListObject:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if yadisk is None or yadisk.synchronous:
@@ -1161,10 +1227,13 @@ class PatchRequest(APIRequest):
 
             self.params["fields"] = ",".join(_substitute_keys(fields, sub_map))
 
-    def process_json(self,
-                     js: Optional[dict],
-                     yadisk: Optional["AnyClient"] = None) -> ResourceObject:
-        if js is None:
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> ResourceObject:
+        if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         if yadisk is None or yadisk.synchronous:
