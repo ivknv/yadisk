@@ -28,9 +28,8 @@ class DiskInfoRequest(APIRequest):
     def __init__(self,
                  session: "AnySession",
                  fields: Optional[Iterable[str]] = None, **kwargs):
-        APIRequest.__init__(self, session, {"fields": fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self, fields: Optional[Iterable[str]]) -> None:
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 

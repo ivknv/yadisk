@@ -11,11 +11,10 @@ from typing import Any, Optional, Union, TypeVar, TYPE_CHECKING
 from ..compat import Set, Dict
 import json
 
-from ..types import AnySession, JSON, HTTPMethod
-
 if TYPE_CHECKING:
     from ..session import Response, Session
     from ..async_session import AsyncResponse, AsyncSession
+    from ..types import AnySession, HTTPMethod, JSON
 
 __all__ = ["APIRequest"]
 
@@ -27,7 +26,6 @@ class APIRequest(object):
         Base class for all API requests.
 
         :param session: an instance of :any:`Session`
-        :param args: `dict` of arguments, that will be passed to `process_args`
         :param timeout: `float` or `tuple`, request timeout
         :param headers: `dict` or `None`, additional request headers
         :param n_retries: `int`, maximum number of retries
@@ -49,7 +47,7 @@ class APIRequest(object):
     base_url: str = ""
     url: str = ""
     path: str = ""
-    method: Optional[HTTPMethod] = None
+    method: Optional["HTTPMethod"] = None
     content_type: str = "application/x-www-form-urlencoded"
     timeout = _DEFAULT_TIMEOUT
     n_retries: Optional[int] = None
@@ -65,7 +63,7 @@ class APIRequest(object):
 
     T = TypeVar("T")
 
-    def __init__(self, session: AnySession, args: dict, **kwargs):
+    def __init__(self, session: "AnySession", **kwargs):
         base_url = kwargs.pop("base_url", self.base_url) or settings.BASE_API_URL
         n_retries = kwargs.pop("n_retries", None)
         retry_interval = kwargs.pop("retry_interval", None)
@@ -95,7 +93,6 @@ class APIRequest(object):
             retry_interval = settings.DEFAULT_RETRY_INTERVAL
 
         self.session = session
-        self.args = args
         self.send_kwargs = kwargs
         self.base_url = base_url
         self.timeout = timeout
@@ -109,11 +106,6 @@ class APIRequest(object):
 
         if not self.url:
             self.url = f"{self.base_url}/{self.path.lstrip('/')}"
-
-        self.process_args(**self.args)
-
-    def process_args(self, **kwargs) -> None:
-        raise NotImplementedError
 
     def _prepare_send_args(self) -> Dict[str, Any]:
         headers = CaseInsensitiveDict()
@@ -177,7 +169,7 @@ class APIRequest(object):
 
         return self.response
 
-    def process_json(self, js: JSON, **kwargs) -> Any:
+    def process_json(self, js: "JSON", **kwargs) -> Any:
         """
             Process the JSON response.
 

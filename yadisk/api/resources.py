@@ -59,20 +59,8 @@ class GetPublicResourcesRequest(APIRequest):
                  preview_crop: Optional[bool] = None,
                  type: Optional[str] = None,
                  fields: Optional[Iterable[str]] = None, **kwargs):
-        APIRequest.__init__(self, session, {"offset":       offset,
-                                            "limit":        limit,
-                                            "preview_size": preview_size,
-                                            "preview_crop": preview_crop,
-                                            "type":         type,
-                                            "fields":       fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self,
-                     offset: int,
-                     limit: int,
-                     preview_size: Optional[str],
-                     preview_crop: Optional[bool],
-                     type: Optional[str],
-                     fields: Optional[Iterable[str]]) -> None:
         self.params["offset"] = offset
         self.params["limit"] = limit
 
@@ -120,10 +108,8 @@ class UnpublishRequest(APIRequest):
                  session: "AnySession",
                  path: str,
                  fields: Optional[Iterable[str]] = None, **kwargs):
-        APIRequest.__init__(self, session, {"path":   path,
-                                            "fields": fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self, path: str, fields: Optional[Iterable[str]]) -> None:
         self.params["path"] = ensure_path_has_schema(path)
 
         if fields is not None:
@@ -161,10 +147,8 @@ class GetDownloadLinkRequest(APIRequest):
                  session: "AnySession",
                  path: str,
                  fields: Optional[Iterable[str]] = None, **kwargs):
-        APIRequest.__init__(
-            self, session, {"path": path, "fields": fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self, path: str, fields: Optional[Iterable[str]]) -> None:
         self.params["path"] = ensure_path_has_schema(path)
 
         if fields is not None:
@@ -208,22 +192,8 @@ class GetTrashRequest(APIRequest):
                  preview_size: Optional[str] = None,
                  preview_crop: Optional[bool] = None,
                  fields: Optional[Iterable[str]] = None, **kwargs):
-        APIRequest.__init__(self, session, {"path":         path,
-                                            "offset":       offset,
-                                            "limit":        limit,
-                                            "sort":         sort,
-                                            "preview_size": preview_size,
-                                            "preview_crop": preview_crop,
-                                            "fields":       fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self,
-                     path: str,
-                     offset: int,
-                     limit: int,
-                     sort: Optional[str],
-                     preview_size: Optional[str],
-                     preview_crop: Optional[bool],
-                     fields: Optional[Iterable[str]]) -> None:
         self.params["path"] = ensure_path_has_schema(path, "trash")
         self.params["offset"] = offset
         self.params["limit"] = limit
@@ -281,18 +251,8 @@ class RestoreTrashRequest(APIRequest):
                  force_async: bool = False,
                  overwrite: bool = False,
                  fields: Optional[Iterable[str]] = None, **kwargs):
-        APIRequest.__init__(self, session, {"path":        path,
-                                            "dst_path":    dst_path,
-                                            "overwrite":   overwrite,
-                                            "force_async": force_async,
-                                            "fields":      fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self,
-                     path: str,
-                     dst_path: Optional[str],
-                     force_async: bool,
-                     overwrite: bool,
-                     fields: Optional[Iterable[str]]) -> None:
         self.params["path"] = ensure_path_has_schema(path, "trash")
         self.params["overwrite"] = "true" if overwrite else "false"
         self.params["force_async"] = "true" if force_async else "false"
@@ -344,14 +304,8 @@ class DeleteTrashRequest(APIRequest):
                  path: Optional[str] = None,
                  force_async: bool = False,
                  fields: Optional[Iterable[str]] = None, **kwargs):
-        APIRequest.__init__(self, session, {"path":        path,
-                                            "force_async": force_async,
-                                            "fields":      fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self,
-                     path: Optional[str],
-                     force_async: bool,
-                     fields: Optional[Iterable[str]]) -> None:
         if path is not None:
             self.params["path"] = ensure_path_has_schema(path, "trash")
 
@@ -401,18 +355,8 @@ class LastUploadedRequest(APIRequest):
                  preview_size: Optional[str] = None,
                  preview_crop: Optional[bool] = None,
                  fields: Optional[Iterable[str]] = None, **kwargs):
-        APIRequest.__init__(self, session, {"limit":        limit,
-                                            "media_type":   media_type,
-                                            "preview_size": preview_size,
-                                            "preview_crop": preview_crop,
-                                            "fields":       fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self,
-                     limit: int,
-                     media_type: Optional[str],
-                     preview_size: Optional[str],
-                     preview_crop: Optional[bool],
-                     fields: Optional[Iterable[str]]) -> None:
         self.params["limit"] = limit
 
         if media_type is not None:
@@ -473,18 +417,8 @@ class CopyRequest(APIRequest):
                  overwrite: bool = False,
                  force_async: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
-        APIRequest.__init__(self, session, {"src_path":    src_path,
-                                            "dst_path":    dst_path,
-                                            "overwrite":   overwrite,
-                                            "force_async": force_async,
-                                            "fields":      fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self,
-                     src_path: str,
-                     dst_path: str,
-                     overwrite: bool,
-                     force_async: bool,
-                     fields: Optional[Fields]) -> None:
         self.params["from"] = ensure_path_has_schema(src_path)
         self.params["path"] = ensure_path_has_schema(dst_path)
         self.params["overwrite"] = "true" if overwrite else "false"
@@ -541,23 +475,8 @@ class GetMetaRequest(APIRequest):
                  preview_crop: Optional[bool] = None,
                  sort: Optional[str] = None,
                  fields: Optional[Fields] = None, **kwargs):
-        APIRequest.__init__(self, session,
-                            {"path":         path,
-                             "limit":        limit,
-                             "offset":       offset,
-                             "preview_size": preview_size,
-                             "preview_crop": preview_crop,
-                             "sort":         sort,
-                             "fields":       fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self,
-                     path: str,
-                     limit: Optional[int],
-                     offset: Optional[int],
-                     preview_size: Optional[str],
-                     preview_crop: Optional[bool],
-                     sort: Optional[str],
-                     fields: Optional[Fields]) -> None:
         self.params["path"] = ensure_path_has_schema(path)
 
         if limit is not None:
@@ -614,11 +533,8 @@ class GetUploadLinkRequest(APIRequest):
                  path: str,
                  overwrite: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
-        APIRequest.__init__(self, session, {"path":      path,
-                                            "overwrite": overwrite,
-                                            "fields":    fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self, path: str, overwrite: bool, fields: Optional[Fields]) -> None:
         self.params["path"] = ensure_path_has_schema(path)
         self.params["overwrite"] = "true" if overwrite else "false"
 
@@ -654,10 +570,8 @@ class MkdirRequest(APIRequest):
                  session: "AnySession",
                  path: str,
                  fields: Optional[Fields] = None, **kwargs):
-        APIRequest.__init__(self, session, {"path": path, "fields": fields},
-                            **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self, path: str, fields: Optional[Fields]) -> None:
         self.params["path"] = ensure_path_has_schema(path)
 
         if fields is not None:
@@ -695,10 +609,8 @@ class PublishRequest(APIRequest):
                  session: "AnySession",
                  path: str,
                  fields: Optional[Fields] = None, **kwargs):
-        APIRequest.__init__(self, session, {"path":   path,
-                                            "fields": fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self, path: str, fields: Optional[Fields]) -> None:
         self.params["path"] = ensure_path_has_schema(path)
 
         if fields is not None:
@@ -741,16 +653,8 @@ class UploadURLRequest(APIRequest):
                  path: str,
                  disable_redirects: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
-        APIRequest.__init__(self, session, {"url":               url,
-                                            "path":              path,
-                                            "disable_redirects": disable_redirects,
-                                            "fields":            fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self,
-                     url: str,
-                     path: str,
-                     disable_redirects: bool,
-                     fields: Optional[Fields]) -> None:
         self.params["url"] = url
         self.params["path"] = ensure_path_has_schema(path)
         self.params["disable_redirects"] = "true" if disable_redirects else "false"
@@ -798,18 +702,8 @@ class DeleteRequest(APIRequest):
                  md5: Optional[str] = None,
                  force_async: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
-        APIRequest.__init__(self, session, {"path":        path,
-                                            "permanently": permanently,
-                                            "md5":         md5,
-                                            "force_async": force_async,
-                                            "fields":      fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self,
-                     path: str,
-                     permanently: bool,
-                     md5: Optional[str],
-                     force_async: bool,
-                     fields: Optional[Fields]) -> None:
         self.params["path"] = ensure_path_has_schema(path)
         self.params["permanently"] = "true" if permanently else "false"
         self.params["force_async"] = "true" if force_async else "false"
@@ -863,20 +757,8 @@ class SaveToDiskRequest(APIRequest):
                  save_path: Optional[str] = None,
                  force_async: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
-        APIRequest.__init__(self, session, {"public_key":  public_key,
-                                            "name":        name,
-                                            "path":        path,
-                                            "save_path":   save_path,
-                                            "force_async": force_async,
-                                            "fields":      fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self,
-                     public_key: str,
-                     name: Optional[str],
-                     path: Optional[str],
-                     save_path: Optional[str],
-                     force_async: bool,
-                     fields: Optional[Fields]) -> None:
         self.params["public_key"] = public_key
 
         if name is not None:
@@ -945,24 +827,8 @@ class GetPublicMetaRequest(APIRequest):
                  preview_size: Optional[str] = None,
                  preview_crop: Optional[bool] = None,
                  fields: Optional[Fields] = None, **kwargs):
-        APIRequest.__init__(self, session, {"public_key":   public_key,
-                                            "offset":       offset,
-                                            "limit":        limit,
-                                            "path":         path,
-                                            "sort":         sort,
-                                            "preview_size": preview_size,
-                                            "preview_crop": preview_crop,
-                                            "fields":       fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self,
-                     public_key: str,
-                     offset: int,
-                     limit: int,
-                     path: Optional[str],
-                     sort: Optional[str],
-                     preview_size: Optional[str],
-                     preview_crop: Optional[bool],
-                     fields: Optional[Fields]) -> None:
         self.params["public_key"] = public_key
         self.params["offset"] = offset
         self.params["limit"] = limit
@@ -1019,14 +885,8 @@ class GetPublicDownloadLinkRequest(APIRequest):
                  public_key: str,
                  path: Optional[str] = None,
                  fields: Optional[Fields] = None, **kwargs):
-        APIRequest.__init__(self, session, {"public_key": public_key,
-                                            "path":       path,
-                                            "fields":     fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self,
-                     public_key: str,
-                     path: Optional[str],
-                     fields: Optional[Fields]) -> None:
         self.params["public_key"] = public_key
 
         if path is not None:
@@ -1071,18 +931,8 @@ class MoveRequest(APIRequest):
                  force_async: bool = False,
                  overwrite: bool = False,
                  fields: Optional[Fields] = None, **kwargs):
-        APIRequest.__init__(self, session, {"src_path":    src_path,
-                                            "dst_path":    dst_path,
-                                            "force_async": force_async,
-                                            "overwrite":   overwrite,
-                                            "fields":      fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self,
-                     src_path: str,
-                     dst_path: str,
-                     force_async: bool,
-                     overwrite: bool,
-                     fields: Optional[Fields]) -> None:
         self.params["from"] = ensure_path_has_schema(src_path)
         self.params["path"] = ensure_path_has_schema(dst_path)
         self.params["overwrite"] = "true" if overwrite else "false"
@@ -1139,22 +989,8 @@ class FilesRequest(APIRequest):
                  preview_crop: Optional[bool] = None,
                  sort: Optional[str] = None,
                  fields: Optional[Fields] = None, **kwargs):
-        APIRequest.__init__(self, session, {"offset":       offset,
-                                            "limit":        limit,
-                                            "media_type":   media_type,
-                                            "sort":         sort,
-                                            "preview_size": preview_size,
-                                            "preview_crop": preview_crop,
-                                            "fields":       fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self,
-                     offset: int,
-                     limit: int,
-                     media_type: Optional[Union[str, Iterable[str]]],
-                     sort: Optional[str],
-                     preview_size: Optional[str],
-                     preview_crop: Optional[bool],
-                     fields: Optional[Fields]) -> None:
         self.params["offset"] = offset
         self.params["limit"] = limit
 
@@ -1214,11 +1050,8 @@ class PatchRequest(APIRequest):
                  path: str,
                  properties: dict,
                  fields: Optional[Fields] = None, **kwargs):
-        APIRequest.__init__(self, session, {"path":       path,
-                                            "properties": properties,
-                                            "fields":     fields}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self, path: str, properties: dict, fields: Optional[Fields]) -> None:
         self.params["path"] = ensure_path_has_schema(path)
         self.data = {"custom_properties": properties}
 

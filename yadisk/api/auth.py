@@ -39,11 +39,8 @@ class RefreshTokenRequest(APIRequest):
                  refresh_token: str,
                  client_id: str,
                  client_secret: str, **kwargs):
-        APIRequest.__init__(self, session, {"refresh_token": refresh_token,
-                                            "client_id":     client_id,
-                                            "client_secret": client_secret}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self, refresh_token: str, client_id: str, client_secret: str) -> None:
         self.data = urlencode({
             "grant_type":    "refresh_token",
             "refresh_token": refresh_token,
@@ -78,11 +75,8 @@ class RevokeTokenRequest(APIRequest):
                  token: str,
                  client_id: str,
                  client_secret: str, **kwargs):
-        APIRequest.__init__(self, session, {"token":         token,
-                                            "client_id":     client_id,
-                                            "client_secret": client_secret}, **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(self, token: str, client_id: str, client_secret: str) -> None:
         self.data = urlencode({
             "access_token":  token,
             "client_id":     client_id,
@@ -131,36 +125,12 @@ class GetTokenRequest(APIRequest):
         code_verifier: Optional[str] = None,
         **kwargs
     ):
-        APIRequest.__init__(
-            self,
-            session,
-            {
-                "grant_type":    grant_type,
-                "code":          code,
-                "token":         token,
-                "client_id":     client_id,
-                "client_secret": client_secret,
-                "device_id":     device_id,
-                "device_name":   device_name,
-                "code_verifier": code_verifier
-            },
-            **kwargs)
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(
-        self,
-        grant_type:    str,
-        code:          Optional[str],
-        token:         Optional[str],
-        client_id:     str,
-        client_secret: Optional[str],
-        device_id:     Optional[str],
-        device_name:   Optional[str],
-        code_verifier: Optional[str]
-    ) -> None:
-        data = {}
-
-        data["grant_type"] = grant_type
-        data["client_id"] = client_id
+        data = {
+            "grant_type": grant_type,
+            "client_id": client_id
+        }
 
         if code:
             data["code"] = code
@@ -218,30 +188,9 @@ class GetDeviceCodeRequest(APIRequest):
         optional_scope: Optional[str] = None,
         **kwargs
     ):
-        APIRequest.__init__(
-            self,
-            session,
-            {
-                "client_id":      client_id,
-                "device_id":      device_id,
-                "device_name":    device_name,
-                "scope":          scope,
-                "optional_scope": optional_scope
-            },
-            **kwargs
-        )
+        APIRequest.__init__(self, session, **kwargs)
 
-    def process_args(
-        self,
-        client_id:      str,
-        device_id:      Optional[str],
-        device_name:    Optional[str],
-        scope:          Optional[str],
-        optional_scope: Optional[str]
-    ) -> None:
-        data = {}
-
-        data["client_id"] = client_id
+        data = {"client_id": client_id}
 
         if device_id:
             data["device_id"] = device_id
