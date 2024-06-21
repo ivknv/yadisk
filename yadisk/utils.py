@@ -126,9 +126,9 @@ def auto_retry(func: Callable[[], T],
     # This should never be reachable
     assert False
 
-async def async_auto_retry(func: Union[Callable[[], T], Callable[[], Awaitable[T]]],
+async def async_auto_retry(func: Union[Callable[[], Any], Callable[[], Awaitable[Any]]],
                            n_retries: Optional[int] = None,
-                           retry_interval: Optional[Union[int, float]] = None) -> T:
+                           retry_interval: Optional[Union[int, float]] = None) -> Any:
     """
         Attempt to perform a request with automatic retries.
         A retry is triggered by :any:`RequestError` or :any:`RetriableYaDiskError`.

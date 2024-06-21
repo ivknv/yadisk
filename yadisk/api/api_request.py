@@ -14,8 +14,8 @@ import json
 from ..types import AnySession, JSON, HTTPMethod
 
 if TYPE_CHECKING:
-    from ..session import Response
-    from ..async_session import AsyncResponse
+    from ..session import Response, Session
+    from ..async_session import AsyncResponse, AsyncSession
 
 __all__ = ["APIRequest"]
 
@@ -141,7 +141,8 @@ class APIRequest(object):
 
         kwargs = self._prepare_send_args()
 
-        self.response = self.session.send_request(self.method, self.url, **kwargs)
+        session: "Session" = self.session
+        self.response = session.send_request(self.method, self.url, **kwargs)
 
         success = self.response.status in self.success_codes
 
@@ -154,7 +155,9 @@ class APIRequest(object):
 
         kwargs = self._prepare_send_args()
 
-        self.response = await self.session.send_request(self.method, self.url, **kwargs)
+        session: "AsyncSession" = self.session
+
+        self.response = await session.send_request(self.method, self.url, **kwargs)
 
         success = self.response.status in self.success_codes
 
@@ -174,7 +177,7 @@ class APIRequest(object):
 
         return self.response
 
-    def process_json(self, js: JSON, **kwargs) -> T:
+    def process_json(self, js: JSON, **kwargs) -> Any:
         """
             Process the JSON response.
 
@@ -186,7 +189,7 @@ class APIRequest(object):
 
         raise NotImplementedError
 
-    def process(self, **kwargs) -> T:
+    def process(self, **kwargs) -> Any:
         """
             Process the response.
 
@@ -220,7 +223,7 @@ class APIRequest(object):
 
         return self.response
 
-    async def aprocess(self, **kwargs) -> T:
+    async def aprocess(self, **kwargs) -> Any:
         """
             Process the response.
 
