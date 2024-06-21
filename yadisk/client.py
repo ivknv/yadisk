@@ -896,7 +896,7 @@ class Client:
                     payload = _read_file_as_generator(file)
 
                 with session.send_request("PUT", link, data=payload, **temp_kwargs) as response:
-                    if response.status != 201:
+                    if response.status() != 201:
                         raise response.get_exception()
 
             auto_retry(attempt, n_retries, retry_interval)
@@ -1069,7 +1069,7 @@ class Client:
                 with session.send_request("GET", link, **temp_kwargs) as response:
                     response.download(file.write)
 
-                    if response.status != 200:
+                    if response.status() != 200:
                         raise response.get_exception()
 
             auto_retry(attempt, n_retries, retry_interval)

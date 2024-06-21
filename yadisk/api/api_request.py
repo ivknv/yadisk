@@ -136,7 +136,7 @@ class APIRequest(object):
         session: "Session" = self.session
         self.response = session.send_request(self.method, self.url, **kwargs)
 
-        success = self.response.status in self.success_codes
+        success = self.response.status() in self.success_codes
 
         if not success:
             raise self.response.get_exception()
@@ -151,7 +151,7 @@ class APIRequest(object):
 
         self.response = await session.send_request(self.method, self.url, **kwargs)
 
-        success = self.response.status in self.success_codes
+        success = self.response.status() in self.success_codes
 
         if not success:
             raise await self.response.get_exception()

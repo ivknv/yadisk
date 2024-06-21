@@ -35,12 +35,11 @@ class PycurlResponse(Response):
         self._curl = curl
         self._response = response
 
-    @property
     def status(self) -> int:
         return self._curl.getinfo(pycurl.RESPONSE_CODE)
 
     def json(self) -> JSON:
-        if not self.status:
+        if not self.status():
             try:
                 self._response = self._curl.perform_rb()
             except pycurl.error as e:

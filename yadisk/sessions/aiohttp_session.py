@@ -34,7 +34,9 @@ def convert_aiohttp_exception(exc: aiohttp.ClientError) -> Union[RequestError, a
 class AIOHTTPResponse(AsyncResponse):
     def __init__(self, response: aiohttp.ClientResponse):
         self._response = response
-        self.status = response.status
+
+    def status(self) -> int:
+        return self._response.status
 
     async def json(self) -> JSON:
         return await self._response.json()

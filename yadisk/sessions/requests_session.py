@@ -32,7 +32,9 @@ def convert_requests_exception(exc: requests.RequestException) -> Union[RequestE
 class RequestsResponse(Response):
     def __init__(self, response: requests.Response):
         self._response = response
-        self.status = response.status_code
+
+    def status(self) -> int:
+        return self._response.status_code
 
     def json(self) -> JSON:
         return self._response.json()
