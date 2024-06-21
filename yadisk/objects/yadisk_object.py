@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from typing import Any, Optional, Callable, Any, Iterator
+from typing import Any, Optional, Callable, Iterator
 
 __all__ = ["YaDiskObject"]
+
 
 class YaDiskObject:
     """

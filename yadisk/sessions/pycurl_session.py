@@ -19,6 +19,7 @@ import pycurl
 
 __all__ = ["PycURLSession"]
 
+
 def convert_curl_error(error: pycurl.error) -> RequestError:
     code, msg = error.args
 
@@ -29,6 +30,7 @@ def convert_curl_error(error: pycurl.error) -> RequestError:
 
     exc = mapping.get(code) or RequestError
     return exc(msg)
+
 
 class PycurlResponse(Response):
     def __init__(self, curl: pycurl.Curl, response: bytes):
@@ -61,6 +63,7 @@ class PycurlResponse(Response):
 
     def close(self) -> None:
         self._curl.close()
+
 
 class IterableReader:
     def __init__(self, iterator: Iterator[bytes]):
@@ -107,6 +110,7 @@ class IterableReader:
 
             data += chunk_fragment
             self._position_in_chunk += len(chunk_fragment)
+
 
 class PycURLSession(Session):
     """
@@ -173,7 +177,7 @@ class PycURLSession(Session):
             else:
                 connect_timeout = read_timeout = timeout
 
-            MAX_TIMEOUT = 4294967 # in seconds
+            MAX_TIMEOUT = 4294967  # in seconds
 
             if connect_timeout is None:
                 connect_timeout = MAX_TIMEOUT

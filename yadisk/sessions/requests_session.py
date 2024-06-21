@@ -17,6 +17,7 @@ import requests
 
 __all__ = ["RequestsSession"]
 
+
 def convert_requests_exception(exc: requests.RequestException) -> Union[RequestError, requests.RequestException]:
     if isinstance(exc, requests.exceptions.TooManyRedirects):
         return TooManyRedirectsError(str(exc))
@@ -28,6 +29,7 @@ def convert_requests_exception(exc: requests.RequestException) -> Union[RequestE
         return RequestError(str(exc))
     else:
         return exc
+
 
 class RequestsResponse(Response):
     def __init__(self, response: requests.Response):
@@ -48,6 +50,7 @@ class RequestsResponse(Response):
 
     def close(self) -> None:
         self._response.close()
+
 
 class RequestsSession(Session):
     """

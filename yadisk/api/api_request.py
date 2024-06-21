@@ -21,6 +21,7 @@ __all__ = ["APIRequest"]
 # For cases when None can't be used
 _DEFAULT_TIMEOUT = object()
 
+
 class APIRequest(object):
     """
         Base class for all API requests.

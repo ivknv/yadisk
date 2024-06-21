@@ -14,6 +14,7 @@ __all__ = [
     "SyncOperationLinkObject", "AsyncOperationLinkObject"
 ]
 
+
 class OperationStatusObject(YaDiskObject):
     """
         Operation status object.
@@ -36,6 +37,7 @@ class OperationStatusObject(YaDiskObject):
 
         self.import_fields(operation_status)
 
+
 class OperationLinkObject(LinkObject):
     """
         Operation link object.
@@ -49,6 +51,7 @@ class OperationLinkObject(LinkObject):
     """
 
     pass
+
 
 class SyncOperationLinkObject(OperationLinkObject):
     """
@@ -87,6 +90,7 @@ class SyncOperationLinkObject(OperationLinkObject):
             raise ValueError("OperationLinkObject has no link")
 
         return self._yadisk.get_operation_status(self.href, **kwargs)
+
 
 class AsyncOperationLinkObject(OperationLinkObject):
     """

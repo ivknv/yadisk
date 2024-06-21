@@ -15,6 +15,7 @@ if TYPE_CHECKING:
 
 __all__ = ["GetOperationStatusRequest"]
 
+
 class GetOperationStatusRequest(APIRequest):
     """
         A request to get operation status.

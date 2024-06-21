@@ -13,6 +13,7 @@ if TYPE_CHECKING:
 
 __all__ = ["AsyncSession", "AsyncResponse"]
 
+
 class AsyncResponse:
     """
         Represents an HTTP response.
@@ -89,6 +90,7 @@ class AsyncResponse:
         """Closes the response and releases the underlying connection into the pool"""
 
         await self.close()
+
 
 class AsyncSession:
     """

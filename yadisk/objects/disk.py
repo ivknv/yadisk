@@ -8,6 +8,7 @@ from typing import Any, Optional, NoReturn
 
 __all__ = ["DiskInfoObject", "SystemFoldersObject", "UserObject", "UserPublicInfoObject"]
 
+
 class DiskInfoObject(YaDiskObject):
     """
         Disk information object.
@@ -55,6 +56,7 @@ class DiskInfoObject(YaDiskObject):
             yadisk)
 
         self.import_fields(disk_info)
+
 
 class SystemFoldersObject(YaDiskObject):
     """
@@ -120,6 +122,7 @@ class SystemFoldersObject(YaDiskObject):
 
         self.import_fields(system_folders)
 
+
 class UserObject(YaDiskObject):
     """
         User object.
@@ -148,6 +151,7 @@ class UserObject(YaDiskObject):
             yadisk)
 
         self.import_fields(user)
+
 
 class UserPublicInfoObject(UserObject):
     """

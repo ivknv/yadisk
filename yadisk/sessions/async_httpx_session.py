@@ -13,6 +13,7 @@ import httpx
 
 __all__ = ["AsyncHTTPXSession"]
 
+
 class AsyncHTTPXResponse(AsyncResponse):
     def __init__(self, response: httpx.Response):
         self._response = response
@@ -39,6 +40,7 @@ class AsyncHTTPXResponse(AsyncResponse):
 
     async def close(self) -> None:
         await self._response.aclose()
+
 
 class AsyncHTTPXSession(AsyncSession):
     """

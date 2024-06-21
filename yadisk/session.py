@@ -9,6 +9,7 @@ from .types import ConsumeCallback, JSON, HTTPMethod, Payload, TimeoutParameter
 
 __all__ = ["Session", "Response"]
 
+
 class Response:
     """
         Represents an HTTP response.
@@ -83,6 +84,7 @@ class Response:
     def __exit__(self, *args, **kwargs) -> None:
         """Closes the response and releases the underlying connection into the pool"""
         self.close()
+
 
 class Session:
     """

@@ -16,6 +16,7 @@ __all__ = ["typed_list", "int_or_error", "str_or_error", "bool_or_error",
 
 T = TypeVar("T", bound=Callable)
 
+
 def typed_list(datatype: T) -> Callable[[Optional[List]], List[T]]:
     def list_factory(iterable: Optional[List] = None) -> List[T]:
         if iterable is None:
@@ -28,11 +29,13 @@ def typed_list(datatype: T) -> Callable[[Optional[List]], List[T]]:
 
     return list_factory
 
+
 def int_or_error(x: Any) -> int:
     if not isinstance(x, int):
         raise ValueError(f"{repr(x)} is not an integer")
 
     return x
+
 
 def str_or_error(x: Any) -> str:
     if not isinstance(x, str):
@@ -40,11 +43,13 @@ def str_or_error(x: Any) -> str:
 
     return x
 
+
 def bool_or_error(x: Any) -> bool:
     if not isinstance(x, bool):
         raise ValueError(f"{repr(x)} is not a boolean value")
 
     return x
+
 
 def dict_or_error(x: Any) -> dict:
     if not isinstance(x, dict):
@@ -52,14 +57,17 @@ def dict_or_error(x: Any) -> dict:
 
     return x
 
+
 def str_or_dict_or_error(x: Any) -> Union[str, dict]:
     if not isinstance(x, (str, dict)):
         raise ValueError(f"{repr(x)} is not a string nor a dict")
 
     return x
 
+
 def yandex_date(string: str) -> datetime.datetime:
     return datetime.datetime.strptime(string[:-3] + string[-2:], "%Y-%m-%dT%H:%M:%S%z")
+
 
 def _is_endpoint_link(link: str, base_endpoint_url: str) -> bool:
     link_schema, _, link = link.partition("://")
@@ -73,14 +81,18 @@ def _is_endpoint_link(link: str, base_endpoint_url: str) -> bool:
 
     return link.startswith(base_endpoint_url)
 
+
 def is_operation_link(link: str) -> bool:
     return _is_endpoint_link(link, f"{settings.BASE_API_URL}/v1/disk/operations/")
+
 
 def is_resource_link(url: str) -> bool:
     return _is_endpoint_link(url, f"{settings.BASE_API_URL}/v1/disk/resources?")
 
+
 def is_public_resource_link(url: str) -> bool:
     return _is_endpoint_link(url, f"{settings.BASE_API_URL}/v1/disk/public/resources?")
+
 
 def ensure_path_has_schema(path: str, default_schema: str = "disk") -> str:
     # Modifies path to always have a schema (disk:/, trash:/ or app:/).
@@ -99,6 +111,7 @@ def ensure_path_has_schema(path: str, default_schema: str = "disk") -> str:
         return path
 
     return default_schema + ":/" + path
+
 
 # https://stackoverflow.com/a/32888599/3653520
 class CaseInsensitiveDict(dict):
@@ -138,6 +151,7 @@ class CaseInsensitiveDict(dict):
         for k in list(self.keys()):
             v = super(CaseInsensitiveDict, self).pop(k)
             self.__setitem__(k, v)
+
 
 def is_async_func(func: Any) -> bool:
     return inspect.isgeneratorfunction(func) or asyncio.iscoroutinefunction(func)

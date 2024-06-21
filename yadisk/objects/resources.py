@@ -44,6 +44,7 @@ __all__ = [
     "SyncPublicResourceLinkObject", "AsyncPublicResourceLinkObject", "ResourceDownloadLinkObject"
 ]
 
+
 class CommentIDsObject(YaDiskObject):
     """
         Comment IDs object.
@@ -69,6 +70,7 @@ class CommentIDsObject(YaDiskObject):
 
         self.import_fields(comment_ids)
 
+
 class EXIFObject(YaDiskObject):
     """
         EXIF metadata object.
@@ -87,6 +89,7 @@ class EXIFObject(YaDiskObject):
         YaDiskObject.__init__(self, {"date_time": yandex_date}, yadisk)
 
         self.import_fields(exif)
+
 
 class FilesResourceListObject(YaDiskObject):
     """
@@ -116,6 +119,7 @@ class FilesResourceListObject(YaDiskObject):
 
         self.import_fields(files_resource_list)
 
+
 class SyncFilesResourceListObject(FilesResourceListObject):
     """
         Flat list of files.
@@ -138,6 +142,7 @@ class SyncFilesResourceListObject(FilesResourceListObject):
         self.set_field_type("items", typed_list(partial(SyncResourceObject, yadisk=yadisk)))
         self.import_fields(files_resource_list)
 
+
 class AsyncFilesResourceListObject(FilesResourceListObject):
     """
         Flat list of files.
@@ -159,6 +164,7 @@ class AsyncFilesResourceListObject(FilesResourceListObject):
 
         self.set_field_type("items", typed_list(partial(AsyncResourceObject, yadisk=yadisk)))
         self.import_fields(files_resource_list)
+
 
 class LastUploadedResourceListObject(YaDiskObject):
     """
@@ -184,6 +190,7 @@ class LastUploadedResourceListObject(YaDiskObject):
             yadisk)
         self.import_fields(last_uploaded_resources_list)
 
+
 class SyncLastUploadedResourceListObject(LastUploadedResourceListObject):
     """
         List of last uploaded resources.
@@ -205,6 +212,7 @@ class SyncLastUploadedResourceListObject(LastUploadedResourceListObject):
         self.set_field_type("items", typed_list(partial(SyncResourceObject, yadisk=yadisk)))
         self.import_fields(last_uploaded_resources_list)
 
+
 class AsyncLastUploadedResourceListObject(LastUploadedResourceListObject):
     """
         List of last uploaded resources.
@@ -225,6 +233,7 @@ class AsyncLastUploadedResourceListObject(LastUploadedResourceListObject):
 
         self.set_field_type("items", typed_list(partial(AsyncResourceObject, yadisk=yadisk)))
         self.import_fields(last_uploaded_resources_list)
+
 
 class PublicResourcesListObject(YaDiskObject):
     """
@@ -257,6 +266,7 @@ class PublicResourcesListObject(YaDiskObject):
 
         self.import_fields(public_resources_list)
 
+
 class SyncPublicResourcesListObject(PublicResourcesListObject):
     """
         List of public resources.
@@ -279,6 +289,7 @@ class SyncPublicResourcesListObject(PublicResourcesListObject):
         self.set_field_type("items", typed_list(partial(SyncPublicResourcesListObject, yadisk=yadisk)))
 
         self.import_fields(public_resources_list)
+
 
 class AsyncPublicResourcesListObject(PublicResourcesListObject):
     """
@@ -303,6 +314,7 @@ class AsyncPublicResourcesListObject(PublicResourcesListObject):
 
         self.import_fields(public_resources_list)
 
+
 class ResourceProtocol(Protocol):
     @property
     def type(self) -> Optional[str]: ...
@@ -321,6 +333,7 @@ class ResourceProtocol(Protocol):
 
     @property
     def _yadisk(self) -> Optional[Any]: ...
+
 
 class ResourceObjectMethodsMixin:
     def get_meta(self: ResourceProtocol,
@@ -1086,9 +1099,12 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.copy(str(src_path), dst_path, **kwargs)
 
+
 class AsyncResourceObjectMethodsMixin:
-    async def get_meta(self: ResourceProtocol,
-                 relative_path: Optional[str] = None, /, **kwargs) -> "AsyncResourceObject":
+    async def get_meta(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None, /, **kwargs
+    ) -> "AsyncResourceObject":
         """
             Get meta information about a file/directory.
 
@@ -1516,9 +1532,11 @@ class AsyncResourceObjectMethodsMixin:
         pass
 
     @overload
-    async def patch(self: ResourceProtocol,
-              relative_path: Union[str, None],
-              properties: dict, **kwargs) -> "AsyncResourceObject":
+    async def patch(
+        self: ResourceProtocol,
+        relative_path: Union[str, None],
+        properties: dict, **kwargs
+    ) -> "AsyncResourceObject":
         pass
 
     async def patch(self: ResourceProtocol, *args, **kwargs) -> "AsyncResourceObject":
@@ -1850,6 +1868,7 @@ class AsyncResourceObjectMethodsMixin:
 
         return await self._yadisk.copy(str(src_path), dst_path, **kwargs)
 
+
 class ResourceObject(YaDiskObject):
     """
         Resource object.
@@ -1937,6 +1956,7 @@ class ResourceObject(YaDiskObject):
         self.set_alias("_embedded", "embedded")
         self.import_fields(resource)
 
+
 class SyncResourceObject(ResourceObject, ResourceObjectMethodsMixin):
     """
         Resource object.
@@ -1969,13 +1989,14 @@ class SyncResourceObject(ResourceObject, ResourceObjectMethodsMixin):
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
     """
 
-    embedded: Optional["SyncResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
-    _embedded: Optional["SyncResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
+    embedded: Optional["SyncResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
+    _embedded: Optional["SyncResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
 
     def __init__(self, resource: Optional[dict] = None, yadisk: Optional[Any] = None):
         ResourceObject.__init__(self, None, yadisk)
         self.set_field_type("embedded", partial(SyncResourceListObject, yadisk=yadisk))
         self.import_fields(resource)
+
 
 class AsyncResourceObject(ResourceObject, AsyncResourceObjectMethodsMixin):
     """
@@ -2009,13 +2030,14 @@ class AsyncResourceObject(ResourceObject, AsyncResourceObjectMethodsMixin):
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
     """
 
-    embedded: Optional["AsyncResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
-    _embedded: Optional["AsyncResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
+    embedded: Optional["AsyncResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
+    _embedded: Optional["AsyncResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
 
     def __init__(self, resource: Optional[dict] = None, yadisk: Optional[Any] = None):
         ResourceObject.__init__(self, None, yadisk)
         self.set_field_type("embedded", partial(AsyncResourceListObject, yadisk=yadisk))
         self.import_fields(resource)
+
 
 class ResourceLinkObject(LinkObject):
     """
@@ -2065,6 +2087,7 @@ class ResourceLinkObject(LinkObject):
              "templated": False},
             yadisk=yadisk)
 
+
 class SyncResourceLinkObject(ResourceLinkObject, ResourceObjectMethodsMixin):
     """
         Resource link object.
@@ -2080,6 +2103,7 @@ class SyncResourceLinkObject(ResourceLinkObject, ResourceObjectMethodsMixin):
 
     pass
 
+
 class AsyncResourceLinkObject(ResourceLinkObject, AsyncResourceObjectMethodsMixin):
     """
         Resource link object.
@@ -2094,6 +2118,7 @@ class AsyncResourceLinkObject(ResourceLinkObject, AsyncResourceObjectMethodsMixi
     """
 
     pass
+
 
 class PublicResourceLinkObject(LinkObject):
     """
@@ -2144,6 +2169,7 @@ class PublicResourceLinkObject(LinkObject):
              "templated": False},
             yadisk=yadisk)
 
+
 class SyncPublicResourceLinkObject(PublicResourceLinkObject, ResourceObjectMethodsMixin):
     """
         Public resource link object.
@@ -2160,6 +2186,7 @@ class SyncPublicResourceLinkObject(PublicResourceLinkObject, ResourceObjectMetho
 
     pass
 
+
 class AsyncPublicResourceLinkObject(PublicResourceLinkObject, AsyncResourceObjectMethodsMixin):
     """
         Public resource link object.
@@ -2175,6 +2202,7 @@ class AsyncPublicResourceLinkObject(PublicResourceLinkObject, AsyncResourceObjec
     """
 
     pass
+
 
 class ResourceListObject(YaDiskObject):
     """
@@ -2210,6 +2238,7 @@ class ResourceListObject(YaDiskObject):
             yadisk)
         self.import_fields(resource_list)
 
+
 class SyncResourceListObject(ResourceListObject):
     """
         List of resources.
@@ -2231,6 +2260,7 @@ class SyncResourceListObject(ResourceListObject):
         ResourceListObject.__init__(self, None, yadisk)
         self.set_field_type("items", typed_list(partial(SyncResourceObject, yadisk=yadisk)))
         self.import_fields(resource_list)
+
 
 class AsyncResourceListObject(ResourceListObject):
     """
@@ -2254,6 +2284,7 @@ class AsyncResourceListObject(ResourceListObject):
         self.set_field_type("items", typed_list(partial(AsyncResourceObject, yadisk=yadisk)))
         self.import_fields(resource_list)
 
+
 class ResourceUploadLinkObject(LinkObject):
     """
         Resource upload link.
@@ -2276,6 +2307,7 @@ class ResourceUploadLinkObject(LinkObject):
         self.set_field_type("operation_id", str_or_error)
         self.import_fields(resource_upload_link)
 
+
 class ResourceDownloadLinkObject(LinkObject):
     """
         Resource download link.
@@ -2289,6 +2321,7 @@ class ResourceDownloadLinkObject(LinkObject):
     """
 
     pass
+
 
 class ShareInfoObject(YaDiskObject):
     """
@@ -2314,6 +2347,7 @@ class ShareInfoObject(YaDiskObject):
              "rights":   str_or_error},
             yadisk)
         self.import_fields(share_info)
+
 
 class PublicResourceObject(ResourceObject):
     """
@@ -2351,8 +2385,8 @@ class PublicResourceObject(ResourceObject):
 
     views_count: Optional[int]
     view_count: Optional[int]
-    embedded: Optional["PublicResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
-    _embedded: Optional["PublicResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
+    embedded: Optional["PublicResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
+    _embedded: Optional["PublicResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
     owner: Optional[UserPublicInfoObject]
 
     def __init__(self, public_resource=None, yadisk=None):
@@ -2362,6 +2396,7 @@ class PublicResourceObject(ResourceObject):
         self.set_field_type("embedded", partial(PublicResourceListObject, yadisk=yadisk))
         self.set_field_type("owner", partial(UserPublicInfoObject, yadisk=yadisk))
         self.import_fields(public_resource)
+
 
 class SyncPublicResourceObject(PublicResourceObject, ResourceObjectMethodsMixin):
     """
@@ -2397,13 +2432,14 @@ class SyncPublicResourceObject(PublicResourceObject, ResourceObjectMethodsMixin)
         :ivar owner: :any:`UserPublicInfoObject`, owner of the public resource
     """
 
-    embedded: Optional["SyncPublicResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
-    _embedded: Optional["SyncPublicResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
+    embedded: Optional["SyncPublicResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
+    _embedded: Optional["SyncPublicResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
 
     def __init__(self, public_resource: Optional[dict] = None, yadisk: Optional[Any] = None):
         PublicResourceObject.__init__(self, None, yadisk)
         self.set_field_type("embedded", partial(SyncPublicResourceListObject, yadisk=yadisk))
         self.import_fields(public_resource)
+
 
 class AsyncPublicResourceObject(PublicResourceObject, AsyncResourceObjectMethodsMixin):
     """
@@ -2439,13 +2475,14 @@ class AsyncPublicResourceObject(PublicResourceObject, AsyncResourceObjectMethods
         :ivar owner: :any:`UserPublicInfoObject`, owner of the public resource
     """
 
-    embedded: Optional["AsyncPublicResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
-    _embedded: Optional["AsyncPublicResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
+    embedded: Optional["AsyncPublicResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
+    _embedded: Optional["AsyncPublicResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
 
     def __init__(self, public_resource: Optional[dict] = None, yadisk: Optional[Any] = None):
         PublicResourceObject.__init__(self, None, yadisk)
         self.set_field_type("embedded", partial(AsyncPublicResourceListObject, yadisk=yadisk))
         self.import_fields(public_resource)
+
 
 class PublicResourceListObject(ResourceListObject):
     """
@@ -2474,6 +2511,7 @@ class PublicResourceListObject(ResourceListObject):
         self.set_field_type("items", typed_list(partial(PublicResourceObject, yadisk=yadisk)))
         self.import_fields(public_resource_list)
 
+
 class SyncPublicResourceListObject(PublicResourceListObject):
     """
         List of public resources.
@@ -2497,6 +2535,7 @@ class SyncPublicResourceListObject(PublicResourceListObject):
         self.set_field_type("items", typed_list(partial(SyncPublicResourceObject, yadisk=yadisk)))
         self.import_fields(public_resource_list)
 
+
 class AsyncPublicResourceListObject(PublicResourceListObject):
     """
         List of public resources.
@@ -2519,6 +2558,7 @@ class AsyncPublicResourceListObject(PublicResourceListObject):
         PublicResourceListObject.__init__(self, None, yadisk)
         self.set_field_type("items", typed_list(partial(AsyncPublicResourceObject, yadisk=yadisk)))
         self.import_fields(public_resource_list)
+
 
 class TrashResourceObject(ResourceObject):
     """
@@ -2554,8 +2594,8 @@ class TrashResourceObject(ResourceObject):
         :ivar deleted: :any:`datetime.datetime`, date of deletion
     """
 
-    embedded: Optional["TrashResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
-    _embedded: Optional["TrashResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
+    embedded: Optional["TrashResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
+    _embedded: Optional["TrashResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
     origin_path: Optional[str]
     deleted: Optional["datetime.datetime"]
 
@@ -2567,6 +2607,7 @@ class TrashResourceObject(ResourceObject):
         self.set_field_type("origin_path", str_or_error)
         self.set_field_type("deleted", yandex_date)
         self.import_fields(trash_resource)
+
 
 class SyncTrashResourceObject(TrashResourceObject):
     """
@@ -2602,8 +2643,8 @@ class SyncTrashResourceObject(TrashResourceObject):
         :ivar deleted: :any:`datetime.datetime`, date of deletion
     """
 
-    embedded: Optional["SyncTrashResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
-    _embedded: Optional["SyncTrashResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
+    embedded: Optional["SyncTrashResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
+    _embedded: Optional["SyncTrashResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
 
     def __init__(self,
                  trash_resource: Optional[dict] = None,
@@ -2871,6 +2912,7 @@ class SyncTrashResourceObject(TrashResourceObject):
 
         return self._yadisk.restore_trash(str(path), dst_path, **kwargs)
 
+
 class AsyncTrashResourceObject(TrashResourceObject):
     """
         Trash resource object.
@@ -2905,8 +2947,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
         :ivar deleted: :any:`datetime.datetime`, date of deletion
     """
 
-    embedded: Optional["AsyncTrashResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
-    _embedded: Optional["AsyncTrashResourceListObject"] # pyright: ignore[reportIncompatibleVariableOverride]
+    embedded: Optional["AsyncTrashResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
+    _embedded: Optional["AsyncTrashResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
 
     def __init__(self,
                  trash_resource: Optional[dict] = None,
@@ -3174,6 +3216,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
 
         return await self._yadisk.restore_trash(str(path), dst_path, **kwargs)
 
+
 class TrashResourceListObject(ResourceListObject):
     """
         List of trash resources.
@@ -3198,6 +3241,7 @@ class TrashResourceListObject(ResourceListObject):
         self.set_field_type("items", typed_list(partial(TrashResourceObject, yadisk=yadisk)))
         self.import_fields(trash_resource_list)
 
+
 class SyncTrashResourceListObject(TrashResourceListObject):
     """
         List of trash resources.
@@ -3221,6 +3265,7 @@ class SyncTrashResourceListObject(TrashResourceListObject):
         TrashResourceListObject.__init__(self, None, yadisk)
         self.set_field_type("items", typed_list(partial(SyncTrashResourceObject, yadisk=yadisk)))
         self.import_fields(trash_resource_list)
+
 
 class AsyncTrashResourceListObject(TrashResourceListObject):
     """

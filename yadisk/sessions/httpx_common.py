@@ -13,6 +13,7 @@ import httpx
 
 __all__ = ["convert_httpx_exception", "convert_timeout", "convert_args_for_httpx"]
 
+
 def convert_httpx_exception(exc: httpx.HTTPError) -> Union[RequestError, httpx.HTTPError]:
     if isinstance(exc, httpx.TooManyRedirects):
         return TooManyRedirectsError(str(exc))
@@ -25,6 +26,7 @@ def convert_httpx_exception(exc: httpx.HTTPError) -> Union[RequestError, httpx.H
     else:
         return exc
 
+
 def convert_timeout(timeout: TimeoutParameter) -> Optional[httpx.Timeout]:
     if timeout is None:
         return None
@@ -35,6 +37,7 @@ def convert_timeout(timeout: TimeoutParameter) -> Optional[httpx.Timeout]:
     connect, read = timeout
 
     return httpx.Timeout(connect=connect, pool=connect, read=read, write=read)
+
 
 def convert_args_for_httpx(session, kwargs):
     if "timeout" in kwargs:

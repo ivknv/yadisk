@@ -9,6 +9,7 @@ import httpx
 
 __all__ = ["HTTPXSession"]
 
+
 class HTTPXResponse(Response):
     def __init__(self, response: httpx.Response):
         self._response = response
@@ -29,6 +30,7 @@ class HTTPXResponse(Response):
 
     def close(self) -> None:
         self._response.close()
+
 
 class HTTPXSession(Session):
     """

@@ -11,7 +11,10 @@ from .exceptions import (
 )
 
 from .utils import auto_retry
-from .objects import SyncResourceLinkObject, SyncPublicResourceLinkObject, SyncTrashResourceObject
+from .objects import (
+    SyncResourceLinkObject, SyncPublicResourceLinkObject,
+    SyncTrashResourceObject
+)
 
 from .session import Session
 from .import_session import import_session
@@ -36,17 +39,26 @@ from .client_common import (
 
 if TYPE_CHECKING:
     from .objects import (
-        SyncResourceObject, SyncOperationLinkObject, SyncTrashResourceObject,
-        SyncPublicResourceObject, SyncPublicResourcesListObject,
-        DiskInfoObject, TokenObject, TokenRevokeStatusObject,
-        DeviceCodeObject
+        SyncResourceObject, SyncOperationLinkObject, SyncPublicResourceObject,
+        SyncPublicResourcesListObject, DiskInfoObject, TokenObject,
+        TokenRevokeStatusObject, DeviceCodeObject
     )
 
 __all__ = ["Client"]
 
-ResourceType = Union["SyncResourceObject", "SyncPublicResourceObject", "SyncTrashResourceObject"]
+ResourceType = Union[
+    "SyncResourceObject",
+    "SyncPublicResourceObject",
+    "SyncTrashResourceObject"
+]
 
-def _exists(get_meta_function: Callable[..., ResourceType], /, *args, **kwargs) -> bool:
+
+def _exists(
+    get_meta_function: Callable[..., ResourceType],
+    /,
+    *args,
+    **kwargs
+) -> bool:
     kwargs["limit"] = 0
 
     try:
@@ -56,7 +68,13 @@ def _exists(get_meta_function: Callable[..., ResourceType], /, *args, **kwargs) 
     except PathNotFoundError:
         return False
 
-def _get_type(get_meta_function: Callable[..., ResourceType], /, *args, **kwargs) -> str:
+
+def _get_type(
+    get_meta_function: Callable[..., ResourceType],
+    /,
+    *args,
+    **kwargs
+) -> str:
     kwargs["limit"] = 0
     kwargs["fields"] = ["type"]
 
@@ -67,7 +85,13 @@ def _get_type(get_meta_function: Callable[..., ResourceType], /, *args, **kwargs
 
     return type
 
-def _listdir(get_meta_function: Callable[..., ResourceType], path: str, /, **kwargs) -> Generator[Any, None, None]:
+
+def _listdir(
+    get_meta_function: Callable[..., ResourceType],
+    path: str,
+    /,
+    **kwargs
+) -> Generator[Any, None, None]:
     kwargs.setdefault("limit", 500)
 
     if kwargs.get("fields") is None:
@@ -94,8 +118,8 @@ def _listdir(get_meta_function: Callable[..., ResourceType], path: str, /, **kwa
         raise InvalidResponseError("Response did not contain _embedded field")
 
     if (result.type is None or result.embedded.items is None or
-        result.embedded.offset is None or result.embedded.limit is None or
-        result.embedded.total is None):
+            result.embedded.offset is None or result.embedded.limit is None or
+            result.embedded.total is None):
         raise InvalidResponseError("Response did not contain key field")
 
     yield from result.embedded.items
@@ -113,14 +137,15 @@ def _listdir(get_meta_function: Callable[..., ResourceType], path: str, /, **kwa
             raise InvalidResponseError("Response did not contain _embedded field")
 
         if (result.type is None or result.embedded.items is None or
-            result.embedded.offset is None or result.embedded.limit is None or
-            result.embedded.total is None):
+                result.embedded.offset is None or result.embedded.limit is None or
+                result.embedded.total is None):
             raise InvalidResponseError("Response did not contain key field")
 
         yield from result.embedded.items
 
         limit = result.embedded.limit
         total = result.embedded.total
+
 
 class Client:
     """

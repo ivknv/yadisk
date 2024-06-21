@@ -8,6 +8,7 @@ from ..common import str_or_error, bool_or_error
 
 __all__ = ["LinkObject"]
 
+
 class LinkObject(YaDiskObject):
     """
         Link object.

@@ -19,6 +19,7 @@ import sys
 
 __all__ = ["AIOHTTPSession"]
 
+
 def convert_aiohttp_exception(exc: aiohttp.ClientError) -> Union[RequestError, aiohttp.ClientError]:
     if isinstance(exc, aiohttp.TooManyRedirects):
         return TooManyRedirectsError(str(exc))
@@ -30,6 +31,7 @@ def convert_aiohttp_exception(exc: aiohttp.ClientError) -> Union[RequestError, a
         return RequestError(str(exc))
     else:
         return exc
+
 
 class AIOHTTPResponse(AsyncResponse):
     def __init__(self, response: aiohttp.ClientResponse):
@@ -57,6 +59,7 @@ class AIOHTTPResponse(AsyncResponse):
     async def close(self) -> None:
         await self._response.release()
 
+
 def convert_timeout(timeout: TimeoutParameter) -> Optional[aiohttp.ClientTimeout]:
     if timeout is None:
         return None
@@ -68,9 +71,11 @@ def convert_timeout(timeout: TimeoutParameter) -> Optional[aiohttp.ClientTimeout
 
     return aiohttp.ClientTimeout(sock_connect=connect, sock_read=read)
 
+
 DEFAULT_USER_AGENT = "Python/%s.%s aiohttp/%s" % (sys.version_info.major,
                                                   sys.version_info.minor,
                                                   aiohttp.__version__)
+
 
 class AIOHTTPSession(AsyncSession):
     """

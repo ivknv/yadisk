@@ -4,6 +4,7 @@ from .yadisk_object import YaDiskObject
 
 __all__ = ["ErrorObject"]
 
+
 class ErrorObject(YaDiskObject):
     """
         Mirrors Yandex.Disk REST API error object.

@@ -63,6 +63,7 @@ EXCEPTION_MAP: Dict[int, Dict[str, Type[YaDiskError]]] = {
     507: defaultdict(lambda: InsufficientStorageError)
 }
 
+
 def get_exception(response: AnyResponse, error: Optional[ErrorObject]) -> YaDiskError:
     """
         Get an exception instance based on response, assuming the request has failed.
@@ -91,7 +92,9 @@ def get_exception(response: AnyResponse, error: Optional[ErrorObject]) -> YaDisk
 
     return exc(error_name, "%s (%s / %s)" % (msg, desc, error_name), response)
 
+
 T = TypeVar("T")
+
 
 def auto_retry(func: Callable[[], T],
                n_retries: Optional[int] = None,
@@ -125,6 +128,7 @@ def auto_retry(func: Callable[[], T],
 
     # This should never be reachable
     assert False
+
 
 async def async_auto_retry(func: Union[Callable[[], Any], Callable[[], Awaitable[Any]]],
                            n_retries: Optional[int] = None,

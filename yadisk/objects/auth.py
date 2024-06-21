@@ -7,6 +7,7 @@ from typing import Any, Optional
 
 __all__ = ["TokenObject", "TokenRevokeStatusObject", "DeviceCodeObject"]
 
+
 class TokenObject(YaDiskObject):
     """
         Token object.
@@ -41,6 +42,7 @@ class TokenObject(YaDiskObject):
 
         self.import_fields(token)
 
+
 class TokenRevokeStatusObject(YaDiskObject):
     """
         Result of token revocation request.
@@ -59,6 +61,7 @@ class TokenRevokeStatusObject(YaDiskObject):
         YaDiskObject.__init__(self, {"status": str_or_error}, yadisk)
 
         self.import_fields(token_revoke_status)
+
 
 class DeviceCodeObject(YaDiskObject):
     """

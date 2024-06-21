@@ -18,6 +18,7 @@ __all__ = [
     "GetTokenRequest", "GetDeviceCodeRequest"
 ]
 
+
 class RefreshTokenRequest(APIRequest):
     """
         A request to refresh an existing token.
@@ -54,6 +55,7 @@ class RefreshTokenRequest(APIRequest):
 
         return TokenObject(js)
 
+
 class RevokeTokenRequest(APIRequest):
     """
         A request to revoke the token.
@@ -88,6 +90,7 @@ class RevokeTokenRequest(APIRequest):
             raise InvalidResponseError("Yandex.Disk did not return valid JSON")
 
         return TokenRevokeStatusObject(js)
+
 
 class GetTokenRequest(APIRequest):
     """
@@ -157,6 +160,7 @@ class GetTokenRequest(APIRequest):
             raise InvalidResponseError("Yandex.Disk did not return valid JSON")
 
         return TokenObject(js)
+
 
 class GetDeviceCodeRequest(APIRequest):
     """

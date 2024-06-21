@@ -58,6 +58,7 @@ if TYPE_CHECKING:
 
 __all__ = ["AsyncClient"]
 
+
 async def _exists(get_meta_function: Callable[..., Awaitable], /, *args, **kwargs) -> bool:
     kwargs["limit"] = 0
 
@@ -70,6 +71,7 @@ async def _exists(get_meta_function: Callable[..., Awaitable], /, *args, **kwarg
 
 ResourceType = Union["AsyncResourceObject", "AsyncPublicResourceObject", "AsyncTrashResourceObject"]
 
+
 async def _get_type(get_meta_function: Callable[..., Awaitable[ResourceType]],
                     /, *args, **kwargs) -> str:
     kwargs["limit"] = 0
@@ -81,6 +83,7 @@ async def _get_type(get_meta_function: Callable[..., Awaitable[ResourceType]],
         raise InvalidResponseError("Response did not contain the type field")
 
     return type
+
 
 async def _listdir(get_meta_function: Callable[..., Awaitable[ResourceType]],
                    path: str, /, **kwargs) -> AsyncGenerator:
@@ -110,8 +113,8 @@ async def _listdir(get_meta_function: Callable[..., Awaitable[ResourceType]],
         raise InvalidResponseError("Response did not contain _embedded field")
 
     if (result.type is None or result.embedded.items is None or
-        result.embedded.offset is None or result.embedded.limit is None or
-        result.embedded.total is None):
+            result.embedded.offset is None or result.embedded.limit is None or
+            result.embedded.total is None):
         raise InvalidResponseError("Response did not contain key field")
 
     for child in result.embedded.items:
@@ -130,8 +133,8 @@ async def _listdir(get_meta_function: Callable[..., Awaitable[ResourceType]],
             raise InvalidResponseError("Response did not contain _embedded field")
 
         if (result.type is None or result.embedded.items is None or
-            result.embedded.offset is None or result.embedded.limit is None or
-            result.embedded.total is None):
+                result.embedded.offset is None or result.embedded.limit is None or
+                result.embedded.total is None):
             raise InvalidResponseError("Response did not contain key field")
 
         for child in result.embedded.items:
@@ -140,23 +143,28 @@ async def _listdir(get_meta_function: Callable[..., Awaitable[ResourceType]],
         limit = result.embedded.limit
         total = result.embedded.total
 
+
 async def read_in_chunks(file: IO, chunk_size: int = 64 * 1024) -> Union[AsyncGenerator[str, None],
                                                                          AsyncGenerator[bytes, None]]:
     while chunk := await file.read(chunk_size):
         yield chunk
+
 
 async def read_in_chunks_sync(file: IO, chunk_size: int = 64 * 1024) -> Union[AsyncGenerator[str, None],
                                                                               AsyncGenerator[bytes, None]]:
     while chunk := file.read(chunk_size):
         yield chunk
 
+
 def is_async_func(func: Any) -> bool:
     return inspect.isgeneratorfunction(func) or asyncio.iscoroutinefunction(func)
+
 
 def is_async_file(file: Any) -> bool:
     read_method = getattr(file, "read", None)
 
     return is_async_func(read_method)
+
 
 async def _file_tell(file: Any) -> int:
     if is_async_func(file.tell):
@@ -164,11 +172,13 @@ async def _file_tell(file: Any) -> int:
     else:
         return file.tell()
 
+
 async def _file_seek(file: Any, offset: int, whence: int = 0) -> int:
     if is_async_func(file.seek):
         return await file.seek(offset, whence)
     else:
         return file.seek(offset, whence)
+
 
 async def _is_file_seekable(file: Any) -> bool:
     if not hasattr(file, "seekable"):
@@ -178,7 +188,8 @@ async def _is_file_seekable(file: Any) -> bool:
     if is_async_func(file.seekable):
         return await file.seekable()
 
-    return file.seekable();
+    return file.seekable()
+
 
 class AsyncClient:
     """
@@ -1246,7 +1257,7 @@ class AsyncClient:
         if not token:
             return False
 
-        headers = CaseInsensitiveDict(kwargs.get("headers", {}));
+        headers = CaseInsensitiveDict(kwargs.get("headers", {}))
         headers["Authorization"] = f"OAuth {token}"
         kwargs["headers"] = headers
 

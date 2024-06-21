@@ -30,8 +30,10 @@ __all__ = ["GetPublicResourcesRequest", "UnpublishRequest", "GetDownloadLinkRequ
 
 Fields = Iterable[str]
 
+
 def _substitute_keys(keys: Iterable[str], sub_map: Dict[str, str]) -> List[str]:
     return [".".join(sub_map.get(f, f) for f in k.split(".")) for k in keys]
+
 
 class GetPublicResourcesRequest(APIRequest):
     """
@@ -90,6 +92,7 @@ class GetPublicResourcesRequest(APIRequest):
         else:
             return AsyncPublicResourcesListObject(js, yadisk)
 
+
 class UnpublishRequest(APIRequest):
     """
         A request to make a public resource private.
@@ -129,6 +132,7 @@ class UnpublishRequest(APIRequest):
         else:
             return AsyncResourceLinkObject(js, yadisk)
 
+
 class GetDownloadLinkRequest(APIRequest):
     """
         A request to get a download link to a resource.
@@ -164,6 +168,7 @@ class GetDownloadLinkRequest(APIRequest):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         return ResourceDownloadLinkObject(js, yadisk)
+
 
 class GetTrashRequest(APIRequest):
     """
@@ -226,6 +231,7 @@ class GetTrashRequest(APIRequest):
         else:
             return AsyncTrashResourceObject(js, yadisk)
 
+
 class RestoreTrashRequest(APIRequest):
     """
         A request to restore trash.
@@ -283,6 +289,7 @@ class RestoreTrashRequest(APIRequest):
         else:
             return AsyncResourceLinkObject(js, yadisk)
 
+
 class DeleteTrashRequest(APIRequest):
     """
         A request to delete a trash resource.
@@ -330,6 +337,7 @@ class DeleteTrashRequest(APIRequest):
                 return AsyncOperationLinkObject(js, yadisk)
 
         return None
+
 
 class LastUploadedRequest(APIRequest):
     """
@@ -391,6 +399,7 @@ class LastUploadedRequest(APIRequest):
         else:
             return AsyncLastUploadedResourceListObject(js, yadisk)
 
+
 class CopyRequest(APIRequest):
     """
         A request to copy a file or a directory.
@@ -446,6 +455,7 @@ class CopyRequest(APIRequest):
             return SyncResourceLinkObject(js, yadisk)
         else:
             return AsyncResourceLinkObject(js, yadisk)
+
 
 class GetMetaRequest(APIRequest):
     """
@@ -513,6 +523,7 @@ class GetMetaRequest(APIRequest):
         else:
             return AsyncResourceObject(js, yadisk)
 
+
 class GetUploadLinkRequest(APIRequest):
     """
         A request to get an upload link.
@@ -551,6 +562,7 @@ class GetUploadLinkRequest(APIRequest):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         return ResourceUploadLinkObject(js, yadisk)
+
 
 class MkdirRequest(APIRequest):
     """
@@ -591,6 +603,7 @@ class MkdirRequest(APIRequest):
         else:
             return AsyncResourceLinkObject(js, yadisk)
 
+
 class PublishRequest(APIRequest):
     """
         A request to make a resource public.
@@ -629,6 +642,7 @@ class PublishRequest(APIRequest):
             return SyncResourceLinkObject(js, yadisk)
         else:
             return AsyncResourceLinkObject(js, yadisk)
+
 
 class UploadURLRequest(APIRequest):
     """
@@ -675,6 +689,7 @@ class UploadURLRequest(APIRequest):
             return SyncOperationLinkObject(js, yadisk)
         else:
             return AsyncOperationLinkObject(js, yadisk)
+
 
 class DeleteRequest(APIRequest):
     """
@@ -729,6 +744,7 @@ class DeleteRequest(APIRequest):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         return None
+
 
 class SaveToDiskRequest(APIRequest):
     """
@@ -794,6 +810,7 @@ class SaveToDiskRequest(APIRequest):
             return SyncResourceLinkObject(js, yadisk)
         else:
             return AsyncResourceLinkObject(js, yadisk)
+
 
 class GetPublicMetaRequest(APIRequest):
     """
@@ -865,6 +882,7 @@ class GetPublicMetaRequest(APIRequest):
         else:
             return AsyncPublicResourceObject(js, yadisk)
 
+
 class GetPublicDownloadLinkRequest(APIRequest):
     """
         A request to get a download link for a public resource.
@@ -890,7 +908,7 @@ class GetPublicDownloadLinkRequest(APIRequest):
         self.params["public_key"] = public_key
 
         if path is not None:
-            self.params["path"] = path;
+            self.params["path"] = path
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)
@@ -905,6 +923,7 @@ class GetPublicDownloadLinkRequest(APIRequest):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
         return ResourceDownloadLinkObject(js, yadisk)
+
 
 class MoveRequest(APIRequest):
     """
@@ -960,6 +979,7 @@ class MoveRequest(APIRequest):
             return SyncResourceLinkObject(js, yadisk)
         else:
             return AsyncResourceLinkObject(js, yadisk)
+
 
 class FilesRequest(APIRequest):
     """
@@ -1028,6 +1048,7 @@ class FilesRequest(APIRequest):
             return SyncFilesResourceListObject(js, yadisk)
         else:
             return AsyncFilesResourceListObject(js, yadisk)
+
 
 class PatchRequest(APIRequest):
     """

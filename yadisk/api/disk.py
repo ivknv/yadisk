@@ -12,6 +12,7 @@ if TYPE_CHECKING:
 
 __all__ = ["DiskInfoRequest"]
 
+
 class DiskInfoRequest(APIRequest):
     """
         A request to get disk information.
