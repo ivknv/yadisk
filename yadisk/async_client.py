@@ -33,6 +33,8 @@ from .client_common import (
     _replace_upload_url_domain
 )
 
+_default_open_file: AsyncOpenFileCallback
+
 try:
     import aiofiles
 
@@ -135,8 +137,8 @@ async def _listdir(get_meta_function: Callable[..., Awaitable[ResourceType]],
         for child in result.embedded.items:
             yield child
 
-        limit: int = result.embedded.limit
-        total: int = result.embedded.total
+        limit = result.embedded.limit
+        total = result.embedded.total
 
 async def read_in_chunks(file: IO, chunk_size: int = 64 * 1024) -> Union[AsyncGenerator[str, None],
                                                                          AsyncGenerator[bytes, None]]:
@@ -901,7 +903,7 @@ class AsyncClient:
                 else:
                     n_retries, n_retries_for_upload_link = 0, n_retries
 
-            async def attempt():
+            async def attempt() -> None:
                 temp_kwargs = dict(kwargs)
                 temp_kwargs["n_retries"] = n_retries_for_upload_link
                 temp_kwargs["retry_interval"] = 0.0
