@@ -21,6 +21,7 @@ from .test_session import AsyncTestSession
 
 __all__ = ["AIOHTTPTestCase", "AsyncHTTPXTestCase"]
 
+
 class BackgroundGatewayTask:
     def __init__(self, host: str, port: int):
         self.disk_gateway = DiskGateway()
@@ -42,6 +43,7 @@ class BackgroundGatewayTask:
 
         if self.server_task is not None:
             await self.server_task
+
 
 def make_test_case(name: str, session_name: AsyncSessionName):
     class AsyncClientTestCase(IsolatedAsyncioTestCase):
@@ -462,6 +464,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
     AsyncClientTestCase.__qualname__ = AsyncClientTestCase.__qualname__.rpartition(".")[0] + "." + name
 
     return AsyncClientTestCase
+
 
 AIOHTTPTestCase = make_test_case("AIOHTTPTestCase", "aiohttp")
 AsyncHTTPXTestCase = make_test_case("AsyncHTTPXTestCase", "httpx")

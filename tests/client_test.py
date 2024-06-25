@@ -24,6 +24,7 @@ import time
 
 __all__ = ["RequestsTestCase", "HTTPXTestCase", "PycURLTestCase"]
 
+
 class BackgroundGatewayThread:
     def __init__(self, host: str, port: int):
         self.disk_gateway = DiskGateway()
@@ -44,6 +45,7 @@ class BackgroundGatewayThread:
     def stop(self):
         self.disk_gateway.stop()
         self.client.close()
+
 
 def make_test_case(name: str, session_name: SessionName):
     class ClientTestCase(TestCase):
@@ -426,6 +428,7 @@ def make_test_case(name: str, session_name: SessionName):
     ClientTestCase.__qualname__ = ClientTestCase.__qualname__.rpartition(".")[0] + "." + name
 
     return ClientTestCase
+
 
 RequestsTestCase = make_test_case("RequestsTestCase", "requests")
 HTTPXTestCase = make_test_case("HTTPXTestCase", "httpx")
