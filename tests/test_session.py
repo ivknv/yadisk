@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import yadisk
+from yadisk.types import HTTPMethod, Headers
 
 from urllib.parse import urljoin, urlparse
 
@@ -31,13 +32,13 @@ class TestSession(yadisk.Session):
         self.upload_base_url   = upload_base_url
         self.test_token        = test_token
 
-    def set_headers(self, headers) -> None:
+    def set_headers(self, headers: Headers) -> None:
         return self._session.set_headers(headers)
 
     def set_token(self, token: str) -> None:
         self._session.set_token(token)
 
-    def send_request(self, method, url: str, **kwargs) -> yadisk.Response:
+    def send_request(self, method: HTTPMethod, url: str, **kwargs) -> yadisk.Response:
         url_parsed = urlparse(url)
         kwargs.setdefault("headers", {})
 
@@ -85,13 +86,13 @@ class AsyncTestSession(yadisk.AsyncSession):
         self.upload_base_url   = upload_base_url
         self.test_token        = test_token
 
-    def set_headers(self, headers) -> None:
+    def set_headers(self, headers: Headers) -> None:
         return self._session.set_headers(headers)
 
     def set_token(self, token: str) -> None:
         self._session.set_token(token)
 
-    async def send_request(self, method, url: str, **kwargs) -> yadisk.AsyncResponse:
+    async def send_request(self, method: HTTPMethod, url: str, **kwargs) -> yadisk.AsyncResponse:
         url_parsed = urlparse(url)
         kwargs.setdefault("headers", {})
 
