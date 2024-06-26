@@ -127,7 +127,7 @@ def auto_retry(func: Callable[[], T],
             time.sleep(retry_interval)
 
     # This should never be reachable
-    assert False
+    raise AssertionError()
 
 
 async def async_auto_retry(func: Union[Callable[[], Any], Callable[[], Awaitable[Any]]],
@@ -169,4 +169,4 @@ async def async_auto_retry(func: Union[Callable[[], Any], Callable[[], Awaitable
             await asyncio.sleep(retry_interval)
 
     # This should never be reachable
-    assert False
+    raise AssertionError()
