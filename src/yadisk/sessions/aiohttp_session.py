@@ -25,7 +25,8 @@ from ..exceptions import (
 
 from .._async_session import AsyncSession, AsyncResponse
 from .._compat import Iterable
-from .._common import CaseInsensitiveDict, is_async_func
+from .._common import is_async_func
+from ..utils import CaseInsensitiveDict
 from ..types import JSON, AsyncConsumeCallback, Headers, TimeoutParameter, HTTPMethod
 
 import aiohttp

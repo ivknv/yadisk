@@ -22,7 +22,7 @@ from ..exceptions import (
 )
 
 from .._session import Session, Response
-from .._common import CaseInsensitiveDict
+from ..utils import CaseInsensitiveDict
 from ..types import JSON, ConsumeCallback, Headers, HTTPMethod
 
 from typing import Union

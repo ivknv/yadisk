@@ -16,11 +16,9 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-from .._common import CaseInsensitiveDict
-
 from ..exceptions import InvalidResponseError
 
-from ..utils import auto_retry, async_auto_retry
+from ..utils import auto_retry, async_auto_retry, CaseInsensitiveDict
 from .. import settings
 
 from typing import Any, Optional, Union, TypeVar, TYPE_CHECKING

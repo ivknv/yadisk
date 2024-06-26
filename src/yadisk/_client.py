@@ -26,7 +26,7 @@ from .exceptions import (
     OperationNotFoundError, InvalidResponseError
 )
 
-from .utils import auto_retry
+from .utils import auto_retry, CaseInsensitiveDict
 from .objects import (
     SyncResourceLinkObject, SyncPublicResourceLinkObject,
     SyncTrashResourceObject
@@ -36,8 +36,6 @@ from ._session import Session
 from ._import_session import import_session
 
 from . import settings
-
-from ._common import CaseInsensitiveDict
 
 from typing import Any, Optional, Union, Literal, TYPE_CHECKING
 from ._compat import Callable, Generator, Dict

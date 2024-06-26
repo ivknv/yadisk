@@ -33,7 +33,7 @@ from .api import *
 from .exceptions import (
     InvalidResponseError, UnauthorizedError, OperationNotFoundError,
     PathNotFoundError, WrongResourceTypeError)
-from .utils import auto_retry
+from .utils import auto_retry, CaseInsensitiveDict
 from .objects import AsyncResourceLinkObject, AsyncPublicResourceLinkObject
 
 from typing import Any, Optional, Union, IO, TYPE_CHECKING, BinaryIO, Literal
@@ -42,7 +42,6 @@ from ._compat import Callable, AsyncGenerator, Awaitable, Dict
 from ._async_session import AsyncSession
 from ._import_session import import_async_session
 
-from ._common import CaseInsensitiveDict
 from ._client_common import (
     _apply_default_args, _filter_request_kwargs, _replace_authorization_header
 )

@@ -29,7 +29,7 @@ from typing import Any, Optional, Type, Union, TypeVar
 from ._compat import Callable, Awaitable, Dict
 from .types import AnyResponse
 
-__all__ = ["get_exception", "auto_retry", "async_auto_retry"]
+__all__ = ["get_exception", "auto_retry", "async_auto_retry", "CaseInsensitiveDict"]
 
 EXCEPTION_MAP: Dict[int, Dict[str, Type[YaDiskError]]] = {
     400: defaultdict(
@@ -186,3 +186,44 @@ async def async_auto_retry(func: Union[Callable[[], Any], Callable[[], Awaitable
 
     # This should never be reachable
     raise AssertionError()
+
+
+class CaseInsensitiveDict(dict):
+    """A case-insensitive dictionary. All keys are converted to lowercase."""
+
+    @classmethod
+    def _k(cls, key: str) -> str:
+        return key.lower()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._convert_keys()
+
+    def __getitem__(self, key: str) -> Any:
+        return super().__getitem__(self.__class__._k(key))
+
+    def __setitem__(self, key: str, value: Any) -> None:
+        super().__setitem__(self.__class__._k(key), value)
+
+    def __delitem__(self, key: str) -> Any:
+        return super().__delitem__(self.__class__._k(key))
+
+    def __contains__(self, key: Any) -> bool:
+        return super().__contains__(self.__class__._k(key))
+
+    def pop(self, key: str, /, *args, **kwargs) -> Any:
+        return super().pop(self.__class__._k(key), *args, **kwargs)
+
+    def get(self, key: str, /, *args, **kwargs) -> Any:
+        return super().get(self.__class__._k(key), *args, **kwargs)
+
+    def setdefault(self, key: str, *args, **kwargs) -> Any:
+        return super().setdefault(self.__class__._k(key), *args, **kwargs)
+
+    def update(self, *args, **kwargs) -> None:
+        super().update(*(self.__class__(arg) for arg in args), **self.__class__(kwargs))
+
+    def _convert_keys(self) -> None:
+        for k in list(self.keys()):
+            v = super(CaseInsensitiveDict, self).pop(k)
+            self.__setitem__(k, v)

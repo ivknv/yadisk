@@ -26,7 +26,7 @@ from ..exceptions import (
 
 from .._session import Session, Response
 from .._compat import Iterator
-from .._common import CaseInsensitiveDict
+from ..utils import CaseInsensitiveDict
 from ..types import JSON, ConsumeCallback, Headers, HTTPMethod
 
 from urllib.parse import urlencode
