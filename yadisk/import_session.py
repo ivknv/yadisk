@@ -42,7 +42,7 @@ def import_session(name: "SessionName") -> Type["Session"]:
     try:
         module_path, class_name = sessions[name]
     except KeyError:
-        raise ValueError(f"unknown session name: {repr(name)}")
+        raise ValueError(f"unknown session name: {repr(name)}") from None
 
     return getattr(
         __import__(module_path, globals(), locals(), level=1, fromlist=(class_name,)),
@@ -70,7 +70,7 @@ def import_async_session(name: "AsyncSessionName") -> Type["AsyncSession"]:
     try:
         module_path, class_name = async_sessions[name]
     except KeyError:
-        raise ValueError(f"unknown asynchronous session name: {repr(name)}")
+        raise ValueError(f"unknown asynchronous session name: {repr(name)}") from None
 
     return getattr(
         __import__(module_path, globals(), locals(), level=1, fromlist=(class_name,)),
