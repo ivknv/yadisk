@@ -140,7 +140,8 @@ class Session:
             :param params: `dict`, GET parameters
             :param data: `bytes`, an iterator or a file-like object, data to be sent in the request body
             :param headers: `dict`, additional headers to be set
-            :param timeout: request timeout, a `tuple` of `(read timeout, connect timeout)`, `float` or `None` (no timeout)
+            :param timeout: request timeout, a `tuple` of `(read timeout, connect timeout)`,
+                            `float` or `None` (no timeout)
             :param stream: `bool`, if `False`, the response content will be immediately downloaded
 
             :returns: :any:`Response`, response object

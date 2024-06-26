@@ -1242,9 +1242,13 @@ class Client:
 
         return request.process(yadisk=self)
 
-    def restore_trash(self,
-                      path: str, /,
-                      dst_path: Optional[str] = None, **kwargs) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
+    def restore_trash(
+        self,
+        path: str,
+        /,
+        dst_path: Optional[str] = None,
+        **kwargs
+    ) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
             Restore a trash resource.
             Returns a link to the newly created resource or a link to the asynchronous operation.
@@ -1307,7 +1311,13 @@ class Client:
 
         return request.process(yadisk=self)
 
-    def rename(self, src_path: str, new_name: str, /, **kwargs) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
+    def rename(
+        self,
+        src_path: str,
+        new_name: str,
+        /,
+        **kwargs
+    ) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
             Rename `src_path` to have filename `new_name`.
             Does the same as `move()` but changes only the filename.

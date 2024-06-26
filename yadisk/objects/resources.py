@@ -998,7 +998,12 @@ class ResourceObjectMethodsMixin:
                new_name: str, /, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
         pass
 
-    def rename(self: ResourceProtocol, /, *args, **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
+    def rename(
+        self: ResourceProtocol,
+        /,
+        *args,
+        **kwargs
+    ) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
         """
             Rename `src_path` to have filename `new_name`.
             Does the same as `move()` but changes only the filename.
@@ -1713,7 +1718,12 @@ class AsyncResourceObjectMethodsMixin:
                    dst_path: str, /, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         pass
 
-    async def move(self: ResourceProtocol, /, *args, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
+    async def move(
+        self: ResourceProtocol,
+        /,
+        *args,
+        **kwargs
+    ) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         """
             Move resource to `dst_path`.
             This method takes 1 or 2 positional arguments:
@@ -1767,7 +1777,12 @@ class AsyncResourceObjectMethodsMixin:
                      new_name: str, /, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         pass
 
-    async def rename(self: ResourceProtocol, /, *args, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
+    async def rename(
+        self: ResourceProtocol,
+        /,
+        *args,
+        **kwargs
+    ) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         """
             Rename `src_path` to have filename `new_name`.
             Does the same as `move()` but changes only the filename.
@@ -1819,7 +1834,12 @@ class AsyncResourceObjectMethodsMixin:
                    dst_path: str, /, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         pass
 
-    async def copy(self: ResourceProtocol, /, *args, **kwargs) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
+    async def copy(
+        self: ResourceProtocol,
+        /,
+        *args,
+        **kwargs
+    ) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         """
             Copy resource to `dst_path`.
             If the operation is performed asynchronously, returns the link to the operation,
@@ -3095,8 +3115,12 @@ class AsyncTrashResourceObject(TrashResourceObject):
 
         return await self._yadisk.is_trash_file(str(path), **kwargs)
 
-    async def listdir(self: ResourceProtocol,
-                      relative_path: Optional[str] = None, /, **kwargs) -> Generator["AsyncTrashResourceObject", None, None]:
+    async def listdir(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        **kwargs
+    ) -> Generator["AsyncTrashResourceObject", None, None]:
         """
             Get contents of a trash resource.
 
@@ -3169,7 +3193,12 @@ class AsyncTrashResourceObject(TrashResourceObject):
                       dst_path: str, /, **kwargs) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
         pass
 
-    async def restore(self: ResourceProtocol, /, *args, **kwargs) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
+    async def restore(
+        self: ResourceProtocol,
+        /,
+        *args,
+        **kwargs
+    ) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
         """
             Restore a trash resource.
             Returns a link to the newly created resource or a link to the asynchronous operation.
