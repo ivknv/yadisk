@@ -44,3 +44,15 @@ test = ["requests", "aiofiles", "httpx", "aiohttp", "pycurl"]
 "Documentation (EN)" = "https://yadisk.readthedocs.io/en/latest"
 "Documentation (RU)" = "https://yadisk.readthedocs.io/ru/latest"
 "Bug tracker" = "https://github.com/ivknv/yadisk/issues"
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "B", "PIE", "RUF"]
+ignore = ["F403", "F405", "RUF010", "I001", "PIE790", "RUF012"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
