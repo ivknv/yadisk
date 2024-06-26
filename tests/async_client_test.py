@@ -4,7 +4,6 @@ import asyncio
 import os
 import tempfile
 from typing import Any
-from collections.abc import Callable
 import aiofiles
 
 import posixpath
@@ -13,6 +12,7 @@ from io import BytesIO
 
 import yadisk
 from yadisk._common import is_operation_link, ensure_path_has_schema
+from yadisk._compat import Callable
 from yadisk.api import GetOperationStatusRequest
 from yadisk.types import AsyncSessionName
 
