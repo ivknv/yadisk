@@ -10,29 +10,29 @@ Response Objects
       :members:
       :show-inheritance:
 
-.. automodule:: yadisk.objects.auth
+.. automodule:: yadisk.objects._auth
    :members:
    :show-inheritance:
    :exclude-members: import_fields,set_alias,remove_alias,remove_field,set_field_type,set_field_types
 
-.. automodule:: yadisk.objects.disk
+.. automodule:: yadisk.objects._disk
    :members:
    :show-inheritance:
    :exclude-members: import_fields,set_alias,remove_alias,remove_field,set_field_type,set_field_types
 
-.. automodule:: yadisk.objects.resources
-   :members:
-   :inherited-members:
-   :show-inheritance:
-   :exclude-members: import_fields,set_alias,remove_alias,remove_field,set_field_type,set_field_types
-
-.. automodule:: yadisk.objects.link_object
+.. automodule:: yadisk.objects._resources
    :members:
    :inherited-members:
    :show-inheritance:
    :exclude-members: import_fields,set_alias,remove_alias,remove_field,set_field_type,set_field_types
 
-.. automodule:: yadisk.objects.operations
+.. automodule:: yadisk.objects._link_object
+   :members:
+   :inherited-members:
+   :show-inheritance:
+   :exclude-members: import_fields,set_alias,remove_alias,remove_field,set_field_type,set_field_types
+
+.. automodule:: yadisk.objects._operations
    :members:
    :show-inheritance:
    :exclude-members: import_fields,set_alias,remove_alias,remove_field,set_field_type,set_field_types

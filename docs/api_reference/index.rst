@@ -7,6 +7,7 @@ API Reference
 
    sync_api
    async_api
+   types
    sessions
    settings
    exceptions
