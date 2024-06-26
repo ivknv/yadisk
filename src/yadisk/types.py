@@ -20,7 +20,7 @@ from typing import Any, Optional, Union, TYPE_CHECKING, Protocol, BinaryIO, Lite
 from typing_extensions import TypeAlias
 from ._compat import (
     Dict, List, Tuple, Callable, Awaitable,
-    Iterator, AsyncIterator
+    Iterator, AsyncIterator, Mapping
 )
 
 if TYPE_CHECKING:
@@ -40,7 +40,7 @@ __all__ = [
 
 JSON: TypeAlias = Union[Dict, List, str, int, float, None]
 TimeoutParameter: TypeAlias = Optional[Union[float, Tuple[Optional[float], Optional[float]]]]
-Headers: TypeAlias = Dict[str, str]
+Headers: TypeAlias = Mapping[str, str]
 
 Payload: TypeAlias = Union[bytes, Iterator[bytes]]
 ConsumeCallback: TypeAlias = Callable[[bytes], None]

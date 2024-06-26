@@ -18,7 +18,7 @@
 
 __all__ = ["List", "Dict", "Set", "Tuple", "Callable", "Iterable", "Generator",
            "AsyncGenerator", "Coroutine", "Awaitable", "AsyncIterable",
-           "Iterator", "AsyncIterator"]
+           "Iterator", "AsyncIterator", "Mapping"]
 
 import sys
 
@@ -32,12 +32,12 @@ Tuple: Any
 if sys.version_info.major == 3 and sys.version_info.minor < 9:
     from typing import (
         List, Dict, Set, Tuple, Callable, Iterable, Generator, AsyncGenerator,
-        Coroutine, Awaitable, AsyncIterable, Iterator, AsyncIterator
+        Coroutine, Awaitable, AsyncIterable, Iterator, AsyncIterator, Mapping
     )
 else:
     from collections.abc import (
         Callable, Iterable, Generator, AsyncGenerator, Coroutine, Awaitable,
-        AsyncIterable, Iterator, AsyncIterator
+        AsyncIterable, Iterator, AsyncIterator, Mapping
     )
 
     List = list
