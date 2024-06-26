@@ -18,11 +18,11 @@
 
 from . import api, objects, exceptions, utils
 
-from .client import Client
-from .async_client import AsyncClient
-from .session import Session, Response
-from .async_session import AsyncSession, AsyncResponse
-from .import_session import import_session, import_async_session
+from ._client import Client
+from ._async_client import AsyncClient
+from ._session import Session, Response
+from ._async_session import AsyncSession, AsyncResponse
+from ._import_session import import_session, import_async_session
 
 __version__ = "2.1.0"
 

@@ -16,42 +16,62 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-from .api_request import APIRequest
-from ..objects import DiskInfoObject
+from urllib.parse import urlparse, parse_qs, quote
+
+from ._api_request import APIRequest
+from ..objects import OperationStatusObject
+from .._common import is_operation_link
 from ..exceptions import InvalidResponseError
 
 from typing import Optional, TYPE_CHECKING
-from ..compat import Iterable
+from .._compat import Iterable
 
 if TYPE_CHECKING:
     from ..types import AnySession, JSON
 
-__all__ = ["DiskInfoRequest"]
+__all__ = ["GetOperationStatusRequest"]
 
 
-class DiskInfoRequest(APIRequest):
+class GetOperationStatusRequest(APIRequest):
     """
-        A request to get disk information.
+        A request to get operation status.
 
         :param session: an instance of :any:`Session` or :any:`AsyncSession` with prepared headers
+        :param operation_id: operation ID or link
         :param fields: list of keys to be included in the response
 
-        :returns: :any:`DiskInfoObject`
+        :returns: :any:`OperationStatusObject`
     """
 
     method = "GET"
-    path = "/v1/disk"
 
     def __init__(self,
                  session: "AnySession",
+                 operation_id: str,
                  fields: Optional[Iterable[str]] = None, **kwargs):
+        if is_operation_link(operation_id):
+            parsed_url = urlparse(operation_id)
+            operation_id = parsed_url.path.rpartition("/")[2]
+
+            params = parse_qs(parsed_url.query)
+
+            if fields is None:
+                fields = params.get("fields", [None])[0]
+        else:
+            operation_id = quote(operation_id)
+
+        self.path = f"/v1/disk/operations/{operation_id}"
+
         APIRequest.__init__(self, session, **kwargs)
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)
 
-    def process_json(self, js: "JSON", **kwargs) -> DiskInfoObject:
+    def process_json(self, js: "JSON", **kwargs) -> OperationStatusObject:
         if not isinstance(js, dict):
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
 
-        return DiskInfoObject(js)
+        if js.get("status") not in ("in-progress", "success", "failed"):
+            raise InvalidResponseError(f"Yandex.Disk returned invalid operation status object: {js}")
+
+        return OperationStatusObject(js)

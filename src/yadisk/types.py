@@ -18,16 +18,16 @@
 
 from typing import Any, Optional, Union, TYPE_CHECKING, Protocol, BinaryIO, Literal
 from typing_extensions import TypeAlias
-from .compat import (
+from ._compat import (
     Dict, List, Tuple, Callable, Awaitable,
     Iterator, AsyncIterator
 )
 
 if TYPE_CHECKING:
-    from .session import Session, Response
-    from .async_session import AsyncSession, AsyncResponse
-    from .client import Client
-    from .async_client import AsyncClient
+    from ._session import Session, Response
+    from ._async_session import AsyncSession, AsyncResponse
+    from ._client import Client
+    from ._async_client import AsyncClient
 
 __all__ = [
     "JSON", "TimeoutParameter", "Headers", "Payload", "ConsumeCallback",

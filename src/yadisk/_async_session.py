@@ -16,17 +16,21 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-from typing import Optional, Any, TypeVar
-from .exceptions import YaDiskError
-from .compat import Dict
-from .utils import get_exception
+from typing import TYPE_CHECKING, Any, Optional, TypeVar
+from ._compat import Dict
+from .types import (
+    AsyncConsumeCallback, JSON, Headers, HTTPMethod, AsyncPayload, TimeoutParameter
+)
 from .objects import ErrorObject
-from .types import ConsumeCallback, JSON, HTTPMethod, Payload, TimeoutParameter
+from .utils import get_exception
 
-__all__ = ["Session", "Response"]
+if TYPE_CHECKING:
+    from .exceptions import YaDiskError
+
+__all__ = ["AsyncSession", "AsyncResponse"]
 
 
-class Response:
+class AsyncResponse:
     """
         Represents an HTTP response.
 
@@ -34,7 +38,7 @@ class Response:
         derived from :any:`YaDiskError`.
     """
 
-    _Self = TypeVar("_Self", bound="Response")
+    _Self = TypeVar("_Self", bound="AsyncResponse")
 
     def status(self) -> int:
         """
@@ -48,7 +52,7 @@ class Response:
 
         raise NotImplementedError
 
-    def json(self) -> JSON:
+    async def json(self) -> JSON:
         """
             Returns JSON-content of the response (parses JSON).
 
@@ -59,25 +63,26 @@ class Response:
         """
         raise NotImplementedError
 
-    def download(self, consume_callback: ConsumeCallback) -> None:
+    async def download(self, consume_callback: AsyncConsumeCallback) -> None:
         """
             Downloads response's content.
 
             .. note::
                This is an abstract method that needs to be implemented.
 
-            :param consume_callback: function, takes one parameter - chunk of data (bytes),
+            :param consume_callback: regular or async function, takes one
+                                     parameter - chunk of data (bytes),
                                      consumes the chunk (e.g. by writing to a file)
         """
         raise NotImplementedError
 
-    def get_exception(self) -> YaDiskError:
+    async def get_exception(self) -> "YaDiskError":
         """
             Convenience wrapper for :any:`yadisk.utils.get_exception`.
         """
 
         try:
-            js = self.json()
+            js = await self.json()
         except (ValueError, RuntimeError):
             js = None
 
@@ -85,24 +90,25 @@ class Response:
 
         return get_exception(self, error)
 
-    def close(self) -> None:
+    async def close(self) -> None:
         """
-            Closes the response and releases the underlying connection into the pool
+            Closes the response and releases the underlying connection into the pool.
 
             .. note::
                This is an abstract method that needs to be implemented.
         """
         raise NotImplementedError
 
-    def __enter__(self: _Self) -> _Self:
+    async def __aenter__(self: _Self) -> _Self:
         return self
 
-    def __exit__(self, *args, **kwargs) -> None:
+    async def __aexit__(self, *args, **kwargs) -> None:
         """Closes the response and releases the underlying connection into the pool"""
-        self.close()
+
+        await self.close()
 
 
-class Session:
+class AsyncSession:
     """
         HTTP session class. Maintains open connections, stores headers and
         some other request parameters.
@@ -110,9 +116,9 @@ class Session:
         Must be explicitly closed (can be done using the `with` statement).
     """
 
-    _Self = TypeVar("_Self", bound="Session")
+    _Self = TypeVar("_Self", bound="AsyncSession")
 
-    def set_headers(self, headers: Dict[str, str]) -> None:
+    def set_headers(self, headers: Headers) -> None:
         """
             Updates session's headers.
 
@@ -132,15 +138,15 @@ class Session:
 
         self.set_headers({"Authorization": "OAuth " + token})
 
-    def send_request(self,
-                     method: HTTPMethod,
-                     url: str,
-                     *,
-                     params:  Optional[Dict[str, Any]] = None,
-                     data:    Optional[Payload] = None,
-                     timeout: TimeoutParameter = None,
-                     stream:  bool = False,
-                     **kwargs) -> Response:
+    async def send_request(self,
+                           method: HTTPMethod,
+                           url: str,
+                           *,
+                           params:  Optional[Dict[str, Any]] = None,
+                           data:    Optional[AsyncPayload] = None,
+                           timeout: TimeoutParameter = None,
+                           stream:  bool = False,
+                           **kwargs) -> AsyncResponse:
         """
             Sends an HTTP request with given parameters.
             In case an error occurs, the method should throw one of exceptions
@@ -154,7 +160,8 @@ class Session:
             :param method: `str`, HTTP method
             :param url: `str`, URL
             :param params: `dict`, GET parameters
-            :param data: `bytes`, an iterator or a file-like object, data to be sent in the request body
+            :param data: `bytes`, iterator (possibly async) or a file-like object (possible async),
+                         data to be sent in the request body
             :param headers: `dict`, additional headers to be set
             :param timeout: request timeout, a `tuple` of `(read timeout, connect timeout)`,
                             `float` or `None` (no timeout)
@@ -164,7 +171,7 @@ class Session:
         """
         raise NotImplementedError
 
-    def close(self) -> None:
+    async def close(self) -> None:
         """
             Closes the session.
 
@@ -173,9 +180,9 @@ class Session:
         """
         raise NotImplementedError
 
-    def __enter__(self: _Self) -> _Self:
+    async def __aenter__(self: _Self) -> _Self:
         return self
 
-    def __exit__(self, *args, **kwargs) -> None:
+    async def __aexit__(self, *args, **kwargs) -> None:
         """Closes the session."""
-        return self.close()
+        return await self.close()

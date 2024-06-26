@@ -20,7 +20,7 @@ import asyncio
 import datetime
 import inspect
 
-from .compat import Callable, List
+from ._compat import Callable, List
 from . import settings
 
 from typing import Optional, TypeVar, Any, Union

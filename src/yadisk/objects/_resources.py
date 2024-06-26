@@ -20,10 +20,10 @@ from functools import partial
 from pathlib import PurePosixPath
 from urllib.parse import urlencode, urlparse, parse_qs
 
-from .yadisk_object import YaDiskObject
-from .link_object import LinkObject
-from .disk import UserPublicInfoObject
-from ..common import (
+from ._yadisk_object import YaDiskObject
+from ._link_object import LinkObject
+from ._disk import UserPublicInfoObject
+from .._common import (
     typed_list, yandex_date, is_resource_link, is_public_resource_link,
     ensure_path_has_schema, str_or_error, int_or_error, bool_or_error,
     dict_or_error, str_or_dict_or_error
@@ -35,11 +35,11 @@ from typing import (
     TYPE_CHECKING, Any, overload, Union, IO, AnyStr, Protocol, Optional
 )
 
-from ..compat import Generator, List, AsyncGenerator
+from .._compat import Generator, List, AsyncGenerator
 
 if TYPE_CHECKING:
     import datetime
-    from .operations import (
+    from ._operations import (
         OperationLinkObject, AsyncOperationLinkObject, SyncOperationLinkObject
     )
 

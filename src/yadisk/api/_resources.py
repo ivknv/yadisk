@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-from .api_request import APIRequest
+from ._api_request import APIRequest
 from ..objects import (
     PublicResourcesListObject, SyncPublicResourcesListObject, AsyncPublicResourcesListObject,
     TrashResourceObject, SyncTrashResourceObject, AsyncTrashResourceObject,
@@ -28,10 +28,10 @@ from ..objects import (
     ResourceLinkObject, SyncResourceLinkObject, AsyncResourceLinkObject, ResourceDownloadLinkObject
 )
 
-from ..common import is_operation_link, ensure_path_has_schema
+from .._common import is_operation_link, ensure_path_has_schema
 from ..exceptions import InvalidResponseError
 
-from ..compat import Iterable, Dict, List
+from .._compat import Iterable, Dict, List
 from typing import Optional, Union, TYPE_CHECKING
 
 if TYPE_CHECKING:

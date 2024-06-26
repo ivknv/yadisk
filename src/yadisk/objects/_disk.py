@@ -17,8 +17,8 @@
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
 from functools import partial
-from .yadisk_object import YaDiskObject
-from ..common import str_or_error, bool_or_error, int_or_error
+from ._yadisk_object import YaDiskObject
+from .._common import str_or_error, bool_or_error, int_or_error
 
 from typing import Any, Optional, NoReturn
 
@@ -182,7 +182,7 @@ class UserPublicInfoObject(UserObject):
         :ivar uid: `str`, user's UID
     """
 
-    country: NoReturn
+    country: NoReturn  # pyright: ignore[reportIncompatibleVariableOverride]
 
     def __init__(self,
                  public_user_info: Optional[dict] = None,

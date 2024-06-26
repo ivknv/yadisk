@@ -16,10 +16,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-from .yadisk_object import *
-from .error_object import *
-from .link_object import *
-from .disk import *
-from .resources import *
-from .operations import *
-from .auth import *
+from ._yadisk_object import *
+from ._error_object import *
+from ._link_object import *
+from ._disk import *
+from ._resources import *
+from ._operations import *
+from ._auth import *

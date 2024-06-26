@@ -11,8 +11,8 @@ from typing import Any
 
 import yadisk
 
-from yadisk.common import is_operation_link, ensure_path_has_schema
-from yadisk.api.operations import GetOperationStatusRequest
+from yadisk._common import is_operation_link, ensure_path_has_schema
+from yadisk.api import GetOperationStatusRequest
 from yadisk.types import SessionName
 
 from .test_session import TestSession

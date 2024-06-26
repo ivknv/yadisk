@@ -26,7 +26,7 @@ from . import settings
 
 from typing import Any, Optional, Type, Union, TypeVar
 
-from .compat import Callable, Awaitable, Dict
+from ._compat import Callable, Awaitable, Dict
 from .types import AnyResponse
 
 __all__ = ["get_exception", "auto_retry", "async_auto_retry"]

@@ -37,13 +37,13 @@ from .utils import auto_retry
 from .objects import AsyncResourceLinkObject, AsyncPublicResourceLinkObject
 
 from typing import Any, Optional, Union, IO, TYPE_CHECKING, BinaryIO, Literal
-from .compat import Callable, AsyncGenerator, Awaitable, Dict
+from ._compat import Callable, AsyncGenerator, Awaitable, Dict
 
-from .async_session import AsyncSession
-from .import_session import import_async_session
+from ._async_session import AsyncSession
+from ._import_session import import_async_session
 
-from .common import CaseInsensitiveDict
-from .client_common import (
+from ._common import CaseInsensitiveDict
+from ._client_common import (
     _apply_default_args, _filter_request_kwargs, _replace_authorization_header
 )
 

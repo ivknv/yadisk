@@ -16,9 +16,9 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-from .yadisk_object import YaDiskObject
-from .link_object import LinkObject
-from ..common import str_or_error
+from ._yadisk_object import YaDiskObject
+from ._link_object import LinkObject
+from .._common import str_or_error
 from ..types import OperationStatus
 
 from typing import Any, Optional

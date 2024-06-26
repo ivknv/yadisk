@@ -18,16 +18,14 @@
 
 from typing import Optional, Any, Union
 
-from ..common import CaseInsensitiveDict
-
 from ..exceptions import (
     RequestError, TooManyRedirectsError,
     RequestTimeoutError, YaDiskConnectionError
 )
 
-from ..async_session import AsyncSession, AsyncResponse
-from ..compat import Iterable
-from ..common import is_async_func
+from .._async_session import AsyncSession, AsyncResponse
+from .._compat import Iterable
+from .._common import CaseInsensitiveDict, is_async_func
 from ..types import JSON, AsyncConsumeCallback, Headers, TimeoutParameter, HTTPMethod
 
 import aiohttp

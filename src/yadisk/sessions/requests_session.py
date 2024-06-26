@@ -21,8 +21,8 @@ from ..exceptions import (
     RequestTimeoutError, YaDiskConnectionError
 )
 
-from ..session import Session, Response
-from ..common import CaseInsensitiveDict
+from .._session import Session, Response
+from .._common import CaseInsensitiveDict
 from ..types import JSON, ConsumeCallback, Headers, HTTPMethod
 
 from typing import Union

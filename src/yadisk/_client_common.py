@@ -16,9 +16,9 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-from .common import CaseInsensitiveDict
+from ._common import CaseInsensitiveDict
 
-from .compat import Dict, Generator
+from ._compat import Dict, Generator
 from typing import Any, AnyStr, IO, Optional
 
 __all__ = [

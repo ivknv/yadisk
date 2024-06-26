@@ -32,21 +32,21 @@ from .objects import (
     SyncTrashResourceObject
 )
 
-from .session import Session
-from .import_session import import_session
+from ._session import Session
+from ._import_session import import_session
 
 from . import settings
 
-from .common import CaseInsensitiveDict
+from ._common import CaseInsensitiveDict
 
 from typing import Any, Optional, Union, Literal, TYPE_CHECKING
-from .compat import Callable, Generator, Dict
+from ._compat import Callable, Generator, Dict
 from .types import (
     OpenFileCallback, FileOrPath, FileOrPathDestination, OperationStatus,
     SessionFactory, SessionName
 )
 
-from .client_common import (
+from ._client_common import (
     _apply_default_args, _filter_request_kwargs,
     _read_file_as_generator, _replace_authorization_header
 )

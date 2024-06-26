@@ -19,8 +19,8 @@
 from typing import Type, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .session import Session
-    from .async_session import AsyncSession
+    from ._session import Session
+    from ._async_session import AsyncSession
     from .types import AsyncSessionName, SessionName
 
 __all__ = ["import_session", "import_async_session"]

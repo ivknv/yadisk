@@ -18,12 +18,12 @@
 
 from typing import Any
 
-from ..async_session import AsyncSession, AsyncResponse
-from ..compat import Iterable
+from .._async_session import AsyncSession, AsyncResponse
+from .._compat import Iterable
 from ..types import JSON, AsyncConsumeCallback, Headers, HTTPMethod
-from ..common import is_async_func
+from .._common import is_async_func
 
-from .httpx_common import *
+from ._httpx_common import *
 
 import httpx
 
