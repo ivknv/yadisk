@@ -2173,7 +2173,7 @@ class PublicResourceLinkObject(LinkObject):
             except IndexError:
                 public_key_or_url = ""
 
-            if public_key_or_url.startswith("http://") or public_key_or_url.startswith("https://"):
+            if public_key_or_url.startswith(("http://", "https://")):
                 self.public_url = public_key_or_url
             else:
                 self.public_key = public_key_or_url
