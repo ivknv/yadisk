@@ -22,15 +22,13 @@ class TestSession(yadisk.Session):
         disk_base_url:     Optional[str] = None,
         auth_base_url:     Optional[str] = None,
         download_base_url: Optional[str] = None,
-        upload_base_url:   Optional[str] = None,
-        test_token:        str = "test_token_for_use_with_the_gateway"
+        upload_base_url:   Optional[str] = None
     ):
         self._session          = session
         self.disk_base_url     = disk_base_url
         self.auth_base_url     = auth_base_url
         self.download_base_url = download_base_url
         self.upload_base_url   = upload_base_url
-        self.test_token        = test_token
 
     def set_headers(self, headers: Headers) -> None:
         return self._session.set_headers(headers)
@@ -77,14 +75,12 @@ class AsyncTestSession(yadisk.AsyncSession):
         auth_base_url:     Optional[str] = None,
         download_base_url: Optional[str] = None,
         upload_base_url:   Optional[str] = None,
-        test_token:        str = "test_token_for_use_with_the_gateway"
     ):
         self._session          = session
         self.disk_base_url     = disk_base_url
         self.auth_base_url     = auth_base_url
         self.download_base_url = download_base_url
         self.upload_base_url   = upload_base_url
-        self.test_token        = test_token
 
     def set_headers(self, headers: Headers) -> None:
         return self._session.set_headers(headers)
