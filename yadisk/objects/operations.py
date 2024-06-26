@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from functools import partial
-
 from .yadisk_object import YaDiskObject
 from .link_object import LinkObject
-from ..common import str_or_error, dict_or_error
+from ..common import str_or_error
 from ..types import OperationStatus
 
 from typing import Any, Optional
