@@ -12,14 +12,14 @@
             "status_code": 200,
             "headers": {
                 "content-type": "application/json; charset=utf-8",
-                "content-length": "243"
+                "content-length": "242"
             },
-            "content": "eJwtj81uwyAQhN+Fc4P5WVjip+ghPVfYLMUNMRYQKVHVdy+RepwZ6ZuZH1YOqr5vZf/cApuZBQUONSoJawwSAUF7dNIBLtFqcGqJQ6EUiwoySmlEcMZb5VCcUUv2xlKlOEip96PN03Q/cvGBqrKFh61d+dPvgR58pz4D6P/81H39oj4poUBYhRfptDPAFQC/98DxXHOq6zdsa6OEBcg88NkynK4vMOgxGKQZ9TfqqbyuvH9chux0O7LvNJzoc6PfP9ShSMc="
+            "content": "eJwtj8tugzAURP/F68b4bcNXdJGuIz+ugQawZW4Uoqr/XiJ1OWekM5ofUio0j3PZbnMiAwHlMoPoNAtGCy1T72XPM7fOyiSy0tqwaI0OQfkobbAx5+BE8LGX0UZLPsjUIJ+mCbHuQ9c96lJ8gub4N03zfqcvvyU46AY4KCX/+wv6NgJ2ggnFjLBX3mupNLWO0QcmylU9Dq3wNfoyVbbElYtjfDa43N9irg2XypzrK+BU3k8+v65nRFjr4hFOkv2yw+8fQW1LGw=="
         }
     },
     {
         "method": "PUT",
-        "url": "https://uploader26o.disk.yandex.net/upload-target/20240627T183854.244.utd.79rlhrcj4icseh7o4e5x7ysl4-k26o.43214415",
+        "url": "https://uploader81j.disk.yandex.net/upload-target/20240627T195345.780.utd.14pxx54tygaohp0lcm12xgwre-k81j.1561346",
         "headers": {
             "content-type": "application/octet-stream",
             "connection": "close"

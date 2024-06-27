@@ -1047,12 +1047,6 @@ class Client:
 
                 temp_kwargs.setdefault("stream", True)
 
-                # Disable keep-alive by default, since the download server is random
-                try:
-                    temp_kwargs["headers"].setdefault("Connection", "close")
-                except KeyError:
-                    temp_kwargs["headers"] = {"Connection": "close"}
-
                 if file.seekable():
                     file.seek(file_position)
 

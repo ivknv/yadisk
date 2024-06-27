@@ -1073,12 +1073,6 @@ class AsyncClient:
                 # session.get() doesn't accept some of the passed parameters
                 _filter_request_kwargs(temp_kwargs)
 
-                # Disable keep-alive by default, since the download server is random
-                try:
-                    temp_kwargs["headers"].setdefault("Connection", "close")
-                except KeyError:
-                    temp_kwargs["headers"] = {"Connection": "close"}
-
                 if await _is_file_seekable(file):
                     await _file_seek(file, file_position)
 

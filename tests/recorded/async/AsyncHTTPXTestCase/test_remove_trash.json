@@ -50,12 +50,12 @@
                 "content-type": "application/json; charset=utf-8",
                 "content-length": "680"
             },
-            "content": "eJy1ksFqAyEQht/Fa7NEXV1Xz32EXEopi7uOjXRdg5rQEvbdOylpIYXSS+tFBz8/f4Y5k/p2AGKIC5lsyABxBOfAEXMmoUIsxDyeyWLjlWlqajLEdAKk4TV4BNcNmTLYenlFOOWioV3D1Y5JI6hp+R2lhlLkHczwE9V+USmH57AMB1v3H3+WF7N9sPe476DU7fcQMbngw6/WDCUd8wRDuJBCyk5JprgRAFRRMbZUd9Czvuuw7IBTEAw8dFwz0be95EpaCw40tEpb5rgGbZX0qL4mrdmWvbnNN/ixR/fUKasZY60ffW+dsOAnhgLwXEzae+ComVKMsFQMWC7dP+Rwwp4On8H/PPVxnMP0T3ociZu5ynAKJaSFGKaYlpT3bcu41FqvT4imame82pA5xFDxRHHhJHhfAEu6ru+J4MPh"
+            "content": "eJy1kstqwzAQRf9F28ZkJOtha91PyKaUYvQYNaKWHWQltAT/e5WSFlIo3bTaSEJnrg7DnEl5OyDRxMdMNmTAZNF79ESfSSyYFqIfz2Qy6co0ZW4ypvmElcbXGCq4bojLaMqlijBgvAHZMLWjUguhqbgD0ACV9zjiT5T8ouYcn+M0HEzZf/y5vOjtg7mv+w6Xsv0ukWYfQ/w1NeMyH7PDIV5ILoRUgiqmOeMUsG+lD+AMcCeFMRwtZ71tjQjBOiuDbQGoE44DBNpZL4ULnbGCshp9NS3ZLHt96zdYixJF6DpTK7DvGWVKtn3oGbPWKWNtYNRIVWPcnBJOpQoul+4fcjzVng6f4n9ufbRjdP8UX0fiZq4ynuIS54loqmgvQLVUMuh4365PFZ2LGevThowxxVJPUFedhBAWrFdY13ewsMcZ"
         }
     },
     {
         "method": "DELETE",
-        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_fb84b3c67a91113fbf8ad4aefc19e9ef24c9ffe2&force_async=false",
+        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_bbe6e5f88a5cfe992127639f922bbc7abbf21a67&force_async=false",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -73,7 +73,7 @@
     },
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_fb84b3c67a91113fbf8ad4aefc19e9ef24c9ffe2&offset=0&limit=0",
+        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_bbe6e5f88a5cfe992127639f922bbc7abbf21a67&offset=0&limit=0",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
