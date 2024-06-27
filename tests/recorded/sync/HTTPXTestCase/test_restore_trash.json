@@ -50,12 +50,12 @@
                 "content-type": "application/json; charset=utf-8",
                 "content-length": "648"
             },
-            "content": "eJy1ksluAyEMht+FaxMFGPZzHyGXqqpGLKZBmSUCErWK5t3LdFUPVS/tCWF//v1jc0X1+QTIoJAy2qAeRgchQEDmilKFsSBzf0WTHb8YeEqxpZcN8hlsXVlEMWVbLLYU74kylBsubjA2GDc+wAA/UfKTmnN6TFN/svXw2qkcze7O3rZzD6Xu3lqPc0gx/aqVoczn7KFPK8k4F5ITSY1SQsXACCGS+NABi50Q0uMImhAudJSUW0Iok9ID5pJZSpXSikVNlSO2Sb/7q9mWg1ld9cR1GjrtJIlROB5C57gM3AYXuGJae6l5C6tW7OdxhKk2W2Wd7ymnS5tf/2H3z72e3ZD8P8m39X/7ORkuqaR5QqYpKo3bqyVTpKNieWjoXO3QUhs0pDFVZDjGbecxFmgXvCwvgti12Q=="
+            "content": "eJy1kstOQyEQht+FrW063DmsfYRujDEnHBiUeC4N0EbTnHeXeo0L40ZXhMzHP19mOJP6fEBiSUiZbEiP04AhYCD2TFLFqRB7eyazm74YfEqxldcN8RldvbCEARNbUFum91RaQa3gVwAWoPEBR/yJkp/UktN9mvuDqw+vncqj3d2463busdTdW+tpCSmmX7MyluWYPfbpQgoplZZUM8up4lwZaXjkXWe8kNhprzwa6pX2BgQqNiDIDihoQQ2lFAwzbBjQoexa9Ltfza482ItVHwyHEKJSgSPVLsqBeoc+SN0JGlEZ46UzhrfHfpkmnGvTKpf5HnI6tfn1H7p/7nocxuT/Kb6t/9vPyXhKJS0zsVTTTgLrQApQwvD1rqFLdWMrbciYplSJlQBt5zEWbBdY1xfsw7VH"
         }
     },
     {
         "method": "PUT",
-        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources/restore?path=trash%3A%2Fdir_1b39e39b71ff6b5dd3b57d5adbd58499c795b5d8&overwrite=false&force_async=false&name=%2FYaDiskTest%2Fdir",
+        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources/restore?path=trash%3A%2Fdir_d830ddf66d3e17af5b1caecd57941fe688c5a883&overwrite=false&force_async=false&name=%2FYaDiskTest%2Fdir",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -86,7 +86,7 @@
                 "content-type": "application/json; charset=utf-8",
                 "content-length": "566"
             },
-            "content": "eJy1kc1OQyEQRt9ltt5GoPxd1j5CN8aYhsIQiaXcAG00Td/dqUZd6UpXkC+H+XKYM2yx7DBGjODO0Gsb4AAmyANLB/fwOME+l0wpm6Cm1PHjuvjxRGTM/dnd3vs7OjfYx23MjV6POvyeuMsEB1/wHbzm+JIT9VDcsNdjC7jNVAxSKW0UN8JZq22KknNueIhrlGmttQks4cy50nMyQnnOhTQmIFNGeiGsna1Ms7A77qkkNPTj6gOCCblieiXYhlsnlFP6hjHHGFGlxpzyD5j9wn73DLUUPAyS6NfvW1o+UfX2U+6vzZbjbp/DP42npYzX5XtXDU+553oARxPtzMysrF0LrdXlDQMKn4c="
+            "content": "eJy1kctOwzAQRf9ltqTq2PF73U/oBiFUJc5EWMR1ZLsVqOq/44KAFaxgZevq2Fdn5gIHiiNNE03gLlBSruAAOgiVYgH38NjBEmJoKXaQ5rnQx3Ud6lMjp1Ce3fZ+2LVzT6Vup5Db65rqsDTu2sFxiPQO3nJ6CXPraXGmkk7Z0yG0YhBSKi2Z5q5nqu+Vkaafe2uNF5Ks9sqTYV5pb1CQ4iOhtMhQC2YYY2i44eNIA0nbSnymod58gCMXG1QbrvdMOsGc6O8QHWKjYprCHH7A1Bf2u6dPMdKxNolyG9+aw7lVHz7l/tpsPY1L8P/0fVtKfV2/d5XpHEpIR3BMMyuRW1RGGGXN9Q1Ptp7d"
         }
     },
     {

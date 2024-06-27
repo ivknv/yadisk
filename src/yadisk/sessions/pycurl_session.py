@@ -27,7 +27,7 @@ from ..exceptions import (
 from .._session import Session, Response
 from .._compat import Iterator
 from ..utils import CaseInsensitiveDict
-from ..types import JSON, ConsumeCallback, Headers, HTTPMethod
+from ..types import JSON, ConsumeCallback, HTTPMethod
 
 from urllib.parse import urlencode
 
@@ -158,20 +158,16 @@ class PycURLSession(Session):
 
     def __init__(self):
         self._share = pycurl.CurlShare()
-        self._headers = CaseInsensitiveDict()
 
         self._share.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_CONNECT)
         self._share.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_DNS)
         self._share.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_SSL_SESSION)
 
-    def set_headers(self, headers: Headers) -> None:
-        self._headers.update(headers)
-
     def send_request(self, method: HTTPMethod, url: str, **kwargs) -> Response:
         params = kwargs.get("params", {})
         data = kwargs.get("data")
         stream = kwargs.get("stream", False)
-        headers = CaseInsensitiveDict(self._headers)
+        headers = CaseInsensitiveDict()
         headers.update(kwargs.get("headers", {}))
 
         options = kwargs.get("curl_options", {})

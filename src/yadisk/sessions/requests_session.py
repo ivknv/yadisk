@@ -23,7 +23,7 @@ from ..exceptions import (
 
 from .._session import Session, Response
 from ..utils import CaseInsensitiveDict
-from ..types import JSON, ConsumeCallback, Headers, HTTPMethod
+from ..types import JSON, ConsumeCallback, HTTPMethod
 
 from typing import Union
 
@@ -107,7 +107,6 @@ class RequestsSession(Session):
     def __init__(self, *args, **kwargs):
         self._args, self._kwargs = args, kwargs
         self._local = threading.local()
-        self._headers = CaseInsensitiveDict()
         self._sessions = []
 
     @property
@@ -127,12 +126,8 @@ class RequestsSession(Session):
         session.close()
         self._sessions.remove(session)
 
-    def set_headers(self, headers: Headers) -> None:
-        self._headers.update(headers)
-
     def send_request(self, method: HTTPMethod, url: str, **kwargs) -> Response:
         headers = CaseInsensitiveDict(self.requests_session.headers)
-        headers.update(self._headers)
 
         if "requests_args" in kwargs:
             kwargs.update(kwargs.pop("requests_args"))

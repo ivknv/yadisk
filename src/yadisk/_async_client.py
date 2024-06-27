@@ -43,7 +43,8 @@ from ._async_session import AsyncSession
 from ._import_session import import_async_session
 
 from ._client_common import (
-    _apply_default_args, _filter_request_kwargs, _replace_authorization_header
+    _apply_default_args, _filter_request_kwargs, _set_authorization_header,
+    _add_authorization_header
 )
 
 _default_open_file: AsyncOpenFileCallback
@@ -284,6 +285,7 @@ class AsyncClient:
 
     id: str
     secret: str
+    token: str
     default_args: Dict[str, Any]
     session: AsyncSession
     open_file: AsyncOpenFileCallback
@@ -302,7 +304,7 @@ class AsyncClient:
         self.id = id
         self.secret = secret
 
-        self._token = ""
+        self.token = ""
 
         self.default_args = {} if default_args is None else default_args
 
@@ -331,15 +333,6 @@ class AsyncClient:
         self.open_file = open_file
 
         self.token = token
-
-    @property
-    def token(self) -> str:
-        return self._token
-
-    @token.setter
-    def token(self, value: str) -> None:
-        self._token = value
-        self.session.set_token(self._token)
 
     async def __aenter__(self):
         return self
@@ -522,7 +515,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
-        _replace_authorization_header(kwargs, "")
+        _set_authorization_header(kwargs, "")
 
         request = GetDeviceCodeRequest(self.session, self.id, **kwargs)
         await request.asend()
@@ -550,7 +543,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
-        _replace_authorization_header(kwargs, "")
+        _set_authorization_header(kwargs, "")
 
         request = GetTokenRequest(
             self.session,
@@ -587,7 +580,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
-        _replace_authorization_header(kwargs, "")
+        _set_authorization_header(kwargs, "")
 
         request = GetTokenRequest(
             self.session,
@@ -620,7 +613,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
-        _replace_authorization_header(kwargs, "")
+        _set_authorization_header(kwargs, "")
 
         request = RefreshTokenRequest(
             self.session,
@@ -653,7 +646,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
-        _replace_authorization_header(kwargs, "")
+        _set_authorization_header(kwargs, "")
 
         if token is None:
             token = self.token
@@ -685,6 +678,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = DiskInfoRequest(self.session, **kwargs)
         await request.asend()
@@ -714,6 +708,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = GetMetaRequest(self.session, path, **kwargs)
         await request.asend()
@@ -842,6 +837,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = GetUploadLinkRequest(self.session, path, **kwargs)
         await request.asend()
@@ -1013,6 +1009,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = GetDownloadLinkRequest(self.session, path, **kwargs)
         await request.asend()
@@ -1166,6 +1163,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = DeleteRequest(self.session, path, **kwargs)
         await request.asend()
@@ -1193,6 +1191,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = MkdirRequest(self.session, path, **kwargs)
         await request.asend()
@@ -1221,9 +1220,7 @@ class AsyncClient:
         if not token:
             return False
 
-        headers = CaseInsensitiveDict(kwargs.get("headers", {}))
-        headers["Authorization"] = f"OAuth {token}"
-        kwargs["headers"] = headers
+        _set_authorization_header(kwargs, token)
 
         try:
             # get_operation_status() doesn't require any permissions, unlike most other requests
@@ -1257,6 +1254,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = GetTrashRequest(self.session, path, **kwargs)
         await request.asend()
@@ -1310,6 +1308,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = CopyRequest(self.session, src_path, dst_path, **kwargs)
         await request.asend()
@@ -1346,6 +1345,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         kwargs["dst_path"] = dst_path
 
@@ -1379,6 +1379,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = MoveRequest(self.session, src_path, dst_path, **kwargs)
         await request.asend()
@@ -1440,6 +1441,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = DeleteTrashRequest(self.session, path, **kwargs)
         await request.asend()
@@ -1465,6 +1467,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = PublishRequest(self.session, path, **kwargs)
         await request.asend()
@@ -1490,6 +1493,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = UnpublishRequest(self.session, path, **kwargs)
         await request.asend()
@@ -1528,6 +1532,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = SaveToDiskRequest(self.session, public_key, **kwargs)
         await request.asend()
@@ -1560,6 +1565,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = GetPublicMetaRequest(self.session, public_key, **kwargs)
         await request.asend()
@@ -1775,6 +1781,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = GetPublicResourcesRequest(self.session, **kwargs)
         await request.asend()
@@ -1801,6 +1808,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = PatchRequest(self.session, path, properties, **kwargs)
         await request.asend()
@@ -1829,6 +1837,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         if kwargs.get("limit") is not None:
             request = FilesRequest(self.session, **kwargs)
@@ -1873,6 +1882,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = LastUploadedRequest(self.session, **kwargs)
         await request.asend()
@@ -1904,6 +1914,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = UploadURLRequest(self.session, url, path, **kwargs)
         await request.asend()
@@ -1930,6 +1941,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = GetPublicDownloadLinkRequest(self.session, public_key, **kwargs)
         await request.asend()
@@ -1958,6 +1970,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         await self._download(
             lambda *args, **kwargs: self.get_public_download_link(public_key, **kwargs),
@@ -1984,6 +1997,7 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
 
         request = GetOperationStatusRequest(self.session, operation_id, **kwargs)
         await request.asend()

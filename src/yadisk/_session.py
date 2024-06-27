@@ -112,26 +112,6 @@ class Session:
 
     _Self = TypeVar("_Self", bound="Session")
 
-    def set_headers(self, headers: Dict[str, str]) -> None:
-        """
-            Updates session's headers.
-
-            .. note::
-               This is an abstract method that needs to be implemented.
-
-            :param headers: dictionary of headers to be set
-        """
-        raise NotImplementedError
-
-    def set_token(self, token: str) -> None:
-        """
-            Sets token for the session by setting the Authorization header.
-
-            :param token: `str`, API token
-        """
-
-        self.set_headers({"Authorization": "OAuth " + token})
-
     def send_request(self,
                      method: HTTPMethod,
                      url: str,

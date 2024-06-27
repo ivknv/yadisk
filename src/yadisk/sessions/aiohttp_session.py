@@ -139,13 +139,6 @@ class AIOHTTPSession(AsyncSession):
     def aiohttp_session(self) -> aiohttp.ClientSession:
         return self._session
 
-    def set_headers(self, headers: Headers) -> None:
-        self._session.headers.update(headers)
-
-    def remove_headers(self, headers: Iterable[str]) -> None:
-        for h in headers:
-            self._session.headers.pop(h, None)
-
     async def send_request(self, method: HTTPMethod, url: str, **kwargs) -> AsyncResponse:
         if "timeout" in kwargs:
             kwargs["timeout"] = convert_timeout(kwargs["timeout"])

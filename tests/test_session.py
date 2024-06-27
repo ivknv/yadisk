@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import yadisk
-from yadisk.types import HTTPMethod, Headers
+from yadisk.types import HTTPMethod
 
 from urllib.parse import urljoin, urlparse
 
@@ -29,12 +29,6 @@ class TestSession(yadisk.Session):
         self.auth_base_url     = auth_base_url
         self.download_base_url = download_base_url
         self.upload_base_url   = upload_base_url
-
-    def set_headers(self, headers: Headers) -> None:
-        return self._session.set_headers(headers)
-
-    def set_token(self, token: str) -> None:
-        self._session.set_token(token)
 
     def send_request(self, method: HTTPMethod, url: str, **kwargs) -> yadisk.Response:
         url_parsed = urlparse(url)
@@ -81,12 +75,6 @@ class AsyncTestSession(yadisk.AsyncSession):
         self.auth_base_url     = auth_base_url
         self.download_base_url = download_base_url
         self.upload_base_url   = upload_base_url
-
-    def set_headers(self, headers: Headers) -> None:
-        return self._session.set_headers(headers)
-
-    def set_token(self, token: str) -> None:
-        self._session.set_token(token)
 
     async def send_request(self, method: HTTPMethod, url: str, **kwargs) -> yadisk.AsyncResponse:
         url_parsed = urlparse(url)

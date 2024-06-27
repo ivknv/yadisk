@@ -47,12 +47,12 @@
                 "content-type": "application/json; charset=utf-8",
                 "content-length": "678"
             },
-            "content": "eJy1kstKAzEUht8lWzv0zJnJde0jdCMiQzI5scG5lExalDLvbipVqCBulCxCyJc/H4f/zPLbgZhhPia2YR2Njrwnz8yZxUzjwszjmU12vDJVnqtE43yiQtNrDAVcN6xPZPPlFUPAtgJRIexqZVCYht8BGIDCexroJ0p8UXOKz3HqDjbvP/5cXsz2wd6XfUdL3n6XGGcfQ/w1NdEyH1NPXbyQLedC8lqi4T70bUCOqrGibYIKzgunUbXO6kahAukbCRoU1sIDSGWDlw26Hn3dOFGir6Y52WVvbv067rBtAW0tSqwnINuosrRWKLnAUPehd6rlJaafx5GmXASXy/QPKZ7KTLtP8T+3Proh9v8UXypx06tEp7jEeWKmlrXSILUWCJxrtT4VdM52KFcbNsQxZmY4QOlBCAuVA6zrO+GkwmQ="
+            "content": "eJy1ks1qAyEURt/FbTPk6vgzuu4jZFNKGRy900jHMTgmtIR595qSFlIo3bQrEc/9PFy+MylvBySG+JDJhvQYB/QePTFnEgrGhZjHM5ltvDJNSU3GmE5YaXwNYwXXDXEZbblMEQaMNyAbpnZUGM4ME3cABqDyHif8iVJfVMrhOcz9wZb9x5/Li9k+2Pt67nAp2+8SMfkwhl9TMy7pmB324UJyIaQSVDEjEAGdaEExT7mmnnVW2VaOous0dspqT0eLEujQauc0gOR1kjHhOwqqrdFX05Ltsje3fv3orHIUpVZUODpI5gfF5cCpYBosWsdbTgdxiXEpRpxLFVwu2z/kcKo77T/F/9z6OEzB/VN8rcRNrzKewhLSTAxVVAtgmisGgstufapoKnaqTxsyhRgKMQKg9mAcF6wXWNd3avbBiQ=="
         }
     },
     {
         "method": "DELETE",
-        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_5b24402a16bd6de0ea3838399827562f1cfcb845&force_async=false",
+        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_fca7c1e69715c1b62db746b415290aeac4341b53&force_async=false",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "authorization": "OAuth supposedly_valid_token"
@@ -69,7 +69,7 @@
     },
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_5b24402a16bd6de0ea3838399827562f1cfcb845&offset=0&limit=0",
+        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_fca7c1e69715c1b62db746b415290aeac4341b53&offset=0&limit=0",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "authorization": "OAuth supposedly_valid_token"

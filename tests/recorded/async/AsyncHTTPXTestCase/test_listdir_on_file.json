@@ -14,15 +14,14 @@
                 "content-type": "application/json; charset=utf-8",
                 "content-length": "243"
             },
-            "content": "eJwtj0luwzAQBP/Cc0xxl6hX5OCcjSE5jBQtJKSxYzvI3yMDOXY1UI3+YaXiBjSW9TIm1jOdFZhsMyQIQsSorIkd6IDaeudNK6wFieBUF1OWMsYWo0sO2y53Crxjb2zYMB+mgajufdNc61wg4aZk4WncJ/6ANeGdr0i9Mfq/PxFsn0iNEsoIp8RZSemt50J4fqXE/dc3hn16dlXeQ3gs4WlbfxvRnqaX2AghndTmmF+QhvK68v5xPiLhUmcgPEiGecffPwTNS78="
+            "content": "eJwtj8FugzAQRP/F58bYXhvbfEUP6Tla2HUhEEDGRE2r/ntB6nFmNG80P2JZOWMZlvk2kGiETUmFzkcEJOyoixaJ2JiAHYcEOqG2xpvonKfOOldTS4a90lqn0FoQb6LPnA5SX8q6NVW1r9OCxFnXd0nDNsoXzsRfcubSWAv/+aVg/uRSGWWsqo2/6gDRRRlAyb2QhHt7lCHDsmendv2tnza9RtVexhMMOjpQ4Zx/cOmX88r7x/WQhR/rhIUPJ+G08e8f931LUA=="
         }
     },
     {
         "method": "PUT",
-        "url": "https://uploader21o.disk.yandex.net/upload-target/20240620T211959.009.utd.9jwebskz8p1xbbymbz579vie5-k21o.40016134",
+        "url": "https://uploader16j.disk.yandex.net/upload-target/20240627T183959.830.utd.3jbdis3r3our50u1z1v4fyk0b-k16j.31953083",
         "headers": {
-            "connection": "close",
-            "authorization": "OAuth supposedly_valid_token"
+            "connection": "close"
         },
         "content": "eJwzMBgFo2AUDHcAAK0au4E=",
         "response": {

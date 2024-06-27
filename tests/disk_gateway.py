@@ -213,7 +213,10 @@ class DiskGateway:
 
         if self.recording_enabled:
             # Substitute the Authorization header to hide the OAuth token
-            outgoing_request.headers["authorization"] = f"OAuth {test_token}"
+            if test_token:
+                outgoing_request.headers["authorization"] = f"OAuth {test_token}"
+            else:
+                outgoing_request.headers.pop("authorization", None)
 
             self.recorded_requests.append(serialize_request(outgoing_request, server_response))
 
@@ -236,7 +239,8 @@ class DiskGateway:
         _, _, real_token = authorization_header.rpartition(" ")
         test_token = self.tokens.get(real_token, real_token)
 
-        headers["authorization"] = f"OAuth {test_token}"
+        if test_token:
+            headers["authorization"] = f"OAuth {test_token}"
 
         url = f"{base_url}/{path}"
 

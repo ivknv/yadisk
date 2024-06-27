@@ -118,26 +118,6 @@ class AsyncSession:
 
     _Self = TypeVar("_Self", bound="AsyncSession")
 
-    def set_headers(self, headers: Headers) -> None:
-        """
-            Updates session's headers.
-
-            .. note::
-               This is an abstract method that needs to be implemented.
-
-            :param headers: dictionary of headers to be set
-        """
-        raise NotImplementedError
-
-    def set_token(self, token: str) -> None:
-        """
-            Sets token for the session by setting the Authorization header.
-
-            :param token: `str`, API token
-        """
-
-        self.set_headers({"Authorization": "OAuth " + token})
-
     async def send_request(self,
                            method: HTTPMethod,
                            url: str,

@@ -17,7 +17,7 @@
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
 from .._session import Session, Response
-from ..types import JSON, ConsumeCallback, Headers, HTTPMethod
+from ..types import JSON, ConsumeCallback, HTTPMethod
 
 from ._httpx_common import *
 
@@ -86,9 +86,6 @@ class HTTPXSession(Session):
     @property
     def httpx_client(self) -> httpx.Client:
         return self._client
-
-    def set_headers(self, headers: Headers) -> None:
-        self._client.headers.update(headers)
 
     def send_request(self, method: HTTPMethod, url: str, **kwargs) -> Response:
         request_kwargs, send_kwargs = convert_args_for_httpx(self._client, kwargs)

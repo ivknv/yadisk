@@ -23,7 +23,8 @@ from typing import Any, AnyStr, IO, Optional
 
 __all__ = [
     "_apply_default_args", "_filter_request_kwargs",
-    "_read_file_as_generator", "_replace_authorization_header"
+    "_read_file_as_generator", "_set_authorization_header",
+    "_add_authorization_header"
 ]
 
 
@@ -49,11 +50,27 @@ def _read_file_as_generator(input_file: IO[AnyStr]) -> Generator[AnyStr, None, N
         yield chunk
 
 
-def _replace_authorization_header(
+def _set_authorization_header(
     kwargs: Dict[str, Any],
     new_token: Optional[str] = None
 ) -> None:
     headers = CaseInsensitiveDict(kwargs.get("headers", {}))
+
+    if new_token:
+        headers["Authorization"] = f"OAuth {new_token}"
+    else:
+        headers["Authorization"] = None
+
+    kwargs["headers"] = headers
+
+def _add_authorization_header(
+    kwargs: Dict[str, Any],
+    new_token: Optional[str] = None
+) -> None:
+    headers = CaseInsensitiveDict(kwargs.get("headers", {}))
+
+    if "Authorization" in headers:
+        return
 
     if new_token:
         headers["Authorization"] = f"OAuth {new_token}"
