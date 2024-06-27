@@ -1073,6 +1073,8 @@ class AsyncClient:
                 # session.get() doesn't accept some of the passed parameters
                 _filter_request_kwargs(temp_kwargs)
 
+                temp_kwargs.setdefault("stream", True)
+
                 if await _is_file_seekable(file):
                     await _file_seek(file, file_position)
 
