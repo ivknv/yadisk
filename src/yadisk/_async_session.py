@@ -87,7 +87,7 @@ class AsyncResponse:
 
         try:
             js = await self.json()
-        except (ValueError, RuntimeError):
+        except ValueError:
             js = None
 
         error = ErrorObject(js)

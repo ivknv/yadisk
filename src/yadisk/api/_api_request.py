@@ -209,7 +209,7 @@ class APIRequest(object):
 
         try:
             result = self.response.json()
-        except (ValueError, RuntimeError):
+        except ValueError:
             result = None
 
         try:
@@ -243,7 +243,7 @@ class APIRequest(object):
 
         try:
             result = await self.response.json()
-        except (ValueError, RuntimeError):
+        except ValueError:
             result = None
 
         try:

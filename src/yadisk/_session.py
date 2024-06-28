@@ -81,7 +81,7 @@ class Response:
 
         try:
             js = self.json()
-        except (ValueError, RuntimeError):
+        except ValueError:
             js = None
 
         error = ErrorObject(js)
