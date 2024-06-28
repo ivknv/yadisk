@@ -1,11 +1,4 @@
--e .
-
-# Optional dependencies
-aiofiles
-aiohttp
-httpx
-pycurl
-requests
+-e .[async_files,aiohttp,httpx,pycurl,requests]
 
 # Stub packages
 types-aiofiles

@@ -1,8 +1,5 @@
-aiofiles
-aiohttp
-httpx
-pycurl
-requests
+# It is expected that the install command is run from the parent directory
+-e .[async_files,aiohttp,httpx,pycurl,requests]
 
 sphinx==7.1.2
 sphinx-intl==2.2.0
