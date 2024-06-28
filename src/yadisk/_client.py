@@ -38,7 +38,7 @@ from ._import_session import import_session
 from . import settings
 
 from typing import Any, Optional, Union, Literal, TYPE_CHECKING
-from ._compat import Callable, Generator, Dict
+from ._compat import Callable, Generator, Dict, List
 from .types import (
     OpenFileCallback, FileOrPath, FileOrPathDestination, OperationStatus,
     SessionFactory, SessionName
@@ -52,9 +52,9 @@ from ._client_common import (
 
 if TYPE_CHECKING:
     from .objects import (
-        SyncResourceObject, SyncOperationLinkObject, SyncPublicResourceObject,
-        SyncPublicResourcesListObject, DiskInfoObject, TokenObject,
-        TokenRevokeStatusObject, DeviceCodeObject
+        FilesResourceListObject, SyncResourceObject, SyncOperationLinkObject,
+        SyncPublicResourceObject, SyncPublicResourcesListObject, DiskInfoObject,
+        TokenObject, TokenRevokeStatusObject, DeviceCodeObject
     )
 
 __all__ = ["Client"]
@@ -1718,6 +1718,15 @@ class Client:
 
         return PatchRequest(self.session, path, properties, **kwargs).send(yadisk=self)
 
+    def _get_files_some(self, **kwargs) -> List["SyncResourceObject"]:
+        response: "FilesResourceListObject" = FilesRequest(
+            self.session, **kwargs).send(yadisk=self)
+
+        if response.items is None:
+            raise InvalidResponseError("Response did not contain key field")
+
+        return response.items
+
     def get_files(self, **kwargs) -> Generator["SyncResourceObject", None, None]:
         """
             Get a flat list of all files (that doesn't include directories).
@@ -1743,26 +1752,21 @@ class Client:
         _add_authorization_header(kwargs, self.token)
 
         if kwargs.get("limit") is not None:
-            request = FilesRequest(self.session, **kwargs)
+            yield from self._get_files_some(**kwargs)
+        else:
+            kwargs.setdefault("offset", 0)
+            kwargs["limit"] = 200
 
-            for i in request.send(yadisk=self).items:
-                yield i
+            while True:
+                files = self._get_files_some(**kwargs)
+                file_count = len(files)
 
-            return
+                yield from files
 
-        kwargs.setdefault("offset", 0)
-        kwargs["limit"] = 1000
+                if file_count < kwargs["limit"]:
+                    break
 
-        while True:
-            counter = 0
-            for i in self.get_files(**kwargs):
-                counter += 1
-                yield i
-
-            if counter < kwargs["limit"]:
-                break
-
-            kwargs["offset"] += kwargs["limit"]
+                kwargs["offset"] += kwargs["limit"]
 
     def get_last_uploaded(self, **kwargs) -> Generator["SyncResourceObject", None, None]:
         """

@@ -37,7 +37,7 @@ from .utils import auto_retry, CaseInsensitiveDict
 from .objects import AsyncResourceLinkObject, AsyncPublicResourceLinkObject
 
 from typing import Any, Optional, Union, IO, TYPE_CHECKING, BinaryIO, Literal
-from ._compat import Callable, AsyncGenerator, Awaitable, Dict
+from ._compat import Callable, AsyncGenerator, Awaitable, Dict, List
 
 from ._async_session import AsyncSession
 from ._import_session import import_async_session
@@ -67,7 +67,8 @@ if TYPE_CHECKING:
         TokenObject, TokenRevokeStatusObject, DiskInfoObject,
         AsyncResourceObject, AsyncOperationLinkObject,
         AsyncTrashResourceObject, AsyncPublicResourceObject,
-        AsyncPublicResourcesListObject, DeviceCodeObject
+        AsyncPublicResourcesListObject, FilesResourceListObject,
+        DeviceCodeObject
     )
 
 __all__ = ["AsyncClient"]
@@ -1782,6 +1783,15 @@ class AsyncClient:
 
         return await PatchRequest(self.session, path, properties, **kwargs).asend(yadisk=self)
 
+    async def _get_files_some(self, **kwargs) -> List["AsyncResourceObject"]:
+        response: "FilesResourceListObject" = await FilesRequest(
+            self.session, **kwargs).asend(yadisk=self)
+
+        if response.items is None:
+            raise InvalidResponseError("Response did not contain key field")
+
+        return response.items
+
     async def get_files(self, **kwargs) -> AsyncGenerator["AsyncResourceObject", None]:
         """
             Get a flat list of all files (that doesn't include directories).
@@ -1807,26 +1817,23 @@ class AsyncClient:
         _add_authorization_header(kwargs, self.token)
 
         if kwargs.get("limit") is not None:
-            request = FilesRequest(self.session, **kwargs)
+            for file in await self._get_files_some(**kwargs):
+                yield file
+        else:
+            kwargs.setdefault("offset", 0)
+            kwargs["limit"] = 200
 
-            for i in (await request.asend(yadisk=self)).items:
-                yield i
+            while True:
+                files = await self._get_files_some(**kwargs)
+                file_count = len(files)
 
-            return
+                for file in files:
+                    yield file
 
-        kwargs.setdefault("offset", 0)
-        kwargs["limit"] = 1000
+                if file_count < kwargs["limit"]:
+                    break
 
-        while True:
-            counter = 0
-            async for i in self.get_files(**kwargs):
-                counter += 1
-                yield i
-
-            if counter < kwargs["limit"]:
-                break
-
-            kwargs["offset"] += kwargs["limit"]
+                kwargs["offset"] += kwargs["limit"]
 
     async def get_last_uploaded(self, **kwargs) -> AsyncGenerator["AsyncResourceObject", None]:
         """
