@@ -517,10 +517,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _set_authorization_header(kwargs, "")
 
-        request = GetDeviceCodeRequest(self.session, self.id, **kwargs)
-        await request.asend()
-
-        return await request.process()
+        return await GetDeviceCodeRequest(self.session, self.id, **kwargs).asend(yadisk=self)
 
     async def get_token(self, code: str, /, **kwargs) -> "TokenObject":
         """
@@ -545,17 +542,14 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _set_authorization_header(kwargs, "")
 
-        request = GetTokenRequest(
+        return await GetTokenRequest(
             self.session,
             "authorization_code",
             self.id,
             code=code,
             client_secret=self.secret,
             **kwargs
-        )
-        await request.asend()
-
-        return await request.aprocess()
+        ).asend(yadisk=self)
 
     async def get_token_from_device_code(self, device_code: str, /, **kwargs) -> "TokenObject":
         """
@@ -582,17 +576,14 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _set_authorization_header(kwargs, "")
 
-        request = GetTokenRequest(
+        return await GetTokenRequest(
             self.session,
             "device_code",
             client_id=self.id,
             code=device_code,
             client_secret=self.secret,
             **kwargs
-        )
-        await request.asend()
-
-        return await request.process()
+        ).asend(yadisk=self)
 
     async def refresh_token(self, refresh_token: str, /, **kwargs) -> "TokenObject":
         """
@@ -615,18 +606,20 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _set_authorization_header(kwargs, "")
 
-        request = RefreshTokenRequest(
+        return await RefreshTokenRequest(
             self.session,
             refresh_token,
             self.id,
             self.secret,
             **kwargs
-        )
-        await request.asend()
+        ).asend(yadisk=self)
 
-        return await request.aprocess()
-
-    async def revoke_token(self, token: Optional[str] = None, /, **kwargs) -> "TokenRevokeStatusObject":
+    async def revoke_token(
+        self,
+        token: Optional[str] = None,
+        /,
+        **kwargs
+    ) -> "TokenRevokeStatusObject":
         """
             Revoke the token.
 
@@ -651,16 +644,13 @@ class AsyncClient:
         if token is None:
             token = self.token
 
-        request = RevokeTokenRequest(
+        return await RevokeTokenRequest(
             self.session,
             token,
             self.id,
             self.secret,
             **kwargs
-        )
-        await request.asend()
-
-        return await request.aprocess()
+        ).asend(yadisk=self)
 
     async def get_disk_info(self, **kwargs) -> "DiskInfoObject":
         """
@@ -680,10 +670,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = DiskInfoRequest(self.session, **kwargs)
-        await request.asend()
-
-        return await request.aprocess()
+        return await DiskInfoRequest(self.session, **kwargs).asend(yadisk=self)
 
     async def get_meta(self, path: str, /, **kwargs) -> "AsyncResourceObject":
         """
@@ -710,10 +697,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = GetMetaRequest(self.session, path, **kwargs)
-        await request.asend()
-
-        return await request.aprocess(yadisk=self)
+        return await GetMetaRequest(self.session, path, **kwargs).asend(yadisk=self)
 
     async def exists(self, path: str, /, **kwargs) -> bool:
         """
@@ -790,7 +774,12 @@ class AsyncClient:
         except PathNotFoundError:
             return False
 
-    async def listdir(self, path: str, /, **kwargs) -> AsyncGenerator["AsyncResourceObject", None]:
+    async def listdir(
+        self,
+        path: str,
+        /,
+        **kwargs
+    ) -> AsyncGenerator["AsyncResourceObject", None]:
         """
             Get contents of `path`.
 
@@ -839,10 +828,9 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = GetUploadLinkRequest(self.session, path, **kwargs)
-        await request.asend()
-
-        return (await request.aprocess(yadisk=self)).href
+        return (await GetUploadLinkRequest(
+            self.session, path, **kwargs
+        ).asend(yadisk=self)).href
 
     async def _upload(self,
                       get_upload_link_function: Callable[..., Awaitable[str]],
@@ -1011,15 +999,17 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = GetDownloadLinkRequest(self.session, path, **kwargs)
-        await request.asend()
+        return (await GetDownloadLinkRequest(
+            self.session, path, **kwargs).asend(yadisk=self)).href
 
-        return (await request.aprocess(yadisk=self)).href
-
-    async def _download(self,
-                        get_download_link_function: Callable[..., Awaitable[str]],
-                        src_path: str,
-                        file_or_path: AsyncFileOrPathDestination, /, **kwargs) -> None:
+    async def _download(
+        self,
+        get_download_link_function: Callable[..., Awaitable[str]],
+        src_path: str,
+        file_or_path: AsyncFileOrPathDestination,
+        /,
+        **kwargs
+    ) -> None:
         n_retries = kwargs.get("n_retries")
 
         if n_retries is None:
@@ -1089,9 +1079,13 @@ class AsyncClient:
             if close_file and file is not None:
                 await file.close()
 
-    async def download(self,
-                       src_path: str,
-                       path_or_file: AsyncFileOrPathDestination, /, **kwargs) -> AsyncResourceLinkObject:
+    async def download(
+        self,
+        src_path: str,
+        path_or_file: AsyncFileOrPathDestination,
+        /,
+        **kwargs
+    ) -> AsyncResourceLinkObject:
         """
             Download the file.
 
@@ -1114,9 +1108,13 @@ class AsyncClient:
         await self._download(self.get_download_link, src_path, path_or_file, **kwargs)
         return AsyncResourceLinkObject.from_path(src_path, yadisk=self)
 
-    async def download_by_link(self,
-                               link: str,
-                               file_or_path: AsyncFileOrPathDestination, /, **kwargs) -> None:
+    async def download_by_link(
+        self,
+        link: str,
+        file_or_path: AsyncFileOrPathDestination,
+        /,
+        **kwargs
+    ) -> None:
         """
             Download the file from the link.
 
@@ -1161,10 +1159,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = DeleteRequest(self.session, path, **kwargs)
-        await request.asend()
-
-        return await request.aprocess(yadisk=self)
+        return await DeleteRequest(self.session, path, **kwargs).asend(yadisk=self)
 
     async def mkdir(self, path: str, /, **kwargs) -> AsyncResourceLinkObject:
         """
@@ -1189,10 +1184,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = MkdirRequest(self.session, path, **kwargs)
-        await request.asend()
-
-        return await request.aprocess(yadisk=self)
+        return await MkdirRequest(self.session, path, **kwargs).asend(yadisk=self)
 
     async def check_token(self, token: Optional[str] = None, /, **kwargs) -> bool:
         """
@@ -1252,10 +1244,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = GetTrashRequest(self.session, path, **kwargs)
-        await request.asend()
-
-        return await request.aprocess(yadisk=self)
+        return await GetTrashRequest(self.session, path, **kwargs).asend(yadisk=self)
 
     async def trash_exists(self, path: str, /, **kwargs) -> bool:
         """
@@ -1274,9 +1263,13 @@ class AsyncClient:
 
         return await _exists(self.get_trash_meta, path, **kwargs)
 
-    async def copy(self,
-                   src_path: str,
-                   dst_path: str, /, **kwargs) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
+    async def copy(
+        self,
+        src_path: str,
+        dst_path: str,
+        /,
+        **kwargs
+    ) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
         """
             Copy `src_path` to `dst_path`.
             If the operation is performed asynchronously, returns the link to the operation,
@@ -1306,10 +1299,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = CopyRequest(self.session, src_path, dst_path, **kwargs)
-        await request.asend()
-
-        return await request.aprocess(yadisk=self)
+        return await CopyRequest(self.session, src_path, dst_path, **kwargs).asend(yadisk=self)
 
     async def restore_trash(
         self,
@@ -1345,14 +1335,15 @@ class AsyncClient:
 
         kwargs["dst_path"] = dst_path
 
-        request = RestoreTrashRequest(self.session, path, **kwargs)
-        await request.asend()
+        return await RestoreTrashRequest(self.session, path, **kwargs).asend(yadisk=self)
 
-        return await request.aprocess(yadisk=self)
-
-    async def move(self,
-                   src_path: str,
-                   dst_path: str, /, **kwargs) -> Union["AsyncOperationLinkObject", AsyncResourceLinkObject]:
+    async def move(
+        self,
+        src_path: str,
+        dst_path: str,
+        /,
+        **kwargs
+    ) -> Union["AsyncOperationLinkObject", AsyncResourceLinkObject]:
         """
             Move `src_path` to `dst_path`.
 
@@ -1377,14 +1368,15 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = MoveRequest(self.session, src_path, dst_path, **kwargs)
-        await request.asend()
+        return await MoveRequest(self.session, src_path, dst_path, **kwargs).asend(yadisk=self)
 
-        return await request.aprocess(yadisk=self)
-
-    async def rename(self,
-                     src_path: str,
-                     new_name: str, /, **kwargs) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
+    async def rename(
+        self,
+        src_path: str,
+        new_name: str,
+        /,
+        **kwargs
+    ) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
         """
             Rename `src_path` to have filename `new_name`.
             Does the same as `move()` but changes only the filename.
@@ -1439,10 +1431,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = DeleteTrashRequest(self.session, path, **kwargs)
-        await request.asend()
-
-        return await request.aprocess(yadisk=self)
+        return await DeleteTrashRequest(self.session, path, **kwargs).asend(yadisk=self)
 
     async def publish(self, path: str, /, **kwargs) -> AsyncResourceLinkObject:
         """
@@ -1465,10 +1454,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = PublishRequest(self.session, path, **kwargs)
-        await request.asend()
-
-        return await request.aprocess(yadisk=self)
+        return await PublishRequest(self.session, path, **kwargs).asend(yadisk=self)
 
     async def unpublish(self, path: str, /, **kwargs) -> AsyncResourceLinkObject:
         """
@@ -1491,10 +1477,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = UnpublishRequest(self.session, path, **kwargs)
-        await request.asend()
-
-        return await request.aprocess(yadisk=self)
+        return await UnpublishRequest(self.session, path, **kwargs).asend(yadisk=self)
 
     async def save_to_disk(
         self,
@@ -1530,10 +1513,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = SaveToDiskRequest(self.session, public_key, **kwargs)
-        await request.asend()
-
-        return await request.aprocess(yadisk=self)
+        return await SaveToDiskRequest(self.session, public_key, **kwargs).asend(yadisk=self)
 
     async def get_public_meta(self, public_key: str, /, **kwargs) -> "AsyncPublicResourceObject":
         """
@@ -1563,10 +1543,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = GetPublicMetaRequest(self.session, public_key, **kwargs)
-        await request.asend()
-
-        return await request.aprocess(yadisk=self)
+        return await GetPublicMetaRequest(self.session, public_key, **kwargs).asend(yadisk=self)
 
     async def public_exists(self, public_key: str, /, **kwargs) -> bool:
         """
@@ -1779,10 +1756,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = GetPublicResourcesRequest(self.session, **kwargs)
-        await request.asend()
-
-        return await request.aprocess(yadisk=self)
+        return await GetPublicResourcesRequest(self.session, **kwargs).asend(yadisk=self)
 
     async def patch(self, path: str, properties: dict, /, **kwargs) -> "AsyncResourceObject":
         """
@@ -1806,10 +1780,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = PatchRequest(self.session, path, properties, **kwargs)
-        await request.asend()
-
-        return await request.aprocess(yadisk=self)
+        return await PatchRequest(self.session, path, properties, **kwargs).asend(yadisk=self)
 
     async def get_files(self, **kwargs) -> AsyncGenerator["AsyncResourceObject", None]:
         """
@@ -1837,9 +1808,8 @@ class AsyncClient:
 
         if kwargs.get("limit") is not None:
             request = FilesRequest(self.session, **kwargs)
-            await request.asend()
 
-            for i in (await request.aprocess(yadisk=self)).items:
+            for i in (await request.asend(yadisk=self)).items:
                 yield i
 
             return
@@ -1881,9 +1851,8 @@ class AsyncClient:
         _add_authorization_header(kwargs, self.token)
 
         request = LastUploadedRequest(self.session, **kwargs)
-        await request.asend()
 
-        for i in (await request.aprocess(yadisk=self)).items:
+        for i in (await request.asend(yadisk=self)).items:
             yield i
 
     async def upload_url(self, url: str, path: str, /, **kwargs) -> "AsyncOperationLinkObject":
@@ -1912,10 +1881,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = UploadURLRequest(self.session, url, path, **kwargs)
-        await request.asend()
-
-        return await request.aprocess(yadisk=self)
+        return await UploadURLRequest(self.session, url, path, **kwargs).asend(yadisk=self)
 
     async def get_public_download_link(self, public_key: str, /, **kwargs) -> str:
         """
@@ -1939,14 +1905,16 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = GetPublicDownloadLinkRequest(self.session, public_key, **kwargs)
-        await request.asend()
+        return (await GetPublicDownloadLinkRequest(
+            self.session, public_key, **kwargs).asend(yadisk=self)).href
 
-        return (await request.aprocess(yadisk=self)).href
-
-    async def download_public(self,
-                              public_key: str,
-                              file_or_path: AsyncFileOrPathDestination, /, **kwargs) -> AsyncPublicResourceLinkObject:
+    async def download_public(
+        self,
+        public_key: str,
+        file_or_path: AsyncFileOrPathDestination,
+        /,
+        **kwargs
+    ) -> AsyncPublicResourceLinkObject:
         """
             Download the public resource.
 
@@ -1995,7 +1963,5 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = GetOperationStatusRequest(self.session, operation_id, **kwargs)
-        await request.asend()
-
-        return (await request.aprocess()).status
+        return (await GetOperationStatusRequest(
+            self.session, operation_id, **kwargs).asend(yadisk=self)).status

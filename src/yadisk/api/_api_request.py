@@ -26,9 +26,11 @@ from .._compat import Set, Dict
 import json
 
 if TYPE_CHECKING:
-    from .._session import Response, Session
-    from .._async_session import AsyncResponse, AsyncSession
+    from .._session import Session
+    from .._async_session import AsyncSession
     from ..types import AnySession, HTTPMethod, JSON
+    from .._client import Client
+    from .._async_client import AsyncClient
 
 __all__ = ["APIRequest"]
 
@@ -74,7 +76,6 @@ class APIRequest(object):
     send_kwargs: Dict[str, Any]
 
     session: Any
-    response: Optional[Any]
 
     T = TypeVar("T")
 
@@ -114,7 +115,6 @@ class APIRequest(object):
         self.n_retries = n_retries
         self.retry_interval = retry_interval
         self.headers = headers
-        self.response = None
         self.data = {}
         self.content = None
         self.params = {}
@@ -142,21 +142,26 @@ class APIRequest(object):
 
         return kwargs
 
-    def _attempt(self) -> None:
+    def _attempt(self) -> Optional["JSON"]:
         assert self.method is not None
         assert self.url
 
         kwargs = self._prepare_send_args()
 
         session: "Session" = self.session
-        self.response = session.send_request(self.method, self.url, **kwargs)
+        response = session.send_request(self.method, self.url, **kwargs)
 
-        success = self.response.status in self.success_codes
+        success = response.status in self.success_codes
 
         if not success:
-            raise self.response.get_exception()
+            raise response.get_exception()
 
-    async def _async_attempt(self) -> None:
+        try:
+            return response.json()
+        except ValueError:
+            return None
+
+    async def _async_attempt(self) -> Optional["JSON"]:
         assert self.method is not None
         assert self.url
 
@@ -164,25 +169,33 @@ class APIRequest(object):
 
         session: "AsyncSession" = self.session
 
-        self.response = await session.send_request(self.method, self.url, **kwargs)
+        response = await session.send_request(self.method, self.url, **kwargs)
 
-        success = self.response.status in self.success_codes
+        success = response.status in self.success_codes
 
         if not success:
-            raise await self.response.get_exception()
+            raise await response.get_exception()
 
-    def send(self) -> "Response":
+        try:
+            return await response.json()
+        except ValueError:
+            return None
+
+    def send(self, yadisk: Optional["Client"]) -> Any:
         """
             Actually send the request
+
+            :param yadisk: :any:`Client` instance that will be passed to :any:`process_json()`
 
             :returns: :any:`Response` (`self.response`)
         """
 
-        auto_retry(self._attempt, self.n_retries, self.retry_interval)
+        json = auto_retry(self._attempt, self.n_retries, self.retry_interval)
 
-        assert self.response is not None
-
-        return self.response
+        try:
+            return self.process_json(json, yadisk=yadisk)
+        except ValueError as e:
+            raise InvalidResponseError(f"Server returned invalid response: {e}") from e
 
     def process_json(self, js: "JSON", **kwargs) -> Any:
         """
@@ -196,57 +209,18 @@ class APIRequest(object):
 
         raise NotImplementedError
 
-    def process(self, **kwargs) -> Any:
-        """
-            Process the response.
-
-            :param kwargs: extra arguments (optional)
-
-            :returns: depends on `self.process_json()`
-        """
-
-        assert self.response is not None
-
-        try:
-            result = self.response.json()
-        except ValueError:
-            result = None
-
-        try:
-            return self.process_json(result, **kwargs)
-        except ValueError as e:
-            raise InvalidResponseError(f"Server returned invalid response: {e}") from e
-
-    async def asend(self) -> "AsyncResponse":
+    async def asend(self, yadisk: Optional["AsyncClient"]) -> Any:
         """
             Actually send the request
+
+            :param yadisk: :any:`AsyncClient` instance that will be passed to :any:`aprocess_json()`
 
             :returns: :any:`AsyncResponse` (`self.response`)
         """
 
-        await async_auto_retry(self._async_attempt, self.n_retries, self.retry_interval)
-
-        assert self.response is not None
-
-        return self.response
-
-    async def aprocess(self, **kwargs) -> Any:
-        """
-            Process the response.
-
-            :param kwargs: extra arguments (optional)
-
-            :returns: depends on `self.process_json()`
-        """
-
-        assert self.response is not None
+        json = await async_auto_retry(self._async_attempt, self.n_retries, self.retry_interval)
 
         try:
-            result = await self.response.json()
-        except ValueError:
-            result = None
-
-        try:
-            return self.process_json(result, **kwargs)
+            return self.process_json(json, yadisk=yadisk)
         except ValueError as e:
             raise InvalidResponseError(f"Server returned invalid response: {e}") from e

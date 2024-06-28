@@ -462,10 +462,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _set_authorization_header(kwargs, "")
 
-        request = GetDeviceCodeRequest(self.session, self.id, **kwargs)
-        request.send()
-
-        return request.process()
+        return GetDeviceCodeRequest(self.session, self.id, **kwargs).send(yadisk=self)
 
     def get_token(self, code: str, /, **kwargs) -> "TokenObject":
         """
@@ -491,17 +488,14 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _set_authorization_header(kwargs, "")
 
-        request = GetTokenRequest(
+        return GetTokenRequest(
             self.session,
             "authorization_code",
             client_id=self.id,
             code=code,
             client_secret=self.secret,
             **kwargs
-        )
-        request.send()
-
-        return request.process()
+        ).send(yadisk=self)
 
     def get_token_from_device_code(self, device_code: str, /, **kwargs) -> "TokenObject":
         """
@@ -527,17 +521,14 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _set_authorization_header(kwargs, "")
 
-        request = GetTokenRequest(
+        return GetTokenRequest(
             self.session,
             "device_code",
             client_id=self.id,
             code=device_code,
             client_secret=self.secret,
             **kwargs
-        )
-        request.send()
-
-        return request.process()
+        ).send(yadisk=self)
 
     def refresh_token(self, refresh_token: str, /, **kwargs) -> "TokenObject":
         """
@@ -560,19 +551,20 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _set_authorization_header(kwargs, "")
 
-        request = RefreshTokenRequest(
+        return RefreshTokenRequest(
             self.session,
             refresh_token,
             self.id,
             self.secret,
             **kwargs
-        )
-        request.send()
+        ).send(yadisk=self)
 
-        return request.process()
-
-    def revoke_token(self,
-                     token: Optional[str] = None, /, **kwargs) -> "TokenRevokeStatusObject":
+    def revoke_token(
+        self,
+        token: Optional[str] = None,
+        /,
+        **kwargs
+    ) -> "TokenRevokeStatusObject":
         """
             Revoke the token.
 
@@ -597,10 +589,9 @@ class Client:
         if token is None:
             token = self.token
 
-        request = RevokeTokenRequest(self.session, token, self.id, self.secret, **kwargs)
-        request.send()
-
-        return request.process()
+        return RevokeTokenRequest(
+            self.session, token, self.id, self.secret, **kwargs
+        ).send(yadisk=self)
 
     def check_token(self, token: Optional[str] = None, /, **kwargs) -> bool:
         """
@@ -653,10 +644,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = DiskInfoRequest(self.session, **kwargs)
-        request.send()
-
-        return request.process()
+        return DiskInfoRequest(self.session, **kwargs).send(yadisk=self)
 
     def get_meta(self, path: str, /, **kwargs) -> "SyncResourceObject":
         """
@@ -683,10 +671,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = GetMetaRequest(self.session, path, **kwargs)
-        request.send()
-
-        return request.process(yadisk=self)
+        return GetMetaRequest(self.session, path, **kwargs).send(yadisk=self)
 
     def exists(self, path: str, /, **kwargs) -> bool:
         """
@@ -812,10 +797,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = GetUploadLinkRequest(self.session, path, **kwargs)
-        request.send()
-
-        return request.process().href
+        return GetUploadLinkRequest(self.session, path, **kwargs).send(yadisk=self).href
 
     def _upload(self,
                 get_upload_link_function: Callable,
@@ -983,10 +965,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = GetDownloadLinkRequest(self.session, path, **kwargs)
-        request.send()
-
-        return request.process().href
+        return GetDownloadLinkRequest(self.session, path, **kwargs).send(yadisk=self).href
 
     def _download(self,
                   get_download_link_function: Callable,
@@ -1061,9 +1040,13 @@ class Client:
             if close_file and file is not None:
                 file.close()
 
-    def download(self,
-                 src_path: str,
-                 file_or_path: FileOrPathDestination, /, **kwargs) -> SyncResourceLinkObject:
+    def download(
+        self,
+        src_path: str,
+        file_or_path: FileOrPathDestination,
+        /,
+        **kwargs
+    ) -> SyncResourceLinkObject:
         """
             Download the file.
 
@@ -1088,9 +1071,13 @@ class Client:
 
         return SyncResourceLinkObject.from_path(src_path, yadisk=self)
 
-    def download_by_link(self,
-                         link: str,
-                         file_or_path: FileOrPathDestination, /, **kwargs) -> None:
+    def download_by_link(
+        self,
+        link: str,
+        file_or_path: FileOrPathDestination,
+        /,
+        **kwargs
+    ) -> None:
         """
             Download the file from the link.
 
@@ -1132,11 +1119,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = DeleteRequest(self.session, path, **kwargs)
-
-        request.send()
-
-        return request.process(yadisk=self)
+        return DeleteRequest(self.session, path, **kwargs).send(yadisk=self)
 
     def mkdir(self, path: str, /, **kwargs) -> SyncResourceLinkObject:
         """
@@ -1161,10 +1144,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = MkdirRequest(self.session, path, **kwargs)
-        request.send()
-
-        return request.process(yadisk=self)
+        return MkdirRequest(self.session, path, **kwargs).send(yadisk=self)
 
     def get_trash_meta(self, path: str, /, **kwargs) -> "SyncTrashResourceObject":
         """
@@ -1191,10 +1171,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = GetTrashRequest(self.session, path, **kwargs)
-        request.send()
-
-        return request.process(yadisk=self)
+        return GetTrashRequest(self.session, path, **kwargs).send(yadisk=self)
 
     def trash_exists(self, path: str, /, **kwargs) -> bool:
         """
@@ -1213,9 +1190,13 @@ class Client:
 
         return _exists(self.get_trash_meta, path, **kwargs)
 
-    def copy(self,
-             src_path: str,
-             dst_path: str, /, **kwargs) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
+    def copy(
+        self,
+        src_path: str,
+        dst_path: str,
+        /,
+        **kwargs
+    ) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
             Copy `src_path` to `dst_path`.
             If the operation is performed asynchronously, returns the link to the operation,
@@ -1245,10 +1226,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = CopyRequest(self.session, src_path, dst_path, **kwargs)
-        request.send()
-
-        return request.process(yadisk=self)
+        return CopyRequest(self.session, src_path, dst_path, **kwargs).send(yadisk=self)
 
     def restore_trash(
         self,
@@ -1284,14 +1262,15 @@ class Client:
 
         kwargs["dst_path"] = dst_path
 
-        request = RestoreTrashRequest(self.session, path, **kwargs)
-        request.send()
+        return RestoreTrashRequest(self.session, path, **kwargs).send(yadisk=self)
 
-        return request.process(yadisk=self)
-
-    def move(self,
-             src_path: str,
-             dst_path: str, /, **kwargs) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
+    def move(
+        self,
+        src_path: str,
+        dst_path: str,
+        /,
+        **kwargs
+    ) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
             Move `src_path` to `dst_path`.
 
@@ -1316,10 +1295,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = MoveRequest(self.session, src_path, dst_path, **kwargs)
-        request.send()
-
-        return request.process(yadisk=self)
+        return MoveRequest(self.session, src_path, dst_path, **kwargs).send(yadisk=self)
 
     def rename(
         self,
@@ -1382,10 +1358,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = DeleteTrashRequest(self.session, path, **kwargs)
-        request.send()
-
-        return request.process(yadisk=self)
+        return DeleteTrashRequest(self.session, path, **kwargs).send(yadisk=self)
 
     def publish(self, path: str, /, **kwargs) -> SyncResourceLinkObject:
         """
@@ -1408,10 +1381,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = PublishRequest(self.session, path, **kwargs)
-        request.send()
-
-        return request.process(yadisk=self)
+        return PublishRequest(self.session, path, **kwargs).send(yadisk=self)
 
     def unpublish(self, path: str, /, **kwargs) -> SyncResourceLinkObject:
         """
@@ -1434,13 +1404,14 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = UnpublishRequest(self.session, path, **kwargs)
-        request.send()
+        return UnpublishRequest(self.session, path, **kwargs).send(yadisk=self)
 
-        return request.process(yadisk=self)
-
-    def save_to_disk(self,
-                     public_key: str, /, **kwargs) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
+    def save_to_disk(
+        self,
+        public_key: str,
+        /,
+        **kwargs
+    ) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
             Saves a public resource to the disk.
             Returns the link to the operation if it's performed asynchronously,
@@ -1469,13 +1440,14 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = SaveToDiskRequest(self.session, public_key, **kwargs)
-        request.send()
+        return SaveToDiskRequest(self.session, public_key, **kwargs).send(yadisk=self)
 
-        return request.process(yadisk=self)
-
-    def get_public_meta(self,
-                        public_key: str, /, **kwargs) -> "SyncPublicResourceObject":
+    def get_public_meta(
+        self,
+        public_key: str,
+        /,
+        **kwargs
+    ) -> "SyncPublicResourceObject":
         """
             Get meta-information about a public resource.
 
@@ -1503,10 +1475,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = GetPublicMetaRequest(self.session, public_key, **kwargs)
-        request.send()
-
-        return request.process(yadisk=self)
+        return GetPublicMetaRequest(self.session, public_key, **kwargs).send(yadisk=self)
 
     def public_exists(self, public_key: str, /, **kwargs) -> bool:
         """
@@ -1721,10 +1690,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = GetPublicResourcesRequest(self.session, **kwargs)
-        request.send()
-
-        return request.process(yadisk=self)
+        return GetPublicResourcesRequest(self.session, **kwargs).send(yadisk=self)
 
     def patch(self,
               path: str,
@@ -1750,10 +1716,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = PatchRequest(self.session, path, properties, **kwargs)
-        request.send()
-
-        return request.process(yadisk=self)
+        return PatchRequest(self.session, path, properties, **kwargs).send(yadisk=self)
 
     def get_files(self, **kwargs) -> Generator["SyncResourceObject", None, None]:
         """
@@ -1781,9 +1744,8 @@ class Client:
 
         if kwargs.get("limit") is not None:
             request = FilesRequest(self.session, **kwargs)
-            request.send()
 
-            for i in request.process(yadisk=self).items:
+            for i in request.send(yadisk=self).items:
                 yield i
 
             return
@@ -1825,9 +1787,8 @@ class Client:
         _add_authorization_header(kwargs, self.token)
 
         request = LastUploadedRequest(self.session, **kwargs)
-        request.send()
 
-        for i in request.process(yadisk=self).items:
+        for i in request.send(yadisk=self).items:
             yield i
 
     def upload_url(self, url: str, path: str, /, **kwargs) -> "SyncOperationLinkObject":
@@ -1856,10 +1817,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = UploadURLRequest(self.session, url, path, **kwargs)
-        request.send()
-
-        return request.process(yadisk=self)
+        return UploadURLRequest(self.session, url, path, **kwargs).send(yadisk=self)
 
     def get_public_download_link(self, public_key: str, /, **kwargs) -> str:
         """
@@ -1883,14 +1841,17 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = GetPublicDownloadLinkRequest(self.session, public_key, **kwargs)
-        request.send()
+        return GetPublicDownloadLinkRequest(
+            self.session, public_key, **kwargs
+        ).send(yadisk=self).href
 
-        return request.process().href
-
-    def download_public(self,
-                        public_key: str,
-                        file_or_path: FileOrPathDestination, /, **kwargs) -> SyncPublicResourceLinkObject:
+    def download_public(
+        self,
+        public_key: str,
+        file_or_path: FileOrPathDestination,
+        /,
+        **kwargs
+    ) -> SyncPublicResourceLinkObject:
         """
             Download the public resource.
 
@@ -1910,7 +1871,6 @@ class Client:
         """
 
         _apply_default_args(kwargs, self.default_args)
-        _add_authorization_header(kwargs, self.token)
 
         self._download(
             lambda *args, **kwargs: self.get_public_download_link(public_key, **kwargs),
@@ -1940,7 +1900,6 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = GetOperationStatusRequest(self.session, operation_id, **kwargs)
-        request.send()
-
-        return request.process().status
+        return GetOperationStatusRequest(
+            self.session, operation_id, **kwargs
+        ).send(yadisk=self).status
