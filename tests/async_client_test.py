@@ -70,7 +70,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
 
             return decorated_test
 
-        async def asyncSetUp(self):
+        async def asyncSetUp(self) -> None:
             gateway_host = os.environ.get("PYTHON_YADISK_GATEWAY_HOST", "0.0.0.0")
             gateway_port = int(os.environ.get("PYTHON_YADISK_GATEWAY_HOST", "8080"))
 
@@ -124,7 +124,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             # Make sure the actual API token won't be exposed in the recorded requests
             await self.gateway.client.update_token_map({self.client.token: "supposedly_valid_token"})
 
-        async def asyncTearDown(self):
+        async def asyncTearDown(self) -> None:
             await self.client.close()
             await self.gateway.stop()
 
@@ -133,7 +133,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
                 await asyncio.sleep(0.1)
 
         @record_or_replay
-        async def test_get_meta(self):
+        async def test_get_meta(self) -> None:
             resource = await self.client.get_meta(self.path)
 
             self.assertIsInstance(resource, yadisk.objects.ResourceObject)
@@ -141,7 +141,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             self.assertEqual(resource.name, posixpath.split(self.path)[1])
 
         @record_or_replay
-        async def test_listdir(self):
+        async def test_listdir(self) -> None:
             names = ["dir1", "dir2", "dir3"]
             paths = [posixpath.join(self.path, name) for name in names]
 
@@ -159,7 +159,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             self.assertEqual(result, names)
 
         @record_or_replay
-        async def test_listdir_fields(self):
+        async def test_listdir_fields(self) -> None:
             names = ["dir1", "dir2", "dir3"]
             paths = [posixpath.join(self.path, name) for name in names]
 
@@ -178,7 +178,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             self.assertEqual(result, [(name, "dir", None) for name in names])
 
         @record_or_replay
-        async def test_listdir_on_file(self):
+        async def test_listdir_on_file(self) -> None:
             buf = BytesIO()
             buf.write(b"0" * 1000)
             buf.seek(0)
@@ -193,7 +193,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             await self.client.remove(path, permanently=True)
 
         @record_or_replay
-        async def test_listdir_with_limits(self):
+        async def test_listdir_with_limits(self) -> None:
             names = ["dir1", "dir2", "dir3"]
             paths = [posixpath.join(self.path, name) for name in names]
 
@@ -211,7 +211,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             self.assertEqual(result, names)
 
         @record_or_replay
-        async def test_mkdir_and_exists(self):
+        async def test_mkdir_and_exists(self) -> None:
             names = ["dir1", "dir2", "dir3"]
             paths = [posixpath.join(self.path, name) for name in names]
 
@@ -226,14 +226,14 @@ def make_test_case(name: str, session_name: AsyncSessionName):
                 await check_existence(path)
 
         @record_or_replay
-        async def test_upload_and_download(self):
+        async def test_upload_and_download(self) -> None:
             buf1 = BytesIO()
             buf2 = tempfile.NamedTemporaryFile("w+b")
 
             def wrapper():
                 self.assertTrue(False)
 
-            buf1.close = wrapper
+            buf1.close = wrapper  # type: ignore
 
             buf1.write(b"0" * 1024**2)
             buf1.seek(0)
@@ -250,7 +250,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             self.assertEqual(buf1.read(), buf2.read())
 
         @record_or_replay
-        async def test_upload_and_download_async(self):
+        async def test_upload_and_download_async(self) -> None:
             content = b"0" * 1024 ** 2
             async with aiofiles.tempfile.NamedTemporaryFile("wb+") as source:
                 await source.write(content)
@@ -283,12 +283,12 @@ def make_test_case(name: str, session_name: AsyncSessionName):
                 await self.client.remove(path2, permanently=True)
 
         @record_or_replay
-        async def test_check_token(self):
+        async def test_check_token(self) -> None:
             self.assertTrue(await self.client.check_token())
             self.assertFalse(await self.client.check_token("asdasdasd"))
 
         @record_or_replay
-        async def test_permanent_remove(self):
+        async def test_permanent_remove(self) -> None:
             path = posixpath.join(self.path, "dir")
             origin_path = "disk:" + path
 
@@ -299,7 +299,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
                 self.assertFalse(i.origin_path == origin_path)
 
         @record_or_replay
-        async def test_restore_trash(self):
+        async def test_restore_trash(self) -> None:
             path = posixpath.join(self.path, "dir")
             origin_path = "disk:" + path
 
@@ -320,7 +320,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             await self.client.remove(path, permanently=True)
 
         @record_or_replay
-        async def test_move(self):
+        async def test_move(self) -> None:
             path1 = posixpath.join(self.path, "dir1")
             path2 = posixpath.join(self.path, "dir2")
             await self.client.mkdir(path1)
@@ -331,7 +331,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             await self.client.remove(path2, permanently=True)
 
         @record_or_replay
-        async def test_remove_trash(self):
+        async def test_remove_trash(self) -> None:
             path = posixpath.join(self.path, "dir-to-remove")
             origin_path = "disk:" + path
 
@@ -351,7 +351,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             self.assertFalse(await self.client.trash_exists(trash_path))
 
         @record_or_replay
-        async def test_publish_unpublish(self):
+        async def test_publish_unpublish(self) -> None:
             path = self.path
 
             await self.client.publish(path)
@@ -361,7 +361,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             self.assertIsNone((await self.client.get_meta(path)).public_url)
 
         @record_or_replay
-        async def test_patch(self):
+        async def test_patch(self) -> None:
             path = self.path
 
             await self.client.patch(path, {"test_property": "I'm a value!"})
@@ -374,7 +374,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             self.assertIsNone((await self.client.get_meta(path)).custom_properties)
 
         @record_or_replay
-        async def test_issue7(self):
+        async def test_issue7(self) -> None:
             # See https://github.com/ivknv/yadisk/issues/7
 
             try:
@@ -382,7 +382,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             except yadisk.exceptions.PathNotFoundError:
                 pass
 
-        def test_is_operation_link(self):
+        def test_is_operation_link(self) -> None:
             self.assertTrue(is_operation_link("https://cloud-api.yandex.net/v1/disk/operations/123asd"))
             self.assertTrue(is_operation_link("http://cloud-api.yandex.net/v1/disk/operations/123asd"))
             self.assertFalse(is_operation_link("https://cloud-api.yandex.net/v1/disk/operation/1283718"))
@@ -390,7 +390,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             self.assertFalse(is_operation_link("http://asd8iaysd89asdgiu"))
 
         @record_or_replay
-        async def test_get_operation_status_request_url(self):
+        async def test_get_operation_status_request_url(self) -> None:
             request = GetOperationStatusRequest(
                 self.client.session,
                 "https://cloud-api.yandex.net/v1/disk/operations/123asd")
@@ -409,7 +409,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             self.assertTrue(request.url.startswith("https://"))
 
         @record_or_replay
-        async def test_is_file(self):
+        async def test_is_file(self) -> None:
             # See https://github.com/ivknv/yadisk-async/pull/6
             buf1 = BytesIO()
 
@@ -422,7 +422,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             self.assertTrue(await self.client.is_file(path))
             await self.client.remove(path, permanently=True)
 
-        def test_ensure_path_has_schema(self):
+        def test_ensure_path_has_schema(self) -> None:
             # See https://github.com/ivknv/yadisk/issues/26 for more details
 
             self.assertEqual(ensure_path_has_schema("disk:"), "disk:/disk:")
@@ -433,25 +433,25 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             self.assertEqual(ensure_path_has_schema("app:/test"), "app:/test")
 
         @record_or_replay
-        async def test_upload_download_non_seekable(self):
+        async def test_upload_download_non_seekable(self) -> None:
             # It should be possible to upload/download non-seekable file objects (such as stdin/stdout)
             # See https://github.com/ivknv/yadisk/pull/31 for more details
 
             test_input_file = BytesIO(b"0" * 1000)
-            test_input_file.seekable = lambda: False
+            test_input_file.seekable = lambda: False  # type: ignore
 
             def seek(*args, **kwargs):
                 raise NotImplementedError
 
-            test_input_file.seek = seek
+            test_input_file.seek = seek  # type: ignore
 
             dst_path = posixpath.join(self.path, "zeroes.txt")
 
             await self.client.upload(test_input_file, dst_path, n_retries=50)
 
             test_output_file = BytesIO()
-            test_output_file.seekable = lambda: False
-            test_output_file.seek = seek
+            test_output_file.seekable = lambda: False  # type: ignore
+            test_output_file.seek = seek  # type: ignore
 
             await self.client.download(dst_path, test_output_file, n_retries=50)
 
