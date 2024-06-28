@@ -6,3 +6,4 @@ yadisk.egg-info/
 docs/_build
 .venv/
 pyrightconfig.json
+.vim/
