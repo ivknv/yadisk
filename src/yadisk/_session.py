@@ -52,6 +52,7 @@ class Response:
             .. note::
                This is an abstract method that needs to be implemented.
 
+            :raises RequestError: could not receive the response's body
             :raises ValueError: could not parse JSON
 
             :returns: `dict`, `list`, `str`, `int`, `float` or `None`
