@@ -52,6 +52,9 @@ requests       = ["requests"]
 [tool.mypy]
 packages = ["yadisk", "tests"]
 
+[tool.pyright]
+reportInvalidTypeForm = "none"
+
 [tool.ruff]
 line-length = 120
 indent-width = 4
