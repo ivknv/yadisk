@@ -49,6 +49,9 @@ requests       = ["requests"]
 "Documentation (RU)" = "https://yadisk.readthedocs.io/ru/latest"
 "Bug tracker" = "https://github.com/ivknv/yadisk/issues"
 
+[tool.mypy]
+packages = ["yadisk", "tests"]
+
 [tool.ruff]
 line-length = 120
 indent-width = 4
