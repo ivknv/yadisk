@@ -19,7 +19,7 @@
 from pathlib import PurePosixPath
 from urllib.parse import urlencode
 
-from .api import *
+from ._api import *
 
 from .exceptions import (
     WrongResourceTypeError, PathNotFoundError, UnauthorizedError,

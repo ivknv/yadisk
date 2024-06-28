@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-from ._api_request import APIRequest
+from .api_request import APIRequest
 from ..objects import DiskInfoObject
 from ..exceptions import InvalidResponseError
 

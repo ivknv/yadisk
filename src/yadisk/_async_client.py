@@ -29,7 +29,7 @@ from .types import (
 )
 
 from . import settings
-from .api import *
+from ._api import *
 from .exceptions import (
     InvalidResponseError, UnauthorizedError, OperationNotFoundError,
     PathNotFoundError, WrongResourceTypeError)

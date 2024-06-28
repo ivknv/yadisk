@@ -18,7 +18,7 @@
 
 from urllib.parse import urlparse, parse_qs, quote
 
-from ._api_request import APIRequest
+from .api_request import APIRequest
 from ..objects import OperationStatusObject
 from .._common import is_operation_link
 from ..exceptions import InvalidResponseError

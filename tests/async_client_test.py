@@ -13,7 +13,7 @@ from io import BytesIO
 import yadisk
 from yadisk._common import is_operation_link, ensure_path_has_schema
 from yadisk._compat import Callable
-from yadisk.api import GetOperationStatusRequest
+from yadisk._api import GetOperationStatusRequest
 from yadisk.types import AsyncSessionName
 
 from .disk_gateway import DiskGateway, AsyncDiskGatewayClient
