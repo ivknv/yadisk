@@ -1,7 +1,0 @@
-aiofiles
-aiohttp
-httpx
-pycurl
-requests
-starlette
-uvicorn

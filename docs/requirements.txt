@@ -1,7 +1,9 @@
-sphinx
-sphinx-intl
-sphinx_rtd_theme
-requests
-httpx
+aiofiles
 aiohttp
+httpx
 pycurl
+requests
+
+sphinx==7.1.2
+sphinx-intl==2.2.0
+sphinx_rtd_theme==2.0.0
