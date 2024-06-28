@@ -31,7 +31,7 @@ from ..objects import (
 from .._common import is_operation_link, ensure_path_has_schema
 from ..exceptions import InvalidResponseError
 
-from .._compat import Iterable, Dict, List
+from .._typing_compat import Iterable, Dict, List
 from typing import Optional, Union, TYPE_CHECKING
 
 if TYPE_CHECKING:

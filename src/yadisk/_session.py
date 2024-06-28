@@ -18,7 +18,7 @@
 
 from typing import Optional, Any, TypeVar
 from .exceptions import YaDiskError
-from ._compat import Dict
+from ._typing_compat import Dict
 from .utils import get_exception
 from .objects import ErrorObject
 from .types import ConsumeCallback, JSON, HTTPMethod, Payload, TimeoutParameter

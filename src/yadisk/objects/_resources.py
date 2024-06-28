@@ -35,7 +35,7 @@ from typing import (
     TYPE_CHECKING, Any, overload, Union, IO, AnyStr, Protocol, Optional
 )
 
-from .._compat import Generator, List, AsyncGenerator
+from .._typing_compat import Generator, List, AsyncGenerator
 
 if TYPE_CHECKING:
     import datetime

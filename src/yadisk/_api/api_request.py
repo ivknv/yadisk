@@ -22,7 +22,7 @@ from ..utils import auto_retry, async_auto_retry, CaseInsensitiveDict
 from .. import settings
 
 from typing import Any, Optional, Union, TypeVar, TYPE_CHECKING
-from .._compat import Set, Dict
+from .._typing_compat import Set, Dict
 import json
 
 if TYPE_CHECKING:

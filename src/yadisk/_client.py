@@ -38,7 +38,7 @@ from ._import_session import import_session
 from . import settings
 
 from typing import Any, Optional, Union, Literal, TYPE_CHECKING
-from ._compat import Callable, Generator, Dict, List
+from ._typing_compat import Callable, Generator, Dict, List
 from .types import (
     OpenFileCallback, FileOrPath, FileOrPathDestination, OperationStatus,
     SessionFactory, SessionName

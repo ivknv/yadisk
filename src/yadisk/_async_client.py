@@ -37,7 +37,7 @@ from .utils import auto_retry, CaseInsensitiveDict
 from .objects import AsyncResourceLinkObject, AsyncPublicResourceLinkObject
 
 from typing import Any, Optional, Union, IO, TYPE_CHECKING, BinaryIO, Literal
-from ._compat import Callable, AsyncGenerator, Awaitable, Dict, List
+from ._typing_compat import Callable, AsyncGenerator, Awaitable, Dict, List
 
 from ._async_session import AsyncSession
 from ._import_session import import_async_session

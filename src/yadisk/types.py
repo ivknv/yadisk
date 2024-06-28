@@ -18,7 +18,7 @@
 
 from typing import Any, Optional, Union, TYPE_CHECKING, Protocol, BinaryIO, Literal
 from typing_extensions import TypeAlias
-from ._compat import (
+from ._typing_compat import (
     Dict, List, Tuple, Callable, Awaitable,
     Iterator, AsyncIterator, Mapping
 )

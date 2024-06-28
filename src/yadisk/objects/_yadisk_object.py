@@ -17,7 +17,7 @@
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
 from typing import Any, Optional
-from .._compat import Callable, Iterator
+from .._typing_compat import Callable, Iterator
 
 __all__ = ["YaDiskObject"]
 

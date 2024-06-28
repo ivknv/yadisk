@@ -18,7 +18,7 @@
 
 from .utils import CaseInsensitiveDict
 
-from ._compat import Dict, Generator
+from ._typing_compat import Dict, Generator
 from typing import Any, AnyStr, IO, Optional
 
 __all__ = [

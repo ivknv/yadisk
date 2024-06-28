@@ -25,7 +25,7 @@ from ..exceptions import (
 )
 
 from .._session import Session, Response
-from .._compat import Iterator
+from .._typing_compat import Iterator
 from ..utils import CaseInsensitiveDict
 from ..types import JSON, ConsumeCallback, HTTPMethod
 

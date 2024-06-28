@@ -21,7 +21,7 @@ from ..objects import DiskInfoObject
 from ..exceptions import InvalidResponseError
 
 from typing import Optional, TYPE_CHECKING
-from .._compat import Iterable
+from .._typing_compat import Iterable
 
 if TYPE_CHECKING:
     from ..types import AnySession, JSON
