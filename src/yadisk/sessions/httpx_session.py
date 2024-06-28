@@ -34,7 +34,11 @@ class HTTPXResponse(Response):
         self.status = response.status_code
 
     def json(self) -> JSON:
-        self._response.read()
+        try:
+            self._response.read()
+        except httpx.HTTPError as e:
+            raise convert_httpx_exception(e) from e
+
         return self._response.json()
 
     def download(self, consume_callback: ConsumeCallback) -> None:

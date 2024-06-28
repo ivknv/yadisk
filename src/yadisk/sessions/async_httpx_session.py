@@ -37,7 +37,11 @@ class AsyncHTTPXResponse(AsyncResponse):
         self.status = response.status_code
 
     async def json(self) -> JSON:
-        await self._response.aread()
+        try:
+            await self._response.aread()
+        except httpx.HTTPError as e:
+            raise convert_httpx_exception(e) from e
+
         return self._response.json()
 
     async def download(self, consume_callback: AsyncConsumeCallback) -> None:

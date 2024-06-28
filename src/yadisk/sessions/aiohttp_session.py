@@ -55,7 +55,10 @@ class AIOHTTPResponse(AsyncResponse):
         self.status = response.status
 
     async def json(self) -> JSON:
-        return await self._response.json()
+        try:
+            return await self._response.json()
+        except aiohttp.ClientError as e:
+            raise convert_aiohttp_exception(e) from e
 
     async def download(self, consume_callback: AsyncConsumeCallback) -> None:
         callback: Any = consume_callback
