@@ -37,8 +37,11 @@ version = {attr = "yadisk.__version__"}
 [project.optional-dependencies]
 sync_defaults = ["requests"]
 async_defaults = ["aiofiles", "httpx"]
-dev = ["requests", "aiofiles", "httpx", "aiohttp", "pycurl"]
-test = ["requests", "aiofiles", "httpx", "aiohttp", "pycurl"]
+dev = [
+    "requests", "aiofiles", "httpx", "aiohttp", "pycurl", "starlette", "uvicorn",
+    "types-aiofiles", "types-requests", "types-pycurl"
+]
+test = ["requests", "aiofiles", "httpx", "aiohttp", "pycurl", "starlette", "uvicorn"]
 
 [project.urls]
 "Source code" = "https://github.com/ivknv/yadisk"
