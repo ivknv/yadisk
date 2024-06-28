@@ -47,7 +47,6 @@ class APIRequest(object):
         :param headers: `dict` or `None`, additional request headers
         :param n_retries: `int`, maximum number of retries
         :param retry_interval: delay between retries in seconds
-        :param base_url: `str`, base URL for sending the request
         :param kwargs: other arguments for :any:`Session.send_request`
 
         :ivar base_url: `str`, base URL for sending the request
@@ -80,7 +79,7 @@ class APIRequest(object):
     T = TypeVar("T")
 
     def __init__(self, session: "AnySession", **kwargs):
-        base_url = kwargs.pop("base_url", self.base_url) or settings.BASE_API_URL
+        base_url = self.base_url or settings.BASE_API_URL
         n_retries = kwargs.pop("n_retries", None)
         retry_interval = kwargs.pop("retry_interval", None)
         headers = kwargs.pop("headers", {})
