@@ -802,7 +802,8 @@ class AsyncClient:
             :returns: async generator of :any:`AsyncResourceObject`
         """
 
-        return _listdir(self.get_meta, path, **kwargs)
+        async for file in _listdir(self.get_meta, path, **kwargs):
+            yield file
 
     async def get_upload_link(self, path: str, /, **kwargs) -> str:
         """

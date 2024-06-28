@@ -149,7 +149,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
                 await self.client.mkdir(path)
 
             async def get_result():
-                return [i.name async for i in await self.client.listdir(self.path)]
+                return [i.name async for i in self.client.listdir(self.path)]
 
             result = await get_result()
 
@@ -168,7 +168,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
 
             async def get_result():
                 return [(i.name, i.type, i.file)
-                        async for i in await self.client.listdir(self.path, fields=["name", "type"])]
+                        async for i in self.client.listdir(self.path, fields=["name", "type"])]
 
             result = await get_result()
 
@@ -188,7 +188,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             await self.client.upload(buf, path)
 
             with self.assertRaises(yadisk.exceptions.WrongResourceTypeError):
-                [i async for i in await self.client.listdir(path)]
+                [i async for i in self.client.listdir(path)]
 
             await self.client.remove(path, permanently=True)
 
@@ -201,7 +201,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
                 await self.client.mkdir(path)
 
             async def get_result():
-                return [i.name async for i in await self.client.listdir(self.path, limit=1)]
+                return [i.name async for i in self.client.listdir(self.path, limit=1)]
 
             result = await get_result()
 
