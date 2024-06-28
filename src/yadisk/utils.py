@@ -90,7 +90,7 @@ def get_exception(response: AnyResponse, error: Optional[ErrorObject]) -> YaDisk
         :returns: an exception instance, subclass of :any:`YaDiskError`
     """
 
-    exc_group = EXCEPTION_MAP.get(response.status(), None)
+    exc_group = EXCEPTION_MAP.get(response.status, None)
 
     if exc_group is None:
         return UnknownYaDiskError("Unknown Yandex.Disk error")

@@ -50,18 +50,35 @@ def convert_curl_error(error: pycurl.error) -> RequestError:
 
 class PycurlResponse(Response):
     def __init__(self, curl: pycurl.Curl, response: bytes):
+        super().__init__()
+
         self._curl = curl
         self._response = response
 
-    def status(self) -> int:
-        return self._curl.getinfo(pycurl.RESPONSE_CODE)
+        self._update_status()
+
+    def _update_status(self) -> None:
+        self.status = self._curl.getinfo(pycurl.RESPONSE_CODE)
+
+    def _perform(self) -> None:
+        try:
+            self._curl.perform()
+        except pycurl.error as e:
+            raise convert_curl_error(e) from e
+
+        self._update_status()
+
+    def _perform_rb(self) -> None:
+        try:
+            self._response = self._curl.perform_rb()
+        except pycurl.error as e:
+            raise convert_curl_error(e) from e
+
+        self._update_status()
 
     def json(self) -> JSON:
-        if not self.status():
-            try:
-                self._response = self._curl.perform_rb()
-            except pycurl.error as e:
-                raise convert_curl_error(e) from e
+        if not self.status:
+            self._perform_rb()
 
         return json.loads(self._response)
 
@@ -72,10 +89,7 @@ class PycurlResponse(Response):
 
         self._curl.setopt(pycurl.WRITEFUNCTION, write_cb)
 
-        try:
-            self._curl.perform()
-        except pycurl.error as e:
-            raise convert_curl_error(e) from e
+        self._perform()
 
     def close(self) -> None:
         self._curl.close()
@@ -156,7 +170,7 @@ class PycURLSession(Session):
                 )
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._share = pycurl.CurlShare()
 
         self._share.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_CONNECT)
@@ -241,5 +255,5 @@ class PycURLSession(Session):
 
         return PycurlResponse(curl, response)
 
-    def close(self):
+    def close(self) -> None:
         self._share.close()

@@ -926,7 +926,7 @@ class AsyncClient:
                     data = generator_factory()
 
                 async with await session.send_request("PUT", link, data=data, **temp_kwargs) as response:
-                    if response.status() != 201:
+                    if response.status != 201:
                         raise await response.get_exception()
 
             await auto_retry(attempt, n_retries, retry_interval)
@@ -1081,7 +1081,7 @@ class AsyncClient:
                 async with await session.send_request("GET", link, **temp_kwargs) as response:
                     await response.download(file.write)
 
-                    if response.status() != 200:
+                    if response.status != 200:
                         raise await response.get_exception()
 
             return await auto_retry(attempt, n_retries, retry_interval)

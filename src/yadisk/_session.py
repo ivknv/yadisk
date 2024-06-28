@@ -32,21 +32,18 @@ class Response:
 
         In case an error occurs, methods of this class should throw one of exceptions
         derived from :any:`YaDiskError`.
+
+        :ivar status: `int`, HTTP status code
     """
 
     _Self = TypeVar("_Self", bound="Response")
 
-    def status(self) -> int:
-        """
-            Returns HTTP status code.
+    status: int
 
-            .. note::
-               This is an abstract method that needs to be implemented.
+    def __init__(self) -> None:
+        """Constructs a :any:`Response` object."""
 
-            :returns: `int`
-        """
-
-        raise NotImplementedError
+        self.status = 0
 
     def json(self) -> JSON:
         """

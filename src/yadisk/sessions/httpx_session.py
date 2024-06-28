@@ -28,10 +28,10 @@ __all__ = ["HTTPXSession"]
 
 class HTTPXResponse(Response):
     def __init__(self, response: httpx.Response):
-        self._response = response
+        super().__init__()
 
-    def status(self) -> int:
-        return self._response.status_code
+        self._response = response
+        self.status = response.status_code
 
     def json(self) -> JSON:
         self._response.read()

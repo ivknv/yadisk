@@ -869,7 +869,7 @@ class Client:
             elif iterator_factory is None:
                 n_retries, n_retries_for_upload_link = 0, n_retries
 
-            def attempt():
+            def attempt() -> None:
                 temp_kwargs = dict(kwargs)
                 temp_kwargs["n_retries"] = n_retries_for_upload_link
                 temp_kwargs["retry_interval"] = 0.0
@@ -899,7 +899,7 @@ class Client:
                     payload = _read_file_as_generator(file)
 
                 with session.send_request("PUT", link, data=payload, **temp_kwargs) as response:
-                    if response.status() != 201:
+                    if response.status != 201:
                         raise response.get_exception()
 
             auto_retry(attempt, n_retries, retry_interval)
@@ -1036,7 +1036,7 @@ class Client:
             else:
                 n_retries, n_retries_for_download_link = 0, n_retries
 
-            def attempt():
+            def attempt() -> None:
                 temp_kwargs = dict(kwargs)
                 temp_kwargs["n_retries"] = n_retries_for_download_link
                 temp_kwargs["retry_interval"] = 0.0
@@ -1053,7 +1053,7 @@ class Client:
                 with session.send_request("GET", link, **temp_kwargs) as response:
                     response.download(file.write)
 
-                    if response.status() != 200:
+                    if response.status != 200:
                         raise response.get_exception()
 
             auto_retry(attempt, n_retries, retry_interval)

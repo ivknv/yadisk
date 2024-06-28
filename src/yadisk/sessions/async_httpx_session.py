@@ -31,10 +31,10 @@ __all__ = ["AsyncHTTPXSession"]
 
 class AsyncHTTPXResponse(AsyncResponse):
     def __init__(self, response: httpx.Response):
-        self._response = response
+        super().__init__()
 
-    def status(self) -> int:
-        return self._response.status_code
+        self._response = response
+        self.status = response.status_code
 
     async def json(self) -> JSON:
         await self._response.aread()
