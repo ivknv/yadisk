@@ -52,6 +52,8 @@ class Response:
             .. note::
                This is an abstract method that needs to be implemented.
 
+            :raises ValueError: could not parse JSON
+
             :returns: `dict`, `list`, `str`, `int`, `float` or `None`
         """
         raise NotImplementedError
@@ -65,12 +67,16 @@ class Response:
 
             :param consume_callback: function, takes one parameter - chunk of data (bytes),
                                      consumes the chunk (e.g. by writing to a file)
+
+            :raises RequestError: could not receive the response's body
         """
         raise NotImplementedError
 
     def get_exception(self) -> YaDiskError:
         """
             Convenience wrapper for :any:`yadisk.utils.get_exception`.
+
+            :returns: :any:`YaDiskError`
         """
 
         try:

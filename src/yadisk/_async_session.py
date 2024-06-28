@@ -56,6 +56,9 @@ class AsyncResponse:
             .. note::
                This is an abstract method that needs to be implemented.
 
+            :raises RequestError: could not receive the response's body
+            :raises ValueError: could not parse JSON
+
             :returns: `dict`, `list`, `str`, `int`, `float` or `None`
         """
         raise NotImplementedError
@@ -70,12 +73,16 @@ class AsyncResponse:
             :param consume_callback: regular or async function, takes one
                                      parameter - chunk of data (bytes),
                                      consumes the chunk (e.g. by writing to a file)
+
+            :raises RequestError: could not receive the response's body
         """
         raise NotImplementedError
 
     async def get_exception(self) -> "YaDiskError":
         """
             Convenience wrapper for :any:`yadisk.utils.get_exception`.
+
+            :returns: :any:`YaDiskError`
         """
 
         try:
