@@ -17,10 +17,9 @@
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
 from typing import Any, Optional, Union, TYPE_CHECKING, Protocol, BinaryIO, Literal
-from typing_extensions import TypeAlias
 from ._typing_compat import (
     Dict, List, Tuple, Callable, Awaitable,
-    Iterator, AsyncIterator, Mapping
+    Iterator, AsyncIterator, Mapping, TypeAlias
 )
 
 if TYPE_CHECKING:

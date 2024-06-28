@@ -29,7 +29,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries",
     "Topic :: Software Development :: Libraries :: Python Modules"
 ]
-dependencies = ["typing_extensions"]
+dependencies = ["typing_extensions; python_version<'3.10'"]
 
 [tool.setuptools.dynamic]
 version = {attr = "yadisk.__version__"}

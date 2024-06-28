@@ -18,18 +18,16 @@
 
 __all__ = ["List", "Dict", "Set", "Tuple", "Callable", "Iterable", "Generator",
            "AsyncGenerator", "Coroutine", "Awaitable", "AsyncIterable",
-           "Iterator", "AsyncIterator", "Mapping"]
+           "Iterator", "AsyncIterator", "Mapping", "TypeAlias"]
 
 import sys
 
-from typing import Any
+if sys.version_info >= (3, 10):
+    from typing import TypeAlias
+else:
+    from typing_extensions import TypeAlias
 
-List: Any
-Dict: Any
-Set: Any
-Tuple: Any
-
-if sys.version_info.major == 3 and sys.version_info.minor < 9:
+if sys.version_info < (3, 9):
     from typing import (
         List, Dict, Set, Tuple, Callable, Iterable, Generator, AsyncGenerator,
         Coroutine, Awaitable, AsyncIterable, Iterator, AsyncIterator, Mapping
