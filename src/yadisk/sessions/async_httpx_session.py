@@ -19,8 +19,7 @@
 from typing import Any
 
 from .._async_session import AsyncSession, AsyncResponse
-from .._compat import Iterable
-from ..types import JSON, AsyncConsumeCallback, Headers, HTTPMethod
+from ..types import JSON, AsyncConsumeCallback, HTTPMethod
 from .._common import is_async_func
 
 from ._httpx_common import *

@@ -19,7 +19,7 @@
 from typing import TYPE_CHECKING, Any, Optional, TypeVar
 from ._compat import Dict
 from .types import (
-    AsyncConsumeCallback, JSON, Headers, HTTPMethod, AsyncPayload, TimeoutParameter
+    AsyncConsumeCallback, JSON, HTTPMethod, AsyncPayload, TimeoutParameter
 )
 from .objects import ErrorObject
 from .utils import get_exception
