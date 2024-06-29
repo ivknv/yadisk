@@ -52,7 +52,7 @@ from ._client_common import (
 
 if TYPE_CHECKING:
     from .objects import (
-        FilesResourceListObject, SyncResourceObject, SyncOperationLinkObject,
+        SyncFilesResourceListObject, SyncResourceObject, SyncOperationLinkObject,
         SyncPublicResourceObject, SyncPublicResourcesListObject, DiskInfoObject,
         TokenObject, TokenRevokeStatusObject, DeviceCodeObject
     )
@@ -1719,7 +1719,7 @@ class Client:
         return PatchRequest(self.session, path, properties, **kwargs).send(yadisk=self)
 
     def _get_files_some(self, **kwargs) -> List["SyncResourceObject"]:
-        response: "FilesResourceListObject" = FilesRequest(
+        response: "SyncFilesResourceListObject" = FilesRequest(
             self.session, **kwargs).send(yadisk=self)
 
         if response.items is None:

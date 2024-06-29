@@ -28,14 +28,11 @@ import json
 if TYPE_CHECKING:
     from .._session import Session
     from .._async_session import AsyncSession
-    from ..types import AnySession, HTTPMethod, JSON
+    from ..types import AnySession, HTTPMethod, JSON, TimeoutParameter
     from .._client import Client
     from .._async_client import AsyncClient
 
 __all__ = ["APIRequest"]
-
-# For cases when None can't be used
-_DEFAULT_TIMEOUT = object()
 
 
 class APIRequest(object):
@@ -65,7 +62,8 @@ class APIRequest(object):
     path: str = ""
     method: Optional["HTTPMethod"] = None
     content_type: str = "application/x-www-form-urlencoded"
-    timeout = _DEFAULT_TIMEOUT
+
+    timeout: "TimeoutParameter"
     n_retries: Optional[int] = None
     success_codes: Set[int] = {200}
     retry_interval: Optional[Union[int, float]] = None
@@ -87,15 +85,7 @@ class APIRequest(object):
         if headers is None:
             headers = {}
 
-        try:
-            timeout = kwargs["timeout"]
-        except KeyError:
-            timeout = self.timeout
-
-        if timeout is _DEFAULT_TIMEOUT:
-            timeout = settings.DEFAULT_TIMEOUT
-
-        kwargs["timeout"] = timeout
+        kwargs.setdefault("timeout", settings.DEFAULT_TIMEOUT)
 
         if n_retries is None:
             n_retries = self.n_retries
@@ -110,7 +100,7 @@ class APIRequest(object):
         self.session = session
         self.send_kwargs = kwargs
         self.base_url = base_url
-        self.timeout = timeout
+        self.timeout = kwargs.get("timeout", settings.DEFAULT_TIMEOUT)
         self.n_retries = n_retries
         self.retry_interval = retry_interval
         self.headers = headers

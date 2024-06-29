@@ -69,14 +69,17 @@ class GetPublicResourcesRequest(APIRequest):
     method = "GET"
     path = "/v1/disk/resources/public"
 
-    def __init__(self,
-                 session: "AnySession",
-                 offset: int = 0,
-                 limit: int = 20,
-                 preview_size: Optional[str] = None,
-                 preview_crop: Optional[bool] = None,
-                 type: Optional[str] = None,
-                 fields: Optional[Iterable[str]] = None, **kwargs):
+    def __init__(
+        self,
+        session:      "AnySession",
+        offset:       int                     = 0,
+        limit:        int                     = 20,
+        preview_size: Optional[str]           = None,
+        preview_crop: Optional[bool]          = None,
+        type:         Optional[str]           = None,
+        fields:       Optional[Iterable[str]] = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["offset"] = offset
@@ -123,10 +126,13 @@ class UnpublishRequest(APIRequest):
     method = "PUT"
     path = "/v1/disk/resources/unpublish"
 
-    def __init__(self,
-                 session: "AnySession",
-                 path: str,
-                 fields: Optional[Iterable[str]] = None, **kwargs):
+    def __init__(
+        self,
+        session:  "AnySession",
+        path:     str,
+        fields:   Optional[Iterable[str]] = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["path"] = ensure_path_has_schema(path)
@@ -163,10 +169,13 @@ class GetDownloadLinkRequest(APIRequest):
     method = "GET"
     path = "/v1/disk/resources/download"
 
-    def __init__(self,
-                 session: "AnySession",
-                 path: str,
-                 fields: Optional[Iterable[str]] = None, **kwargs):
+    def __init__(
+        self,
+        session:  "AnySession",
+        path:     str,
+        fields:   Optional[Iterable[str]] = None,
+        **kwargs
+    ):
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["path"] = ensure_path_has_schema(path)
@@ -204,15 +213,18 @@ class GetTrashRequest(APIRequest):
     method = "GET"
     path = "/v1/disk/trash/resources"
 
-    def __init__(self,
-                 session: "AnySession",
-                 path: str,
-                 offset: int = 0,
-                 limit: int = 20,
-                 sort: Optional[str] = None,
-                 preview_size: Optional[str] = None,
-                 preview_crop: Optional[bool] = None,
-                 fields: Optional[Iterable[str]] = None, **kwargs):
+    def __init__(
+        self,
+        session:      "AnySession",
+        path:         str,
+        offset:       int                     = 0,
+        limit:        int                     = 20,
+        sort:         Optional[str]           = None,
+        preview_size: Optional[str]           = None,
+        preview_crop: Optional[bool]          = None,
+        fields:       Optional[Iterable[str]] = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["path"] = ensure_path_has_schema(path, "trash")
@@ -266,13 +278,16 @@ class RestoreTrashRequest(APIRequest):
     path = "/v1/disk/trash/resources/restore"
     success_codes = {201, 202}
 
-    def __init__(self,
-                 session: "AnySession",
-                 path: str,
-                 dst_path: Optional[str] = None,
-                 force_async: bool = False,
-                 overwrite: bool = False,
-                 fields: Optional[Iterable[str]] = None, **kwargs):
+    def __init__(
+        self,
+        session:     "AnySession",
+        path:        str,
+        dst_path:    Optional[str]           = None,
+        force_async: bool                    = False,
+        overwrite:   bool                    = False,
+        fields:      Optional[Iterable[str]] = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["path"] = ensure_path_has_schema(path, "trash")
@@ -322,11 +337,14 @@ class DeleteTrashRequest(APIRequest):
     path = "/v1/disk/trash/resources"
     success_codes = {202, 204}
 
-    def __init__(self,
-                 session: "AnySession",
-                 path: Optional[str] = None,
-                 force_async: bool = False,
-                 fields: Optional[Iterable[str]] = None, **kwargs):
+    def __init__(
+        self,
+        session:     "AnySession",
+        path:        Optional[str]           = None,
+        force_async: bool                    = False,
+        fields:      Optional[Iterable[str]] = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         if path is not None:
@@ -372,13 +390,16 @@ class LastUploadedRequest(APIRequest):
     method = "GET"
     path = "/v1/disk/resources/last-uploaded"
 
-    def __init__(self,
-                 session: "AnySession",
-                 limit: int = 20,
-                 media_type: Optional[Union[str, Iterable[str]]] = None,
-                 preview_size: Optional[str] = None,
-                 preview_crop: Optional[bool] = None,
-                 fields: Optional[Iterable[str]] = None, **kwargs):
+    def __init__(
+        self,
+        session: "AnySession",
+        limit:        int                                 = 20,
+        media_type:   Optional[Union[str, Iterable[str]]] = None,
+        preview_size: Optional[str]                       = None,
+        preview_crop: Optional[bool]                      = None,
+        fields:       Optional[Iterable[str]]             = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["limit"] = limit
@@ -435,13 +456,16 @@ class CopyRequest(APIRequest):
     path = "/v1/disk/resources/copy"
     success_codes = {201, 202}
 
-    def __init__(self,
-                 session: "AnySession",
-                 src_path: str,
-                 dst_path: str,
-                 overwrite: bool = False,
-                 force_async: bool = False,
-                 fields: Optional[Fields] = None, **kwargs):
+    def __init__(
+        self,
+        session:     "AnySession",
+        src_path:    str,
+        dst_path:    str,
+        overwrite:   bool             = False,
+        force_async: bool             = False,
+        fields:      Optional[Fields] = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["from"] = ensure_path_has_schema(src_path)
@@ -492,15 +516,18 @@ class GetMetaRequest(APIRequest):
     method = "GET"
     path = "/v1/disk/resources"
 
-    def __init__(self,
-                 session: "AnySession",
-                 path: str,
-                 limit: Optional[int] = None,
-                 offset: Optional[int] = None,
-                 preview_size: Optional[str] = None,
-                 preview_crop: Optional[bool] = None,
-                 sort: Optional[str] = None,
-                 fields: Optional[Fields] = None, **kwargs):
+    def __init__(
+        self,
+        session: "AnySession",
+        path:         str,
+        limit:        Optional[int]    = None,
+        offset:       Optional[int]    = None,
+        preview_size: Optional[str]    = None,
+        preview_crop: Optional[bool]   = None,
+        sort:         Optional[str]    = None,
+        fields:       Optional[Fields] = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["path"] = ensure_path_has_schema(path)
@@ -555,11 +582,14 @@ class GetUploadLinkRequest(APIRequest):
     method = "GET"
     path = "/v1/disk/resources/upload"
 
-    def __init__(self,
-                 session: "AnySession",
-                 path: str,
-                 overwrite: bool = False,
-                 fields: Optional[Fields] = None, **kwargs):
+    def __init__(
+        self,
+        session:   "AnySession",
+        path:      str,
+        overwrite: bool             = False,
+        fields:    Optional[Fields] = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["path"] = ensure_path_has_schema(path)
@@ -594,10 +624,13 @@ class MkdirRequest(APIRequest):
     path = "/v1/disk/resources"
     success_codes = {201}
 
-    def __init__(self,
-                 session: "AnySession",
-                 path: str,
-                 fields: Optional[Fields] = None, **kwargs):
+    def __init__(
+        self,
+        session:  "AnySession",
+        path:     str,
+        fields:   Optional[Fields] = None,
+        **kwargs
+    ):
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["path"] = ensure_path_has_schema(path)
@@ -634,10 +667,13 @@ class PublishRequest(APIRequest):
     method = "PUT"
     path = "/v1/disk/resources/publish"
 
-    def __init__(self,
-                 session: "AnySession",
-                 path: str,
-                 fields: Optional[Fields] = None, **kwargs):
+    def __init__(
+        self,
+        session:  "AnySession",
+        path:     str,
+        fields:   Optional[Fields] = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["path"] = ensure_path_has_schema(path)
@@ -677,12 +713,15 @@ class UploadURLRequest(APIRequest):
     path = "/v1/disk/resources/upload"
     success_codes = {202}
 
-    def __init__(self,
-                 session: "AnySession",
-                 url: str,
-                 path: str,
-                 disable_redirects: bool = False,
-                 fields: Optional[Fields] = None, **kwargs):
+    def __init__(
+        self,
+        session:           "AnySession",
+        url:               str,
+        path:              str,
+        disable_redirects: bool             = False,
+        fields:            Optional[Fields] = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["url"] = url
@@ -726,13 +765,16 @@ class DeleteRequest(APIRequest):
     path = "/v1/disk/resources"
     success_codes = {202, 204}
 
-    def __init__(self,
-                 session: "AnySession",
-                 path: str,
-                 permanently: bool = False,
-                 md5: Optional[str] = None,
-                 force_async: bool = False,
-                 fields: Optional[Fields] = None, **kwargs):
+    def __init__(
+        self,
+        session:     "AnySession",
+        path:        str,
+        permanently: bool             = False,
+        md5:         Optional[str]    = None,
+        force_async: bool             = False,
+        fields:      Optional[Fields] = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["path"] = ensure_path_has_schema(path)
@@ -781,14 +823,17 @@ class SaveToDiskRequest(APIRequest):
     path = "/v1/disk/resources/save-to-disk"
     success_codes = {201, 202}
 
-    def __init__(self,
-                 session: "AnySession",
-                 public_key: str,
-                 name: Optional[str] = None,
-                 path: Optional[str] = None,
-                 save_path: Optional[str] = None,
-                 force_async: bool = False,
-                 fields: Optional[Fields] = None, **kwargs):
+    def __init__(
+        self,
+        session:     "AnySession",
+        public_key:  str,
+        name:        Optional[str]    = None,
+        path:        Optional[str]    = None,
+        save_path:   Optional[str]    = None,
+        force_async: bool             = False,
+        fields:      Optional[Fields] = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["public_key"] = public_key
@@ -850,16 +895,19 @@ class GetPublicMetaRequest(APIRequest):
     method = "GET"
     path = "/v1/disk/public/resources"
 
-    def __init__(self,
-                 session: "AnySession",
-                 public_key: str,
-                 offset: int = 0,
-                 limit: int = 20,
-                 path: Optional[str] = None,
-                 sort: Optional[str] = None,
-                 preview_size: Optional[str] = None,
-                 preview_crop: Optional[bool] = None,
-                 fields: Optional[Fields] = None, **kwargs):
+    def __init__(
+        self,
+        session:      "AnySession",
+        public_key:   str,
+        offset:       int              = 0,
+        limit:        int              = 20,
+        path:         Optional[str]    = None,
+        sort:         Optional[str]    = None,
+        preview_size: Optional[str]    = None,
+        preview_crop: Optional[bool]   = None,
+        fields:       Optional[Fields] = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["public_key"] = public_key
@@ -914,11 +962,14 @@ class GetPublicDownloadLinkRequest(APIRequest):
     method = "GET"
     path = "/v1/disk/public/resources/download"
 
-    def __init__(self,
-                 session: "AnySession",
-                 public_key: str,
-                 path: Optional[str] = None,
-                 fields: Optional[Fields] = None, **kwargs):
+    def __init__(
+        self,
+        session:    "AnySession",
+        public_key: str,
+        path:       Optional[str]    = None,
+        fields:     Optional[Fields] = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["public_key"] = public_key
@@ -959,13 +1010,16 @@ class MoveRequest(APIRequest):
     path = "/v1/disk/resources/move"
     success_codes = {201, 202}
 
-    def __init__(self,
-                 session: "AnySession",
-                 src_path: str,
-                 dst_path: str,
-                 force_async: bool = False,
-                 overwrite: bool = False,
-                 fields: Optional[Fields] = None, **kwargs):
+    def __init__(
+        self,
+        session:      "AnySession",
+        src_path:    str,
+        dst_path:    str,
+        force_async: bool             = False,
+        overwrite:   bool             = False,
+        fields:      Optional[Fields] = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["from"] = ensure_path_has_schema(src_path)
@@ -1016,15 +1070,18 @@ class FilesRequest(APIRequest):
     method = "GET"
     path = "/v1/disk/resources/files"
 
-    def __init__(self,
-                 session: "AnySession",
-                 offset: int = 0,
-                 limit: int = 20,
-                 media_type: Optional[Union[str, Iterable[str]]] = None,
-                 preview_size: Optional[str] = None,
-                 preview_crop: Optional[bool] = None,
-                 sort: Optional[str] = None,
-                 fields: Optional[Fields] = None, **kwargs):
+    def __init__(
+        self,
+        session:      "AnySession",
+        offset:       int                                 = 0,
+        limit:        int                                 = 20,
+        media_type:   Optional[Union[str, Iterable[str]]] = None,
+        preview_size: Optional[str]                       = None,
+        preview_crop: Optional[bool]                      = None,
+        sort:         Optional[str]                       = None,
+        fields:       Optional[Fields]                    = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["offset"] = offset
@@ -1082,11 +1139,14 @@ class PatchRequest(APIRequest):
     path = "/v1/disk/resources"
     content_type = "application/json"
 
-    def __init__(self,
-                 session: "AnySession",
-                 path: str,
-                 properties: dict,
-                 fields: Optional[Fields] = None, **kwargs):
+    def __init__(
+        self,
+        session:    "AnySession",
+        path:       str,
+        properties: dict,
+        fields:     Optional[Fields] = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["path"] = ensure_path_has_schema(path)

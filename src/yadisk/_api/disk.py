@@ -42,9 +42,12 @@ class DiskInfoRequest(APIRequest):
     method = "GET"
     path = "/v1/disk"
 
-    def __init__(self,
-                 session: "AnySession",
-                 fields: Optional[Iterable[str]] = None, **kwargs):
+    def __init__(
+        self,
+        session: "AnySession",
+        fields: Optional[Iterable[str]] = None,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         if fields is not None:

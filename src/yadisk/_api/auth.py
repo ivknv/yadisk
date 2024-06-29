@@ -51,11 +51,14 @@ class RefreshTokenRequest(APIRequest):
     base_url = settings.BASE_OAUTH_API_URL
     path = "/token"
 
-    def __init__(self,
-                 session: "AnySession",
-                 refresh_token: str,
-                 client_id: str,
-                 client_secret: str, **kwargs):
+    def __init__(
+        self,
+        session:       "AnySession",
+        refresh_token: str,
+        client_id:     str,
+        client_secret: str,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.data = urlencode({
@@ -88,11 +91,14 @@ class RevokeTokenRequest(APIRequest):
     base_url = settings.BASE_OAUTH_API_URL
     path = "/revoke_token"
 
-    def __init__(self,
-                 session: "AnySession",
-                 token: str,
-                 client_id: str,
-                 client_secret: str, **kwargs):
+    def __init__(
+        self,
+        session:       "AnySession",
+        token:         str,
+        client_id:     str,
+        client_secret: str,
+        **kwargs
+    ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.data = urlencode({

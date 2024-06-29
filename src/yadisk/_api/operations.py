@@ -45,10 +45,13 @@ class GetOperationStatusRequest(APIRequest):
 
     method = "GET"
 
-    def __init__(self,
-                 session: "AnySession",
-                 operation_id: str,
-                 fields: Optional[Iterable[str]] = None, **kwargs):
+    def __init__(
+        self,
+        session: "AnySession",
+        operation_id: str,
+        fields: Optional[Iterable[str]] = None,
+        **kwargs
+    ) -> None:
         if is_operation_link(operation_id):
             parsed_url = urlparse(operation_id)
             operation_id = parsed_url.path.rpartition("/")[2]

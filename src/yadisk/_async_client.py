@@ -67,7 +67,7 @@ if TYPE_CHECKING:
         TokenObject, TokenRevokeStatusObject, DiskInfoObject,
         AsyncResourceObject, AsyncOperationLinkObject,
         AsyncTrashResourceObject, AsyncPublicResourceObject,
-        AsyncPublicResourcesListObject, FilesResourceListObject,
+        AsyncPublicResourcesListObject, AsyncFilesResourceListObject,
         DeviceCodeObject
     )
 
@@ -1785,7 +1785,7 @@ class AsyncClient:
         return await PatchRequest(self.session, path, properties, **kwargs).asend(yadisk=self)
 
     async def _get_files_some(self, **kwargs) -> List["AsyncResourceObject"]:
-        response: "FilesResourceListObject" = await FilesRequest(
+        response: "AsyncFilesResourceListObject" = await FilesRequest(
             self.session, **kwargs).asend(yadisk=self)
 
         if response.items is None:

@@ -148,7 +148,7 @@ class SyncFilesResourceListObject(FilesResourceListObject):
         :ivar offset: `int`, offset from the beginning of the list
     """
 
-    items: Optional[List["SyncResourceObject"]]
+    items: Optional[List["SyncResourceObject"]]  # type: ignore[assignment]
 
     def __init__(self,
                  files_resource_list: Optional[dict] = None,
@@ -171,7 +171,7 @@ class AsyncFilesResourceListObject(FilesResourceListObject):
         :ivar offset: `int`, offset from the beginning of the list
     """
 
-    items: Optional[List["AsyncResourceObject"]]
+    items: Optional[List["AsyncResourceObject"]]  # type: ignore[assignment]
 
     def __init__(self,
                  files_resource_list: Optional[dict] = None,
@@ -218,7 +218,7 @@ class SyncLastUploadedResourceListObject(LastUploadedResourceListObject):
         :ivar limit: `int`, maximum number of elements in the list
     """
 
-    items: Optional[List["SyncResourceObject"]]
+    items: Optional[List["SyncResourceObject"]]  # type: ignore[assignment]
 
     def __init__(self,
                  last_uploaded_resources_list: Optional[dict] = None,
@@ -240,7 +240,7 @@ class AsyncLastUploadedResourceListObject(LastUploadedResourceListObject):
         :ivar limit: `int`, maximum number of elements in the list
     """
 
-    items: Optional[List["AsyncResourceObject"]]
+    items: Optional[List["AsyncResourceObject"]]  # type: ignore[assignment]
 
     def __init__(self,
                  last_uploaded_resources_list: Optional[dict] = None,
@@ -296,7 +296,7 @@ class SyncPublicResourcesListObject(PublicResourcesListObject):
         :ivar offset: `int`, offset from the beginning of the list
     """
 
-    items: Optional[List["SyncPublicResourceObject"]]
+    items: Optional[List["SyncPublicResourceObject"]]  # type: ignore[assignment]
 
     def __init__(self,
                  public_resources_list: Optional[dict] = None,
@@ -320,7 +320,7 @@ class AsyncPublicResourcesListObject(PublicResourcesListObject):
         :ivar offset: `int`, offset from the beginning of the list
     """
 
-    items: Optional[List["AsyncPublicResourceObject"]]
+    items: Optional[List["AsyncPublicResourceObject"]]  # type: ignore[assignment]
 
     def __init__(self,
                  public_resources_list: Optional[dict] = None,
@@ -2290,7 +2290,7 @@ class SyncResourceListObject(ResourceListObject):
         :ivar total: `int`, number of elements in the list
     """
 
-    items: Optional[List[SyncResourceObject]]
+    items: Optional[List[SyncResourceObject]]  # type: ignore[assignment]
 
     def __init__(self, resource_list: Optional[dict] = None, yadisk: Optional[Any] = None):
         ResourceListObject.__init__(self, None, yadisk)
@@ -2313,7 +2313,7 @@ class AsyncResourceListObject(ResourceListObject):
         :ivar total: `int`, number of elements in the list
     """
 
-    items: Optional[List[AsyncResourceObject]]
+    items: Optional[List[AsyncResourceObject]]  # type: ignore[assignment]
 
     def __init__(self, resource_list: Optional[dict] = None, yadisk: Optional[Any] = None):
         ResourceListObject.__init__(self, None, yadisk)
@@ -2537,7 +2537,7 @@ class PublicResourceListObject(ResourceListObject):
     """
 
     public_key: Optional[str]
-    items: Optional[List[PublicResourceObject]]
+    items: Optional[List[PublicResourceObject]]  # type: ignore[assignment]
 
     def __init__(self,
                  public_resource_list: Optional[dict] = None,
@@ -2564,7 +2564,7 @@ class SyncPublicResourceListObject(PublicResourceListObject):
         :ivar public_key: `str`, public key of the resource
     """
 
-    items: Optional[List[SyncPublicResourceObject]]
+    items: Optional[List[SyncPublicResourceObject]]  # type: ignore[assignment]
 
     def __init__(self, public_resource_list: Optional[dict] = None, yadisk: Optional[Any] = None):
         PublicResourceListObject.__init__(self, None, yadisk)
@@ -2588,7 +2588,7 @@ class AsyncPublicResourceListObject(PublicResourceListObject):
         :ivar public_key: `str`, public key of the resource
     """
 
-    items: Optional[List[AsyncPublicResourceObject]]
+    items: Optional[List[AsyncPublicResourceObject]]  # type: ignore[assignment]
 
     def __init__(self, public_resource_list: Optional[dict] = None, yadisk: Optional[Any] = None):
         PublicResourceListObject.__init__(self, None, yadisk)
@@ -3277,7 +3277,7 @@ class TrashResourceListObject(ResourceListObject):
         :ivar total: `int`, number of elements in the list
     """
 
-    items: Optional[List[TrashResourceObject]]
+    items: Optional[List[TrashResourceObject]]  # type: ignore[assignment]
 
     def __init__(self,
                  trash_resource_list: Optional[dict] = None,
@@ -3302,7 +3302,7 @@ class SyncTrashResourceListObject(TrashResourceListObject):
         :ivar total: `int`, number of elements in the list
     """
 
-    items: Optional[List[SyncTrashResourceObject]]
+    items: Optional[List[SyncTrashResourceObject]]  # type: ignore[assignment]
 
     def __init__(self,
                  trash_resource_list: Optional[dict] = None,
@@ -3327,7 +3327,7 @@ class AsyncTrashResourceListObject(TrashResourceListObject):
         :ivar total: `int`, number of elements in the list
     """
 
-    items: Optional[List[AsyncTrashResourceObject]]
+    items: Optional[List[AsyncTrashResourceObject]]  # type: ignore[assignment]
 
     def __init__(self,
                  trash_resource_list: Optional[dict] = None,
