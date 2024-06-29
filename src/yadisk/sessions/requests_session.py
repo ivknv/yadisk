@@ -23,7 +23,8 @@ from ..exceptions import (
 
 from .._session import Session, Response
 from ..utils import CaseInsensitiveDict
-from ..types import JSON, ConsumeCallback, HTTPMethod
+from ..types import JSON, ConsumeCallback, HTTPMethod, unspecified
+from .. import settings
 
 from typing import Union
 
@@ -135,6 +136,12 @@ class RequestsSession(Session):
         headers.update(kwargs.get("headers", {}))
 
         kwargs["headers"] = headers
+
+        if "timeout" in kwargs:
+            timeout = kwargs["timeout"]
+
+            if timeout is unspecified:
+                kwargs["timeout"] = settings.DEFAULT_TIMEOUT
 
         try:
             return RequestsResponse(self.requests_session.request(method, url, **kwargs))

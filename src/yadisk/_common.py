@@ -25,10 +25,13 @@ from . import settings
 
 from typing import Optional, TypeVar, Any, Union
 
+from .types import Unspecified, unspecified, TimeoutParameter
+
 __all__ = [
     "typed_list", "int_or_error", "str_or_error", "bool_or_error",
     "dict_or_error", "str_or_dict_or_error", "yandex_date", "is_operation_link",
-    "is_resource_link", "is_public_resource_link", "ensure_path_has_schema"
+    "is_resource_link", "is_public_resource_link", "ensure_path_has_schema",
+    "is_default_timeout"
 ]
 
 T = TypeVar("T", bound=Callable)
@@ -132,3 +135,6 @@ def ensure_path_has_schema(path: str, default_schema: str = "disk") -> str:
 
 def is_async_func(func: Any) -> bool:
     return inspect.isgeneratorfunction(func) or asyncio.iscoroutinefunction(func)
+
+def is_default_timeout(timeout: Union[TimeoutParameter, Unspecified]) -> bool:
+    return timeout is unspecified

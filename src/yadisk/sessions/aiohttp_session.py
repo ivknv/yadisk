@@ -26,7 +26,11 @@ from ..exceptions import (
 from .._async_session import AsyncSession, AsyncResponse
 from .._common import is_async_func
 from ..utils import CaseInsensitiveDict
-from ..types import JSON, AsyncConsumeCallback, TimeoutParameter, HTTPMethod
+from ..types import (
+    JSON, AsyncConsumeCallback, TimeoutParameter, HTTPMethod, Unspecified
+)
+
+from .. import settings
 
 import aiohttp
 import sys
@@ -80,6 +84,9 @@ class AIOHTTPResponse(AsyncResponse):
 
 
 def convert_timeout(timeout: TimeoutParameter) -> Optional[aiohttp.ClientTimeout]:
+    if isinstance(timeout, Unspecified):
+        return convert_timeout(settings.DEFAULT_TIMEOUT)
+
     if timeout is None:
         return None
 

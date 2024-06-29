@@ -25,9 +25,10 @@ from ..exceptions import (
 )
 
 from .._session import Session, Response
-from .._typing_compat import Iterator
+from .._typing_compat import Iterator, Tuple
 from ..utils import CaseInsensitiveDict
-from ..types import JSON, ConsumeCallback, HTTPMethod
+from ..types import JSON, ConsumeCallback, HTTPMethod, TimeoutParameter, Unspecified
+from .. import settings
 
 from urllib.parse import urlencode
 
@@ -142,6 +143,34 @@ class IterableReader:
             self._position_in_chunk += len(chunk_fragment)
 
 
+def convert_timeout(timeout: TimeoutParameter) -> Tuple[float, float]:
+    if isinstance(timeout, Unspecified):
+        return convert_timeout(settings.DEFAULT_TIMEOUT)
+
+    if isinstance(timeout, tuple):
+        connect_timeout, read_timeout = timeout
+    else:
+        connect_timeout = read_timeout = timeout
+
+    MAX_TIMEOUT = 4294967  # in seconds
+
+    if connect_timeout is None:
+        connect_timeout = MAX_TIMEOUT
+    elif connect_timeout <= 0.001:
+        # If connect_timeout gets rounded down to 0, the default connect
+        # timeout would be applied instead by cURL
+        connect_timeout = 0.001
+
+    if read_timeout is None:
+        # 0 disables LOW_SPEED_TIME
+        read_timeout = 0
+    elif read_timeout <= 1.0:
+        # If read_timeout gets rounded down to 0, the low speed time will be disabled
+        # 1 second is the lowest possible timeout
+        read_timeout = 1.0
+
+    return connect_timeout, read_timeout
+
 class PycURLSession(Session):
     """
         .. _pycurl: https://pypi.org/project/pycurl
@@ -196,29 +225,7 @@ class PycURLSession(Session):
         curl.setopt(pycurl.SHARE, self._share)
 
         if "timeout" in kwargs:
-            timeout = kwargs["timeout"]
-
-            if isinstance(timeout, tuple):
-                connect_timeout, read_timeout = timeout
-            else:
-                connect_timeout = read_timeout = timeout
-
-            MAX_TIMEOUT = 4294967  # in seconds
-
-            if connect_timeout is None:
-                connect_timeout = MAX_TIMEOUT
-            elif connect_timeout <= 0.001:
-                # If connect_timeout gets rounded down to 0, the default connect
-                # timeout would be applied instead by cURL
-                connect_timeout = 0.001
-
-            if read_timeout is None:
-                # 0 disables LOW_SPEED_TIME
-                read_timeout = 0
-            elif read_timeout <= 1.0:
-                # If read_timeout gets rounded down to 0, the low speed time will be disabled
-                # 1 second is the lowest possible timeout
-                read_timeout = 1.0
+            connect_timeout, read_timeout = convert_timeout(kwargs["timeout"])
 
             curl.setopt(pycurl.CONNECTTIMEOUT_MS, int(connect_timeout * 1000))
             curl.setopt(pycurl.LOW_SPEED_TIME, int(read_timeout))

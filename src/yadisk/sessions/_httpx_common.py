@@ -23,7 +23,8 @@ from ..exceptions import (
     RequestTimeoutError, YaDiskConnectionError
 )
 
-from ..types import TimeoutParameter
+from ..types import TimeoutParameter, Unspecified
+from .. import settings
 
 import httpx
 
@@ -44,6 +45,9 @@ def convert_httpx_exception(exc: httpx.HTTPError) -> Union[RequestError, httpx.H
 
 
 def convert_timeout(timeout: TimeoutParameter) -> Optional[httpx.Timeout]:
+    if isinstance(timeout, Unspecified):
+        return convert_timeout(settings.DEFAULT_TIMEOUT)
+
     if timeout is None:
         return None
 

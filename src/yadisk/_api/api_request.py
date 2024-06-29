@@ -20,6 +20,8 @@ from ..exceptions import InvalidResponseError
 
 from ..utils import auto_retry, async_auto_retry, CaseInsensitiveDict
 from .. import settings
+from ..types import unspecified
+from .._common import is_default_timeout
 
 from typing import Any, Optional, Union, TypeVar, TYPE_CHECKING
 from .._typing_compat import Set, Dict
@@ -63,7 +65,7 @@ class APIRequest(object):
     method: Optional["HTTPMethod"] = None
     content_type: str = "application/x-www-form-urlencoded"
 
-    timeout: "TimeoutParameter"
+    timeout: "TimeoutParameter" = unspecified
     n_retries: Optional[int] = None
     success_codes: Set[int] = {200}
     retry_interval: Optional[Union[int, float]] = None
@@ -85,7 +87,12 @@ class APIRequest(object):
         if headers is None:
             headers = {}
 
-        kwargs.setdefault("timeout", settings.DEFAULT_TIMEOUT)
+        timeout = kwargs.get("timeout", self.timeout)
+
+        if is_default_timeout(timeout):
+            timeout = settings.DEFAULT_TIMEOUT
+
+        kwargs["timeout"] = timeout
 
         if n_retries is None:
             n_retries = self.n_retries
@@ -100,7 +107,7 @@ class APIRequest(object):
         self.session = session
         self.send_kwargs = kwargs
         self.base_url = base_url
-        self.timeout = kwargs.get("timeout", settings.DEFAULT_TIMEOUT)
+        self.timeout = timeout
         self.n_retries = n_retries
         self.retry_interval = retry_interval
         self.headers = headers

@@ -19,7 +19,8 @@
 from typing import TYPE_CHECKING, Any, Optional, TypeVar
 from ._typing_compat import Dict
 from .types import (
-    AsyncConsumeCallback, JSON, HTTPMethod, AsyncPayload, TimeoutParameter
+    AsyncConsumeCallback, JSON, HTTPMethod, AsyncPayload, Headers, TimeoutParameter,
+    unspecified
 )
 from .objects import ErrorObject
 from .utils import get_exception
@@ -128,7 +129,8 @@ class AsyncSession:
                            *,
                            params:  Optional[Dict[str, Any]] = None,
                            data:    Optional[AsyncPayload] = None,
-                           timeout: TimeoutParameter = None,
+                           timeout: TimeoutParameter = unspecified,
+                           headers: Optional[Headers] = None,
                            stream:  bool = False,
                            **kwargs) -> AsyncResponse:
         """
