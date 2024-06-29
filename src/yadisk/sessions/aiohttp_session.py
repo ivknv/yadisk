@@ -57,6 +57,8 @@ class AIOHTTPResponse(AsyncResponse):
     async def json(self) -> JSON:
         try:
             return await self._response.json()
+        except aiohttp.ContentTypeError as e:
+            raise ValueError("Expected Content-Type: application/json, got something else") from e
         except aiohttp.ClientError as e:
             raise convert_aiohttp_exception(e) from e
 
