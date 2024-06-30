@@ -2,7 +2,7 @@
 
 import argparse
 from typing import Any
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote, quote_plus
 import base64
 import asyncio
 import zlib
@@ -255,12 +255,22 @@ class DiskGateway:
         if test_token:
             headers["authorization"] = f"OAuth {test_token}"
 
-        url = f"{base_url}/{path}"
+        expected_request, expected_response = deserialize_request(serialized_request)
+
+        url_without_params = f"{base_url}/{path}"
 
         if request.query_params:
-            url += "?" + urlencode(request.query_params)
+            url = url_without_params + "?" + urlencode(request.query_params, quote_via=quote)
+        else:
+            url = url_without_params
 
-        expected_request, expected_response = deserialize_request(serialized_request)
+        if url != expected_request.url:
+            # Try alternate urlencode method
+            url =  url_without_params + "?" + urlencode(request.query_params, quote_via=quote_plus)
+
+            return UnexpectedRequestResponse(
+                f"requests's URL doesn't match. Expected URL: {expected_request.url}, got: {url}"
+            )
 
         expected_headers = select_keys(expected_request.headers, RELEVANT_REQUEST_HEADERS)
 
