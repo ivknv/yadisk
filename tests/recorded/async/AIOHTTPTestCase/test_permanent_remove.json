@@ -37,7 +37,7 @@
     },
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2F&offset=0&limit=10000&fields=type%2C_embedded%2C_embedded.offset%2C_embedded.limit%2C_embedded.total%2C_embedded.items",
+        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2F&offset=0&limit=500&fields=type%2C_embedded%2C_embedded.offset%2C_embedded.limit%2C_embedded.total%2C_embedded.items",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -48,9 +48,9 @@
             "status_code": 200,
             "headers": {
                 "content-type": "application/json; charset=utf-8",
-                "content-length": "74"
+                "content-length": "72"
             },
-            "content": "eJwNxzEKgDAMBdC7/DlDXHMVEVGSQqChYrNI6d3t295Afo9BoP6CcFrcpmoKGfC06JD9IGTLq0KYUD08IRsvhFZKt1We8wd77hdY"
+            "content": "eJwNxzEKgDAMBdC7/DlDFpdcRUSUpBBoqNgsUnp3u703kN9jEKi/IJwWt6maQgY8LTpkPwjZ8qoQJlQPT8jGy62Ubis85w9RhBb8"
         }
     }
 ]

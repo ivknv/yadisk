@@ -37,7 +37,7 @@
     },
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2F&offset=0&limit=10000&fields=type%2C_embedded%2C_embedded.offset%2C_embedded.limit%2C_embedded.total%2C_embedded.items",
+        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2F&offset=0&limit=500&fields=type%2C_embedded%2C_embedded.offset%2C_embedded.limit%2C_embedded.total%2C_embedded.items",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -48,14 +48,14 @@
             "status_code": 200,
             "headers": {
                 "content-type": "application/json; charset=utf-8",
-                "content-length": "650"
+                "content-length": "648"
             },
-            "content": "eJy1kstOBCEQRf+FrTMZqObVrP2E2RhjOjwKJfZjAsxEM+l/l/EZF8aNsgFSh1s3dTmT+nxAYkhImWzIgJPDEDAQcyap4lSIuT2T2U5fDD6l2MrrhviMtl5YAhT4lsotqD2TRgjD1BWlhtLGBxzxJ0p/UktO92keDrY+vHYqj2Z3Y6/bvsdSd2+tpyWkmH7VyliWY/Y4pAvJhZBKMAXGRh4FA3DYRes07zvpvASgHhQTjCmmwXIRHJdd6CE4yoMFHy0oGhjwJv3ur2ZbHszF1eB7dE6EHj1FyaLWokNhGY3OA9jo+i5ITSW2x36ZJpxrs1Uu8z3kdGrzGz7s/rnXoxuT/yf5Fv+3n5PxlEpaZtKiZ72gqmNa656pbr1r6FLt2EobMqYp1XaibbXUYyzYrnRdXwDTvrkp"
+            "content": "eJy1kslOAzEMht8lV1rVWWaSyZlH6AUhNMriQMQsVSatQNW8Oy6rOCAuIB+syJ9//7JzZvX5gMyymAvbsB5HjzFiZPbMcsVxYfb2zCY3fjH4lBOV1w0LBV29sEyAUFtotxL2XFsBVsIVgAUgPuKAP1H8k5pLvs9Tf3D14XXS8mh3N+6a8h6XunsbPc4xp/yrVsFlPpaAfb6Qqmla3XAtbPAhNGC64FG2XodWmehNl0B4J6NrhepaI1PkUjmIFChcpE6jOumlSST97q8WtzzYi6teCKGVAZHAhKSME1In1SE4ihhIT3P0GAQ1h3kccapka7ns91DyifbXf9j9c69HP+TwT/J0/m8/p+ApL3memOWad7o1ILnkjej0ekfoXN1ApQ0b8pgrsw0A3TylBekB6/oCyC+5rg=="
         }
     },
     {
         "method": "PUT",
-        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources/restore?path=trash%3A%2Fdir_c9ebb5d9ec0e61f8853e5a10fbc22afb93d6806e&overwrite=false&force_async=false&name=%2FYaDiskTest%2Fdir",
+        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources/restore?path=trash%3A%2Fdir_22274802f08cf48a237f49e0a0a0dc68371ebec2&overwrite=false&force_async=false&name=%2FYaDiskTest%2Fdir",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -86,7 +86,7 @@
                 "content-type": "application/json; charset=utf-8",
                 "content-length": "566"
             },
-            "content": "eJy1kctOQyEURf/lTL1NgcujMO4ndGKMaXhGYik3QBtN03/3VKOOdKQjyM6CnXXOBfaxuBhCDGAu0GsbYAAmyCOWDubhcYJDLhlTMkFNqceP62LHE5Ih92ezvrdbPHexj3XIDV+POuwBuesER1viO3jL40tO2INxi72emo/7jMXAhZBKUMWMTTwJypiLc7Juw/UsnZeMEc8UFZQqumGWi+C4nINmwREeLPPJMkUCZRxLfIt23HyAEcZXRK6Y2lFphDBU3RFiCEGq1JBT/gHTX9jvnr6WEo8DJfptfEvLZ6zef8r9tdlycofs/+l7XMp4Xb531eI591yPgFOjWhA1U631RlN5fQNBt6Iu"
+            "content": "eJy1kc9OAyEQxt9lrm4jCyzscvYRejHGNPwZIrGUDdBG0/TdnWrUk540HIZ8+c18+WbOsMPsMAQMYM7QSu1gAAZIHXMD8/A4wD7lRCoboMTY8OO72v5EZEjt2dze2zuqW2z9NqRK3b10uyfuMsDBZnwHrzq+pEg+JFds5Vg97hIZg5wmpadRc+Od9xObF+9QKKe9knNw8xIZd1YEq7hc1CxiGIW0LNBDbgN1znIRTsyRTHxF2695gDMuN0xtBNuO2nBmBLthzDBGVC4hxfQDxr+w33P6kjMeOoVo1/WtNZ3IevcZ7q+TrUe3T/6fxtNR+uv6fauKp9RSOYAZ9bhoNTPBFzUqLS9vAAKkIQ=="
         }
     },
     {

@@ -37,7 +37,7 @@
     },
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2F&offset=0&limit=10000&fields=type%2C_embedded%2C_embedded.offset%2C_embedded.limit%2C_embedded.total%2C_embedded.items",
+        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2F&offset=0&limit=500&fields=type%2C_embedded%2C_embedded.offset%2C_embedded.limit%2C_embedded.total%2C_embedded.items",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -48,14 +48,14 @@
             "status_code": 200,
             "headers": {
                 "content-type": "application/json; charset=utf-8",
-                "content-length": "680"
+                "content-length": "678"
             },
-            "content": "eJy1kstqwzAQRf9F28ZkJOtha91PyKaUYvQYNaKWHWQltAT/e5WSFlIo3bTaSEJnrg7DnEl5OyDRxMdMNmTAZNF79ESfSSyYFqIfz2Qy6co0ZW4ypvmElcbXGCq4bojLaMqlijBgvAHZMLWjUguhqbgD0ACV9zjiT5T8ouYcn+M0HEzZf/y5vOjtg7mv+w6Xsv0ukWYfQ/w1NeMyH7PDIV5ILoRUgiqmOeMUsG+lD+AMcCeFMRwtZ71tjQjBOiuDbQGoE44DBNpZL4ULnbGCshp9NS3ZLHt96zdYixJF6DpTK7DvGWVKtn3oGbPWKWNtYNRIVWPcnBJOpQoul+4fcjzVng6f4n9ufbRjdP8UX0fiZq4ynuIS54loqmgvQLVUMuh4365PFZ2LGevThowxxVJPUFedhBAWrFdY13ewsMcZ"
+            "content": "eJy1kstOAyEUht+FrZ0UznAb1j5CN8aYCZeDEufSAG00Td9dauqibrrRFSF85+fLn3Mi9XOPxJCQMtmQEWeHIWAg5kRSxbkQ83wii52vTFfXLuO8HrHR+JFiA88b4jPaepkiQIF3VHY93TFlgBrQD5QaShsfcML71JrTa1rGva1v33+Wd7N9so/t3GGp298S8xpSTHdTM5b1kD2O6UJyIaQSTIGBiLpXVPYWB+aF5Dp6CYIhisAGjdwzGCQLmgsPNDjbe4g2grA6gEbXoq+mNdvyZm79RgTHmOLCKhhU0JoJdMpxZgdOA+UWfOBOIrQYv84zLrUJlkv7+5yOrdPxR/zPrQ9uSv6f4ttK3OxVxmMqaV2IYYoNSmoKWkOrZDi/NHStdmpPGzKlOVViBKVtD2Is2C70fP4CtdrEuA=="
         }
     },
     {
         "method": "DELETE",
-        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_bbe6e5f88a5cfe992127639f922bbc7abbf21a67&force_async=false",
+        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_e2b11745a7297d8815eb7b41a940d04a2cd4b6e2&force_async=false",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -73,7 +73,7 @@
     },
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_bbe6e5f88a5cfe992127639f922bbc7abbf21a67&offset=0&limit=0",
+        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_e2b11745a7297d8815eb7b41a940d04a2cd4b6e2&offset=0&limit=0",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",

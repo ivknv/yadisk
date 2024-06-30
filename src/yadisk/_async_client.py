@@ -102,7 +102,7 @@ async def _get_type(get_meta_function: Callable[..., Awaitable[ResourceType]],
 
 async def _listdir(get_meta_function: Callable[..., Awaitable[ResourceType]],
                    path: str, /, **kwargs) -> AsyncGenerator:
-    kwargs.setdefault("limit", 10000)
+    kwargs.setdefault("limit", 500)
 
     if kwargs.get("fields") is None:
         kwargs["fields"] = []
