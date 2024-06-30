@@ -2000,14 +2000,17 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        kwargs.setdefault("offset", 0)
-        kwargs.setdefault("limit", 200)
+        if kwargs.get("offset") is None:
+            kwargs["offset"] = 0
+
+        if kwargs.get("limit") is None:
+            kwargs["limit"] = 200
 
         remaining_items = max_items
 
         while True:
             # Do not query more items than necessary
-            if kwargs["limit"] is not None and remaining_items is not None:
+            if remaining_items is not None:
                 kwargs["limit"] = min(remaining_items, kwargs["limit"])
 
             files = await self._get_files_some(**kwargs)
