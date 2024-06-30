@@ -73,6 +73,19 @@ def serialize_response(response: httpx.Response):
         "content":     serialize_content(response.content)
     }
 
+
+class UnexpectedRequestResponse(JSONResponse):
+    def __init__(self, message: str) -> None:
+        super().__init__(
+            {
+                "error":       "_UnexpectedRequestError",
+                "description": "unexpected request",
+                "message":     message
+            },
+            status_code=499
+        )
+
+
 class DiskGateway:
     def __init__(self):
         self.routes = [
@@ -226,7 +239,7 @@ class DiskGateway:
         try:
             serialized_request = self.recorded_requests[self.current_request_index]
         except IndexError:
-            return Response(status_code=501)
+            return UnexpectedRequestResponse("did not expect any more requests")
 
         path = request.path_params.get("path", "")
 
@@ -254,28 +267,45 @@ class DiskGateway:
         for key, value in expected_headers.items():
             key = key.lower()
 
-            if key not in headers or headers[key] != value:
-                return Response(status_code=501)
+            if key not in headers:
+                return UnexpectedRequestResponse(f"request is missing header {key}: {value}")
+
+            if headers[key] != value:
+                return UnexpectedRequestResponse(
+                    f"requests's header doesn't match. Expected header: {key}: {value}, got: {key}: {headers[key]}"
+                )
 
         for key, value in headers.items():
             key = key.lower()
 
-            if key not in expected_headers or expected_headers[key] != value:
-                return Response(status_code=501)
+            if key not in expected_headers:
+                return UnexpectedRequestResponse(f"got unexpected header {key}: {value}")
 
-        if (url            == expected_request.url     and
-            request.method == expected_request.method  and
-            content        == expected_request.content
-        ):
-            self.current_request_index += 1
+            if expected_headers[key] != value:
+                return UnexpectedRequestResponse(
+                    f"requests's header doesn't match. Expected header: {key}: {headers[key]}, got: {key}: {value}"
+                )
 
-            return Response(
-                content=expected_response.content,
-                status_code=expected_response.status_code,
-                headers=expected_response.headers
+        if url != expected_request.url:
+            return UnexpectedRequestResponse(
+                f"requests's URL doesn't match. Expected URL: {expected_request.url}, got: {url}"
             )
 
-        return Response(status_code=501)
+        if request.method != expected_request.method:
+            return UnexpectedRequestResponse(
+                f"requests's method doesn't match. Expected method: {expected_request.method}, got: {request.method}"
+            )
+
+        if content != expected_request.content:
+            return UnexpectedRequestResponse("requests's content doesn't match.")
+
+        self.current_request_index += 1
+
+        return Response(
+            content=expected_response.content,
+            status_code=expected_response.status_code,
+            headers=expected_response.headers
+        )
 
     async def disk_gateway(self, request: Request):
         return await self.forward_request(request, YADISK_BASE_URL)

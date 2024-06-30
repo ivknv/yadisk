@@ -31,6 +31,12 @@ from .types import AnyResponse
 
 __all__ = ["get_exception", "auto_retry", "async_auto_retry", "CaseInsensitiveDict"]
 
+
+class _UnexpectedRequestError(YaDiskError):
+    # Used for testing (see tests/disk_gateway.py)
+    pass
+
+
 EXCEPTION_MAP: Dict[int, Dict[str, Type[YaDiskError]]] = {
     400: defaultdict(
         lambda: BadRequestError,
@@ -76,7 +82,10 @@ EXCEPTION_MAP: Dict[int, Dict[str, Type[YaDiskError]]] = {
     502: defaultdict(lambda: BadGatewayError),
     503: defaultdict(lambda: UnavailableError),
     504: defaultdict(lambda: GatewayTimeoutError),
-    507: defaultdict(lambda: InsufficientStorageError)
+    507: defaultdict(lambda: InsufficientStorageError),
+
+    # This is a special value for testing
+    499: defaultdict(lambda: _UnexpectedRequestError)
 }
 
 

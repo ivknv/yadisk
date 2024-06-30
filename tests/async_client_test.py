@@ -468,7 +468,3 @@ def make_test_case(name: str, session_name: AsyncSessionName):
 
 AIOHTTPTestCase = make_test_case("AIOHTTPTestCase", "aiohttp")
 AsyncHTTPXTestCase = make_test_case("AsyncHTTPXTestCase", "httpx")
-
-import logging
-import sys
-logging.basicConfig(level=logging.INFO, stream=sys.stdout)
