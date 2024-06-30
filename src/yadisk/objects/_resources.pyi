@@ -658,9 +658,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> "AsyncResourceObject":
         ...
@@ -679,9 +678,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> "AsyncPublicResourceObject":
         ...
@@ -695,9 +693,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> bool:
         ...
@@ -711,9 +708,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> str:
         ...
@@ -727,9 +723,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> bool:
         ...
@@ -743,9 +738,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> bool:
         ...
@@ -765,9 +759,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncGenerator["AsyncResourceObject", None]:
         ...
@@ -786,9 +779,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncGenerator["AsyncPublicResourceObject", None]:
         ...
@@ -804,9 +796,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> str:
         ...
@@ -822,9 +813,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> "AsyncResourceLinkObject":
         ...
@@ -841,9 +831,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> "AsyncOperationLinkObject":
         ...
@@ -857,9 +846,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> str:
         ...
@@ -874,9 +862,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> "AsyncResourceLinkObject":
         ...
@@ -892,9 +879,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> "AsyncResourceLinkObject":
         ...
@@ -909,9 +895,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> "AsyncResourceObject":
         ...
@@ -927,9 +912,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> "AsyncResourceObject":
         ...
@@ -944,9 +928,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> "AsyncResourceLinkObject":
         ...
@@ -961,9 +944,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> "AsyncResourceLinkObject":
         ...
@@ -978,9 +960,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> "AsyncResourceLinkObject":
         ...
@@ -996,9 +977,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> Optional["AsyncOperationLinkObject"]:
         ...
@@ -1016,9 +996,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         ...
@@ -1037,9 +1016,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         ...
@@ -1057,9 +1035,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         ...
@@ -1078,9 +1055,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         ...
@@ -1098,9 +1074,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         ...
@@ -1119,9 +1094,8 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
         ...
@@ -1532,9 +1506,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> "AsyncTrashResourceObject":
         ...
@@ -1548,9 +1521,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> bool:
         ...
@@ -1564,9 +1536,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> str:
         ...
@@ -1580,9 +1551,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> bool:
         ...
@@ -1596,9 +1566,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> bool:
         ...
@@ -1618,9 +1587,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> Generator["AsyncTrashResourceObject", None, None]:
         ...
@@ -1636,9 +1604,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> Optional["AsyncOperationLinkObject"]:
         ...
@@ -1656,9 +1623,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
         ...
@@ -1677,9 +1643,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
         ...

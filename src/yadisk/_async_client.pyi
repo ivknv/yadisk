@@ -104,9 +104,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> DeviceCodeObject: ...
 
@@ -122,9 +121,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> TokenObject:
         ...
@@ -140,9 +138,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> TokenObject:
         ...
@@ -156,9 +153,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> TokenObject:
         ...
@@ -172,9 +168,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> TokenRevokeStatusObject:
         ...
@@ -188,9 +183,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> bool:
         ...
@@ -203,9 +197,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> DiskInfoObject:
         ...
@@ -225,9 +218,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncResourceObject:
         ...
@@ -241,9 +233,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> bool:
         ...
@@ -257,9 +248,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> str:
         ...
@@ -273,9 +263,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> bool:
         ...
@@ -289,9 +278,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> bool:
         ...
@@ -311,9 +299,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncGenerator[AsyncResourceObject, None]:
         ...
@@ -329,9 +316,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> str:
         ...
@@ -347,9 +333,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncResourceLinkObject:
         ...
@@ -364,9 +349,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> None:
         ...
@@ -380,9 +364,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> str:
         ...
@@ -397,9 +380,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncResourceLinkObject:
         ...
@@ -414,9 +396,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> None:
         ...
@@ -433,9 +414,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> Optional[AsyncOperationLinkObject]:
         ...
@@ -450,9 +430,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncResourceLinkObject:
         ...
@@ -472,9 +451,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncTrashResourceObject:
         ...
@@ -488,9 +466,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> bool:
         ...
@@ -508,9 +485,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         ...
@@ -528,9 +504,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         ...
@@ -548,9 +523,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         ...
@@ -568,9 +542,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         ...
@@ -586,9 +559,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> Optional[AsyncOperationLinkObject]:
         ...
@@ -603,9 +575,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncResourceLinkObject:
         ...
@@ -620,9 +591,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncResourceLinkObject:
         ...
@@ -641,9 +611,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         ...
@@ -664,9 +633,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncPublicResourceObject:
         ...
@@ -687,9 +655,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> bool:
         ...
@@ -710,9 +677,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncGenerator[AsyncPublicResourceObject, None]:
         ...
@@ -727,9 +693,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> str:
         ...
@@ -744,9 +709,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> bool:
         ...
@@ -761,9 +725,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> bool:
         ...
@@ -783,9 +746,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncGenerator[AsyncTrashResourceObject, None]:
         ...
@@ -799,9 +761,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> str:
         ...
@@ -815,9 +776,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> bool:
         ...
@@ -831,9 +791,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> bool:
         ...
@@ -851,9 +810,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncPublicResourcesListObject:
         ...
@@ -869,9 +827,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncResourceObject:
         ...
@@ -890,9 +847,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncGenerator[AsyncResourceObject, None]:
         ...
@@ -909,9 +865,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncGenerator[AsyncResourceObject, None]:
         ...
@@ -928,9 +883,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncOperationLinkObject:
         ...
@@ -945,9 +899,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> str:
         ...
@@ -963,9 +916,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> AsyncPublicResourceLinkObject:
         ...
@@ -979,9 +931,8 @@ class AsyncClient:
         timeout: TimeoutParameter = unspecified,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> OperationStatus:
         ...
