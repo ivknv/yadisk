@@ -893,7 +893,7 @@ class AsyncClient:
         kwargs["timeout"] = timeout
 
         # Make sure we don't get any inconsistent behavior with header names
-        kwargs["headers"] = CaseInsensitiveDict(kwargs.get("headers", {}))
+        kwargs["headers"] = CaseInsensitiveDict(kwargs.get("headers") or {})
 
         file: Any = None
         close_file = False
@@ -929,10 +929,7 @@ class AsyncClient:
                 _filter_request_kwargs(temp_kwargs)
 
                 # Disable keep-alive by default, since the upload server is random
-                try:
-                    temp_kwargs["headers"].setdefault("Connection", "close")
-                except KeyError:
-                    temp_kwargs["headers"] = {"Connection": "close"}
+                temp_kwargs["headers"].setdefault("Connection", "close")
 
                 # This is generally not necessary, libraries like aiohttp
                 # will generally always set this header while others might not
@@ -1077,9 +1074,6 @@ class AsyncClient:
             timeout = settings.DEFAULT_TIMEOUT
 
         kwargs["timeout"] = timeout
-
-        # Make sure we don't get any inconsistent behavior with header names
-        kwargs["headers"] = CaseInsensitiveDict(kwargs.get("headers", {}))
 
         file: Any = None
         close_file = False

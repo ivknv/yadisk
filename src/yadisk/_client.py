@@ -872,7 +872,7 @@ class Client:
         kwargs["timeout"] = timeout
 
         # Make sure we don't get any inconsistent behavior with header names
-        kwargs["headers"] = CaseInsensitiveDict(kwargs.get("headers", {}))
+        kwargs["headers"] = CaseInsensitiveDict(kwargs.get("headers") or {})
 
         file: Any = None
         close_file = False
@@ -910,10 +910,7 @@ class Client:
                 temp_kwargs.setdefault("stream", True)
 
                 # Disable keep-alive by default, since the upload server is random
-                try:
-                    temp_kwargs["headers"].setdefault("Connection", "close")
-                except KeyError:
-                    temp_kwargs["headers"] = {"Connection": "close"}
+                temp_kwargs["headers"].setdefault("Connection", "close")
 
                 # This is generally not necessary, libraries like aiohttp
                 # will generally always set this header while others might not
@@ -1028,10 +1025,14 @@ class Client:
 
         return GetDownloadLinkRequest(self.session, path, **kwargs).send(yadisk=self).href
 
-    def _download(self,
-                  get_download_link_function: Callable,
-                  src_path: str,
-                  file_or_path: FileOrPathDestination, /, **kwargs) -> None:
+    def _download(
+        self,
+        get_download_link_function: Callable,
+        src_path: str,
+        file_or_path: FileOrPathDestination,
+        /,
+        **kwargs
+    ) -> None:
         n_retries = kwargs.get("n_retries")
 
         if n_retries is None:
@@ -1053,9 +1054,6 @@ class Client:
             timeout = settings.DEFAULT_TIMEOUT
 
         kwargs["timeout"] = timeout
-
-        # Make sure we don't get any inconsistent behavior with header names
-        kwargs["headers"] = CaseInsensitiveDict(kwargs.get("headers", {}))
 
         file: Any = None
         close_file = False
