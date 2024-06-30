@@ -57,7 +57,7 @@ def make_test_case(name: str, session_name: SessionName):
 
         def record_or_replay(func: Callable):
             def decorated_test(self):
-                directory = os.path.join("tests", "recorded", "sync", self.__class__.__name__)
+                directory = os.path.join("tests", "recorded", "sync")
 
                 if self.recording_enabled:
                     os.makedirs(directory, exist_ok=True)
@@ -349,7 +349,6 @@ def make_test_case(name: str, session_name: SessionName):
             self.assertFalse(is_operation_link("https://asd8iaysd89asdgiu"))
             self.assertFalse(is_operation_link("http://asd8iaysd89asdgiu"))
 
-        @record_or_replay
         def test_get_operation_status_request_url(self) -> None:
             request = GetOperationStatusRequest(
                 self.client.session,

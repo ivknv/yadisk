@@ -4,6 +4,7 @@
         "url": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&overwrite=true",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
             "authorization": "OAuth supposedly_valid_token"
         },
         "content": "eJwDAAAAAAE=",
@@ -11,15 +12,16 @@
             "status_code": 200,
             "headers": {
                 "content-type": "application/json; charset=utf-8",
-                "content-length": "242"
+                "content-length": "243"
             },
-            "content": "eJwtj8FugzAQRP+Fc2O83rWN+Yoe0nNl8BpIAFPYqK2q/nuJ1OO8kd5ofqqy8R5lKuv7lKq26lLfeQSbUXesDVgwfU7W5Uy9zwyeANG5zkNoiHtEndF1mX2v0QaA6qUad86naRTZjrauH9tcYuLdwk2l6bir77gm/lIrS0uE//1F4j6w1EYb0s74KwRrTKOQQD0kqWYMzKY5hmEspD+FloVuzoWPy/0pxuCo8e5cX1jG8nzy+nY9o/CyzVH4JDnOB//+Ac9HSbQ="
+            "content": "eJwtj81ugzAQhN/F58bYXv/BU/SQnqs1XhcIAQJL1arqu9eRepwZzTeaH7FutCOP6/I+ZtGJYKhtofcJTATXg0ohJrDJkQ8JtIFcSiKNQRWP4HJG6522xaIu4C2JFzHsVCppYN6OrmnObV4x0+7jJPN43OQ3Lpm+5ELcWQv/+YVx/yBujDJWeVBXo6xSrQwa5MlZ9tNnofPxsHEofZlSXEJ2xvl4uT3BEGvJgavzd+JhfV55fbtWyXTfZmSqTsH5oN8/PNpKWQ=="
         }
     },
     {
         "method": "PUT",
-        "url": "https://uploader51j.disk.yandex.net/upload-target/20240627T195228.341.utd.8h9ee28sggho40wt4mm4j669q-k51j.3964876",
+        "url": "https://uploader68j.disk.yandex.net/upload-target/20240630T204009.713.utd.cjvfeuqq48hfcfjb8n7d52568-k68j.38063535",
         "headers": {
+            "content-type": "application/octet-stream",
             "connection": "close"
         },
         "content": "eJztwTEBAAAAwqBK65/OEL5AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB8BjCrLQE=",
@@ -34,6 +36,7 @@
         "url": "https://cloud-api.yandex.net/v1/disk/resources/download?path=disk%3A%2FYaDiskTest%2Fzeroes.txt",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
             "authorization": "OAuth supposedly_valid_token"
         },
         "content": "eJwDAAAAAAE=",
@@ -43,13 +46,14 @@
                 "content-type": "application/json; charset=utf-8",
                 "content-length": "483"
             },
-            "content": "eJxdUV1r20AQ/C+C6KmxdHe6DwVEKXaapk4pGMckfQmn2z3rsHRSpLMtu/S/99q+FfZlZmF2ZvZn0oxok7ukCWGY7rIM+rNvew04LsBNh8VFe8B5MR6zPzBjyEBpKI2m3LBSlTlHQxCAWk5UbanVouRa1jURRJREUyNRKFFbrWxR6kwICUByyPz05fGAL2uvNw/D9uLzZ7d535DVZofstT2/38/Xbvnt9na9yzF0y2b/sn56/O6/bovdHq8/ls/t8GnA5dOM8GpP1B63q/PufMNWcT4eHVQF50JyImlqXYted1hdcexxWoQ5pDHN0E8uuN5XOgRtmg59SBs9NVXaus6FKk9N70Nk38JlwCrgHG7o56HVzqexJRzf/jszuStWJC8UlyJt4k4ywzQhWhlmhWCFYEQqSYEiN6SmKu0QnP4nD705/rUQDv5UnWiKQe8rUFAYCsQoLOq8gFLUsfoowyGXxPDkQ9JhaHqIL3y430YYsIsWA0bG6nbCX78BfQmd3g=="
+            "content": "eJxdUctu1EAQ/BdL8QnW8/A8HMlCIQsJICK8GwLKJZpHGw9rj712b9gN4t8ZyC1SX6pKqq7u+p11M7TZedYhTst5UfjxV+xH42Fe+bDsVicTPRxX86H4BwtLK92WLefAKsY1o1ZWQitqhWUls4IA4RVQLrlrnWUgvXClINI756yuXCGlpp5YW8Tl+sMOvn+KZnM13Z4i+Ro2+3ZrW7b/uB5Ic/Paflnv7hVrYH9Qne0Fmcg333++vL5vmoniXI2huTne8bf8brMlF3D5c3txxtdp3hyCr0shpBJUsbwNPUQzQP0E8wjLCo+Yp2umcQkYxlgbROO6ASLmnVm6Ou/DELAmuRsjJvYBTxPUCEc8Y++n3oSYpy/B/PBizRKeoKak1ELJvEua4o4bSo12vJWSl5JTpRXzDISjlul8AB/Ms70f3eF/BNzFx/qR5YDmR+21Lx3z1GkoLSl9Ja0zLNkITxR1InuVDYDd6FOFV+9uE0QYUkSExLSmX+DPX/fQm0E="
         }
     },
     {
         "method": "GET",
-        "url": "https://downloader.disk.yandex.ru/disk/3e3d8ad9ca25c398905ec1edd2f518bf2fa695a7bb161691a2c7e686bfa8f49a/667dd10d/nsHIkeXKnaRGpTyn0UiRqR1DRVe3YlwqExzmCM--KV0etmChgXKLIOnJT4VgezZCUlpApeCLxedYfv2fuTDwVw==?uid=455675172&filename=zeroes.txt&disposition=attachment&hash=&limit=0&content_type=text%2Fplain&owner_uid=455675172&fsize=1048576&hid=73c3a11a8c3f66346317872d2e5c1b28&media_type=document&tknv=v2&etag=d8d4c2d1c8e4b04d96bca23175d071c5",
+        "url": "https://downloader.disk.yandex.ru/disk/b198f4f33e2923821b695871b5b242b50e039e1363cfcb2e6d5c4506dcccb89c/6681d0bb/nsHIkeXKnaRGpTyn0UiRqfSbf2qJDm0QN-bPDkZ72Qequ7hbl50p0WdlMCHZQQp1tr9oiQNxV3B3VRS0AeCjSA==?uid=455675172&filename=zeroes.txt&disposition=attachment&hash=&limit=0&content_type=text%2Fplain&owner_uid=455675172&fsize=1048576&hid=73c3a11a8c3f66346317872d2e5c1b28&media_type=document&tknv=v2&etag=d8d4c2d1c8e4b04d96bca23175d071c5",
         "headers": {
+            "connection": "keep-alive",
             "authorization": "OAuth supposedly_valid_token"
         },
         "content": "eJwDAAAAAAE=",
@@ -67,6 +71,7 @@
         "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&permanently=true&force_async=false",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
             "authorization": "OAuth supposedly_valid_token"
         },
         "content": "eJwDAAAAAAE=",

@@ -4,6 +4,7 @@
         "url": "https://cloud-api.yandex.net/v1/disk/resources/publish?path=disk%3A%2FYaDiskTest",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
             "authorization": "OAuth supposedly_valid_token"
         },
         "content": "eJwDAAAAAAE=",
@@ -21,6 +22,7 @@
         "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
             "authorization": "OAuth supposedly_valid_token"
         },
         "content": "eJwDAAAAAAE=",
@@ -30,7 +32,7 @@
                 "content-type": "application/json; charset=utf-8",
                 "content-length": "743"
             },
-            "content": "eJy1kV9v0zAUxb+LX2mJ7cT5Y2kPgw6kTgLWdaUDocqJb1qvSZzaTlg37btziygSD7zBk6/uOdc/nXufST+Ujak2ezgSSbJP928XxXW5hXQ7fxO/42DvGh/f2FUYuK++fxifnvjqcDvytT7AFb/dxdaZ2frL/vGzeuD2EM3Tsm8Xx49z2y3jlV13M7W9uCCTM2dwDXJ2IfReRtFRafPa7yMdPVxuZ+Pd+8XNtb4Kl+jfQFuC1qCJfCbeuoBj2DYBWk/k128T0pjWYJfTCbF17QFrLHsVdmjVxu9ldK9m+C7BBxwNNiiE05cJ6VQLaPpDhkdTIwtVB94OroKNQThJhEgzwTIu6zgHnZR1keSK6TKDlNY5zwuqqS6rNMlAp0pXTFGaJIrmoohrqlJWQC1qlguEVIMPtt30zvbgggGM0g1Ng4IDFU5hCaecT2k+pWLJqRRUMv6KUkkpjrdWm9qcbcmUplOeLVkqBZcs/W37+w4q27bQBUzmT3vtnRkRuzkn/tdxfx39/3yPlwrHHn4GdeR0ttF4YzsiWcYKQTOWUMYRJl5+AD0q4Xc="
+            "content": "eJy1kU+P2jAQxb+Lr4VmnH9OLO2hFd1KdCtIC6tCVSEntsEiibO2YaGr/e4dVkulHnprTx7Ne+Of3swTGQ51a5rNXp0JJz+3Vg+ft3TfzOB21530Y1sdK7F/nCznD8vh3WL+8fb0KZKhYY659l4m8+k6mXT5cl2tvs7WD9E0r4fuy3k2tf0iubff+onY3tyQ0ZVzcC1ydiEMnkfRWUjz1u8jGQWTfqhWd9V7Ob87VujfqK5WUipJ+BPx1gUcw7YJqvOEf/8xIq3pDHZjGBGrtVdYYzmIsEOrNH7Po5WY4LtQPuBosEEgHJ5HpBedQtMfsjoZjSxUnfL24Bq1MQgnaZblLKMs5joplExrXaaFoLJmKgddxEUJEmTd5ClTMheyoQIgTQUUWZloEDktlc40LTKENAcfbLcZnB2UC0ZhlP7Qtig4JcIlLIkhjsdQjCFbxMAz4DR+A8ABcLyz0mhztaVjyMcJLCjjSckz9tv29x00tutUHzCZv+x1cOaI2M018b+O+3r0//M9XiqcB/US1JHL2Y7GG9sTThktWV7SsixoymJ4/gWm1eGl"
         }
     },
     {
@@ -38,6 +40,7 @@
         "url": "https://cloud-api.yandex.net/v1/disk/resources/unpublish?path=disk%3A%2FYaDiskTest",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
             "authorization": "OAuth supposedly_valid_token"
         },
         "content": "eJwDAAAAAAE=",
@@ -55,6 +58,7 @@
         "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
             "authorization": "OAuth supposedly_valid_token"
         },
         "content": "eJwDAAAAAAE=",
@@ -64,7 +68,7 @@
                 "content-type": "application/json; charset=utf-8",
                 "content-length": "591"
             },
-            "content": "eJy1kcFqxCAQht/FaxM6umoSz/sIeymlBBNHKo0xqFlaln33zha20ENv7cnB/5/5+WYubMQ4oXPomLmwknJlhrGGhYqxMPP80rAlxEC/AhqWvC9INZWbra9kdaG8mccne6T3hKVSa03VLuS5Nmy1Ecn0Q8b34CmL1Iwl7XnGMVA4k0rpTvFOGH/o0cnJD7K33E0davC96Adw4KZZyw6dtm7mFkBKC70aDh6s5gN65XmvKGTeS01x3HLaMNeAhLLuy0JCRltvsEyAEC30LaiTAKPAcPEAYACoPSYXfLjbZAu6Fd2Ja6OE4frb9vsO5hQjrpXIym2vWw5nih3vxH+Nu+3TEuZ/Gk+Xqh8bfoFmdjvbOZSQVmZ4xwcFHZf8IPkg5fUTaLut3w=="
+            "content": "eJy1kc1KxTAQhd8lW1ucpM3v2ke4GxEpaTPBYNuUJr0ol/vuzhUUXLjTVYacM3P4Zi5swGXEEDAwd2El75U5xhqWKi6Fuafnhs1pSfQroGE5xoJUU7n5+kLWkMqru3/0D/SesFRqrbn6mTzXhq1+QTL9kPEtRcoidceSj33CIVE466VUWnItXOwMhn6Mtjeeh1GjgmiEsRAgjJPqNQblw8Q9QN97MNJ2EbziFqOM3EgKmY5S8zJse95wrwkJZT3mmYQdfb3BMgFCtGBakCcBToLj4g7AAVD7kkOK6cvWt6DaDk5cu846qb9tv+9gysuCayWyctvrtqczxQ5fxH+Nux3jnKZ/Gk+Xqu8bfoLu7Ha2cyopr8xxza1WVgAoa7hV1w9uw634"
         }
     }
 ]

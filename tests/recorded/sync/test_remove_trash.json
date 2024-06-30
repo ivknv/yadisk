@@ -50,12 +50,12 @@
                 "content-type": "application/json; charset=utf-8",
                 "content-length": "678"
             },
-            "content": "eJy1kstKAzEUht8lWzs0OZNMLmsfoRsRGXI5scG5lExalDLvbipVqCBudBVCvvPn4/CfSXk7IDEkpEw2pMfRYQgYiDmTVHBciHk8k8mOV6Ypc5NxnE9YaXxNsYLrhviMtlymCFDgDe0akDvWGdEaCneUGkorH3DAn6j2i5pzek5Tf7Bl//Hn8mK2D/a+njtcyva7xDiHFNOvqRmX+Zg99ulCciE6KZgEY4WUlgndBQkStOAgNbgQQwREUCoIiJE7ZBJjGymXVmqtQTgWnHK2q9FX05Ltsje3fj3jynPgnntoVWCdVD54BgKo0hFa1JF6B6BrjJ/HEadSBZfL9g85nepO+0/xP7c+uiH5f4qvlbjpVcZTWtI8EcMk04JKptq2ZaIT61NF52KH+rQhQxpTIUZQWnsQ44L1Qtf1HTtgxCU="
+            "content": "eJy1ks9qAyEQh9/Fa7Nk/LeunvsIuZRSFlfHRrruBteElrDvXlPSQgqll/aiiJ+/+RjnTMrbAYkhPmayIT2mAb1HT8yZxIJpIebxTCabrkxT5iZjmk9YaXyNoYLrhriMtlxeEQZMNNA2HHZUGQEG6B3UFSrvccSfKPZFzTk+x6k/2LL/qLm8mO2Dva/7Dpey/S6RZh9D/DU14zIfs8M+XkghZaskVcwIPegAlg4COWMBQLLBCSslKnRMaeY0KMUE79BD61Fo4SkPdkANvJOsRl9NS7bL3tz69RDEQLmSQWinO+8ZOnAd9SJI1coOOXRaCi5rjJtTwqlUweXS/UOOp9rT/lP8z62PwxjdP8XXkbiZq4ynuMR5IoYqqlWr61fplnWKr08VnYsd69WGjDHFQowEqHMQwoL1AOv6DucWwpc="
         }
     },
     {
         "method": "DELETE",
-        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_148c424c4c238d1678cdc1252089f23e9f0cb229&force_async=false",
+        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_0f4b1375f49c98dd2ec0c81d4f57658e30895435&force_async=false",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -73,7 +73,7 @@
     },
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_148c424c4c238d1678cdc1252089f23e9f0cb229&offset=0&limit=0",
+        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_0f4b1375f49c98dd2ec0c81d4f57658e30895435&offset=0&limit=0",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",

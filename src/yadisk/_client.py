@@ -915,6 +915,12 @@ class Client:
                 except KeyError:
                     temp_kwargs["headers"] = {"Connection": "close"}
 
+                # This is generally not necessary, libraries like aiohttp
+                # will generally always set this header while others might not
+                # We're setting content-type here just to fix this inconsistency,
+                # this makes testing easier
+                temp_kwargs["headers"].setdefault("Content-Type", "application/octet-stream")
+
                 if iterator_factory is not None:
                     payload = iterator_factory()
                 elif file.seekable():

@@ -55,7 +55,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
 
         def record_or_replay(func: Callable):
             async def decorated_test(self):
-                directory = os.path.join("tests", "recorded", "async", self.__class__.__name__)
+                directory = os.path.join("tests", "recorded", "async")
 
                 if self.recording_enabled:
                     os.makedirs(directory, exist_ok=True)
@@ -389,7 +389,6 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             self.assertFalse(is_operation_link("https://asd8iaysd89asdgiu"))
             self.assertFalse(is_operation_link("http://asd8iaysd89asdgiu"))
 
-        @record_or_replay
         async def test_get_operation_status_request_url(self) -> None:
             request = GetOperationStatusRequest(
                 self.client.session,

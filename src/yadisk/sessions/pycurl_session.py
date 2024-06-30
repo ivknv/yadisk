@@ -210,7 +210,7 @@ class PycURLSession(Session):
         params = kwargs.get("params", {})
         data = kwargs.get("data")
         stream = kwargs.get("stream", False)
-        headers = CaseInsensitiveDict()
+        headers = CaseInsensitiveDict({"connection": "keep-alive"})
         headers.update(kwargs.get("headers", {}))
 
         options = kwargs.get("curl_options", {})

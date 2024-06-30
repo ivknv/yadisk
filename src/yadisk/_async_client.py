@@ -934,6 +934,12 @@ class AsyncClient:
                 except KeyError:
                     temp_kwargs["headers"] = {"Connection": "close"}
 
+                # This is generally not necessary, libraries like aiohttp
+                # will generally always set this header while others might not
+                # We're setting content-type here just to fix this inconsistency,
+                # this makes testing easier
+                temp_kwargs["headers"].setdefault("Content-Type", "application/octet-stream")
+
                 data: Any = None
 
                 if generator_factory is None:
