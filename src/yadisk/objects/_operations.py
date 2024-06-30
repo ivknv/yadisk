@@ -91,6 +91,7 @@ class SyncOperationLinkObject(OperationLinkObject):
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises OperationNotFoundError: requested operation was not found
 
@@ -132,6 +133,7 @@ class AsyncOperationLinkObject(OperationLinkObject):
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises OperationNotFoundError: requested operation was not found
 

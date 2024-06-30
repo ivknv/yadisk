@@ -372,6 +372,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -407,6 +408,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -437,6 +439,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
@@ -466,6 +469,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -496,6 +500,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
@@ -525,6 +530,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
@@ -559,6 +565,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -594,6 +601,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -627,6 +635,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
             :raises PathExistsError: destination path already exists
@@ -665,6 +674,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
             :raises PathExistsError: destination path already exists
@@ -703,6 +713,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
             :raises PathExistsError: destination path already exists
@@ -738,6 +749,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -786,6 +798,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -844,6 +857,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -883,6 +897,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -915,6 +930,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -947,6 +963,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
             :raises DirectoryExistsError: destination path already exists
@@ -985,6 +1002,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1035,6 +1053,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises PathExistsError: destination path already exists
@@ -1094,6 +1113,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises PathExistsError: destination path already exists
@@ -1156,6 +1176,7 @@ class ResourceObjectMethodsMixin:
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises PathExistsError: destination path already exists
@@ -1206,6 +1227,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1240,6 +1262,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1269,6 +1292,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
@@ -1297,6 +1321,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1326,6 +1351,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
@@ -1354,6 +1380,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
@@ -1387,6 +1414,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1421,6 +1449,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1453,6 +1482,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
             :raises PathExistsError: destination path already exists
@@ -1494,6 +1524,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
             :raises PathExistsError: destination path already exists
@@ -1531,6 +1562,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
             :raises PathExistsError: destination path already exists
@@ -1565,6 +1597,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1620,6 +1653,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1679,6 +1713,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1717,6 +1752,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1748,6 +1784,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1779,6 +1816,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
             :raises DirectoryExistsError: destination path already exists
@@ -1816,6 +1854,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1870,6 +1909,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises PathExistsError: destination path already exists
@@ -1928,6 +1968,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises PathExistsError: destination path already exists
@@ -1994,6 +2035,7 @@ class AsyncResourceObjectMethodsMixin:
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises PathExistsError: destination path already exists
@@ -2826,6 +2868,7 @@ class SyncTrashResourceObject(TrashResourceObject):
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -2856,6 +2899,7 @@ class SyncTrashResourceObject(TrashResourceObject):
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
@@ -2885,6 +2929,7 @@ class SyncTrashResourceObject(TrashResourceObject):
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -2915,6 +2960,7 @@ class SyncTrashResourceObject(TrashResourceObject):
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
@@ -2944,6 +2990,7 @@ class SyncTrashResourceObject(TrashResourceObject):
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
@@ -2978,6 +3025,7 @@ class SyncTrashResourceObject(TrashResourceObject):
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -3011,6 +3059,7 @@ class SyncTrashResourceObject(TrashResourceObject):
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -3062,6 +3111,7 @@ class SyncTrashResourceObject(TrashResourceObject):
             :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
             :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises PathExistsError: destination path already exists
@@ -3153,6 +3203,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -3182,6 +3233,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
@@ -3210,6 +3262,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -3239,6 +3292,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
@@ -3267,6 +3321,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
@@ -3304,6 +3359,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -3336,6 +3392,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -3391,6 +3448,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :param retry_interval: delay between retries in seconds
             :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
             :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises PathExistsError: destination path already exists
