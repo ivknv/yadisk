@@ -68,7 +68,7 @@ if TYPE_CHECKING:
         AsyncResourceObject, AsyncOperationLinkObject,
         AsyncTrashResourceObject, AsyncPublicResourceObject,
         AsyncPublicResourcesListObject, AsyncFilesResourceListObject,
-        DeviceCodeObject
+        AsyncLastUploadedResourceListObject, DeviceCodeObject
     )
 
 __all__ = ["AsyncClient"]
@@ -2015,7 +2015,7 @@ class AsyncClient:
 
             kwargs["offset"] += kwargs["limit"]
 
-    async def get_last_uploaded(self, **kwargs) -> AsyncGenerator["AsyncResourceObject", None]:
+    async def get_last_uploaded(self, **kwargs) -> List["AsyncResourceObject"]:
         """
             Get the list of latest uploaded files sorted by upload date.
 
@@ -2040,10 +2040,14 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = LastUploadedRequest(self.session, **kwargs)
+        response: "AsyncLastUploadedResourceListObject" = await LastUploadedRequest(
+            self.session, **kwargs
+        ).asend(yadisk=self)
 
-        for i in (await request.asend(yadisk=self)).items:
-            yield i
+        if response.items is None:
+            raise InvalidResponseError("Response did not contain key field")
+
+        return response.items
 
     async def upload_url(self, url: str, path: str, /, **kwargs) -> "AsyncOperationLinkObject":
         """

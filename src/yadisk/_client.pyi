@@ -17,7 +17,7 @@
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
 from typing import Optional, Any, Union, Literal
-from ._typing_compat import Dict, Generator, Iterable
+from ._typing_compat import Dict, Generator, Iterable, List
 
 from .objects import (
     DeviceCodeObject, TokenObject, TokenRevokeStatusObject,
@@ -917,7 +917,7 @@ class Client:
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
-    ) -> Generator[SyncResourceObject, None, None]:
+    ) -> List[SyncResourceObject]:
         ...
 
     def upload_url(

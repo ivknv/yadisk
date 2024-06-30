@@ -52,9 +52,11 @@ from ._client_common import (
 
 if TYPE_CHECKING:
     from .objects import (
-        SyncFilesResourceListObject, SyncResourceObject, SyncOperationLinkObject,
-        SyncPublicResourceObject, SyncPublicResourcesListObject, DiskInfoObject,
-        TokenObject, TokenRevokeStatusObject, DeviceCodeObject
+        SyncFilesResourceListObject, SyncResourceObject,
+        SyncLastUploadedResourceListObject, SyncOperationLinkObject,
+        SyncPublicResourceObject, SyncPublicResourcesListObject,
+        DiskInfoObject, TokenObject, TokenRevokeStatusObject,
+        DeviceCodeObject
     )
 
 __all__ = ["Client"]
@@ -1986,7 +1988,7 @@ class Client:
 
             kwargs["offset"] += kwargs["limit"]
 
-    def get_last_uploaded(self, **kwargs) -> Generator["SyncResourceObject", None, None]:
+    def get_last_uploaded(self, **kwargs) -> List["SyncResourceObject"]:
         """
             Get the list of latest uploaded files sorted by upload date.
 
@@ -2012,10 +2014,14 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        request = LastUploadedRequest(self.session, **kwargs)
+        response: "SyncLastUploadedResourceListObject" = LastUploadedRequest(
+            self.session, **kwargs
+        ).send(yadisk=self)
 
-        for i in request.send(yadisk=self).items:
-            yield i
+        if response.items is None:
+            raise InvalidResponseError("Response did not contain key field")
+
+        return response.items
 
     def upload_url(self, url: str, path: str, /, **kwargs) -> "SyncOperationLinkObject":
         """

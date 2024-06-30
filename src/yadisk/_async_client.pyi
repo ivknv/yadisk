@@ -17,7 +17,7 @@
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
 from typing import Optional, Any, Union, Literal
-from ._typing_compat import Dict, AsyncGenerator, Iterable
+from ._typing_compat import Dict, AsyncGenerator, Iterable, List
 
 from .objects import (
     DeviceCodeObject, TokenObject, TokenRevokeStatusObject,
@@ -880,10 +880,7 @@ class AsyncClient:
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
-    ) -> AsyncGenerator[AsyncResourceObject, None]:
-        # This line here is needed so that the type checker knows that this is
-        # an async generator, rather than a simple async function
-        yield AsyncResourceObject()
+    ) -> List[AsyncResourceObject]: ...
 
     async def upload_url(
         self,
