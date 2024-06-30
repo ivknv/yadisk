@@ -25,8 +25,8 @@ from ._link_object import LinkObject
 from ._disk import UserPublicInfoObject
 from .._common import (
     typed_list, yandex_date, is_resource_link, is_public_resource_link,
-    ensure_path_has_schema, str_or_error, int_or_error, bool_or_error,
-    dict_or_error, str_or_dict_or_error
+    ensure_path_has_schema, str_or_error, int_or_error, float_or_error,
+    bool_or_error, dict_or_error, str_or_dict_or_error
 )
 from ..types import AsyncFileOrPath, AsyncFileOrPathDestination, FileOrPath, FileOrPathDestination
 
@@ -96,14 +96,28 @@ class EXIFObject(YaDiskObject):
         :param yadisk: :any:`Client`/:any:`AsyncClient` or `None`, `YaDisk` object
 
         :ivar date_time: :any:`datetime.datetime`, capture date
+        :ivar gps_longitude: `float`, longitude of the photo's location
+        :ivar gps_latitude: `float`, latitude of the photo's location
     """
 
-    date_time: Optional["datetime.datetime"]
+    date_time:     Optional["datetime.datetime"]
+    gps_longitude: Optional[float]
+    gps_latitude:  Optional[float]
 
-    def __init__(self,
-                 exif: Optional[Dict] = None,
-                 yadisk: Optional[Any] = None):
-        YaDiskObject.__init__(self, {"date_time": yandex_date}, yadisk)
+    def __init__(
+        self,
+        exif: Optional[Dict] = None,
+        yadisk: Optional[Any] = None
+    ) -> None:
+        YaDiskObject.__init__(
+            self,
+            {
+                "date_time": yandex_date,
+                "gps_longitude": float_or_error,
+                "gps_latitude": float_or_error
+            },
+            yadisk
+        )
 
         self.import_fields(exif)
 

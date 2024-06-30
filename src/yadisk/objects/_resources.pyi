@@ -47,10 +47,14 @@ class CommentIDsObject(YaDiskObject):
 
 class EXIFObject(YaDiskObject):
     date_time: Optional[datetime.datetime]
+    gps_longitude: Optional[float]
+    gps_latitude:  Optional[float]
 
-    def __init__(self,
-                 exif: Optional[Dict] = None,
-                 yadisk: Optional[Any] = None) -> None:
+    def __init__(
+        self,
+        exif: Optional[Dict] = None,
+        yadisk: Optional[Any] = None
+    ) -> None:
         ...
 
 class FilesResourceListObject(YaDiskObject):

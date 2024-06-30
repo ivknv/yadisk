@@ -28,7 +28,7 @@ from typing import Optional, TypeVar, Any, Union
 from .types import Unspecified, unspecified, TimeoutParameter
 
 __all__ = [
-    "typed_list", "int_or_error", "str_or_error", "bool_or_error",
+    "typed_list", "int_or_error", "float_or_error", "str_or_error", "bool_or_error",
     "dict_or_error", "str_or_dict_or_error", "yandex_date", "is_operation_link",
     "is_resource_link", "is_public_resource_link", "ensure_path_has_schema",
     "is_default_timeout"
@@ -53,6 +53,13 @@ def typed_list(datatype: T) -> Callable[[Optional[List]], List[T]]:
 def int_or_error(x: Any) -> int:
     if not isinstance(x, int):
         raise ValueError(f"{repr(x)} is not an integer")
+
+    return x
+
+
+def float_or_error(x: Any) -> float:
+    if not isinstance(x, (float, int)):
+        raise ValueError(f"{repr(x)} is not a float")
 
     return x
 
