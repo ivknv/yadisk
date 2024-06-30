@@ -210,6 +210,38 @@ def make_test_case(name: str, session_name: SessionName):
             self.assertEqual(result, names)
 
         @record_or_replay
+        def test_listdir_with_max_items(self) -> None:
+            names = ["dir1", "dir2", "dir3", "dir4", "dir5", "dir6"]
+
+            for name in names:
+                path = posixpath.join(self.path, name)
+
+                self.client.mkdir(path)
+
+            results = [
+                [i.name for i in self.client.listdir(self.path, max_items=0)],
+                [i.name for i in self.client.listdir(self.path, max_items=1, limit=1)],
+                [i.name for i in self.client.listdir(self.path, max_items=2, limit=1)],
+                [i.name for i in self.client.listdir(self.path, max_items=3, limit=1)],
+                [i.name for i in self.client.listdir(self.path, max_items=10, limit=1)],
+            ]
+
+            expected = [
+                [],
+                names[:1],
+                names[:2],
+                names[:3],
+                names[:10],
+            ]
+
+            for name in names:
+                path = posixpath.join(self.path, name)
+
+                self.client.remove(path, permanently=True)
+
+            self.assertEqual(results, expected)
+
+        @record_or_replay
         def test_mkdir_and_exists(self) -> None:
             names = ["dir1", "dir2"]
 

@@ -100,8 +100,14 @@ async def _get_type(get_meta_function: Callable[..., Awaitable[ResourceType]],
     return type
 
 
-async def _listdir(get_meta_function: Callable[..., Awaitable[ResourceType]],
-                   path: str, /, **kwargs) -> AsyncGenerator:
+async def _listdir(
+    get_meta_function: Callable[..., Awaitable[ResourceType]],
+    path: str,
+    /,
+    *,
+    max_items: Optional[int] = None,
+    **kwargs
+) -> AsyncGenerator:
     kwargs.setdefault("limit", 500)
 
     if kwargs.get("fields") is None:
@@ -132,7 +138,9 @@ async def _listdir(get_meta_function: Callable[..., Awaitable[ResourceType]],
             result.embedded.total is None):
         raise InvalidResponseError("Response did not contain key field")
 
-    for child in result.embedded.items:
+    remaining_items = max_items
+
+    for child in result.embedded.items[:remaining_items]:
         yield child
 
     limit: int = result.embedded.limit
@@ -140,6 +148,14 @@ async def _listdir(get_meta_function: Callable[..., Awaitable[ResourceType]],
     total: int = result.embedded.total
 
     while offset + limit < total:
+        if remaining_items is not None:
+            remaining_items -= len(result.embedded.items)
+
+            if remaining_items <= 0:
+                break
+        else:
+            remaining_items = None
+
         offset += limit
         kwargs["offset"] = offset
         result = await get_meta_function(path, **kwargs)
@@ -152,7 +168,7 @@ async def _listdir(get_meta_function: Callable[..., Awaitable[ResourceType]],
                 result.embedded.total is None):
             raise InvalidResponseError("Response did not contain key field")
 
-        for child in result.embedded.items:
+        for child in result.embedded.items[:remaining_items]:
             yield child
 
         limit = result.embedded.limit
@@ -824,6 +840,7 @@ class AsyncClient:
             Get contents of `path`.
 
             :param path: path to the directory
+            :param max_items: `int` or `None`, maximum number of returned items (`None` means unlimited)
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview
@@ -1670,7 +1687,12 @@ class AsyncClient:
 
         return await _exists(self.get_public_meta, public_key, **kwargs)
 
-    async def public_listdir(self, public_key: str, /, **kwargs) -> AsyncGenerator["AsyncPublicResourceObject", None]:
+    async def public_listdir(
+        self,
+        public_key: str,
+        /,
+        **kwargs
+    ) -> AsyncGenerator["AsyncPublicResourceObject", None]:
         """
             Get contents of a public directory.
 
@@ -1678,6 +1700,7 @@ class AsyncClient:
             :param path: relative path to the resource in the public folder.
                          By specifying the key of the published folder in `public_key`,
                          you can request contents of any nested folder.
+            :param max_items: `int` or `None`, maximum number of returned items (`None` means unlimited)
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview
@@ -1771,11 +1794,17 @@ class AsyncClient:
         except PathNotFoundError:
             return False
 
-    async def trash_listdir(self, path: str, /, **kwargs) -> AsyncGenerator["AsyncTrashResourceObject", None]:
+    async def trash_listdir(
+        self,
+        path: str,
+        /,
+        **kwargs
+    ) -> AsyncGenerator["AsyncTrashResourceObject", None]:
         """
             Get contents of a trash resource.
 
             :param path: path to the directory in the trash bin
+            :param max_items: `int` or `None`, maximum number of returned items (`None` means unlimited)
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview

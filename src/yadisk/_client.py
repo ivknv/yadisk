@@ -103,6 +103,8 @@ def _listdir(
     get_meta_function: Callable[..., ResourceType],
     path: str,
     /,
+    *,
+    max_items: Optional[int] = None,
     **kwargs
 ) -> Generator[Any, None, None]:
     kwargs.setdefault("limit", 500)
@@ -135,13 +137,23 @@ def _listdir(
             result.embedded.total is None):
         raise InvalidResponseError("Response did not contain key field")
 
-    yield from result.embedded.items
+    remaining_items = max_items
+
+    yield from result.embedded.items[:remaining_items]
 
     limit: int = result.embedded.limit
     offset: int = result.embedded.offset
     total: int = result.embedded.total
 
     while offset + limit < total:
+        if remaining_items is not None:
+            remaining_items -= len(result.embedded.items)
+
+            if remaining_items <= 0:
+                break
+        else:
+            remaining_items = None
+
         offset += limit
         kwargs["offset"] = offset
         result = get_meta_function(path, **kwargs)
@@ -154,7 +166,7 @@ def _listdir(
                 result.embedded.total is None):
             raise InvalidResponseError("Response did not contain key field")
 
-        yield from result.embedded.items
+        yield from result.embedded.items[:remaining_items]
 
         limit = result.embedded.limit
         total = result.embedded.total
@@ -805,6 +817,7 @@ class Client:
             Get contents of `path`.
 
             :param path: path to the directory
+            :param max_items: `int` or `None`, maximum number of returned items (`None` means unlimited)
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview
@@ -1635,8 +1648,12 @@ class Client:
 
         return _exists(self.get_public_meta, public_key, **kwargs)
 
-    def public_listdir(self,
-                       public_key: str, /, **kwargs) -> Generator["SyncPublicResourceObject", None, None]:
+    def public_listdir(
+        self,
+        public_key: str,
+        /,
+        **kwargs
+    ) -> Generator["SyncPublicResourceObject", None, None]:
         """
             Get contents of a public directory.
 
@@ -1644,6 +1661,7 @@ class Client:
             :param path: relative path to the resource in the public folder.
                          By specifying the key of the published folder in `public_key`,
                          you can request contents of any nested folder.
+            :param max_items: `int` or `None`, maximum number of returned items (`None` means unlimited)
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview
@@ -1740,12 +1758,17 @@ class Client:
         except PathNotFoundError:
             return False
 
-    def trash_listdir(self,
-                      path: str, /, **kwargs) -> Generator["SyncTrashResourceObject", None, None]:
+    def trash_listdir(
+        self,
+        path: str,
+        /,
+        **kwargs
+    ) -> Generator["SyncTrashResourceObject", None, None]:
         """
             Get contents of a trash resource.
 
             :param path: path to the directory in the trash bin
+            :param max_items: `int` or `None`, maximum number of returned items (`None` means unlimited)
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview

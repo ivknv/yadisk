@@ -561,13 +561,18 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.is_file(str(path), **kwargs)
 
-    def listdir(self: ResourceProtocol,
-                relative_path: Optional[str] = None, /, **kwargs) -> Generator["SyncResourceObject", None, None]:
+    def listdir(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        **kwargs
+    ) -> Generator["SyncResourceObject", None, None]:
         """
             Get contents of the resource.
 
             :param relative_path: relative path from resource
             :param limit: number of children resources to be included in the response
+            :param max_items: `int` or `None`, maximum number of returned items (`None` means unlimited)
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview
             :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
@@ -598,11 +603,15 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.listdir(str(path), **kwargs)
 
-    def public_listdir(self: ResourceProtocol, **kwargs) -> Generator["SyncPublicResourceObject", None, None]:
+    def public_listdir(
+        self: ResourceProtocol,
+        **kwargs
+    ) -> Generator["SyncPublicResourceObject", None, None]:
         """
             Get contents of a public directory.
 
             :param path: relative path to the resource in the public folder.
+            :param max_items: `int` or `None`, maximum number of returned items (`None` means unlimited)
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview
@@ -1411,12 +1420,17 @@ class AsyncResourceObjectMethodsMixin:
 
         return await self._yadisk.is_file(str(path), **kwargs)
 
-    async def listdir(self: ResourceProtocol,
-                      relative_path: Optional[str] = None, /, **kwargs) -> AsyncGenerator["AsyncResourceObject", None]:
+    async def listdir(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        **kwargs
+    ) -> AsyncGenerator["AsyncResourceObject", None]:
         """
             Get contents of the resource.
 
             :param relative_path: relative path from resource
+            :param max_items: `int` or `None`, maximum number of returned items (`None` means unlimited)
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview
@@ -1447,11 +1461,15 @@ class AsyncResourceObjectMethodsMixin:
 
         return await self._yadisk.listdir(str(path), **kwargs)
 
-    async def public_listdir(self: ResourceProtocol, **kwargs) -> AsyncGenerator["AsyncPublicResourceObject", None]:
+    async def public_listdir(
+        self: ResourceProtocol,
+        **kwargs
+    ) -> AsyncGenerator["AsyncPublicResourceObject", None]:
         """
             Get contents of a public directory.
 
             :param path: relative path to the resource in the public folder.
+            :param max_items: `int` or `None`, maximum number of returned items (`None` means unlimited)
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview
@@ -3021,12 +3039,17 @@ class SyncTrashResourceObject(TrashResourceObject):
 
         return self._yadisk.is_trash_file(str(path), **kwargs)
 
-    def listdir(self: ResourceProtocol,
-                relative_path: Optional[str] = None, /, **kwargs) -> Generator["SyncTrashResourceObject", None, None]:
+    def listdir(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        **kwargs
+    ) -> Generator["SyncTrashResourceObject", None, None]:
         """
             Get contents of a trash resource.
 
             :param relative_path: `str` or `None`, relative path to the directory in the trash bin
+            :param max_items: `int` or `None`, maximum number of returned items (`None` means unlimited)
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview
@@ -3362,6 +3385,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
             Get contents of a trash resource.
 
             :param relative_path: `str` or `None`, relative path to the directory in the trash bin
+            :param max_items: `int` or `None`, maximum number of returned items (`None` means unlimited)
             :param limit: number of children resources to be included in the response
             :param offset: number of children resources to be skipped in the response
             :param preview_size: size of the file preview
