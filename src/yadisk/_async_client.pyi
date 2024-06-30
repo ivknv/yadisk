@@ -845,6 +845,7 @@ class AsyncClient:
     async def get_files(
         self,
         *,
+        max_items: Optional[int] = None,
         limit: Optional[int] = None,
         offset: Optional[int] = None,
         media_type: Optional[Union[str, Iterable[str]]] = None,

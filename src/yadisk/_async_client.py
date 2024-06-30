@@ -1959,12 +1959,18 @@ class AsyncClient:
 
         return response.items
 
-    async def get_files(self, **kwargs) -> AsyncGenerator["AsyncResourceObject", None]:
+    async def get_files(
+        self,
+        *,
+        max_items: Optional[int] = None,
+        **kwargs
+    ) -> AsyncGenerator["AsyncResourceObject", None]:
         """
             Get a flat list of all files (that doesn't include directories).
 
             :param offset: offset from the beginning of the list
-            :param limit: number of list elements to be included
+            :param max_items: `int` or `None`, maximum number of returned items (`None` means unlimited)
+            :param limit: number of list elements to be included in each response
             :param media_type: type of files to include in the list
             :param sort: `str`, field to be used as a key to sort children resources
             :param preview_size: size of the file preview
@@ -1986,24 +1992,28 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        if kwargs.get("limit") is not None:
-            for file in await self._get_files_some(**kwargs):
+        kwargs.setdefault("offset", 0)
+        kwargs.setdefault("limit", 200)
+
+        remaining_items = max_items
+
+        while True:
+            files = await self._get_files_some(**kwargs)
+            file_count = len(files)
+
+            for file in files[:remaining_items]:
                 yield file
-        else:
-            kwargs.setdefault("offset", 0)
-            kwargs["limit"] = 200
 
-            while True:
-                files = await self._get_files_some(**kwargs)
-                file_count = len(files)
+            if remaining_items is not None:
+                remaining_items -= file_count
 
-                for file in files:
-                    yield file
-
-                if file_count < kwargs["limit"]:
+                if remaining_items <= 0:
                     break
 
-                kwargs["offset"] += kwargs["limit"]
+            if file_count < kwargs["limit"]:
+                break
+
+            kwargs["offset"] += kwargs["limit"]
 
     async def get_last_uploaded(self, **kwargs) -> AsyncGenerator["AsyncResourceObject", None]:
         """
