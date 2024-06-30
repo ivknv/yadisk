@@ -293,15 +293,17 @@ class AsyncClient:
 
     synchronous = False
 
-    def __init__(self,
-                 id:     str = "",
-                 secret: str = "",
-                 token:  str = "",
-                 *,
-                 default_args:    Optional[Dict[str, Any]] = None,
-                 session:         Optional[Union[AsyncSession, AsyncSessionName]] = None,
-                 open_file:       Optional[AsyncOpenFileCallback] = None,
-                 session_factory: Optional[AsyncSessionFactory] = None):
+    def __init__(
+        self,
+        id:     str = "",
+        secret: str = "",
+        token:  str = "",
+        *,
+        default_args:    Optional[Dict[str, Any]] = None,
+        session:         Optional[Union[AsyncSession, AsyncSessionName]] = None,
+        open_file:       Optional[AsyncOpenFileCallback] = None,
+        session_factory: Optional[AsyncSessionFactory] = None
+    ) -> None:
         self.id = id
         self.secret = secret
 
