@@ -295,7 +295,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             await self.client.mkdir(path)
             await self.client.remove(path, permanently=True)
 
-            async for i in await self.client.trash_listdir("/"):
+            async for i in self.client.trash_listdir("/"):
                 self.assertFalse(i.origin_path == origin_path)
 
         @record_or_replay
@@ -308,7 +308,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
 
             trash_path: Any = None
 
-            async for i in await self.client.trash_listdir("/"):
+            async for i in self.client.trash_listdir("/"):
                 if i.origin_path == origin_path:
                     trash_path = i.path
                     break
@@ -340,7 +340,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
 
             trash_path: Any = None
 
-            async for i in await self.client.trash_listdir("/"):
+            async for i in self.client.trash_listdir("/"):
                 if i.origin_path == origin_path:
                     trash_path = i.path
                     break
@@ -378,7 +378,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
             # See https://github.com/ivknv/yadisk/issues/7
 
             try:
-                await self.client.public_listdir("any value here", path="any value here")
+                [i async for i in self.client.public_listdir("any value here", path="any value here")]
             except yadisk.exceptions.PathNotFoundError:
                 pass
 
@@ -468,3 +468,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
 
 AIOHTTPTestCase = make_test_case("AIOHTTPTestCase", "aiohttp")
 AsyncHTTPXTestCase = make_test_case("AsyncHTTPXTestCase", "httpx")
+
+import logging
+import sys
+logging.basicConfig(level=logging.INFO, stream=sys.stdout)

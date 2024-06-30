@@ -303,7 +303,9 @@ class AsyncClient:
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
     ) -> AsyncGenerator[AsyncResourceObject, None]:
-        ...
+        # This line here is needed so that the type checker knows that this is
+        # an async generator, rather than a simple async function
+        yield AsyncResourceObject()
 
     async def get_upload_link(
         self,
@@ -681,7 +683,9 @@ class AsyncClient:
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
     ) -> AsyncGenerator[AsyncPublicResourceObject, None]:
-        ...
+        # This line here is needed so that the type checker knows that this is
+        # an async generator, rather than a simple async function
+        yield AsyncPublicResourceObject()
 
     async def get_public_type(
         self,
@@ -750,7 +754,9 @@ class AsyncClient:
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
     ) -> AsyncGenerator[AsyncTrashResourceObject, None]:
-        ...
+        # This line here is needed so that the type checker knows that this is
+        # an async generator, rather than a simple async function
+        yield AsyncTrashResourceObject()
 
     async def get_trash_type(
         self,
@@ -851,7 +857,9 @@ class AsyncClient:
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
     ) -> AsyncGenerator[AsyncResourceObject, None]:
-        ...
+        # This line here is needed so that the type checker knows that this is
+        # an async generator, rather than a simple async function
+        yield AsyncResourceObject()
 
     async def get_last_uploaded(
         self,
@@ -869,7 +877,9 @@ class AsyncClient:
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
     ) -> AsyncGenerator[AsyncResourceObject, None]:
-        ...
+        # This line here is needed so that the type checker knows that this is
+        # an async generator, rather than a simple async function
+        yield AsyncResourceObject()
 
     async def upload_url(
         self,

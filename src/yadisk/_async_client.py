@@ -1664,7 +1664,8 @@ class AsyncClient:
             :returns: async generator of :any:`AsyncPublicResourceObject`
         """
 
-        return _listdir(self.get_public_meta, public_key, **kwargs)
+        async for file in _listdir(self.get_public_meta, public_key, **kwargs):
+            yield file
 
     async def get_public_type(self, public_key: str, /, **kwargs) -> str:
         """
@@ -1757,7 +1758,8 @@ class AsyncClient:
             :returns: async generator of :any:`AsyncTrashResourceObject`
         """
 
-        return _listdir(self.get_trash_meta, path, **kwargs)
+        async for file in _listdir(self.get_trash_meta, path, **kwargs):
+            yield file
 
     async def get_trash_type(self, path: str, /, **kwargs) -> str:
         """

@@ -338,7 +338,7 @@ def make_test_case(name: str, session_name: SessionName):
             # See https://github.com/ivknv/yadisk/issues/7
 
             try:
-                self.client.public_listdir("any value here", path="any value here")
+                list(self.client.public_listdir("any value here", path="any value here"))
             except yadisk.exceptions.PathNotFoundError:
                 pass
 

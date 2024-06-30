@@ -286,7 +286,7 @@ class ResourceObjectMethodsMixin:
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
-    ) -> Generator["SyncResourceObject", None, None]:
+    ) -> Generator[SyncResourceObject, None, None]:
         ...
 
     def public_listdir(
@@ -307,7 +307,7 @@ class ResourceObjectMethodsMixin:
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
-    ) -> Generator["SyncPublicResourceObject", None, None]:
+    ) -> Generator[SyncPublicResourceObject, None, None]:
         ...
 
     def get_upload_link(
@@ -762,8 +762,10 @@ class AsyncResourceObjectMethodsMixin:
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
-    ) -> AsyncGenerator["AsyncResourceObject", None]:
-        ...
+    ) -> AsyncGenerator[AsyncResourceObject, None]:
+        # This line here is needed so that the type checker knows that this is
+        # an async generator, rather than a simple async function
+        yield AsyncResourceObject()
 
     async def public_listdir(
         self: ResourceProtocol,
@@ -782,8 +784,10 @@ class AsyncResourceObjectMethodsMixin:
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
-    ) -> AsyncGenerator["AsyncPublicResourceObject", None]:
-        ...
+    ) -> AsyncGenerator[AsyncPublicResourceObject, None]:
+        # This line here is needed so that the type checker knows that this is
+        # an async generator, rather than a simple async function
+        yield AsyncPublicResourceObject()
 
     async def get_upload_link(
         self: ResourceProtocol,
@@ -1419,7 +1423,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
-    ) -> Generator["SyncTrashResourceObject", None, None]:
+    ) -> Generator[SyncTrashResourceObject, None, None]:
         ...
 
     def remove(
@@ -1437,7 +1441,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
-    ) -> Optional["SyncOperationLinkObject"]:
+    ) -> Optional[SyncOperationLinkObject]:
         ...
 
     @overload
@@ -1590,8 +1594,10 @@ class AsyncTrashResourceObject(TrashResourceObject):
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
-    ) -> Generator["AsyncTrashResourceObject", None, None]:
-        ...
+    ) -> AsyncGenerator[AsyncTrashResourceObject, None]:
+        # This line here is needed so that the type checker knows that this is
+        # an async generator, rather than a simple async function
+        yield AsyncTrashResourceObject()
 
     async def remove(
         self: ResourceProtocol,
@@ -1607,7 +1613,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
-    ) -> Optional["AsyncOperationLinkObject"]:
+    ) -> Optional[AsyncOperationLinkObject]:
         ...
 
     @overload
