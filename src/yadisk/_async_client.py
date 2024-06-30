@@ -108,7 +108,8 @@ async def _listdir(
     max_items: Optional[int] = None,
     **kwargs
 ) -> AsyncGenerator:
-    kwargs.setdefault("limit", 500)
+    if kwargs.get("limit") is None:
+        kwargs["limit"] = 500
 
     if kwargs.get("fields") is None:
         kwargs["fields"] = []
@@ -127,7 +128,7 @@ async def _listdir(
 
     remaining_items = max_items
 
-    if remaining_items is not None and kwargs["limit"] is not None:
+    if remaining_items is not None:
         # Do not query more items than necessary
         kwargs["limit"] = min(remaining_items, kwargs["limit"])
 
@@ -158,9 +159,8 @@ async def _listdir(
             if remaining_items <= 0:
                 break
 
-            if kwargs["limit"] is not None:
-                # Do not query more items than necessary
-                kwargs["limit"] = min(remaining_items, kwargs["limit"])
+            # Do not query more items than necessary
+            kwargs["limit"] = min(remaining_items, kwargs["limit"])
         else:
             remaining_items = None
 
