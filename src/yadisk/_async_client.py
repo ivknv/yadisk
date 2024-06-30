@@ -125,6 +125,12 @@ async def _listdir(
 
     kwargs["fields"].extend(NECESSARY_FIELDS)
 
+    remaining_items = max_items
+
+    if remaining_items is not None and kwargs["limit"] is not None:
+        # Do not query more items than necessary
+        kwargs["limit"] = min(remaining_items, kwargs["limit"])
+
     result = await get_meta_function(path, **kwargs)
 
     if result.type == "file":
@@ -137,8 +143,6 @@ async def _listdir(
             result.embedded.offset is None or result.embedded.limit is None or
             result.embedded.total is None):
         raise InvalidResponseError("Response did not contain key field")
-
-    remaining_items = max_items
 
     for child in result.embedded.items[:remaining_items]:
         yield child
@@ -153,6 +157,10 @@ async def _listdir(
 
             if remaining_items <= 0:
                 break
+
+            if kwargs["limit"] is not None:
+                # Do not query more items than necessary
+                kwargs["limit"] = min(remaining_items, kwargs["limit"])
         else:
             remaining_items = None
 
@@ -1998,6 +2006,10 @@ class AsyncClient:
         remaining_items = max_items
 
         while True:
+            # Do not query more items than necessary
+            if kwargs["limit"] is not None and remaining_items is not None:
+                kwargs["limit"] = min(remaining_items, kwargs["limit"])
+
             files = await self._get_files_some(**kwargs)
             file_count = len(files)
 
