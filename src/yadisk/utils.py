@@ -26,7 +26,7 @@ from . import settings
 
 from typing import Any, Optional, Type, Union, TypeVar
 
-from ._typing_compat import Callable, Awaitable, Dict
+from ._typing_compat import Callable, Awaitable, Dict, Tuple
 from .types import AnyResponse
 
 __all__ = ["get_exception", "auto_retry", "async_auto_retry", "CaseInsensitiveDict"]
@@ -121,9 +121,13 @@ def get_exception(response: AnyResponse, error: Optional[ErrorObject]) -> YaDisk
 T = TypeVar("T")
 
 
-def auto_retry(func: Callable[[], T],
-               n_retries: Optional[int] = None,
-               retry_interval: Optional[Union[int, float]] = None) -> T:
+def auto_retry(
+    func: Callable[..., T],
+    n_retries: Optional[int] = None,
+    retry_interval: Optional[Union[int, float]] = None,
+    args: Optional[Tuple] = None,
+    kwargs: Optional[Dict[str, Any]] = None
+) -> T:
     """
         Attempt to perform a request with automatic retries.
         A retry is triggered by :any:`RequestError` or :any:`RetriableYaDiskError`.
@@ -131,6 +135,8 @@ def auto_retry(func: Callable[[], T],
         :param func: function to run, must not require any arguments
         :param n_retries: `int`, maximum number of retries
         :param retry_interval: `int` or `float`, delay between retries (in seconds)
+        :param args: `tuple` or `None`, additional arguments for `func`
+        :param kwargs: `dict` or `None`, additional keyword arguments for `func`
 
         :returns: return value of func()
     """
@@ -141,9 +147,15 @@ def auto_retry(func: Callable[[], T],
     if retry_interval is None:
         retry_interval = settings.DEFAULT_RETRY_INTERVAL
 
+    if args is None:
+        args = tuple()
+
+    if kwargs is None:
+        kwargs = {}
+
     for i in range(n_retries + 1):
         try:
-            return func()
+            return func(*args, **kwargs)
         except (RequestError, RetriableYaDiskError):
             if i == n_retries:
                 raise
@@ -155,9 +167,13 @@ def auto_retry(func: Callable[[], T],
     raise AssertionError()
 
 
-async def async_auto_retry(func: Union[Callable[[], Any], Callable[[], Awaitable[Any]]],
-                           n_retries: Optional[int] = None,
-                           retry_interval: Optional[Union[int, float]] = None) -> Any:
+async def async_auto_retry(
+    func: Union[Callable[..., Any], Callable[..., Awaitable[Any]]],
+    n_retries: Optional[int] = None,
+    retry_interval: Optional[Union[int, float]] = None,
+    args: Optional[Tuple] = None,
+    kwargs: Optional[Dict[str, Any]] = None
+) -> Any:
     """
         Attempt to perform a request with automatic retries.
         A retry is triggered by :any:`RequestError` or :any:`RetriableYaDiskError`.
@@ -165,6 +181,8 @@ async def async_auto_retry(func: Union[Callable[[], Any], Callable[[], Awaitable
         :param func: function to run, must not require any arguments
         :param n_retries: `int`, maximum number of retries
         :param retry_interval: `int` or `float`, delay between retries (in seconds)
+        :param args: `tuple` or `None`, additional arguments for `func`
+        :param kwargs: `dict` or `None`, additional keyword arguments for `func`
 
         :returns: return value of func()
     """
@@ -175,6 +193,12 @@ async def async_auto_retry(func: Union[Callable[[], Any], Callable[[], Awaitable
     if retry_interval is None:
         retry_interval = settings.DEFAULT_RETRY_INTERVAL
 
+    if args is None:
+        args = tuple()
+
+    if kwargs is None:
+        kwargs = {}
+
     is_coro = asyncio.iscoroutinefunction(func)
 
     # Suppress false type hint errors
@@ -183,9 +207,9 @@ async def async_auto_retry(func: Union[Callable[[], Any], Callable[[], Awaitable
     for i in range(n_retries + 1):
         try:
             if is_coro:
-                return await callback()
+                return await callback(*args, **kwargs)
             else:
-                return callback()
+                return callback(*args, **kwargs)
         except (RequestError, RetriableYaDiskError):
             if i == n_retries:
                 raise
