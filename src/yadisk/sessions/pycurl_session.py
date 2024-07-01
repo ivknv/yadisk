@@ -27,7 +27,7 @@ from ..exceptions import (
 from .._session import Session, Response
 from .._typing_compat import Iterator, Tuple
 from ..utils import CaseInsensitiveDict
-from ..types import JSON, ConsumeCallback, HTTPMethod, TimeoutParameter, Unspecified
+from ..types import JSON, ConsumeCallback, HTTPMethod, TimeoutParameter
 from .. import settings
 
 from urllib.parse import urlencode
@@ -144,7 +144,7 @@ class IterableReader:
 
 
 def convert_timeout(timeout: TimeoutParameter) -> Tuple[float, float]:
-    if isinstance(timeout, Unspecified):
+    if timeout is ...:
         return convert_timeout(settings.DEFAULT_TIMEOUT)
 
     if isinstance(timeout, tuple):

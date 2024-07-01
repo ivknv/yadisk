@@ -22,8 +22,7 @@ from ._typing_compat import Dict
 from .utils import get_exception
 from .objects import ErrorObject
 from .types import (
-    ConsumeCallback, JSON, unspecified, HTTPMethod, Headers, Payload,
-    TimeoutParameter
+    ConsumeCallback, JSON, HTTPMethod, Headers, Payload, TimeoutParameter
 )
 
 __all__ = ["Session", "Response"]
@@ -125,7 +124,7 @@ class Session:
                      *,
                      params:  Optional[Dict[str, Any]] = None,
                      data:    Optional[Payload] = None,
-                     timeout: TimeoutParameter = unspecified,
+                     timeout: TimeoutParameter = ...,
                      headers: Optional[Headers] = None,
                      stream:  bool = False,
                      **kwargs) -> Response:

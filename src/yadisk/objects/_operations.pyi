@@ -22,7 +22,7 @@ from .._typing_compat import Dict, Iterable
 from ._yadisk_object import YaDiskObject
 from ._link_object import LinkObject
 
-from ..types import OperationStatus, TimeoutParameter, Headers, unspecified
+from ..types import OperationStatus, TimeoutParameter, Headers
 
 class OperationStatusObject(YaDiskObject):
     status: OperationStatus
@@ -41,7 +41,7 @@ class SyncOperationLinkObject(OperationLinkObject):
         *,
         fields: Optional[Iterable[str]] = None,
         headers: Optional[Headers] = None,
-        timeout: TimeoutParameter = unspecified,
+        timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
         requests_args: Optional[Dict[str, Any]] = None,
@@ -56,7 +56,7 @@ class AsyncOperationLinkObject(OperationLinkObject):
         self,
         fields: Optional[Iterable[str]] = None,
         headers: Optional[Headers] = None,
-        timeout: TimeoutParameter = unspecified,
+        timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
         requests_args: Optional[Dict[str, Any]] = None,

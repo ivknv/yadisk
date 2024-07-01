@@ -908,9 +908,9 @@ class AsyncClient:
                       get_upload_link_function: Callable[..., Awaitable[str]],
                       file_or_path: AsyncFileOrPath,
                       dst_path: str, /, **kwargs) -> None:
-        try:
-            timeout = kwargs["timeout"]
-        except KeyError:
+        timeout = kwargs.get("timeout", ...)
+
+        if timeout is ...:
             timeout = settings.DEFAULT_UPLOAD_TIMEOUT
 
         retry_interval = kwargs.get("retry_interval")
@@ -1109,9 +1109,9 @@ class AsyncClient:
         if retry_interval is None:
             retry_interval = settings.DEFAULT_RETRY_INTERVAL
 
-        try:
-            timeout = kwargs["timeout"]
-        except KeyError:
+        timeout = kwargs.get("timeout", ...)
+
+        if timeout is ...:
             timeout = settings.DEFAULT_TIMEOUT
 
         kwargs["timeout"] = timeout

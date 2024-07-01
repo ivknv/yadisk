@@ -29,43 +29,29 @@ if TYPE_CHECKING:
     from ._async_client import AsyncClient
 
 __all__ = [
-    "JSON", "Unspecified", "unspecified", "TimeoutParameter",
-    "Headers", "Payload", "ConsumeCallback", "AsyncPayload",
-    "AsyncConsumeCallback", "AnyResponse", "AnyClient", "AsyncFileLike",
-    "BinaryAsyncFileLike", "FileOrPath", "FileOrPathDestination",
-    "AsyncFileOrPath", "AsyncFileOrPathDestination", "SessionFactory",
-    "AsyncSessionFactory", "FileOpenMode", "OpenFileCallback",
-    "AsyncOpenFileCallback", "HTTPMethod", "SessionName", "AsyncSessionName",
-    "OperationStatus"
+    "JSON", "TimeoutParameter", "Headers", "Payload", "ConsumeCallback",
+    "AsyncPayload", "AsyncConsumeCallback", "AnyResponse", "AnyClient",
+    "AsyncFileLike", "BinaryAsyncFileLike", "FileOrPath",
+    "FileOrPathDestination", "AsyncFileOrPath", "AsyncFileOrPathDestination",
+    "SessionFactory", "AsyncSessionFactory", "FileOpenMode",
+    "OpenFileCallback", "AsyncOpenFileCallback", "HTTPMethod", "SessionName",
+    "AsyncSessionName", "OperationStatus"
 ]
 
 #: JSON data (parsed)
 JSON: TypeAlias = Union[Dict, List, str, int, float, None]
-
-class Unspecified:
-    """
-        This type is used to specify default values in cases where :code:`None`
-        has a different meaning (like specifying default timeout)
-    """
-    ...
-
-#: Placeholder value. Used to specify default timeout (since :code:`None`
-#: already means "no timeout"). If a function receives this value as one of its
-#: arguments, it should substitute it with some default value.
-unspecified: Unspecified = Unspecified()
 
 #: Request timeout (in seconds). Can be a single number, None or a tuple.
 #: If the timeout is specified as a tuple, then the first value is the
 #: connect timeout, and the second value is the read timeout.
 #: Otherwise, both connect and read timeouts are set to the same value.
 #: A value of None means no timeout.
-#: If the timeout's value is :any:`unspecified`, the default timeout is used
+#: If the timeout's value is :code:`...`, the default timeout is used
 #: (either :any:`yadisk.settings.DEFAULT_TIMEOUT` or :any:`yadisk.settings.DEFAULT_UPLOAD_TIMEOUT`)
 TimeoutParameter: TypeAlias = Optional[
     Union[
         float,
-        Tuple[Optional[float], Optional[float]],
-        Unspecified
+        Tuple[Optional[float], Optional[float]]
     ]
 ]
 

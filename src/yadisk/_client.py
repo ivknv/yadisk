@@ -886,9 +886,9 @@ class Client:
                 get_upload_link_function: Callable,
                 file_or_path: FileOrPath,
                 dst_path: str, /, **kwargs) -> None:
-        try:
-            timeout = kwargs["timeout"]
-        except KeyError:
+        timeout = kwargs.get("timeout", ...)
+
+        if timeout is ...:
             timeout = settings.DEFAULT_UPLOAD_TIMEOUT
 
         retry_interval = kwargs.get("retry_interval")
@@ -1088,9 +1088,9 @@ class Client:
         if retry_interval is None:
             retry_interval = settings.DEFAULT_RETRY_INTERVAL
 
-        try:
-            timeout = kwargs["timeout"]
-        except KeyError:
+        timeout = kwargs.get("timeout", ...)
+
+        if timeout is ...:
             timeout = settings.DEFAULT_TIMEOUT
 
         kwargs["timeout"] = timeout

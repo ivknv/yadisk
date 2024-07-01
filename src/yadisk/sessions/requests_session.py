@@ -23,7 +23,7 @@ from ..exceptions import (
 
 from .._session import Session, Response
 from ..utils import CaseInsensitiveDict
-from ..types import JSON, ConsumeCallback, HTTPMethod, unspecified
+from ..types import JSON, ConsumeCallback, HTTPMethod
 from .. import settings
 
 from typing import Union
@@ -140,7 +140,7 @@ class RequestsSession(Session):
         if "timeout" in kwargs:
             timeout = kwargs["timeout"]
 
-            if timeout is unspecified:
+            if timeout is ...:
                 kwargs["timeout"] = settings.DEFAULT_TIMEOUT
 
         try:

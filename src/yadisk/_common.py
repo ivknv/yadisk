@@ -25,7 +25,7 @@ from . import settings
 
 from typing import Optional, TypeVar, Any, Union
 
-from .types import Unspecified, unspecified, TimeoutParameter
+from .types import TimeoutParameter
 
 __all__ = [
     "typed_list", "int_or_error", "float_or_error", "str_or_error", "bool_or_error",
@@ -143,5 +143,5 @@ def ensure_path_has_schema(path: str, default_schema: str = "disk") -> str:
 def is_async_func(func: Any) -> bool:
     return inspect.isgeneratorfunction(func) or asyncio.iscoroutinefunction(func)
 
-def is_default_timeout(timeout: Union[TimeoutParameter, Unspecified]) -> bool:
-    return timeout is unspecified
+def is_default_timeout(timeout: TimeoutParameter) -> bool:
+    return timeout is ...
