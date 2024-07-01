@@ -20,14 +20,15 @@ from .utils import CaseInsensitiveDict
 
 from ._typing_compat import Dict, Generator
 from .exceptions import InvalidResponseError
-from .objects import ResourceObject
+from .objects import ResourceObject, LinkObject
 
 from typing import Any, AnyStr, IO, Optional
 
 __all__ = [
     "_apply_default_args", "_filter_request_kwargs",
     "_read_file_as_generator", "_set_authorization_header",
-    "_add_authorization_header", "_validate_listdir_response"
+    "_add_authorization_header", "_validate_listdir_response",
+    "_validate_link_response"
 ]
 
 
@@ -95,5 +96,11 @@ def _validate_listdir_response(response: ResourceObject) -> ResourceObject:
             response.embedded.offset is None or response.embedded.limit is None or
             response.embedded.total is None):
         raise InvalidResponseError("Response did not contain key field")
+
+    return response
+
+def _validate_link_response(response: LinkObject) -> LinkObject:
+    if not response.href:
+        raise InvalidResponseError("Response did not contain the link")
 
     return response

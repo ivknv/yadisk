@@ -44,7 +44,8 @@ from ._import_session import import_async_session
 
 from ._client_common import (
     _apply_default_args, _filter_request_kwargs, _set_authorization_header,
-    _add_authorization_header, _validate_listdir_response
+    _add_authorization_header, _validate_listdir_response,
+    _validate_link_response
 )
 
 _default_open_file: AsyncOpenFileCallback
@@ -886,9 +887,11 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return (await GetUploadLinkRequest(
-            self.session, path, fields=["href"], **kwargs
-        ).asend(yadisk=self)).href
+        return (
+            await GetUploadLinkRequest(
+                self.session, path, fields=["href"], **kwargs
+            ).asend(yadisk=self, then=_validate_link_response)
+        ).href
 
     async def _upload(self,
                       get_upload_link_function: Callable[..., Awaitable[str]],
@@ -1071,8 +1074,11 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return (await GetDownloadLinkRequest(
-            self.session, path, fields=["href"], **kwargs).asend(yadisk=self)).href
+        return (
+            await GetDownloadLinkRequest(
+                self.session, path, fields=["href"], **kwargs
+            ).asend(yadisk=self, then=_validate_link_response)
+        ).href
 
     async def _download(
         self,
@@ -2130,8 +2136,11 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return (await GetPublicDownloadLinkRequest(
-            self.session, public_key, fields=["href"], **kwargs).asend(yadisk=self)).href
+        return (
+            await GetPublicDownloadLinkRequest(
+                self.session, public_key, fields=["href"], **kwargs
+            ).asend(yadisk=self, then=_validate_link_response)
+        ).href
 
     async def download_public(
         self,
