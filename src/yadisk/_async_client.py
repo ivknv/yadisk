@@ -75,10 +75,8 @@ __all__ = ["AsyncClient"]
 
 
 async def _exists(get_meta_function: Callable[..., Awaitable], /, *args, **kwargs) -> bool:
-    kwargs["limit"] = 0
-
     try:
-        await get_meta_function(*args, **kwargs)
+        await get_meta_function(*args, limit=0, **kwargs)
 
         return True
     except PathNotFoundError:
@@ -89,10 +87,7 @@ ResourceType = Union["AsyncResourceObject", "AsyncPublicResourceObject", "AsyncT
 
 async def _get_type(get_meta_function: Callable[..., Awaitable[ResourceType]],
                     /, *args, **kwargs) -> str:
-    kwargs["limit"] = 0
-    kwargs["fields"] = ["type"]
-
-    type = (await get_meta_function(*args, **kwargs)).type
+    type = (await get_meta_function(*args, fields=["type"], limit=0, **kwargs)).type
 
     if type is None:
         raise InvalidResponseError("Response did not contain the type field")

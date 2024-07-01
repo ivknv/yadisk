@@ -74,10 +74,8 @@ def _exists(
     *args,
     **kwargs
 ) -> bool:
-    kwargs["limit"] = 0
-
     try:
-        get_meta_function(*args, **kwargs)
+        get_meta_function(*args, limit=0, **kwargs)
 
         return True
     except PathNotFoundError:
@@ -90,10 +88,7 @@ def _get_type(
     *args,
     **kwargs
 ) -> str:
-    kwargs["limit"] = 0
-    kwargs["fields"] = ["type"]
-
-    type = get_meta_function(*args, **kwargs).type
+    type = get_meta_function(*args, fields=["type"], limit=0, **kwargs).type
 
     if type is None:
         raise InvalidResponseError("Response did not contain the type field")
