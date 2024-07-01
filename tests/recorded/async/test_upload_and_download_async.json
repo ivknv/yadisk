@@ -1,7 +1,7 @@
 [
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&overwrite=true",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&overwrite=true&fields=href",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -12,14 +12,14 @@
             "status_code": 200,
             "headers": {
                 "content-type": "application/json; charset=utf-8",
-                "content-length": "242"
+                "content-length": "128"
             },
-            "content": "eJwtj81ugzAQhN+Fc2P8s9iYp+ghPVcbvC4Igl2zUUKqvnsdqceZkb5P89OkTAV5TtvnHJqhGQGpj9LHS9eZGKIiBdJhVEo7DQrJUYTRYriY4MFrh9ZFtN4A2N47at6aqVCspIk570Pb3vKaMFABSCLM+yIO3AI9xEY8AJj//cRYvohbLTVIa+RZS+VBiWoVNw5iwbu0yxiOnHVHz0d/d+V40vdpeXHBGuWc1dV+JZ7S68n7x7lGpmtekak2Ededfv8Ab/NLOw=="
+            "content": "eJwtzEsOwiAQANC7sC+fYYTKOXoBDCNoFQkdoo3x7sbE9UveW5ROZxFEYW5bUGq02yMm6uCyTJdtlXusiV6yEgdE+/eJY8/ECjSg9tosxgOAkaCPcnCSFkp5+uup0sg7Yyr17nw7aDetvxjRwQx2Fp8vn9soJA=="
         }
     },
     {
         "method": "PUT",
-        "url": "https://uploader44o.disk.yandex.net/upload-target/20240630T201941.272.utd.kaw06kcdypp25ezx8w7ryzeq-k44o.46317762",
+        "url": "https://uploader26g.disk.yandex.net/upload-target/20240701T172221.209.utd.32hhw7jbneugyt4dhnm67p506-k26g.44628238",
         "headers": {
             "content-type": "application/octet-stream",
             "connection": "close"
@@ -33,7 +33,7 @@
     },
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=disk%3A%2FYaDiskTest%2Fzeroes_from_generator.txt&overwrite=true",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=disk%3A%2FYaDiskTest%2Fzeroes_from_generator.txt&overwrite=true&fields=href",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -44,14 +44,14 @@
             "status_code": 200,
             "headers": {
                 "content-type": "application/json; charset=utf-8",
-                "content-length": "243"
+                "content-length": "126"
             },
-            "content": "eJwtj8tugzAQRf+FdWOMH+PAV2SRriPjGfMMpjBBSav+ex2py3uudK7uT5FW2jwPabkNWDSF9QZjaM8WXBUrp0LENlRO2tpHDdIhoAYM2oWaDFXOWYhaItWxhRjqUHwU/UYxm3rmdW/K8rHOySNt7jwKHPZJvPyC9BQLcWOM/u9P7LeOuFRSGQlaXpWsaqOEVVY8GAV+G9uN6oCvXi4xHJN/pQO4G0/TW6ythSyDPH8n7tP7yuXzmiPTfZ09UybRzzv9/gERbkwU"
+            "content": "eJwtzEEOgyAQAMC/cBdwd1uQd/gBE1ZAjTWwJG2a/r099DzJvFWuvKqgssjVgjH9Oh5L5OqTjqXt+rWckZ/6ZAlE+OdBlppYDFgg6+w4jw4AUCPcdJeogbL3d4+xp8LbVLd1KgdXacP+e4mcRfROfb5NBCfE"
         }
     },
     {
         "method": "PUT",
-        "url": "https://uploader78j.disk.yandex.net/upload-target/20240630T201942.525.utd.dz45gj2v6qh0nfcvkayov6tgj-k78j.35564436",
+        "url": "https://uploader8g.disk.yandex.net/upload-target/20240701T172223.325.utd.24h88683dugiej9rjf9ilerts-k8g.44703387",
         "headers": {
             "content-type": "application/octet-stream",
             "connection": "close"
@@ -65,7 +65,7 @@
     },
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/resources/download?path=disk%3A%2FYaDiskTest%2Fzeroes.txt",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources/download?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&fields=href",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -76,14 +76,14 @@
             "status_code": 200,
             "headers": {
                 "content-type": "application/json; charset=utf-8",
-                "content-length": "483"
+                "content-length": "450"
             },
-            "content": "eJxdUclu2zAQ/RcD0am1RFIUqQBCgbbx0jZA4Diwcgq4DCvaEiVL48R20X8P294KzOW9Ad4y82vWjOBmt7MGcZhu09T2b6HtlYVxbv10mF9UsHCej6f0D0ypIxkTWjMQTljFuXNgpBGlJqXhUpREa8lJCYWm1pUiyznPNFMCKGOZoGlRSGI0uDRMq/UB6u9BbZbD9hKyJ7857jbfymMLrv54Xchmj3frevf5odvLdt+vjzuCD7LuyJfnYTXcb2uf54vV8/Jk6x+bp0N4XIS3G/Y1zqeTt1V0LgQngibOtxBUB9UVxh6mOZ4xiW2GfvLo+1ApRGWaDgImjZqaKml957HKEtMHjOwLXgaoEM54QxdDq3xI4pVgfPnPZvJXqEiWSy6KpIk7wQxThChpmCsKlheMCCmopcAN0VQmHViv/snb3pz+RsBDeK1eaQKoflZW2txQS4yEXGe5LQttFI0y3GaCGD77MOsAm97GFy7vthEidDEiQmScaif4/Q7dEZym"
+            "content": "eJxdkN2O0zAQhd+l0vqOJv5PVrIQgm5bVQhoWWD3ZjW2x8RK6oTE3baLeHcC3CGdmzlHOjPz/Vw0I4bF7aLJeZhui8L359T14HFc+ji1yyskj5fleCr+jIWkgULFgwgOa5R1TS0NTgB1PFhluUOFXsjai4C0ZFpLVzKvkVIbUDtVKFWxwLEs0rTZtvhtl2C/Hj5fU3kf9z/2a314z90X2Kzh0H4sR3w4b91+t7OXr2r1ij7cvTm0j+dOvq3hNMBqGlbbzT1uArOP44dWfbrh72a9PkVvhJRKS6oZCbHDBEc0Lzj2OC3zJZP5m6GfYo59MpAzuOaIKZMGpsaQLh5jNiVxfcqz+5SvA5qMl3zD7oYOYiIzJRyf/lszxRc0tBSV1Io0c6a540BnYDMdpbhQnOpKM89QOmpZRY7oI/yr9707/T0ht+nZPDOCGb4bX3nhmKeuQmFL4WtlHbC5RvpSUycXv34DlgmR2w=="
         }
     },
     {
         "method": "GET",
-        "url": "https://downloader.disk.yandex.ru/disk/2f1037bb3e7f7da55ffec8c79b19c58791bb8519e6b2df9704550b3a7e233072/6681cbef/nsHIkeXKnaRGpTyn0UiRqWRJ9qlefX-zF8hjtEIXWBPmj8ljoIqW1tP8Xm1CYpHpMTXi44FHYGudXLRUknSFnw==?uid=455675172&filename=zeroes.txt&disposition=attachment&hash=&limit=0&content_type=text%2Fplain&owner_uid=455675172&fsize=1048576&hid=73c3a11a8c3f66346317872d2e5c1b28&media_type=document&tknv=v2&etag=d8d4c2d1c8e4b04d96bca23175d071c5",
+        "url": "https://downloader.disk.yandex.ru/disk/51f1a83f4fce9e5991b1fc4a1c3fb6b3ce6ed459d4fe102775c02d7e11bfe7c6/6682f3e0/nsHIkeXKnaRGpTyn0UiRqRG7SM3cVaHGaSkP0reYwIcRKKbxW6E-1YFASkZwl5C9aupaEspEIHUeHf2bZrOk6Q==?uid=455675172&filename=zeroes.txt&disposition=attachment&hash=&limit=0&content_type=text%2Fplain&owner_uid=455675172&fsize=1048576&hid=73c3a11a8c3f66346317872d2e5c1b28&media_type=document&tknv=v2&etag=d8d4c2d1c8e4b04d96bca23175d071c5",
         "headers": {
             "connection": "keep-alive"
         },
@@ -117,7 +117,7 @@
     },
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/resources/download?path=disk%3A%2FYaDiskTest%2Fzeroes_from_generator.txt",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources/download?path=disk%3A%2FYaDiskTest%2Fzeroes_from_generator.txt&fields=href",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -128,14 +128,14 @@
             "status_code": 200,
             "headers": {
                 "content-type": "application/json; charset=utf-8",
-                "content-length": "498"
+                "content-length": "465"
             },
-            "content": "eJxdUctu2zAQ/BcB0am1+BApOoBQoG386AMIXAdWTsaKXEW0JVKW6MR20X8v294K7GVmF7szsz+TdsQmuU/aEIbpPsuMf3OdB4PjzNjpOLuCM3iZjefsD8wUk4poQ/jcNLUwkkjOuYGaE2C8UYKqggIAFVRwoYjSMs4XQCQjCoHUWcRU1w3L3LRaH7H66mCzHLZXR57s5rTbfJmfOmyq97eFag/hYV3tPj72B9Ud/Pq0o+FRVT399Dyshu/byub5YvW8PJvq2+bp6H4s3Nsd/xzrw9maMhdCFoIWLG1shw56LG84epz2zej7/Qs6HCH4cRYuIY3mBj/ZYL0rIQTQbY8upC1MbZl2trehJKn2LkR2H64DlgEv4Y4thg6sS2NoOO7/uzrZG5aU5EoUMm1jr+CaA6WgNG+k5LnktFAFMwyFpjVTaY/Gwr/1xuvzXwnh6F7LV5ZigJfSKJNrZqhWmNckN3NZ6xg8LYQhBdUieZf0GFpv4keXD9sIA/ZRYsDINNBN+Os3mN6hwA=="
+            "content": "eJxdkM1u2zAQhN/FQHSTxR+RogIIRZAiqNMEaeC4RU8GxV1GjC1SlihVTpB3j9LeCuxlvwF2duZt1fRoV5erJsZuuMwyCH/8MWjAfg1uOKzP2gPO637MPtfMSmtFXrKcIpSqRGIBa1S1MiTnjH9SzQjjWFBJaiiFLg0wRmoFhAmwmZSKWY48u51wrNlOUMlGKcXp6lcoDxsKT+dmM7q4+/Fy88jY74bg1ezSaRvT7v40nx5iui1d9+LSmvvr73fXP59u0+3G64fdNH17vOBfl/kyOqhyIWQhaMES647odYvVK/YBh73tQ7t/Ro+9jqFfxzkmS7guDC664CsdozZNiz4mjR6aKjm61sWKJCb4uNB9PHdYRZzjBbvpjtr5ZCkN+/1/roN7xYqSXIlCJs2iFdxwTalWhlspeS45LVTBgKEwtGYqaRGc/nceghn/vhAPfqomlmDUzxUoyA0DahTmNcmhlLXRS+2FAFJQI1bvH9Eylv0="
         }
     },
     {
         "method": "GET",
-        "url": "https://downloader.disk.yandex.ru/disk/82680cd039dfb5d606333dab30a23f851871aaa151535808c66807a06208ea0b/6681cbf2/nsHIkeXKnaRGpTyn0UiRqWRJ9qlefX-zF8hjtEIXWBPmj8ljoIqW1tP8Xm1CYpHpMTXi44FHYGudXLRUknSFnw==?uid=455675172&filename=zeroes_from_generator.txt&disposition=attachment&hash=&limit=0&content_type=text%2Fplain&owner_uid=455675172&fsize=1048576&hid=73c3a11a8c3f66346317872d2e5c1b28&media_type=document&tknv=v2&etag=d8d4c2d1c8e4b04d96bca23175d071c5",
+        "url": "https://downloader.disk.yandex.ru/disk/f6ff549241ed989e0fdebe8b8c043231ed9a2023e7160bd95a9cd220b8d025df/6682f3e3/Jveub2U5162u665qAWo9kI1dTyhIuitUPjFQ22Yh0eAxi-vSt-pMqxqOt-S9ipji-b3nCKLCVTJ-SInaOUvvHQ==?uid=455675172&filename=zeroes_from_generator.txt&disposition=attachment&hash=&limit=0&content_type=text%2Fplain&owner_uid=455675172&fsize=1048576&hid=73c3a11a8c3f66346317872d2e5c1b28&media_type=document&tknv=v2&etag=d8d4c2d1c8e4b04d96bca23175d071c5",
         "headers": {
             "connection": "keep-alive"
         },

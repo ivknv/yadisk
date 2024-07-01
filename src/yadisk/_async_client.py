@@ -878,7 +878,6 @@ class AsyncClient:
 
             :param path: destination path
             :param overwrite: `bool`, determines whether to overwrite the destination
-            :param fields: list of keys to be included in the response
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -901,7 +900,7 @@ class AsyncClient:
         _add_authorization_header(kwargs, self.token)
 
         return (await GetUploadLinkRequest(
-            self.session, path, **kwargs
+            self.session, path, fields=["href"], **kwargs
         ).asend(yadisk=self)).href
 
     async def _upload(self,
@@ -1064,7 +1063,6 @@ class AsyncClient:
             Get a download link for a file (or a directory).
 
             :param path: path to the resource
-            :param fields: list of keys to be included in the response
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -1084,7 +1082,7 @@ class AsyncClient:
         _add_authorization_header(kwargs, self.token)
 
         return (await GetDownloadLinkRequest(
-            self.session, path, **kwargs).asend(yadisk=self)).href
+            self.session, path, fields=["href"], **kwargs).asend(yadisk=self)).href
 
     async def _download(
         self,
@@ -2101,7 +2099,6 @@ class AsyncClient:
 
             :param public_key: public key or public URL of the resource
             :param path: relative path to the resource within the public folder
-            :param fields: list of keys to be included in the response
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -2121,7 +2118,7 @@ class AsyncClient:
         _add_authorization_header(kwargs, self.token)
 
         return (await GetPublicDownloadLinkRequest(
-            self.session, public_key, **kwargs).asend(yadisk=self)).href
+            self.session, public_key, fields=["href"], **kwargs).asend(yadisk=self)).href
 
     async def download_public(
         self,

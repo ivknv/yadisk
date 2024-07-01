@@ -1,7 +1,7 @@
 [
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&overwrite=false",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&overwrite=false&fields=href",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -12,14 +12,14 @@
             "status_code": 200,
             "headers": {
                 "content-type": "application/json; charset=utf-8",
-                "content-length": "243"
+                "content-length": "128"
             },
-            "content": "eJwtj8FugzAQRP+Fc2Ns72IwX9FDeo4Muy40gC2zkVJV/fc6Uo8zI72n+WlS5hJkTcdtpWZsnA40AztgAqC+77oIzsx6mJAMe+OjiWGeEAms6QCxc5P2YANBjNr3zVuzFI6VtIjkc2zbR95SIC5okqL1vKvvcBA/1cEyIsL/fpFQPllaqy1qB/pqNWrjVJWrh5CyMEhIPBuf168ybTN4b+yxD5f7C4y9RUQPVb+zLOl15f3jWqPwnrcgXJsYtpN//wAEukm2"
+            "content": "eJwtzEsOwiAQANC7sC8MP4dwDi9Aw7Rota10qL94d2Pi+iXvLUqlQURRmNctKtXWy5IyVe/OMp+2ST7TnOkhZ+LonP17x6mOxMqAcYCgjxrNwYIMCLJxltTqfgtIS39Hv5QXjJbgysPeTb/Y+YBGI4jPF7CSKLs="
         }
     },
     {
         "method": "PUT",
-        "url": "https://uploader41o.disk.yandex.net/upload-target/20240630T204016.361.utd.238taoec19pijrblc39912nm8-k41o.47244493",
+        "url": "https://uploader54j.disk.yandex.net/upload-target/20240701T172630.870.utd.eurvq87eobw75ohz0g3e0mtfv-k54j.45872170",
         "headers": {
             "content-type": "application/octet-stream",
             "connection": "close"
@@ -33,7 +33,7 @@
     },
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/resources/download?path=disk%3A%2FYaDiskTest%2Fzeroes.txt",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources/download?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&fields=href",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -44,14 +44,14 @@
             "status_code": 200,
             "headers": {
                 "content-type": "application/json; charset=utf-8",
-                "content-length": "480"
+                "content-length": "447"
             },
-            "content": "eJxdUdFunDAQ/Bek8FQdtrENjoSqVm0uEVLSJCS6t2ix14cPMBR85O6i/ntp+1ZpX2ZWmtmZ/YiaCW10HTUhjPN1kpjh3XcDGJw2xs3t5gze4GkzHZM/MDFEgdapzShRVFCbczQkZ0TUnEoQTNRCg6hVyqXWkAogGUee1cCItsBVImVODdE08fPtXYu70sPTdqzOnry4p5+2JvePpUl3z7C9Sx+qy+EHeS6/lNWpXPZl/nC43LhGPtKZtOFQyffbw3Y533Px1WXtbnGv+6v02zqfj84UXAiZCZqx2LoOPfRYXHAacN6EU4jXNOMwu+AGX0AIoJsefYgbmJsi7lzvQkFiPfiwsm/hPGIR8BSu2M3YgfPx2hJOb//ZzO6CBSWExM26sIqlYHNhScaYkhxTzpiVSmWSCqlI3KNx8E/bDPr41z+0fikWFmOAfZHndS0VCCOQMNQZWGFlbnJmsaaWmuhT1GNoBrP+b/u9WmHAfr0v4MpY6Gb89RvntZtm"
+            "content": "eJxdUF9v0zAc/C6V5jcax7Ude5KFqlaMUl5YuzH2UvnPz8RqYmexO5ohvjsB3pDu5e6kO939XLQj+MXtoi1lyLdV5dKP2CXtYFy6kM/LSUcH1+V4qf7QSmrqHBaYSyMNUI2xt+C4p7XFnoNwjTECOwquxoZxwJoIW0srLZFWC1lxLoinrqli/rg7w9M+6vu74ThF/BDuX/TzGdjnEr59Xb/st4cds4dxc0zrmKfp8nwcpzR2w/7dRprT43bzmDZ9Lp8O9KHv75669Y59uVltZ7y/BKcoY7xhdUOQDx1E3YN6gzFBXpZrQfOaIeVQQopKl6Jt20MsqNW5VagLfSgKI5timdVTmQZQBa7lhnwYOh0iml+C8fRfTQ5voGqMMWpnw0uy0l4wjxtCJKewooR4LmXDa8YlRj24oP9lu2Qvf/vLOb6qV4Kg6O9KCGO41MwxwARsoz3zXLj5QDC1r93i129lk5K/"
         }
     },
     {
         "method": "GET",
-        "url": "https://downloader.disk.yandex.ru/disk/d09acc3f7109151f84ed08205b416a525b5ca5b9346cca35a074e47ba20cfa49/6681d0c1/nsHIkeXKnaRGpTyn0UiRqfb0NQKd3XSaGI3OTzjP0SKAKTxKvgK8OjzFih6Q1s0ktjT6wHjGvyN45Bi7kXviVg==?uid=455675172&filename=zeroes.txt&disposition=attachment&hash=&limit=0&content_type=text%2Fplain&owner_uid=455675172&fsize=1000&hid=f923af85f0722964e3422f6997615690&media_type=document&tknv=v2&etag=88bb69a5d5e02ec7af5f68d82feb1f1d",
+        "url": "https://downloader.disk.yandex.ru/disk/9a4dd08069b9be4a00fced6f41c0f6e8d7bb80d4ed10b56e0a28c19c9c29ca89/6682f4d7/nsHIkeXKnaRGpTyn0UiRqaZke5LtiYWAqKDSI5cSrCToAnsyyuZTryorlpK-C9b_VDCVoCmstJS4UmmGXlAI5Q==?uid=455675172&filename=zeroes.txt&disposition=attachment&hash=&limit=0&content_type=text%2Fplain&owner_uid=455675172&fsize=1000&hid=f923af85f0722964e3422f6997615690&media_type=document&tknv=v2&etag=88bb69a5d5e02ec7af5f68d82feb1f1d",
         "headers": {
             "connection": "keep-alive",
             "authorization": "OAuth supposedly_valid_token"

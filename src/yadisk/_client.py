@@ -857,7 +857,6 @@ class Client:
 
             :param path: destination path
             :param overwrite: `bool`, determines whether to overwrite the destination
-            :param fields: list of keys to be included in the response
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -880,7 +879,9 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return GetUploadLinkRequest(self.session, path, **kwargs).send(yadisk=self).href
+        return GetUploadLinkRequest(
+            self.session, path, fields=["href"], **kwargs
+        ).send(yadisk=self).href
 
     def _upload(self,
                 get_upload_link_function: Callable,
@@ -1043,7 +1044,6 @@ class Client:
             Get a download link for a file (or a directory).
 
             :param path: path to the resource
-            :param fields: list of keys to be included in the response
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -1063,7 +1063,9 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return GetDownloadLinkRequest(self.session, path, **kwargs).send(yadisk=self).href
+        return GetDownloadLinkRequest(
+            self.session, path, fields=["href"], **kwargs
+        ).send(yadisk=self).href
 
     def _download(
         self,
@@ -2076,7 +2078,6 @@ class Client:
 
             :param public_key: public key or public URL of the public resource
             :param path: relative path to the resource within the public folder
-            :param fields: list of keys to be included in the response
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -2097,7 +2098,7 @@ class Client:
         _add_authorization_header(kwargs, self.token)
 
         return GetPublicDownloadLinkRequest(
-            self.session, public_key, **kwargs
+            self.session, public_key, fields=["href"], **kwargs
         ).send(yadisk=self).href
 
     def download_public(

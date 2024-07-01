@@ -1,7 +1,7 @@
 [
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&overwrite=true",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&overwrite=true&fields=href",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -12,14 +12,14 @@
             "status_code": 200,
             "headers": {
                 "content-type": "application/json; charset=utf-8",
-                "content-length": "243"
+                "content-length": "128"
             },
-            "content": "eJwtj81ugzAQhN+Fc2PWP2swT9FDeo4WewkUAgiWiKjqu9eRepwZ6ZuZn2JZeSMZlvk2pKIpwEVN0WnjNdoYQgw2tqmCyrRBp2CxgtTFGHxASxxbYoreovU1Wsh28VH0G3eZ1Iuse1OWxzotlHjT+q7SsI/qRXPiU80sjXP2P78IbXeW0oBx4C1cDegatTKI6pCkkvYMeFJ3nEzPmsFRTfQavy/jG+ycR8iLc/2DpV/eVz6/rlkKP9aJhLPT0bTz7x8UIEo5"
+            "content": "eJwtzEsOwiAQANC7sO8A4xgK5/ACmEGrrbTS6QeNdzcmrl/y3qor6aKC6kSmOWi9TMMYORWLI/Bt7qHGzGmHnCQQHf7eSCzXJBoNknHGnqxDQwju6GERhvbJ+/3sS123lV9b9UObH1UWafpfTGSd9wbV5wvKUSnK"
         }
     },
     {
         "method": "PUT",
-        "url": "https://uploader11g.disk.yandex.net/upload-target/20240630T201851.255.utd.d16e05xafuxeav8e04a8aaykj-k11g.44650153",
+        "url": "https://uploader12o.disk.yandex.net/upload-target/20240701T172042.759.utd.8qdxjb9ryvwvdzwy9l8nmytut-k12o.44179902",
         "headers": {
             "content-type": "application/octet-stream",
             "connection": "close"

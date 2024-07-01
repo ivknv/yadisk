@@ -650,7 +650,6 @@ class ResourceObjectMethodsMixin:
 
             :param relative_path: `str` or `None`, relative path to the resource
             :param overwrite: `bool`, determines whether to overwrite the destination
-            :param fields: list of keys to be included in the response
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -764,7 +763,6 @@ class ResourceObjectMethodsMixin:
             Get a download link for a file (or a directory).
 
             :param relative_path: `str` or `None`, path relative to the resource
-            :param fields: list of keys to be included in the response
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -1507,7 +1505,6 @@ class AsyncResourceObjectMethodsMixin:
 
             :param relative_path: `str` or `None`, relative path to the resource
             :param overwrite: `bool`, determines whether to overwrite the destination
-            :param fields: list of keys to be included in the response
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -1622,7 +1619,6 @@ class AsyncResourceObjectMethodsMixin:
             Get a download link for a file (or a directory).
 
             :param relative_path: `str` or `None`, path relative to the resource
-            :param fields: list of keys to be included in the response
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries

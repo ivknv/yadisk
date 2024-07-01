@@ -1,7 +1,7 @@
 [
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&overwrite=true",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&overwrite=true&fields=href",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -12,14 +12,14 @@
             "status_code": 200,
             "headers": {
                 "content-type": "application/json; charset=utf-8",
-                "content-length": "243"
+                "content-length": "126"
             },
-            "content": "eJwtj81ugzAQhN/F58bYXv/BU/SQnqs1XhcIAQJL1arqu9eRepwZzTeaH7FutCOP6/I+ZtGJYKhtofcJTATXg0ohJrDJkQ8JtIFcSiKNQRWP4HJG6522xaIu4C2JFzHsVCppYN6OrmnObV4x0+7jJPN43OQ3Lpm+5ELcWQv/+YVx/yBujDJWeVBXo6xSrQwa5MlZ9tNnofPxsHEofZlSXEJ2xvl4uT3BEGvJgavzd+JhfV55fbtWyXTfZmSqTsH5oN8/PNpKWQ=="
+            "content": "eJwtzEsOgyAQANC7sHcAB0Q4hxcg8rGlUQNDU9P07u2i65e8N9tqTMyxjehsjvN+Pg4fYlUZwq0VuPwe4gv2SE4p/PNAvuZIfBSjEkbIRZpRKwuTtdApAPorpayfRff7KmTDuSQ6jFiH8nvRzKgNTuzzBVwUJ8c="
         }
     },
     {
         "method": "PUT",
-        "url": "https://uploader68j.disk.yandex.net/upload-target/20240630T204009.713.utd.cjvfeuqq48hfcfjb8n7d52568-k68j.38063535",
+        "url": "https://uploader4g.disk.yandex.net/upload-target/20240701T172549.699.utd.3ayffg5vk5ujc01s38kfto70c-k4g.37835736",
         "headers": {
             "content-type": "application/octet-stream",
             "connection": "close"
@@ -33,7 +33,7 @@
     },
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/resources/download?path=disk%3A%2FYaDiskTest%2Fzeroes.txt",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources/download?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&fields=href",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -44,14 +44,14 @@
             "status_code": 200,
             "headers": {
                 "content-type": "application/json; charset=utf-8",
-                "content-length": "483"
+                "content-length": "450"
             },
-            "content": "eJxdUctu1EAQ/BdL8QnW8/A8HMlCIQsJICK8GwLKJZpHGw9rj712b9gN4t8ZyC1SX6pKqq7u+p11M7TZedYhTst5UfjxV+xH42Fe+bDsVicTPRxX86H4BwtLK92WLefAKsY1o1ZWQitqhWUls4IA4RVQLrlrnWUgvXClINI756yuXCGlpp5YW8Tl+sMOvn+KZnM13Z4i+Ro2+3ZrW7b/uB5Ic/Paflnv7hVrYH9Qne0Fmcg333++vL5vmoniXI2huTne8bf8brMlF3D5c3txxtdp3hyCr0shpBJUsbwNPUQzQP0E8wjLCo+Yp2umcQkYxlgbROO6ASLmnVm6Ou/DELAmuRsjJvYBTxPUCEc8Y++n3oSYpy/B/PBizRKeoKak1ELJvEua4o4bSo12vJWSl5JTpRXzDISjlul8AB/Ms70f3eF/BNzFx/qR5YDmR+21Lx3z1GkoLSl9Ja0zLNkITxR1InuVDYDd6FOFV+9uE0QYUkSExLSmX+DPX/fQm0E="
+            "content": "eJxdkEtv2zAQhP+LgehWi29SAYge2jgJHKCtUfdxCpbkyiIsUYpEy3aC/veq7a3AXHYG+HZ33lbNiPXqdtXkPEy3ZRn6c2p7CDiuQ5yO6yukgJf1eCr/jCWKqq4qZARd0EgYd7XjSDiXHjhX3mAIzhnJq4oJ4RRIiii1MSaAdEaVShlWC6jLND08HvHHNsHufvh6TWQfdy8eDhvyKOZcfeqTH+/ePQwdJXfb/DmrvfswnfjLpFna3x+e5m/b83Vm2v3c7L5f2i9P3baF8w3/uOj9KQYrpFRaUs2KOraYoEP7imOP0zpfcrF8M/RTzLFPFnIG33SYctHA1NiijV3MlhS+T3lxn/N1QJvxkm/YZmghpmJpCcfn/9ZM8RUtJcJIrYpmyTT3HCgF43mtFBeKU200Cwylp46ZosMQ4R8+9P7094R8TLOdWYEZDjaYIDwLdClWOCJCpZwHtmBkIJp6ufr1Gy6tkok="
         }
     },
     {
         "method": "GET",
-        "url": "https://downloader.disk.yandex.ru/disk/b198f4f33e2923821b695871b5b242b50e039e1363cfcb2e6d5c4506dcccb89c/6681d0bb/nsHIkeXKnaRGpTyn0UiRqfSbf2qJDm0QN-bPDkZ72Qequ7hbl50p0WdlMCHZQQp1tr9oiQNxV3B3VRS0AeCjSA==?uid=455675172&filename=zeroes.txt&disposition=attachment&hash=&limit=0&content_type=text%2Fplain&owner_uid=455675172&fsize=1048576&hid=73c3a11a8c3f66346317872d2e5c1b28&media_type=document&tknv=v2&etag=d8d4c2d1c8e4b04d96bca23175d071c5",
+        "url": "https://downloader.disk.yandex.ru/disk/e49f99e20ebd7e023bfb3e0335ca336c8eddbb85399244b6a51ee57888da5b86/6682f4af/nsHIkeXKnaRGpTyn0UiRqcagF0I4vt9OoncrE-Hpm10EKtPt6UbCsu3qs72nUGgLvVKwyv27bYFRWxlQLmKlaw==?uid=455675172&filename=zeroes.txt&disposition=attachment&hash=&limit=0&content_type=text%2Fplain&owner_uid=455675172&fsize=1048576&hid=73c3a11a8c3f66346317872d2e5c1b28&media_type=document&tknv=v2&etag=d8d4c2d1c8e4b04d96bca23175d071c5",
         "headers": {
             "connection": "keep-alive",
             "authorization": "OAuth supposedly_valid_token"
