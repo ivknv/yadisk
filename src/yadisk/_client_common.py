@@ -19,12 +19,15 @@
 from .utils import CaseInsensitiveDict
 
 from ._typing_compat import Dict, Generator
+from .exceptions import InvalidResponseError
+from .objects import ResourceObject
+
 from typing import Any, AnyStr, IO, Optional
 
 __all__ = [
     "_apply_default_args", "_filter_request_kwargs",
     "_read_file_as_generator", "_set_authorization_header",
-    "_add_authorization_header"
+    "_add_authorization_header", "_validate_listdir_response"
 ]
 
 
@@ -63,6 +66,7 @@ def _set_authorization_header(
 
     kwargs["headers"] = headers
 
+
 def _add_authorization_header(
     kwargs: Dict[str, Any],
     new_token: Optional[str] = None
@@ -78,3 +82,18 @@ def _add_authorization_header(
         headers["Authorization"] = None
 
     kwargs["headers"] = headers
+
+
+def _validate_listdir_response(response: ResourceObject) -> ResourceObject:
+    if response.type == "file":
+        return response
+
+    if response.embedded is None:
+        raise InvalidResponseError("Response did not contain _embedded field")
+
+    if (response.type is None or response.embedded.items is None or
+            response.embedded.offset is None or response.embedded.limit is None or
+            response.embedded.total is None):
+        raise InvalidResponseError("Response did not contain key field")
+
+    return response

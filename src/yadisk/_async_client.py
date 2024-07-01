@@ -44,7 +44,7 @@ from ._import_session import import_async_session
 
 from ._client_common import (
     _apply_default_args, _filter_request_kwargs, _set_authorization_header,
-    _add_authorization_header
+    _add_authorization_header, _validate_listdir_response
 )
 
 _default_open_file: AsyncOpenFileCallback
@@ -129,29 +129,21 @@ async def _listdir(
         # Do not query more items than necessary
         kwargs["limit"] = min(remaining_items, kwargs["limit"])
 
-    result = await get_meta_function(path, **kwargs)
+    result = await get_meta_function(path, _then=_validate_listdir_response, **kwargs)
 
     if result.type == "file":
         raise WrongResourceTypeError("%r is a file" % (path,))
 
-    if result.embedded is None:
-        raise InvalidResponseError("Response did not contain _embedded field")
-
-    if (result.type is None or result.embedded.items is None or
-            result.embedded.offset is None or result.embedded.limit is None or
-            result.embedded.total is None):
-        raise InvalidResponseError("Response did not contain key field")
-
-    for child in result.embedded.items[:remaining_items]:
+    for child in result.embedded.items[:remaining_items]:  # type: ignore[union-attr,index]
         yield child
 
-    limit: int = result.embedded.limit
-    offset: int = result.embedded.offset
-    total: int = result.embedded.total
+    limit: int = result.embedded.limit  # type: ignore[assignment,union-attr]
+    offset: int = result.embedded.offset  # type: ignore[assignment,union-attr]
+    total: int = result.embedded.total  # type: ignore[assignment,union-attr]
 
     while offset + limit < total:
         if remaining_items is not None:
-            remaining_items -= len(result.embedded.items)
+            remaining_items -= len(result.embedded.items)  # type: ignore[union-attr,arg-type]
 
             if remaining_items <= 0:
                 break
@@ -163,21 +155,16 @@ async def _listdir(
 
         offset += limit
         kwargs["offset"] = offset
-        result = await get_meta_function(path, **kwargs)
+        result = await get_meta_function(path, _then=_validate_listdir_response, **kwargs)
 
-        if result.embedded is None:
-            raise InvalidResponseError("Response did not contain _embedded field")
+        if result.type == "file":
+            raise WrongResourceTypeError("%r is a file" % (path,))
 
-        if (result.type is None or result.embedded.items is None or
-                result.embedded.offset is None or result.embedded.limit is None or
-                result.embedded.total is None):
-            raise InvalidResponseError("Response did not contain key field")
-
-        for child in result.embedded.items[:remaining_items]:
+        for child in result.embedded.items[:remaining_items]:  # type: ignore[union-attr,index]
             yield child
 
-        limit = result.embedded.limit
-        total = result.embedded.total
+        limit = result.embedded.limit  # type: ignore[assignment,union-attr]
+        total = result.embedded.total  # type: ignore[assignment,union-attr]
 
 
 async def read_in_chunks(file: IO, chunk_size: int = 64 * 1024) -> Union[AsyncGenerator[str, None],
@@ -746,7 +733,10 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return await GetMetaRequest(self.session, path, **kwargs).asend(yadisk=self)
+        # This is for internal error handling
+        _then = kwargs.pop("_then", None)
+
+        return await GetMetaRequest(self.session, path, **kwargs).asend(yadisk=self, then=_then)
 
     async def exists(self, path: str, /, **kwargs) -> bool:
         """
@@ -1341,7 +1331,12 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return await GetTrashRequest(self.session, path, **kwargs).asend(yadisk=self)
+        # This is for internal error handling
+        _then = kwargs.pop("_then", None)
+
+        return await GetTrashRequest(
+            self.session, path, **kwargs
+        ).asend(yadisk=self, then=_then)
 
     async def trash_exists(self, path: str, /, **kwargs) -> bool:
         """
@@ -1670,7 +1665,12 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return await GetPublicMetaRequest(self.session, public_key, **kwargs).asend(yadisk=self)
+        # This is for internal error handling
+        _then = kwargs.pop("_then", None)
+
+        return await GetPublicMetaRequest(
+            self.session, public_key, **kwargs
+        ).asend(yadisk=self, then=_then)
 
     async def public_exists(self, public_key: str, /, **kwargs) -> bool:
         """
@@ -1957,13 +1957,19 @@ class AsyncClient:
         return await PatchRequest(self.session, path, properties, **kwargs).asend(yadisk=self)
 
     async def _get_files_some(self, **kwargs) -> List["AsyncResourceObject"]:
-        response: "AsyncFilesResourceListObject" = await FilesRequest(
-            self.session, **kwargs).asend(yadisk=self)
+        def validate_response(response: "AsyncFilesResourceListObject") -> "AsyncFilesResourceListObject":
+            if response.items is None:
+                raise InvalidResponseError("Response did not contain key field")
 
-        if response.items is None:
-            raise InvalidResponseError("Response did not contain key field")
+            return response
 
-        return response.items
+        items: List["AsyncResourceObject"] = (
+            await FilesRequest(
+                self.session, **kwargs
+            ).asend(yadisk=self, then=validate_response)
+        ).items
+
+        return items
 
     async def get_files(
         self,
@@ -2053,14 +2059,21 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        response: "AsyncLastUploadedResourceListObject" = await LastUploadedRequest(
-            self.session, **kwargs
-        ).asend(yadisk=self)
+        def validate_response(
+            response: "AsyncLastUploadedResourceListObject"
+        ) -> "AsyncLastUploadedResourceListObject":
+            if response.items is None:
+                raise InvalidResponseError("Response did not contain key field")
 
-        if response.items is None:
-            raise InvalidResponseError("Response did not contain key field")
+            return response
 
-        return response.items
+        items: List["AsyncResourceObject"] = (
+            await LastUploadedRequest(
+                self.session, **kwargs
+            ).asend(yadisk=self, then=validate_response)
+        ).items
+
+        return items
 
     async def upload_url(self, url: str, path: str, /, **kwargs) -> "AsyncOperationLinkObject":
         """

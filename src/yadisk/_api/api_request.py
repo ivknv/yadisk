@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
+import asyncio
 from ..exceptions import InvalidResponseError
 
 from ..utils import auto_retry, async_auto_retry, CaseInsensitiveDict
@@ -23,7 +24,7 @@ from .. import settings
 from .._common import is_default_timeout
 
 from typing import Any, Optional, Union, TypeVar, TYPE_CHECKING
-from .._typing_compat import Set, Dict
+from .._typing_compat import Set, Dict, Callable, Awaitable
 import json
 
 if TYPE_CHECKING:
@@ -137,7 +138,11 @@ class APIRequest(object):
 
         return kwargs
 
-    def _attempt(self) -> Optional["JSON"]:
+    def _attempt(
+        self,
+        yadisk: Optional["Client"],
+        then: Callable[[Any], Any]
+    ) -> Any:
         assert self.method is not None
         assert self.url
 
@@ -152,11 +157,22 @@ class APIRequest(object):
             raise response.get_exception()
 
         try:
-            return response.json()
+            json = response.json()
         except ValueError:
-            return None
+            json = None
 
-    async def _async_attempt(self) -> Optional["JSON"]:
+        try:
+            result = self.process_json(json, yadisk=yadisk)
+        except ValueError as e:
+            raise InvalidResponseError(f"Server returned invalid response: {e}") from e
+
+        return then(result)
+
+    async def _async_attempt(
+        self,
+        yadisk: Optional["AsyncClient"],
+        then: Union[Callable[[Any], Any], Callable[[Any], Awaitable[Any]]]
+    ) -> Any:
         assert self.method is not None
         assert self.url
 
@@ -172,25 +188,61 @@ class APIRequest(object):
             raise await response.get_exception()
 
         try:
-            return await response.json()
+            json = await response.json()
         except ValueError:
-            return None
+            json = None
 
-    def send(self, yadisk: Optional["Client"]) -> Any:
+        try:
+            result = self.process_json(json, yadisk=yadisk)
+        except ValueError as e:
+            raise InvalidResponseError(f"Server returned invalid response: {e}") from e
+
+        if asyncio.iscoroutinefunction(then):
+            return await then(result)
+        else:
+            return then(result)
+
+    def send(
+        self,
+        yadisk: Optional["Client"],
+        then: Optional[Callable[[Any], Any]] = None
+    ) -> Any:
         """
             Actually send the request
 
             :param yadisk: :any:`Client` instance that will be passed to :any:`process_json()`
+            :param then: function that will be called at the end of the attempt
 
             :returns: :any:`Response` (`self.response`)
         """
 
-        json = auto_retry(self._attempt, self.n_retries, self.retry_interval)
+        return auto_retry(
+            self._attempt,
+            self.n_retries,
+            self.retry_interval,
+            args=(yadisk, then or (lambda x: x))
+        )
 
-        try:
-            return self.process_json(json, yadisk=yadisk)
-        except ValueError as e:
-            raise InvalidResponseError(f"Server returned invalid response: {e}") from e
+    async def asend(
+        self,
+        yadisk: Optional["AsyncClient"],
+        then: Optional[Union[Callable[[Any], Any], Callable[[Any], Awaitable[Any]]]] = None
+    ) -> Any:
+        """
+            Actually send the request
+
+            :param yadisk: :any:`AsyncClient` instance that will be passed to :any:`process_json()`
+            :param then: function that will be called at the end of the attempt
+
+            :returns: :any:`AsyncResponse` (`self.response`)
+        """
+
+        return await async_auto_retry(
+            self._async_attempt,
+            self.n_retries,
+            self.retry_interval,
+            args=(yadisk, then or (lambda x: x))
+        )
 
     def process_json(self, js: "JSON", **kwargs) -> Any:
         """
@@ -203,19 +255,3 @@ class APIRequest(object):
         """
 
         raise NotImplementedError
-
-    async def asend(self, yadisk: Optional["AsyncClient"]) -> Any:
-        """
-            Actually send the request
-
-            :param yadisk: :any:`AsyncClient` instance that will be passed to :any:`aprocess_json()`
-
-            :returns: :any:`AsyncResponse` (`self.response`)
-        """
-
-        json = await async_auto_retry(self._async_attempt, self.n_retries, self.retry_interval)
-
-        try:
-            return self.process_json(json, yadisk=yadisk)
-        except ValueError as e:
-            raise InvalidResponseError(f"Server returned invalid response: {e}") from e

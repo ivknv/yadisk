@@ -22,8 +22,8 @@ from urllib.parse import urlencode
 from ._api import *
 
 from .exceptions import (
-    WrongResourceTypeError, PathNotFoundError, UnauthorizedError,
-    OperationNotFoundError, InvalidResponseError
+    PathNotFoundError, UnauthorizedError,
+    OperationNotFoundError, InvalidResponseError, WrongResourceTypeError
 )
 
 from .utils import auto_retry, CaseInsensitiveDict
@@ -47,7 +47,7 @@ from .types import (
 from ._client_common import (
     _apply_default_args, _filter_request_kwargs,
     _read_file_as_generator, _set_authorization_header,
-    _add_authorization_header
+    _add_authorization_header, _validate_listdir_response
 )
 
 if TYPE_CHECKING:
@@ -130,28 +130,20 @@ def _listdir(
         # Do not query more items than necessary
         kwargs["limit"] = min(remaining_items, kwargs["limit"])
 
-    result = get_meta_function(path, **kwargs)
+    result = get_meta_function(path, _then=_validate_listdir_response, **kwargs)
 
     if result.type == "file":
         raise WrongResourceTypeError("%r is a file" % (path,))
 
-    if result.embedded is None:
-        raise InvalidResponseError("Response did not contain _embedded field")
+    yield from result.embedded.items[:remaining_items]  # type: ignore[union-attr,index]
 
-    if (result.type is None or result.embedded.items is None or
-            result.embedded.offset is None or result.embedded.limit is None or
-            result.embedded.total is None):
-        raise InvalidResponseError("Response did not contain key field")
-
-    yield from result.embedded.items[:remaining_items]
-
-    limit: int = result.embedded.limit
-    offset: int = result.embedded.offset
-    total: int = result.embedded.total
+    limit: int = result.embedded.limit  # type: ignore[assignment,union-attr]
+    offset: int = result.embedded.offset  # type: ignore[assignment,union-attr]
+    total: int = result.embedded.total  # type: ignore[assignment,union-attr]
 
     while offset + limit < total:
         if remaining_items is not None:
-            remaining_items -= len(result.embedded.items)
+            remaining_items -= len(result.embedded.items)  # type: ignore[union-attr,arg-type]
 
             if remaining_items <= 0:
                 break
@@ -163,20 +155,15 @@ def _listdir(
 
         offset += limit
         kwargs["offset"] = offset
-        result = get_meta_function(path, **kwargs)
+        result = get_meta_function(path, _then=_validate_listdir_response, **kwargs)
 
-        if result.embedded is None:
-            raise InvalidResponseError("Response did not contain _embedded field")
+        if result.type == "file":
+            raise WrongResourceTypeError("%r is a file" % (path,))
 
-        if (result.type is None or result.embedded.items is None or
-                result.embedded.offset is None or result.embedded.limit is None or
-                result.embedded.total is None):
-            raise InvalidResponseError("Response did not contain key field")
+        yield from result.embedded.items[:remaining_items]  # type: ignore[union-attr,index]
 
-        yield from result.embedded.items[:remaining_items]
-
-        limit = result.embedded.limit
-        total = result.embedded.total
+        limit = result.embedded.limit  # type: ignore[assignment,union-attr]
+        total = result.embedded.total  # type: ignore[assignment,union-attr]
 
 
 class Client:
@@ -726,7 +713,10 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return GetMetaRequest(self.session, path, **kwargs).send(yadisk=self)
+        # This is for internal error handling
+        _then = kwargs.pop("_then", None)
+
+        return GetMetaRequest(self.session, path, **kwargs).send(yadisk=self, then=_then)
 
     def exists(self, path: str, /, **kwargs) -> bool:
         """
@@ -1293,7 +1283,10 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return GetTrashRequest(self.session, path, **kwargs).send(yadisk=self)
+        # This is for internal error handling
+        _then = kwargs.pop("_then", None)
+
+        return GetTrashRequest(self.session, path, **kwargs).send(yadisk=self, then=_then)
 
     def trash_exists(self, path: str, /, **kwargs) -> bool:
         """
@@ -1637,7 +1630,10 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return GetPublicMetaRequest(self.session, public_key, **kwargs).send(yadisk=self)
+        # This is for internal error handling
+        _then = kwargs.pop("_then", None)
+
+        return GetPublicMetaRequest(self.session, public_key, **kwargs).send(yadisk=self, then=_then)
 
     def public_exists(self, public_key: str, /, **kwargs) -> bool:
         """
