@@ -991,9 +991,13 @@ class AsyncClient:
             if close_file and file is not None:
                 await file.close()
 
-    async def upload(self,
-                     path_or_file: AsyncFileOrPath,
-                     dst_path: str, /, **kwargs) -> AsyncResourceLinkObject:
+    async def upload(
+        self,
+        path_or_file: AsyncFileOrPath,
+        dst_path: str,
+        /,
+        **kwargs
+    ) -> AsyncResourceLinkObject:
         """
             Upload a file to disk.
 
@@ -1001,7 +1005,6 @@ class AsyncClient:
             :param dst_path: destination path
             :param overwrite: if `True`, the resource will be overwritten if it already exists,
                               an error will be raised otherwise
-            :param fields: list of keys to be included in the response
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries

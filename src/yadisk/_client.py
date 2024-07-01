@@ -971,9 +971,13 @@ class Client:
             if close_file and file is not None:
                 file.close()
 
-    def upload(self,
-               file_or_path: FileOrPath,
-               dst_path: str, /, **kwargs) -> SyncResourceLinkObject:
+    def upload(
+        self,
+        file_or_path: FileOrPath,
+        dst_path: str,
+        /,
+        **kwargs
+    ) -> SyncResourceLinkObject:
         """
             Upload a file to disk.
 
