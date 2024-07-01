@@ -2143,7 +2143,6 @@ class Client:
             Get operation status.
 
             :param operation_id: ID of the operation or a link
-            :param fields: list of keys to be included in the response
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -2165,5 +2164,5 @@ class Client:
         _add_authorization_header(kwargs, self.token)
 
         return GetOperationStatusRequest(
-            self.session, operation_id, **kwargs
+            self.session, operation_id, fields=["status"], **kwargs
         ).send(yadisk=self).status

@@ -1,7 +1,7 @@
 [
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/operations/0000",
+        "url": "https://cloud-api.yandex.net/v1/disk/operations/0000?fields=status",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -19,7 +19,7 @@
     },
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/operations/0000",
+        "url": "https://cloud-api.yandex.net/v1/disk/operations/0000?fields=status",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",

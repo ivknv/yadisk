@@ -83,7 +83,6 @@ class SyncOperationLinkObject(OperationLinkObject):
         """
             Get operation status.
 
-            :param fields: list of keys to be included in the response
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -126,7 +125,6 @@ class AsyncOperationLinkObject(OperationLinkObject):
         """
             Get operation status.
 
-            :param fields: list of keys to be included in the response
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries

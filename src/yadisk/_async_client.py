@@ -2161,7 +2161,6 @@ class AsyncClient:
             Get operation status.
 
             :param operation_id: ID of the operation or a link
-            :param fields: list of keys to be included in the response
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -2181,5 +2180,8 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return (await GetOperationStatusRequest(
-            self.session, operation_id, **kwargs).asend(yadisk=self)).status
+        return (
+            await GetOperationStatusRequest(
+                self.session, operation_id, fields=["status"], **kwargs
+            ).asend(yadisk=self)
+        ).status

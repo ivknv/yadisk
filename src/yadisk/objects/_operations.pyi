@@ -17,7 +17,7 @@
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
 from typing import Optional, Any
-from .._typing_compat import Dict, Iterable
+from .._typing_compat import Dict
 
 from ._yadisk_object import YaDiskObject
 from ._link_object import LinkObject
@@ -39,7 +39,6 @@ class SyncOperationLinkObject(OperationLinkObject):
     def get_status(
         self,
         *,
-        fields: Optional[Iterable[str]] = None,
         headers: Optional[Headers] = None,
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
@@ -54,7 +53,7 @@ class SyncOperationLinkObject(OperationLinkObject):
 class AsyncOperationLinkObject(OperationLinkObject):
     async def get_status(
         self,
-        fields: Optional[Iterable[str]] = None,
+        *,
         headers: Optional[Headers] = None,
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,

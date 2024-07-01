@@ -934,7 +934,6 @@ class AsyncClient:
         self,
         operation_id: str,
         /,
-        fields: Optional[Iterable[str]] = None,
         headers: Optional[Headers] = None,
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
