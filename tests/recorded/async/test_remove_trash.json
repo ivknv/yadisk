@@ -50,12 +50,12 @@
                 "content-type": "application/json; charset=utf-8",
                 "content-length": "678"
             },
-            "content": "eJy1ks1qAyEURt/FbTPkqqOOrvsI2ZRSBqPXRjo/QU1oCfPudUpaSKF0067k4vHzcPkupLwdkRjiYyIb0uO4R+/RE3MhseCYiXm8kMmOV6Ypc5NwnM9YaXyNoYLLhriEtqyvCAPWNiAbDjuqDNWGdXcABqDyHgf8idJf1Jzic5z6oy2Hjz/zi9k+2Pt67jCX7XeJcfYxxF9TE+b5lBz2cSVbIaQSVDEDHjodgKJm2glnVXBgMSjXMiYVMOa9052wrAUMraXAusA841oHioG1NfpqWpLNB3Pr17e2Q8+Fpip4FBgcus6CdrbjjnOQ3Kp1WmPcPI44lSqY1+0fUzzXnfaf4n9ufdoP0f1TfK3ETa8SnmOO80QMVVQrqbTUXEot5PJU0bnYoV5tyBDHWIgRALUHIWSsAyzLO40txP0="
+            "content": "eJy1kt1qAyEQRt/F22aJurquXvcRclNKWfwZG+m6BjWhJey715S0kELpTQuCiMdvDuOcUX07AFLIhYw2aIJowDlwSJ1RqBALUo9ntOh4ZbqaugwxnaDR8Bp8A9cNshl0vbxCFFPWYdFhsiNcEab4cIexwrjxDmb4iRJfVMrhOSzTQdf9R83yorYP+r7tOyh1+10iJhd8+DU1Q0nHbGEKF5JxPghOBFVSGOGE5pRa7I3jWgCTtPeuJ9ZIkJpqoYUwGLwfrfWejtQJGCyVRI9YtOirac267NWt30ShJdrBDY4Rz4gGbExvPZZaW0Y4GONEW0OLsSlGWGoTLJfuH3I4tZ5On+J/bn00c7D/FN9G4mauMpxCCWlBiggiRzaMUtCetw9bnxqaqp7b1QbNIYaKFMe4zYH3BdoBr+s7tK3IWw=="
         }
     },
     {
         "method": "DELETE",
-        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_4a8ed35917fde5efcec8a09ca83c33063a709ca4&force_async=false",
+        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_2e5a7c6d6d41f41ae0bb3cf09aac415ebbd7bd76&force_async=false",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -73,7 +73,7 @@
     },
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_4a8ed35917fde5efcec8a09ca83c33063a709ca4&offset=0&limit=0",
+        "url": "https://cloud-api.yandex.net/v1/disk/trash/resources?path=trash%3A%2Fdir-to-remove_2e5a7c6d6d41f41ae0bb3cf09aac415ebbd7bd76&offset=0&limit=20&fields=type",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",

@@ -75,7 +75,9 @@ def _exists(
     **kwargs
 ) -> bool:
     try:
-        get_meta_function(*args, limit=0, **kwargs)
+        # We want ot query the bare minimum number of fields, that's what
+        # the fields parameter is for
+        get_meta_function(*args, fields=["type"], **kwargs)
 
         return True
     except PathNotFoundError:
@@ -88,7 +90,7 @@ def _get_type(
     *args,
     **kwargs
 ) -> str:
-    type = get_meta_function(*args, fields=["type"], limit=0, **kwargs).type
+    type = get_meta_function(*args, fields=["type"], **kwargs).type
 
     if type is None:
         raise InvalidResponseError("Response did not contain the type field")

@@ -76,7 +76,9 @@ __all__ = ["AsyncClient"]
 
 async def _exists(get_meta_function: Callable[..., Awaitable], /, *args, **kwargs) -> bool:
     try:
-        await get_meta_function(*args, limit=0, **kwargs)
+        # We want ot query the bare minimum number of fields, that's what
+        # the fields parameter is for
+        await get_meta_function(*args, fields=["type"], **kwargs)
 
         return True
     except PathNotFoundError:
@@ -87,7 +89,7 @@ ResourceType = Union["AsyncResourceObject", "AsyncPublicResourceObject", "AsyncT
 
 async def _get_type(get_meta_function: Callable[..., Awaitable[ResourceType]],
                     /, *args, **kwargs) -> str:
-    type = (await get_meta_function(*args, fields=["type"], limit=0, **kwargs)).type
+    type = (await get_meta_function(*args, fields=["type"], **kwargs)).type
 
     if type is None:
         raise InvalidResponseError("Response did not contain the type field")

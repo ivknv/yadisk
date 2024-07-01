@@ -37,7 +37,7 @@
     },
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Fdir2&limit=0",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Fdir2&fields=type",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -48,9 +48,9 @@
             "status_code": 200,
             "headers": {
                 "content-type": "application/json; charset=utf-8",
-                "content-length": "569"
+                "content-length": "14"
             },
-            "content": "eJy1kctuwyAQRf9ltnWUsXnFrPMJ2VRVFWEYVNQQLEOiVlH+vZO0XWfTrkDDhaPDvcCe8kQhUAB7gVqWBhagg9QoV7Avrx0cUk48xQ5KjJW+t7Nrb5wMqb7b9bPb8rqj2tYhLQNfb6W5AwevHRxdpnvyfkAfKTKJ5wvVclo87ROjQSqljerNYBFxksYro6WKUXqayAnUo5LOODn2WpMjhSKEKSr0Ugm5UdjLiMptBG4Y4hdy7WYEAw5yhXolcNcbK0arxBMiMziVS0gxPYw9MPUlZzo2tqi3H5yXdGb2/tfur9Xm03RI/p+e51ba5/zTFtwqOqeayhFsb/rR6LEfpRoE4nD9AhkUodQ="
+            "content": "eJyrViqpLEhVslJKySxSqgUAJDMEvA=="
         }
     },
     {

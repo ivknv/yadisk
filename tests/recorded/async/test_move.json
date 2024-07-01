@@ -30,14 +30,14 @@
             "status_code": 201,
             "headers": {
                 "content-type": "application/json; charset=utf-8",
-                "content-length": "123"
+                "content-length": "122"
             },
-            "content": "eJwVjMsKwkAMAP8l0Js2WG8FEcHHD/TiMTQpu7jtLptUFPHfjbeZOcwHQpUJeghmRXvEMeWVt1Ri+6aF5dUuYvjcIUd9YBXNax1Fj4UsHP6t2Z+a7nqns/Mgai4cawcbmMVCZl/fLoOryVwSmXiZKKl8f2HhKlA="
+            "content": "eJwVjMsKwkAMAP8l0Js2WG8FEcHHD/TiMTQpu7jtLptUFPHfjbeZOcwHQpUJeghmpUccU155SyW2b1pYXu0ihs8dctQHVtG81lH0WMjC4d+a/anprnc6Ow+i5sKxdrCBWSxk9vPtMriazCWRiZeJksr3Byv2Kd0="
         }
     },
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Fdir2&limit=0",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Fdir2&fields=type",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
@@ -48,9 +48,9 @@
             "status_code": 200,
             "headers": {
                 "content-type": "application/json; charset=utf-8",
-                "content-length": "569"
+                "content-length": "14"
             },
-            "content": "eJy1kU1uwyAQhe8y2zoKYPNj1j1CNlVVRZgZq6ghWIZEraLcvZO0XXfTIiTQ8M08Pd4F9pQnQiQEf4Fa1gYeoIPUKFfwzy8dHFJOXBUdlHmu9HVdQntlElN989un8MjnjmrbYloVt7fSwoHBawfHkOlO3h/oPc2sxPWVajmtkfaJpWHQ2lgtrfJRRaGDFbq3zgyDdAqDHVSYlIsUe9Wjm1FLNyEvoxU66sdeoyDkIQ5ZJK4U2s0RKKGGjTCbXuyk9XLk/SCEF4KpXDDN6VfsF6ex5EzHxi7q7QeXNZ1Ze//j7q+tLafpkOI/jedU2sfynRbcIjqnmsoRvLRytMaORihjpJPXT2FPo8I="
+            "content": "eJyrViqpLEhVslJKySxSqgUAJDMEvA=="
         }
     },
     {

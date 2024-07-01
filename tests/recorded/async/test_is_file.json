@@ -14,12 +14,12 @@
                 "content-type": "application/json; charset=utf-8",
                 "content-length": "128"
             },
-            "content": "eJwtzEsOwiAQANC7sO8A4xgK5/ACmEGrrbTS6QeNdzcmrl/y3qor6aKC6kSmOWi9TMMYORWLI/Bt7qHGzGmHnCQQHf7eSCzXJBoNknHGnqxDQwju6GERhvbJ+/3sS123lV9b9UObH1UWafpfTGSd9wbV5wvKUSnK"
+            "content": "eJwtzEEOgyAQAMC/cHdZVlTwHf0ALVQbDFhYTE3TvzdNep5k3mIt4S5msTLvdZay7Vt2PhTSGfyjRjhd8uEFKfCsdf/3jl1ZAktC0jihuiiDo0KwRkFjD0PdFqTrcVDKvSNzxqdp422iLv5iPaCylqz4fAGXwSfY"
         }
     },
     {
         "method": "PUT",
-        "url": "https://uploader12o.disk.yandex.net/upload-target/20240701T172042.759.utd.8qdxjb9ryvwvdzwy9l8nmytut-k12o.44179902",
+        "url": "https://uploader24o.disk.yandex.net/upload-target/20240701T180610.981.utd.5slg02bvv2no3a28ykq8u6c72-k24o.45019929",
         "headers": {
             "content-type": "application/octet-stream",
             "connection": "close"
@@ -33,7 +33,7 @@
     },
     {
         "method": "GET",
-        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&limit=0&fields=type",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Fzeroes.txt&fields=type",
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "connection": "keep-alive",
