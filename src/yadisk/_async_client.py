@@ -1234,7 +1234,7 @@ class AsyncClient:
         path: str,
         /,
         *,
-        wait: bool = False,
+        wait: bool = True,
         **kwargs
     ) -> Optional[AsyncOperationLinkObject]:
         """
@@ -1405,7 +1405,7 @@ class AsyncClient:
         dst_path: str,
         /,
         *,
-        wait: bool = False,
+        wait: bool = True,
         **kwargs
     ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         """
@@ -1461,7 +1461,7 @@ class AsyncClient:
         dst_path: Optional[str] = None,
         /,
         *,
-        wait: bool = False,
+        wait: bool = True,
         **kwargs
     ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         """
@@ -1515,7 +1515,7 @@ class AsyncClient:
         dst_path: str,
         /,
         *,
-        wait: bool = False,
+        wait: bool = True,
         **kwargs
     ) -> Union[AsyncOperationLinkObject, AsyncResourceLinkObject]:
         """
@@ -1616,7 +1616,7 @@ class AsyncClient:
         path: str,
         /,
         *,
-        wait: bool = False,
+        wait: bool = True,
         **kwargs
     ) -> Optional[AsyncOperationLinkObject]:
         """
@@ -1715,7 +1715,7 @@ class AsyncClient:
         public_key: str,
         /,
         *,
-        wait: bool = False,
+        wait: bool = True,
         **kwargs
     ) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
         """
@@ -2211,7 +2211,7 @@ class AsyncClient:
         path: str,
         /,
         *,
-        wait: bool = False,
+        wait: bool = True,
         **kwargs
     ) -> AsyncOperationLinkObject:
         """

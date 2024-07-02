@@ -1208,7 +1208,7 @@ class Client:
         self, path: str,
         /,
         *,
-        wait: bool = False,
+        wait: bool = True,
         **kwargs
     ) -> Optional["SyncOperationLinkObject"]:
         """
@@ -1347,7 +1347,7 @@ class Client:
         dst_path: str,
         /,
         *,
-        wait: bool = False,
+        wait: bool = True,
         **kwargs
     ) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
@@ -1406,7 +1406,7 @@ class Client:
         /,
         dst_path: Optional[str] = None,
         *,
-        wait: bool = False,
+        wait: bool = True,
         **kwargs
     ) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
@@ -1461,7 +1461,7 @@ class Client:
         dst_path: str,
         /,
         *,
-        wait: bool = False,
+        wait: bool = True,
         **kwargs
     ) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
@@ -1566,7 +1566,7 @@ class Client:
         path: str,
         /,
         *,
-        wait: bool = False,
+        wait: bool = True,
         **kwargs
     ) -> Optional["SyncOperationLinkObject"]:
         """
@@ -1668,7 +1668,7 @@ class Client:
         public_key: str,
         /,
         *,
-        wait: bool = False,
+        wait: bool = True,
         **kwargs
     ) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
@@ -2168,7 +2168,7 @@ class Client:
         path: str,
         /,
         *,
-        wait: bool = False,
+        wait: bool = True,
         **kwargs
     ) -> "SyncOperationLinkObject":
         """
