@@ -728,6 +728,10 @@ class ResourceObjectMethodsMixin:
             :param relative_path: `str` or `None`, destination path relative to the resource
             :param disable_redirects: `bool`, forbid redirects
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -743,6 +747,11 @@ class ResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`SyncOperationLinkObject`, link to the asynchronous operation
         """
@@ -1016,6 +1025,10 @@ class ResourceObjectMethodsMixin:
             :param md5: `str`, MD5 hash of the file to remove
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -1029,6 +1042,11 @@ class ResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises BadRequestError: MD5 check is only available for files
             :raises ResourceIsLockedError: resource is locked by another request
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`SyncOperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
@@ -1067,6 +1085,10 @@ class ResourceObjectMethodsMixin:
             :param overwrite: `bool`, determines whether to overwrite the destination
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -1080,6 +1102,11 @@ class ResourceObjectMethodsMixin:
             :raises PathExistsError: destination path already exists
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`
         """
@@ -1127,6 +1154,10 @@ class ResourceObjectMethodsMixin:
             :param overwrite: `bool`, determines whether to overwrite the destination
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -1141,6 +1172,11 @@ class ResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
             :raises ValueError: `new_name` is not a valid filename
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`
         """
@@ -1190,6 +1226,10 @@ class ResourceObjectMethodsMixin:
                               otherwise, an error will be raised
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -1205,6 +1245,11 @@ class ResourceObjectMethodsMixin:
             :raises InsufficientStorageError: cannot complete request due to lack of storage space
             :raises ResourceIsLockedError: resource is locked by another request
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`
         """
@@ -1585,6 +1630,10 @@ class AsyncResourceObjectMethodsMixin:
             :param relative_path: `str` or `None`, destination path relative to the resource
             :param disable_redirects: `bool`, forbid redirects
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -1599,6 +1648,11 @@ class AsyncResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`AsyncOperationLinkObject`, link to the asynchronous operation
         """
@@ -1876,6 +1930,10 @@ class AsyncResourceObjectMethodsMixin:
             :param md5: `str`, MD5 hash of the file to remove
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -1888,6 +1946,11 @@ class AsyncResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises BadRequestError: MD5 check is only available for files
             :raises ResourceIsLockedError: resource is locked by another request
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`AsyncOperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
@@ -1931,6 +1994,10 @@ class AsyncResourceObjectMethodsMixin:
             :param overwrite: `bool`, determines whether to overwrite the destination
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -1943,6 +2010,11 @@ class AsyncResourceObjectMethodsMixin:
             :raises PathExistsError: destination path already exists
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`AsyncResourceLinkObject` or :any:`AsyncOperationLinkObject`
         """
@@ -1990,6 +2062,10 @@ class AsyncResourceObjectMethodsMixin:
             :param overwrite: `bool`, determines whether to overwrite the destination
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -2003,6 +2079,11 @@ class AsyncResourceObjectMethodsMixin:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
             :raises ValueError: `new_name` is not a valid filename
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`AsyncResourceLinkObject` or :any:`AsyncOperationLinkObject`
         """
@@ -2057,6 +2138,10 @@ class AsyncResourceObjectMethodsMixin:
                               otherwise, an error will be raised
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -2071,6 +2156,11 @@ class AsyncResourceObjectMethodsMixin:
             :raises InsufficientStorageError: cannot complete request due to lack of storage space
             :raises ResourceIsLockedError: resource is locked by another request
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`AsyncResourceLinkObject` or :any:`AsyncOperationLinkObject`
         """
@@ -3085,6 +3175,10 @@ class SyncTrashResourceObject(TrashResourceObject):
             :param relative_path: `str` or `None`, relative path to the trash resource to be deleted
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -3097,6 +3191,11 @@ class SyncTrashResourceObject(TrashResourceObject):
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`SyncOperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
@@ -3137,6 +3236,10 @@ class SyncTrashResourceObject(TrashResourceObject):
             :param overwrite: `bool`, determines whether the destination can be overwritten
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -3150,6 +3253,11 @@ class SyncTrashResourceObject(TrashResourceObject):
             :raises PathExistsError: destination path already exists
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`
         """
@@ -3420,6 +3528,10 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :param relative_path: `str` or `None`, relative path to the trash resource to be deleted
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -3431,6 +3543,11 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`AsyncOperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
@@ -3476,6 +3593,10 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :param overwrite: `bool`, determines whether the destination can be overwritten
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -3488,6 +3609,11 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :raises PathExistsError: destination path already exists
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`AsyncResourceLinkObject` or :any:`AsyncOperationLinkObject`
         """

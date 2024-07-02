@@ -36,9 +36,16 @@ from .exceptions import (
     PathNotFoundError, WrongResourceTypeError
 )
 from .utils import auto_retry, CaseInsensitiveDict
-from .objects import AsyncResourceLinkObject, AsyncPublicResourceLinkObject
+from .objects import (
+    AsyncResourceLinkObject, AsyncPublicResourceLinkObject, TokenObject,
+    TokenRevokeStatusObject, DiskInfoObject, AsyncResourceObject,
+    AsyncOperationLinkObject, AsyncTrashResourceObject,
+    AsyncPublicResourceObject, AsyncPublicResourcesListObject,
+    AsyncFilesResourceListObject, AsyncLastUploadedResourceListObject,
+    DeviceCodeObject
+)
 
-from typing import Any, Optional, Union, IO, TYPE_CHECKING, BinaryIO, Literal
+from typing import Any, Optional, Union, IO, BinaryIO, Literal
 from ._typing_compat import Callable, AsyncGenerator, Awaitable, Dict, List
 
 from ._async_session import AsyncSession
@@ -64,15 +71,6 @@ except ImportError:
         return open(path, mode)
 
     _default_open_file = _open_file
-
-if TYPE_CHECKING:
-    from .objects import (
-        TokenObject, TokenRevokeStatusObject, DiskInfoObject,
-        AsyncResourceObject, AsyncOperationLinkObject,
-        AsyncTrashResourceObject, AsyncPublicResourceObject,
-        AsyncPublicResourcesListObject, AsyncFilesResourceListObject,
-        AsyncLastUploadedResourceListObject, DeviceCodeObject
-    )
 
 __all__ = ["AsyncClient"]
 
@@ -215,6 +213,21 @@ async def _is_file_seekable(file: Any) -> bool:
         return await file.seekable()
 
     return file.seekable()
+
+
+async def _maybe_wait(response: Any, /, *, wait: bool, **kwargs) -> Any:
+    if not isinstance(response, AsyncOperationLinkObject):
+        return response
+
+    if wait:
+        args_to_filter = ("permanently", "md5", "overwrite", "force_async", "fields")
+
+        for arg in args_to_filter:
+            kwargs.pop(arg, None)
+
+        await response.wait(**kwargs)
+
+    return response
 
 
 class AsyncClient:
@@ -1216,7 +1229,14 @@ class AsyncClient:
 
         await self._download(get_link, "", file_or_path, **kwargs)
 
-    async def remove(self, path: str, /, **kwargs) -> Optional["AsyncOperationLinkObject"]:
+    async def remove(
+        self,
+        path: str,
+        /,
+        *,
+        wait: bool = False,
+        **kwargs
+    ) -> Optional[AsyncOperationLinkObject]:
         """
             Remove the resource.
 
@@ -1226,6 +1246,10 @@ class AsyncClient:
             :param md5: `str`, MD5 hash of the file to remove
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -1238,6 +1262,11 @@ class AsyncClient:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises BadRequestError: MD5 check is only available for files
             :raises ResourceIsLockedError: resource is locked by another request
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`AsyncOperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
@@ -1245,7 +1274,11 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return await DeleteRequest(self.session, path, **kwargs).asend(yadisk=self)
+        return await _maybe_wait(
+            await DeleteRequest(self.session, path, **kwargs).asend(yadisk=self),
+            wait=wait,
+            **kwargs
+        )
 
     async def mkdir(self, path: str, /, **kwargs) -> AsyncResourceLinkObject:
         """
@@ -1371,8 +1404,10 @@ class AsyncClient:
         src_path: str,
         dst_path: str,
         /,
+        *,
+        wait: bool = False,
         **kwargs
-    ) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
+    ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         """
             Copy `src_path` to `dst_path`.
             If the operation is performed asynchronously, returns the link to the operation,
@@ -1384,6 +1419,10 @@ class AsyncClient:
                               otherwise, an error will be raised
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -1398,6 +1437,11 @@ class AsyncClient:
             :raises InsufficientStorageError: cannot complete request due to lack of storage space
             :raises ResourceIsLockedError: resource is locked by another request
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`AsyncResourceLinkObject` or :any:`AsyncOperationLinkObject`
         """
@@ -1405,15 +1449,21 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return await CopyRequest(self.session, src_path, dst_path, **kwargs).asend(yadisk=self)
+        return await _maybe_wait(
+            await CopyRequest(self.session, src_path, dst_path, **kwargs).asend(yadisk=self),
+            wait=wait,
+            **kwargs
+        )
 
     async def restore_trash(
         self,
         path: str,
         dst_path: Optional[str] = None,
         /,
+        *,
+        wait: bool = False,
         **kwargs
-    ) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
+    ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         """
             Restore a trash resource.
             Returns a link to the newly created resource or a link to the asynchronous operation.
@@ -1423,6 +1473,10 @@ class AsyncClient:
             :param overwrite: `bool`, determines whether the destination can be overwritten
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -1435,6 +1489,11 @@ class AsyncClient:
             :raises PathExistsError: destination path already exists
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`AsyncResourceLinkObject` or :any:`AsyncOperationLinkObject`
         """
@@ -1442,17 +1501,23 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        kwargs["dst_path"] = dst_path
-
-        return await RestoreTrashRequest(self.session, path, **kwargs).asend(yadisk=self)
+        return await _maybe_wait(
+            await RestoreTrashRequest(
+                self.session, path, dst_path=dst_path, **kwargs
+            ).asend(yadisk=self),
+            wait=wait,
+            **kwargs
+        )
 
     async def move(
         self,
         src_path: str,
         dst_path: str,
         /,
+        *,
+        wait: bool = False,
         **kwargs
-    ) -> Union["AsyncOperationLinkObject", AsyncResourceLinkObject]:
+    ) -> Union[AsyncOperationLinkObject, AsyncResourceLinkObject]:
         """
             Move `src_path` to `dst_path`.
 
@@ -1461,6 +1526,10 @@ class AsyncClient:
             :param overwrite: `bool`, determines whether to overwrite the destination
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -1473,6 +1542,11 @@ class AsyncClient:
             :raises PathExistsError: destination path already exists
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`AsyncResourceLinkObject` or :any:`AsyncOperationLinkObject`
         """
@@ -1480,7 +1554,11 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return await MoveRequest(self.session, src_path, dst_path, **kwargs).asend(yadisk=self)
+        return await _maybe_wait(
+            await MoveRequest(self.session, src_path, dst_path, **kwargs).asend(yadisk=self),
+            wait=wait,
+            **kwargs
+        )
 
     async def rename(
         self,
@@ -1488,7 +1566,7 @@ class AsyncClient:
         new_name: str,
         /,
         **kwargs
-    ) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
+    ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         """
             Rename `src_path` to have filename `new_name`.
             Does the same as `move()` but changes only the filename.
@@ -1498,6 +1576,10 @@ class AsyncClient:
             :param overwrite: `bool`, determines whether to overwrite the destination
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -1511,6 +1593,11 @@ class AsyncClient:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
             :raises ValueError: `new_name` is not a valid filename
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`AsyncResourceLinkObject` or :any:`AsyncOperationLinkObject`
         """
@@ -1524,13 +1611,24 @@ class AsyncClient:
 
         return await self.move(src_path, dst_path, **kwargs)
 
-    async def remove_trash(self, path: str, /, **kwargs) -> Optional["AsyncOperationLinkObject"]:
+    async def remove_trash(
+        self,
+        path: str,
+        /,
+        *,
+        wait: bool = False,
+        **kwargs
+    ) -> Optional[AsyncOperationLinkObject]:
         """
             Remove a trash resource.
 
             :param path: path to the trash resource to be deleted
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -1542,6 +1640,11 @@ class AsyncClient:
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`AsyncOperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
@@ -1549,7 +1652,11 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return await DeleteTrashRequest(self.session, path, **kwargs).asend(yadisk=self)
+        return await _maybe_wait(
+            await DeleteTrashRequest(self.session, path, **kwargs).asend(yadisk=self),
+            wait=wait,
+            **kwargs
+        )
 
     async def publish(self, path: str, /, **kwargs) -> AsyncResourceLinkObject:
         """
@@ -1607,6 +1714,8 @@ class AsyncClient:
         self,
         public_key: str,
         /,
+        *,
+        wait: bool = False,
         **kwargs
     ) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
         """
@@ -1620,6 +1729,10 @@ class AsyncClient:
             :param save_path: path to the destination directory (downloads directory by default)
             :param force_async: forces the operation to be executed asynchronously
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -1633,6 +1746,11 @@ class AsyncClient:
             :raises ResourceIsLockedError: resource is locked by another request
             :raises InsufficientStorageError: cannot upload file due to lack of storage space
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`AsyncResourceLinkObject` or :any:`AsyncOperationLinkObject`
         """
@@ -1640,7 +1758,11 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return await SaveToDiskRequest(self.session, public_key, **kwargs).asend(yadisk=self)
+        return await _maybe_wait(
+            await SaveToDiskRequest(self.session, public_key, **kwargs).asend(yadisk=self),
+            wait=wait,
+            **kwargs
+        )
 
     async def get_public_meta(self, public_key: str, /, **kwargs) -> "AsyncPublicResourceObject":
         """
@@ -2083,7 +2205,15 @@ class AsyncClient:
 
         return items
 
-    async def upload_url(self, url: str, path: str, /, **kwargs) -> "AsyncOperationLinkObject":
+    async def upload_url(
+        self,
+        url: str,
+        path: str,
+        /,
+        *,
+        wait: bool = False,
+        **kwargs
+    ) -> AsyncOperationLinkObject:
         """
             Upload a file from URL.
 
@@ -2091,6 +2221,10 @@ class AsyncClient:
             :param path: destination path
             :param disable_redirects: `bool`, forbid redirects
             :param fields: list of keys to be included in the response
+            :param wait: `bool`, if :code:`True`, the method will wait until the asynchronous operation is completed
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -2105,6 +2239,11 @@ class AsyncClient:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
 
             :returns: :any:`AsyncOperationLinkObject`, link to the asynchronous operation
         """
@@ -2112,7 +2251,11 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return await UploadURLRequest(self.session, url, path, **kwargs).asend(yadisk=self)
+        return await _maybe_wait(
+            await UploadURLRequest(self.session, url, path, **kwargs).asend(yadisk=self),
+            wait=wait,
+            **kwargs
+        )
 
     async def get_public_download_link(self, public_key: str, /, **kwargs) -> str:
         """

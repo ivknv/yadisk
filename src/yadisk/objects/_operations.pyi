@@ -79,7 +79,7 @@ class AsyncOperationLinkObject(OperationLinkObject):
         **kwargs
     ) -> OperationStatus: ...
 
-    def wait(
+    async def wait(
         self,
         *,
         poll_interval: float = ...,
