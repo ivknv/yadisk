@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-from typing import Optional, Any, Union, Literal
+from typing import Optional, Any, Union, Literal, overload
 from ._typing_compat import Dict, AsyncGenerator, Iterable, List
 
 from .objects import (
@@ -403,6 +403,26 @@ class AsyncClient:
     ) -> None:
         ...
 
+    @overload
+    async def remove(
+        self,
+        path: str,
+        /,
+        *,
+        md5: Optional[str] = None,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> AsyncOperationLinkObject:
+        ...
+
+    @overload
     async def remove(
         self,
         path: str,
@@ -473,6 +493,27 @@ class AsyncClient:
     ) -> bool:
         ...
 
+    @overload
+    async def copy(
+        self,
+        src_path: str,
+        dst_path: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> AsyncOperationLinkObject:
+        ...
+
+    @overload
     async def copy(
         self,
         src_path: str,
@@ -492,6 +533,27 @@ class AsyncClient:
     ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         ...
 
+    @overload
+    async def restore_trash(
+        self,
+        path: str,
+        /,
+        dst_path: Optional[str] = None,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> AsyncOperationLinkObject:
+        ...
+
+    @overload
     async def restore_trash(
         self,
         path: str,
@@ -511,6 +573,27 @@ class AsyncClient:
     ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         ...
 
+    @overload
+    async def move(
+        self,
+        src_path: str,
+        dst_path: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> AsyncOperationLinkObject:
+        ...
+
+    @overload
     async def move(
         self,
         src_path: str,
@@ -530,6 +613,27 @@ class AsyncClient:
     ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         ...
 
+    @overload
+    async def rename(
+        self,
+        src_path: str,
+        new_name: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> AsyncOperationLinkObject:
+        ...
+
+    @overload
     async def rename(
         self,
         src_path: str,
@@ -549,6 +653,25 @@ class AsyncClient:
     ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         ...
 
+    @overload
+    async def remove_trash(
+        self,
+        path: str,
+        /,
+        *,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> AsyncOperationLinkObject:
+        ...
+
+    @overload
     async def remove_trash(
         self,
         path: str,
@@ -598,6 +721,28 @@ class AsyncClient:
     ) -> AsyncResourceLinkObject:
         ...
 
+    @overload
+    async def save_to_disk(
+        self,
+        public_key: str,
+        /,
+        *,
+        name: Optional[str] = None,
+        path: Optional[str] = None,
+        save_path: Optional[str] = None,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> AsyncOperationLinkObject:
+        ...
+
+    @overload
     async def save_to_disk(
         self,
         public_key: str,

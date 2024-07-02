@@ -20,7 +20,7 @@ from ._yadisk_object import YaDiskObject
 from ._link_object import LinkObject
 from ._disk import UserPublicInfoObject
 
-from typing import Any, overload, Union, Protocol, Optional
+from typing import Any, Literal, overload, Union, Protocol, Optional
 
 from .._typing_compat import (
     Generator, Dict, List, AsyncGenerator, Iterable
@@ -503,9 +503,29 @@ class ResourceObjectMethodsMixin:
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
-    ) -> "SyncResourceLinkObject":
+    ) -> SyncResourceLinkObject:
         ...
 
+    @overload
+    def remove(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        *,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncOperationLinkObject:
+        ...
+
+    @overload
     def remove(
         self: ResourceProtocol,
         relative_path: Optional[str] = None,
@@ -521,7 +541,27 @@ class ResourceObjectMethodsMixin:
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
-    ) -> Optional["SyncOperationLinkObject"]:
+    ) -> Optional[SyncOperationLinkObject]:
+        ...
+
+    @overload
+    def move(
+        self: ResourceProtocol,
+        dst_path: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncOperationLinkObject:
         ...
 
     @overload
@@ -541,7 +581,28 @@ class ResourceObjectMethodsMixin:
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
-    ) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
+    ) -> Union[SyncResourceLinkObject, SyncOperationLinkObject]:
+        ...
+
+    @overload
+    def move(
+        self: ResourceProtocol,
+        relative_path: Optional[str],
+        dst_path: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncOperationLinkObject:
         ...
 
     @overload
@@ -562,7 +623,27 @@ class ResourceObjectMethodsMixin:
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
-    ) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
+    ) -> Union[SyncResourceLinkObject, SyncOperationLinkObject]:
+        ...
+
+    @overload
+    def rename(
+        self: ResourceProtocol,
+        new_name: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncOperationLinkObject:
         ...
 
     @overload
@@ -582,7 +663,28 @@ class ResourceObjectMethodsMixin:
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
-    ) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
+    ) -> Union[SyncResourceLinkObject, SyncOperationLinkObject]:
+        ...
+
+    @overload
+    def rename(
+        self: ResourceProtocol,
+        relative_path: Optional[str],
+        new_name: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncOperationLinkObject:
         ...
 
     @overload
@@ -602,7 +704,28 @@ class ResourceObjectMethodsMixin:
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
-        **kwargs) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
+        **kwargs
+    ) -> Union[SyncResourceLinkObject, SyncOperationLinkObject]:
+        ...
+
+    @overload
+    def copy(
+        self: ResourceProtocol,
+        dst_path: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncOperationLinkObject:
         ...
 
     @overload
@@ -622,7 +745,28 @@ class ResourceObjectMethodsMixin:
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
-    ) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
+    ) -> Union[SyncResourceLinkObject, SyncOperationLinkObject]:
+        ...
+
+    @overload
+    def copy(
+        self: ResourceProtocol,
+        relative_path: Optional[str],
+        dst_path: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncOperationLinkObject:
         ...
 
     @overload
@@ -643,7 +787,7 @@ class ResourceObjectMethodsMixin:
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
-    ) -> Union["SyncResourceLinkObject", "SyncOperationLinkObject"]:
+    ) -> Union[SyncResourceLinkObject, SyncOperationLinkObject]:
         ...
 
 
@@ -976,6 +1120,25 @@ class AsyncResourceObjectMethodsMixin:
     ) -> "AsyncResourceLinkObject":
         ...
 
+    @overload
+    async def remove(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        *,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> AsyncOperationLinkObject:
+        ...
+
+    @overload
     async def remove(
         self: ResourceProtocol,
         relative_path: Optional[str] = None,
@@ -990,7 +1153,26 @@ class AsyncResourceObjectMethodsMixin:
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
-    ) -> Optional["AsyncOperationLinkObject"]:
+    ) -> Optional[AsyncOperationLinkObject]:
+        ...
+
+    @overload
+    async def move(
+        self: ResourceProtocol,
+        dst_path: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> AsyncOperationLinkObject:
         ...
 
     @overload
@@ -1009,7 +1191,27 @@ class AsyncResourceObjectMethodsMixin:
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
-    ) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
+    ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
+        ...
+
+    @overload
+    async def move(
+        self: ResourceProtocol,
+        relative_path: Optional[str],
+        dst_path: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> AsyncOperationLinkObject:
         ...
 
     @overload
@@ -1029,7 +1231,26 @@ class AsyncResourceObjectMethodsMixin:
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
-    ) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
+    ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
+        ...
+
+    @overload
+    async def rename(
+        self: ResourceProtocol,
+        new_name: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> AsyncOperationLinkObject:
         ...
 
     @overload
@@ -1048,7 +1269,27 @@ class AsyncResourceObjectMethodsMixin:
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
-    ) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
+    ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
+        ...
+
+    @overload
+    async def rename(
+        self: ResourceProtocol,
+        relative_path: Optional[str],
+        new_name: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> AsyncOperationLinkObject:
         ...
 
     @overload
@@ -1068,7 +1309,26 @@ class AsyncResourceObjectMethodsMixin:
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
-    ) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
+    ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
+        ...
+
+    @overload
+    async def copy(
+        self: ResourceProtocol,
+        dst_path: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> AsyncOperationLinkObject:
         ...
 
     @overload
@@ -1087,7 +1347,27 @@ class AsyncResourceObjectMethodsMixin:
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
-    ) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
+    ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
+        ...
+
+    @overload
+    async def copy(
+        self: ResourceProtocol,
+        relative_path: Optional[str],
+        dst_path: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> AsyncOperationLinkObject:
         ...
 
     @overload
@@ -1107,7 +1387,7 @@ class AsyncResourceObjectMethodsMixin:
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
-    ) -> Union["AsyncResourceLinkObject", "AsyncOperationLinkObject"]:
+    ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         ...
 
 
@@ -1433,6 +1713,26 @@ class SyncTrashResourceObject(TrashResourceObject):
     ) -> Generator[SyncTrashResourceObject, None, None]:
         ...
 
+    @overload
+    def remove(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        *,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncOperationLinkObject:
+        ...
+
+    @overload
     def remove(
         self: ResourceProtocol,
         relative_path: Optional[str] = None,
@@ -1458,6 +1758,26 @@ class SyncTrashResourceObject(TrashResourceObject):
         /,
         *,
         overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncOperationLinkObject:
+        ...
+
+    @overload
+    def restore(
+        self: ResourceProtocol,
+        dst_path: str,
+        /,
+        *,
+        overwrite: bool = False,
         force_async: bool = False,
         fields: Optional[Iterable[str]] = None,
         headers: Optional[Headers] = None,
@@ -1468,7 +1788,28 @@ class SyncTrashResourceObject(TrashResourceObject):
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
-    ) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
+    ) -> Union[SyncResourceLinkObject, SyncOperationLinkObject]:
+        ...
+
+    @overload
+    def restore(
+        self: ResourceProtocol,
+        relative_path: Optional[str],
+        dst_path: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncOperationLinkObject:
         ...
 
     @overload
@@ -1489,7 +1830,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
-    ) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
+    ) -> Union[SyncResourceLinkObject, SyncOperationLinkObject]:
         ...
 
 
@@ -1607,6 +1948,25 @@ class AsyncTrashResourceObject(TrashResourceObject):
         # an async generator, rather than a simple async function
         yield AsyncTrashResourceObject()
 
+    @overload
+    async def remove(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        *,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> AsyncOperationLinkObject:
+        ...
+
+    @overload
     async def remove(
         self: ResourceProtocol,
         relative_path: Optional[str] = None,
@@ -1631,6 +1991,25 @@ class AsyncTrashResourceObject(TrashResourceObject):
         /,
         *,
         overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> AsyncOperationLinkObject:
+        ...
+
+    @overload
+    async def restore(
+        self: ResourceProtocol,
+        dst_path: str,
+        /,
+        *,
+        overwrite: bool = False,
         force_async: bool = False,
         fields: Optional[Iterable[str]] = None,
         headers: Optional[Headers] = None,
@@ -1640,7 +2019,27 @@ class AsyncTrashResourceObject(TrashResourceObject):
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
-    ) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
+    ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
+        ...
+
+    @overload
+    async def restore(
+        self: ResourceProtocol,
+        relative_path: Optional[str],
+        dst_path: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> AsyncOperationLinkObject:
         ...
 
     @overload
@@ -1660,7 +2059,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
-    ) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
+    ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         ...
 
 

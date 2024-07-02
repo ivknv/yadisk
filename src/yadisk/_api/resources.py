@@ -314,6 +314,8 @@ class RestoreTrashRequest(APIRequest):
                 return SyncOperationLinkObject(js, yadisk)
             else:
                 return AsyncOperationLinkObject(js, yadisk)
+        elif self.params.get("force_async") == "true":
+            raise InvalidResponseError("Yandex.Disk did not return an operation link, despite force_async=true")
 
         if yadisk is None or yadisk.synchronous:
             return SyncResourceLinkObject(js, yadisk)
@@ -369,6 +371,8 @@ class DeleteTrashRequest(APIRequest):
                 return SyncOperationLinkObject(js, yadisk)
             else:
                 return AsyncOperationLinkObject(js, yadisk)
+        elif self.params.get("force_async") == "true":
+            raise InvalidResponseError("Yandex.Disk did not return an operation link, despite force_async=true")
 
         return None
 
@@ -490,6 +494,8 @@ class CopyRequest(APIRequest):
                 return SyncOperationLinkObject(js, yadisk)
             else:
                 return AsyncOperationLinkObject(js, yadisk)
+        elif self.params.get("force_async") == "true":
+            raise InvalidResponseError("Yandex.Disk did not return an operation link, despite force_async=true")
 
         if yadisk is None or yadisk.synchronous:
             return SyncResourceLinkObject(js, yadisk)
@@ -800,6 +806,8 @@ class DeleteRequest(APIRequest):
                 return AsyncOperationLinkObject(js, yadisk)
         elif js is not None:
             raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+        elif self.params.get("force_async") == "true":
+            raise InvalidResponseError("Yandex.Disk did not return an operation link, despite force_async=true")
 
         return None
 
@@ -866,6 +874,8 @@ class SaveToDiskRequest(APIRequest):
                 return SyncOperationLinkObject(js, yadisk)
             else:
                 return AsyncOperationLinkObject(js, yadisk)
+        elif self.params.get("force_async") == "true":
+            raise InvalidResponseError("Yandex.Disk did not return an operation link, despite force_async=true")
 
         if yadisk is None or yadisk.synchronous:
             return SyncResourceLinkObject(js, yadisk)
@@ -1044,6 +1054,8 @@ class MoveRequest(APIRequest):
                 return SyncOperationLinkObject(js, yadisk)
             else:
                 return AsyncOperationLinkObject(js, yadisk)
+        elif self.params.get("force_async") == "true":
+            raise InvalidResponseError("Yandex.Disk did not return an operation link, despite force_async=true")
 
         if yadisk is None or yadisk.synchronous:
             return SyncResourceLinkObject(js, yadisk)

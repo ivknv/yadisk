@@ -20,7 +20,6 @@ import asyncio
 import inspect
 from pathlib import PurePosixPath
 
-import time
 from urllib.parse import urlencode
 
 from .types import (

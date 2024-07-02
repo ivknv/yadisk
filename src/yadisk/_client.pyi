@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-from typing import Optional, Any, Union, Literal
+from typing import Optional, Any, Union, Literal, overload
 from ._typing_compat import Dict, Generator, Iterable, List
 
 from .objects import (
@@ -420,6 +420,27 @@ class Client:
     ) -> None:
         ...
 
+    @overload
+    def remove(
+        self,
+        path: str,
+        /,
+        *,
+        md5: Optional[str] = None,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncOperationLinkObject:
+        ...
+
+    @overload
     def remove(
         self,
         path: str,
@@ -494,6 +515,28 @@ class Client:
     ) -> bool:
         ...
 
+    @overload
+    def copy(
+        self,
+        src_path: str,
+        dst_path: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncOperationLinkObject:
+        ...
+
+    @overload
     def copy(
         self,
         src_path: str,
@@ -514,6 +557,28 @@ class Client:
     ) -> Union[SyncResourceLinkObject, SyncOperationLinkObject]:
         ...
 
+    @overload
+    def restore_trash(
+        self,
+        path: str,
+        /,
+        dst_path: Optional[str] = None,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncOperationLinkObject:
+        ...
+
+    @overload
     def restore_trash(
         self,
         path: str,
@@ -534,6 +599,28 @@ class Client:
     ) -> Union[SyncResourceLinkObject, SyncOperationLinkObject]:
         ...
 
+    @overload
+    def move(
+        self,
+        src_path: str,
+        dst_path: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncOperationLinkObject:
+        ...
+
+    @overload
     def move(
         self,
         src_path: str,
@@ -554,6 +641,28 @@ class Client:
     ) -> Union[SyncResourceLinkObject, SyncOperationLinkObject]:
         ...
 
+    @overload
+    def rename(
+        self,
+        src_path: str,
+        new_name: str,
+        /,
+        *,
+        overwrite: bool = False,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncOperationLinkObject:
+        ...
+
+    @overload
     def rename(
         self,
         src_path: str,
@@ -574,6 +683,26 @@ class Client:
     ) -> Union[SyncResourceLinkObject, SyncOperationLinkObject]:
         ...
 
+    @overload
+    def remove_trash(
+        self,
+        path: str,
+        /,
+        *,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncOperationLinkObject:
+        ...
+
+    @overload
     def remove_trash(
         self,
         path: str,
@@ -626,6 +755,29 @@ class Client:
     ) -> SyncResourceLinkObject:
         ...
 
+    @overload
+    def save_to_disk(
+        self,
+        public_key: str,
+        /,
+        *,
+        name: Optional[str] = None,
+        path: Optional[str] = None,
+        save_path: Optional[str] = None,
+        force_async: Literal[True],
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncOperationLinkObject:
+        ...
+
+    @overload
     def save_to_disk(
         self,
         public_key: str,
