@@ -332,6 +332,23 @@ class ResourceObjectMethodsMixin:
         **kwargs) -> str:
         ...
 
+    def get_upload_link_object(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        *,
+        overwrite: bool = False,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> ResourceUploadLinkObject:
+        ...
+
     def upload(
         self: ResourceProtocol,
         path_or_file: FileOrPath,
@@ -996,6 +1013,22 @@ class AsyncResourceObjectMethodsMixin:
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
     ) -> str:
+        ...
+
+    async def get_upload_link_object(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        *,
+        overwrite: bool = False,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> ResourceUploadLinkObject:
         ...
 
     async def upload(

@@ -33,7 +33,7 @@ from .objects import (
     SyncTrashResourceObject, SyncFilesResourceListObject, SyncResourceObject,
     SyncLastUploadedResourceListObject, SyncOperationLinkObject,
     SyncPublicResourceObject, SyncPublicResourcesListObject, DiskInfoObject,
-    TokenObject, TokenRevokeStatusObject, DeviceCodeObject
+    TokenObject, TokenRevokeStatusObject, DeviceCodeObject, ResourceUploadLinkObject
 )
 
 from ._session import Session
@@ -880,6 +880,42 @@ class Client:
         return GetUploadLinkRequest(
             self.session, path, fields=["href"], **kwargs
         ).send(yadisk=self, then=_validate_link_response).href
+
+    def get_upload_link_object(self, path: str, /, **kwargs) -> ResourceUploadLinkObject:
+        """
+            Get a link to upload the file using the PUT request.
+            This is similar to :any:`Client.get_upload_link()`, except it returns
+            an instance of :any:`ResourceUploadLinkObject` which also contains
+            an asynchronous operation ID.
+
+            :param path: destination path
+            :param overwrite: `bool`, determines whether to overwrite the destination
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises ParentNotFoundError: parent directory doesn't exist
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+            :raises InsufficientStorageError: cannot upload file due to lack of storage space
+            :raises UploadTrafficLimitExceededError: upload limit has been exceeded
+
+            :returns: :any:`ResourceUploadLinkObject`
+        """
+
+        _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
+
+        return GetUploadLinkRequest(
+            self.session, path, **kwargs
+        ).send(yadisk=self)
 
     def _upload(self,
                 get_upload_link_function: Callable,

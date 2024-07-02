@@ -679,6 +679,49 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.get_upload_link(str(path), **kwargs)
 
+    def get_upload_link_object(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        **kwargs
+    ) -> "ResourceUploadLinkObject":
+        """
+            Get a link to upload the file using the PUT request.
+            This is similar to :any:`Client.get_upload_link()`, except it returns
+            an instance of :any:`ResourceUploadLinkObject` which also contains
+            an asynchronous operation ID.
+
+            :param relative_path: `str` or `None`, relative path to the resource
+            :param overwrite: `bool`, determines whether to overwrite the destination
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises ParentNotFoundError: parent directory doesn't exist
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+            :raises InsufficientStorageError: cannot upload file due to lack of storage space
+            :raises UploadTrafficLimitExceededError: upload limit has been exceeded
+
+            :returns: :any:`ResourceUploadLinkObject`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return self._yadisk.get_upload_link_object(str(path), **kwargs)
+
     def upload(self: ResourceProtocol,
                path_or_file: FileOrPath,
                relative_path: Optional[str] = None, /, **kwargs) -> "SyncResourceLinkObject":
@@ -1577,6 +1620,48 @@ class AsyncResourceObjectMethodsMixin:
         path = PurePosixPath(self.path) / (relative_path or "")
 
         return await self._yadisk.get_upload_link(str(path), **kwargs)
+
+    async def get_upload_link_object(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        **kwargs
+    ) -> "ResourceUploadLinkObject":
+        """
+            Get a link to upload the file using the PUT request.
+            This is similar to :any:`AsyncClient.get_upload_link()`, except it returns
+            an instance of :any:`ResourceUploadLinkObject` which also contains
+            an asynchronous operation ID.
+
+            :param relative_path: `str` or `None`, relative path to the resource
+            :param overwrite: `bool`, determines whether to overwrite the destination
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises ParentNotFoundError: parent directory doesn't exist
+            :raises PathExistsError: destination path already exists
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+            :raises InsufficientStorageError: cannot upload file due to lack of storage space
+            :raises UploadTrafficLimitExceededError: upload limit has been exceeded
+
+            :returns: :any:`ResourceUploadLinkObject`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.get_upload_link_object(str(path), **kwargs)
 
     async def upload(
         self: ResourceProtocol,

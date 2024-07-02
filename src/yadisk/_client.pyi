@@ -23,7 +23,8 @@ from .objects import (
     DeviceCodeObject, TokenObject, TokenRevokeStatusObject,
     DiskInfoObject, SyncResourceObject, SyncResourceLinkObject,
     SyncOperationLinkObject, SyncTrashResourceObject, SyncPublicResourceObject,
-    SyncPublicResourcesListObject, SyncPublicResourceLinkObject
+    SyncPublicResourcesListObject, SyncPublicResourceLinkObject,
+    ResourceUploadLinkObject
 )
 
 from .types import (
@@ -333,6 +334,24 @@ class Client:
         curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> str:
+        ...
+
+    def get_upload_link_object(
+        self,
+        path: str,
+        /,
+        *,
+        overwrite: bool = False,
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> ResourceUploadLinkObject:
         ...
 
     def upload(

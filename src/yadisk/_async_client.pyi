@@ -23,7 +23,8 @@ from .objects import (
     DeviceCodeObject, TokenObject, TokenRevokeStatusObject,
     DiskInfoObject, AsyncResourceObject, AsyncResourceLinkObject,
     AsyncOperationLinkObject, AsyncTrashResourceObject, AsyncPublicResourceObject,
-    AsyncPublicResourcesListObject, AsyncPublicResourceLinkObject
+    AsyncPublicResourcesListObject, AsyncPublicResourceLinkObject,
+    ResourceUploadLinkObject
 )
 
 from .types import (
@@ -321,6 +322,23 @@ class AsyncClient:
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
     ) -> str:
+        ...
+
+    async def get_upload_link_object(
+        self,
+        path: str,
+        /,
+        *,
+        overwrite: bool = False,
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> ResourceUploadLinkObject:
         ...
 
     async def upload(
