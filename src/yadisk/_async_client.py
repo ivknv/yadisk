@@ -20,6 +20,7 @@ import asyncio
 import inspect
 from pathlib import PurePosixPath
 
+import time
 from urllib.parse import urlencode
 
 from .types import (
@@ -31,8 +32,10 @@ from .types import (
 from . import settings
 from ._api import *
 from .exceptions import (
+    AsyncOperationFailedError, AsyncOperationPollingTimeoutError,
     InvalidResponseError, UnauthorizedError, OperationNotFoundError,
-    PathNotFoundError, WrongResourceTypeError)
+    PathNotFoundError, WrongResourceTypeError
+)
 from .utils import auto_retry, CaseInsensitiveDict
 from .objects import AsyncResourceLinkObject, AsyncPublicResourceLinkObject
 
@@ -2207,3 +2210,48 @@ class AsyncClient:
                 self.session, operation_id, fields=["status"], **kwargs
             ).asend(yadisk=self)
         ).status
+
+    async def wait_for_operation(
+        self,
+        operation_id: str,
+        /,
+        *,
+        poll_interval: float = 1.0,
+        poll_timeout: Optional[float] = None,
+        **kwargs
+    ) -> None:
+        """
+            Wait until an operation is completed. If the operation fails, an
+            exception is raised. Waiting is performed by calling :any:`asyncio.sleep()`.
+
+            :param operation_id: ID of the operation or a link
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
+        """
+
+        async def poll() -> None:
+            while (status := await self.get_operation_status(operation_id, **kwargs)) == "in-progress":
+                await asyncio.sleep(poll_interval)
+
+            if status != "success":
+                raise AsyncOperationFailedError("Asynchronous operation failed")
+
+        try:
+            await asyncio.wait_for(poll(), timeout=poll_timeout)
+        except asyncio.exceptions.TimeoutError as e:
+            raise AsyncOperationPollingTimeoutError("Asynchronous operation did not complete in specified time") from e

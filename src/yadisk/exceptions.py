@@ -19,17 +19,19 @@
 __all__ = [
     "YaDiskError", "RequestError", "YaDiskConnectionError", "TooManyRedirectsError",
     "RequestTimeoutError", "RetriableYaDiskError", "UnknownYaDiskError",
-    "WrongResourceTypeError",  "BadRequestError", "UnauthorizedError",
-    "ForbiddenError", "NotFoundError", "NotAcceptableError",
-    "ConflictError", "PayloadTooLargeError", "UnsupportedMediaError",
-    "LockedError", "UploadTrafficLimitExceededError", "TooManyRequestsError",
+    "WrongResourceTypeError", "AsyncOperationError", "AsyncOperationFailedError",
+    "AsyncOperationPollingTimeoutError", "BadRequestError",
+    "UnauthorizedError", "ForbiddenError", "NotFoundError",
+    "NotAcceptableError", "ConflictError", "PayloadTooLargeError",
+    "UnsupportedMediaError", "LockedError",
+    "UploadTrafficLimitExceededError", "TooManyRequestsError",
     "InternalServerError", "BadGatewayError", "UnavailableError",
     "GatewayTimeoutError", "InsufficientStorageError", "PathNotFoundError",
     "ParentNotFoundError", "PathExistsError", "DirectoryExistsError",
     "FieldValidationError", "ResourceIsLockedError", "MD5DifferError",
-    "OperationNotFoundError", "InvalidResponseError", "AuthorizationPendingError",
-    "InvalidClientError", "InvalidGrantError", "BadVerificationCodeError",
-    "UnsupportedTokenTypeError"
+    "OperationNotFoundError", "InvalidResponseError",
+    "AuthorizationPendingError", "InvalidClientError", "InvalidGrantError",
+    "BadVerificationCodeError", "UnsupportedTokenTypeError"
 ]
 
 
@@ -83,6 +85,24 @@ class WrongResourceTypeError(YaDiskError):
     def __init__(self, msg=""):
         YaDiskError.__init__(self, None, msg, None)
 
+
+class AsyncOperationError(YaDiskError):
+    """Raised when there's an error related to an asynchronous operation"""
+    pass
+
+
+class AsyncOperationFailedError(AsyncOperationError):
+    """Raised when an asynchronous operation fails"""
+
+    def __init__(self, msg=""):
+        YaDiskError.__init__(self, None, msg, None)
+
+
+class AsyncOperationPollingTimeoutError(AsyncOperationError):
+    """Raised when a polling timeout occured while waiting for an asynchronous operation"""
+
+    def __init__(self, msg=""):
+        YaDiskError.__init__(self, None, msg, None)
 
 class RetriableYaDiskError(YaDiskError):
     """Thrown when there was an error but it would make sense to retry the request."""

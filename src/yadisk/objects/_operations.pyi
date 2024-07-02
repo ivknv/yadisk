@@ -49,6 +49,22 @@ class SyncOperationLinkObject(OperationLinkObject):
         **kwargs
     ) -> OperationStatus: ...
 
+    def wait(
+        self,
+        *,
+        poll_interval: float = ...,
+        poll_timeout: Optional[float] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> None:
+        ...
+
 
 class AsyncOperationLinkObject(OperationLinkObject):
     async def get_status(
@@ -58,8 +74,22 @@ class AsyncOperationLinkObject(OperationLinkObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
-        requests_args: Optional[Dict[str, Any]] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
-        curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> OperationStatus: ...
+
+    def wait(
+        self,
+        *,
+        poll_interval: float = ...,
+        poll_timeout: Optional[float] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> None:
+        ...

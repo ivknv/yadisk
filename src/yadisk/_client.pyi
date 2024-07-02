@@ -975,6 +975,7 @@ class Client:
         self,
         operation_id: str,
         /,
+        *,
         headers: Optional[Headers] = None,
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
@@ -984,4 +985,22 @@ class Client:
         curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> OperationStatus:
+        ...
+
+    def wait_for_operation(
+        self,
+        operation_id: str,
+        /,
+        *,
+        poll_interval: float = 1.0,
+        poll_timeout: Optional[float] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> None:
         ...

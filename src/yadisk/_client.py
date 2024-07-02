@@ -17,12 +17,13 @@
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
 from pathlib import PurePosixPath
+import time
 from urllib.parse import urlencode
 
 from ._api import *
 
 from .exceptions import (
-    PathNotFoundError, UnauthorizedError,
+    AsyncOperationFailedError, AsyncOperationPollingTimeoutError, PathNotFoundError, UnauthorizedError,
     OperationNotFoundError, InvalidResponseError, WrongResourceTypeError
 )
 
@@ -2164,3 +2165,50 @@ class Client:
         return GetOperationStatusRequest(
             self.session, operation_id, fields=["status"], **kwargs
         ).send(yadisk=self).status
+
+    def wait_for_operation(
+        self,
+        operation_id: str,
+        /,
+        *,
+        poll_interval: float = 1.0,
+        poll_timeout: Optional[float] = None,
+        **kwargs
+    ) -> None:
+        """
+            Wait until an operation is completed. If the operation fails, an
+            exception is raised. Waiting is performed by calling :any:`time.sleep()`.
+
+            :param operation_id: ID of the operation or a link
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
+        """
+
+        poll_start_time = time.time()
+
+        while (status := self.get_operation_status(operation_id, **kwargs)) == "in-progress":
+            if poll_timeout is not None:
+                total_poll_duration = time.time() - poll_start_time
+
+                if total_poll_duration >= poll_timeout:
+                    raise AsyncOperationPollingTimeoutError("Asynchronous operation did not complete in specified time")
+
+            time.sleep(poll_interval)
+
+        if status != "success":
+            raise AsyncOperationFailedError("Asynchronous operation failed")

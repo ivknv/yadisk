@@ -943,3 +943,20 @@ class AsyncClient:
         **kwargs
     ) -> OperationStatus:
         ...
+
+    async def wait_for_operation(
+        self,
+        operation_id: str,
+        /,
+        *,
+        poll_interval: float = 1.0,
+        poll_timeout: Optional[float] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> None:
+        ...

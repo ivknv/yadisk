@@ -108,6 +108,38 @@ class SyncOperationLinkObject(OperationLinkObject):
 
         return self._yadisk.get_operation_status(self.href, **kwargs)
 
+    def wait(self, **kwargs) -> None:
+        """
+            Wait until an operation is completed. If the operation fails, an
+            exception is raised. Waiting is performed by calling :any:`time.sleep()`.
+
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.href is None:
+            raise ValueError("OperationLinkObject has no link")
+
+        return self._yadisk.wait_for_operation(self.href, **kwargs)
+
 
 class AsyncOperationLinkObject(OperationLinkObject):
     """
@@ -148,3 +180,34 @@ class AsyncOperationLinkObject(OperationLinkObject):
             raise ValueError("OperationLinkObject has no link")
 
         return await self._yadisk.get_operation_status(self.href, **kwargs)
+
+    async def wait(self, **kwargs) -> None:
+        """
+            Wait until an operation is completed. If the operation fails, an
+            exception is raised. Waiting is performed by calling :any:`asyncio.sleep()`.
+
+            :param poll_interval: `float`, interval in seconds between subsequent operation status queries
+            :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
+                                 if this timeout is exceeded, an exception is raised
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises OperationNotFoundError: requested operation was not found
+            :raises AsyncOperationFailedError: requested operation failed
+            :raises AsyncOperationPollingTimeoutError: requested operation did not
+                                                       complete in specified time
+                                                       (when `poll_timeout` is not `None`)
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.href is None:
+            raise ValueError("OperationLinkObject has no link")
+
+        return await self._yadisk.wait_for_operation(self.href, **kwargs)
