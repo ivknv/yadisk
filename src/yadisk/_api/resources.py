@@ -307,7 +307,7 @@ class RestoreTrashRequest(APIRequest):
         **kwargs
     ) -> Union[OperationLinkObject, ResourceLinkObject]:
         if not isinstance(js, dict):
-            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON", disable_retry=True)
 
         if is_operation_link(js.get("href", "")):
             if yadisk is None or yadisk.synchronous:
@@ -315,7 +315,10 @@ class RestoreTrashRequest(APIRequest):
             else:
                 return AsyncOperationLinkObject(js, yadisk)
         elif self.params.get("force_async") == "true":
-            raise InvalidResponseError("Yandex.Disk did not return an operation link, despite force_async=true")
+            raise InvalidResponseError(
+                "Yandex.Disk did not return an operation link, despite force_async=true",
+                disable_retry=True
+            )
 
         if yadisk is None or yadisk.synchronous:
             return SyncResourceLinkObject(js, yadisk)
@@ -365,14 +368,17 @@ class DeleteTrashRequest(APIRequest):
     ) -> Optional[OperationLinkObject]:
         if js is not None:
             if not isinstance(js, dict):
-                raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+                raise InvalidResponseError("Yandex.Disk returned invalid JSON", disable_retry=True)
 
             if yadisk is None or yadisk.synchronous:
                 return SyncOperationLinkObject(js, yadisk)
             else:
                 return AsyncOperationLinkObject(js, yadisk)
         elif self.params.get("force_async") == "true":
-            raise InvalidResponseError("Yandex.Disk did not return an operation link, despite force_async=true")
+            raise InvalidResponseError(
+                "Yandex.Disk did not return an operation link, despite force_async=true",
+                disable_retry=True
+            )
 
         return None
 
@@ -487,7 +493,7 @@ class CopyRequest(APIRequest):
         **kwargs
     ) -> Union[OperationLinkObject, ResourceLinkObject]:
         if not isinstance(js, dict):
-            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON", disable_retry=True)
 
         if is_operation_link(js.get("href", "")):
             if yadisk is None or yadisk.synchronous:
@@ -495,7 +501,10 @@ class CopyRequest(APIRequest):
             else:
                 return AsyncOperationLinkObject(js, yadisk)
         elif self.params.get("force_async") == "true":
-            raise InvalidResponseError("Yandex.Disk did not return an operation link, despite force_async=true")
+            raise InvalidResponseError(
+                "Yandex.Disk did not return an operation link, despite force_async=true",
+                disable_retry=True
+            )
 
         if yadisk is None or yadisk.synchronous:
             return SyncResourceLinkObject(js, yadisk)
@@ -651,7 +660,7 @@ class MkdirRequest(APIRequest):
         **kwargs
     ) -> ResourceLinkObject:
         if not isinstance(js, dict):
-            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON", disable_retry=True)
 
         if yadisk is None or yadisk.synchronous:
             return SyncResourceLinkObject(js, yadisk)
@@ -744,7 +753,7 @@ class UploadURLRequest(APIRequest):
         **kwargs
     ) -> OperationLinkObject:
         if not isinstance(js, dict):
-            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON", disable_retry=True)
 
         if yadisk is None or yadisk.synchronous:
             return SyncOperationLinkObject(js, yadisk)
@@ -805,9 +814,12 @@ class DeleteRequest(APIRequest):
             else:
                 return AsyncOperationLinkObject(js, yadisk)
         elif js is not None:
-            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON", disable_retry=True)
         elif self.params.get("force_async") == "true":
-            raise InvalidResponseError("Yandex.Disk did not return an operation link, despite force_async=true")
+            raise InvalidResponseError(
+                "Yandex.Disk did not return an operation link, despite force_async=true",
+                disable_retry=True
+            )
 
         return None
 
@@ -867,7 +879,7 @@ class SaveToDiskRequest(APIRequest):
         **kwargs
     ) -> Union[OperationLinkObject, ResourceLinkObject]:
         if not isinstance(js, dict):
-            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON", disable_retry=True)
 
         if is_operation_link(js.get("href", "")):
             if yadisk is None or yadisk.synchronous:
@@ -875,7 +887,10 @@ class SaveToDiskRequest(APIRequest):
             else:
                 return AsyncOperationLinkObject(js, yadisk)
         elif self.params.get("force_async") == "true":
-            raise InvalidResponseError("Yandex.Disk did not return an operation link, despite force_async=true")
+            raise InvalidResponseError(
+                "Yandex.Disk did not return an operation link, despite force_async=true",
+                disable_retry=True
+            )
 
         if yadisk is None or yadisk.synchronous:
             return SyncResourceLinkObject(js, yadisk)
@@ -1047,7 +1062,7 @@ class MoveRequest(APIRequest):
         **kwargs
     ) -> Union[OperationLinkObject, ResourceLinkObject]:
         if not isinstance(js, dict):
-            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON", disable_retry=True)
 
         if is_operation_link(js.get("href", "")):
             if yadisk is None or yadisk.synchronous:
@@ -1055,7 +1070,10 @@ class MoveRequest(APIRequest):
             else:
                 return AsyncOperationLinkObject(js, yadisk)
         elif self.params.get("force_async") == "true":
-            raise InvalidResponseError("Yandex.Disk did not return an operation link, despite force_async=true")
+            raise InvalidResponseError(
+                "Yandex.Disk did not return an operation link, despite force_async=true",
+                disable_retry=True
+            )
 
         if yadisk is None or yadisk.synchronous:
             return SyncResourceLinkObject(js, yadisk)

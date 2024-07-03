@@ -130,7 +130,8 @@ def auto_retry(
 ) -> T:
     """
         Attempt to perform a request with automatic retries.
-        A retry is triggered by :any:`RequestError` or :any:`RetriableYaDiskError`.
+        A retry is triggered by :any:`RequestError` or :any:`RetriableYaDiskError`,
+        unless the raised exception has :code:`disable_retry` set to :code:`True`.
 
         :param func: function to run, must not require any arguments
         :param n_retries: `int`, maximum number of retries
@@ -156,8 +157,8 @@ def auto_retry(
     for i in range(n_retries + 1):
         try:
             return func(*args, **kwargs)
-        except (RequestError, RetriableYaDiskError):
-            if i == n_retries:
+        except (RequestError, RetriableYaDiskError) as e:
+            if i == n_retries or e.disable_retry:
                 raise
 
         if retry_interval:
@@ -176,7 +177,8 @@ async def async_auto_retry(
 ) -> Any:
     """
         Attempt to perform a request with automatic retries.
-        A retry is triggered by :any:`RequestError` or :any:`RetriableYaDiskError`.
+        A retry is triggered by :any:`RequestError` or :any:`RetriableYaDiskError`,
+        unless the raised exception has :code:`disable_retry` set to :code:`True`.
 
         :param func: function to run, must not require any arguments
         :param n_retries: `int`, maximum number of retries
@@ -210,8 +212,8 @@ async def async_auto_retry(
                 return await callback(*args, **kwargs)
             else:
                 return callback(*args, **kwargs)
-        except (RequestError, RetriableYaDiskError):
-            if i == n_retries:
+        except (RequestError, RetriableYaDiskError) as e:
+            if i == n_retries or e.disable_retry:
                 raise
 
         if retry_interval:

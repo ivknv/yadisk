@@ -34,24 +34,42 @@ __all__ = [
     "BadVerificationCodeError", "UnsupportedTokenTypeError"
 ]
 
+from .types import AnyResponse
+from typing import Optional
+
 
 class YaDiskError(Exception):
     """
         Base class for all exceptions in this library.
 
         :ivar error_type: `str`, unique error code as returned by API
-        :ivar response: an instance of :any:`Response`
+        :ivar response: an instance of :any:`Response` or :any:`AsyncResponse`
+        :ivar disable_retry: `bool`, if set to :code:`True`, exception will not
+                             trigger a retry in :any:`utils.auto_retry()`
 
         :param error_type: `str`, unique error code as returned by API
         :param msg: `str`, exception message
-        :param response: an instance of :any:`Response`
+        :param response: an instance of :any:`Response` or :any:`AsyncResponse`
+        :param disable_retry: `bool`, if set to :code:`True`, exception will not
+                              trigger a retry in :any:`utils.auto_retry()`
     """
 
-    def __init__(self, error_type=None, msg="", response=None):
+    error_type: Optional[str]
+    response: Optional[AnyResponse]
+    disable_retry: bool
+
+    def __init__(
+        self,
+        error_type: Optional[str] = None,
+        msg: str = "",
+        response: Optional[AnyResponse] = None,
+        disable_retry: bool = False
+    ) -> None:
         Exception.__init__(self, msg)
 
         self.error_type = error_type
         self.response = response
+        self.disable_retry = disable_retry
 
 
 class RequestError(YaDiskError):
@@ -60,8 +78,8 @@ class RequestError(YaDiskError):
         response could not be received.
     """
 
-    def __init__(self, msg=""):
-        YaDiskError.__init__(self, None, msg)
+    def __init__(self, msg: str = "", disable_retry: bool = False):
+        YaDiskError.__init__(self, None, msg, disable_retry=disable_retry)
 
 
 class YaDiskConnectionError(RequestError):
@@ -82,7 +100,7 @@ class RequestTimeoutError(RequestError):
 class WrongResourceTypeError(YaDiskError):
     """Thrown when the resource was expected to be of different type (e.g., file instead of directory)."""
 
-    def __init__(self, msg=""):
+    def __init__(self, msg: str = "") -> None:
         YaDiskError.__init__(self, None, msg, None)
 
 
@@ -94,14 +112,14 @@ class AsyncOperationError(YaDiskError):
 class AsyncOperationFailedError(AsyncOperationError):
     """Raised when an asynchronous operation fails"""
 
-    def __init__(self, msg=""):
+    def __init__(self, msg: str = "") -> None:
         YaDiskError.__init__(self, None, msg, None)
 
 
 class AsyncOperationPollingTimeoutError(AsyncOperationError):
     """Raised when a polling timeout occured while waiting for an asynchronous operation"""
 
-    def __init__(self, msg=""):
+    def __init__(self, msg: str = "") -> None:
         YaDiskError.__init__(self, None, msg, None)
 
 class RetriableYaDiskError(YaDiskError):
@@ -112,8 +130,13 @@ class RetriableYaDiskError(YaDiskError):
 class UnknownYaDiskError(RetriableYaDiskError):
     """Thrown when the request failed but the response does not contain any error info."""
 
-    def __init__(self, msg="", response=None):
-        RetriableYaDiskError.__init__(self, None, msg, response)
+    def __init__(
+        self,
+        msg: str= "",
+        response: Optional[AnyResponse] = None,
+        disable_retry: bool = False
+    ) -> None:
+        RetriableYaDiskError.__init__(self, None, msg, response, disable_retry=disable_retry)
 
 
 class BadRequestError(YaDiskError):
