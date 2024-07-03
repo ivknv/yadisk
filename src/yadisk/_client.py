@@ -474,9 +474,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises InvalidClientError: invalid client ID
@@ -503,9 +503,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises BadVerificationCodeError: confirmation code has invalid format
@@ -540,9 +540,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises AuthorizationPendingError: user has not authorized the application yet
@@ -576,9 +576,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises InvalidGrantError: invalid or expired refresh token or it
@@ -615,9 +615,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises InvalidGrantError: specified token doesn't belong to this application
@@ -649,9 +649,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :returns: `bool`
@@ -687,9 +687,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -718,9 +718,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -747,9 +747,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -769,9 +769,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -792,9 +792,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -817,9 +817,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -848,9 +848,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -873,9 +873,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
@@ -910,9 +910,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
@@ -1045,9 +1045,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
@@ -1082,9 +1082,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises InsufficientStorageError: cannot upload file due to lack of storage space
@@ -1104,9 +1104,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1214,9 +1214,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1250,9 +1250,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
         """
 
@@ -1285,9 +1285,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1325,9 +1325,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
@@ -1360,9 +1360,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1389,9 +1389,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1430,9 +1430,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1488,9 +1488,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1543,9 +1543,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1597,9 +1597,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1648,9 +1648,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1685,9 +1685,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1713,9 +1713,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1758,9 +1758,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1810,9 +1810,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1840,9 +1840,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1876,9 +1876,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1901,9 +1901,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1925,9 +1925,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1951,9 +1951,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1987,9 +1987,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -2011,9 +2011,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -2034,9 +2034,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -2059,9 +2059,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -2089,9 +2089,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -2118,9 +2118,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -2166,9 +2166,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -2222,9 +2222,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -2269,9 +2269,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
@@ -2309,9 +2309,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -2346,9 +2346,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -2376,9 +2376,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises OperationNotFoundError: requested operation was not found
@@ -2418,9 +2418,9 @@ class Client:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises OperationNotFoundError: requested operation was not found

@@ -384,9 +384,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -421,9 +421,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -453,9 +453,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -484,9 +484,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -516,9 +516,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -547,9 +547,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -588,9 +588,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -629,9 +629,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -663,9 +663,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
@@ -707,9 +707,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
@@ -747,9 +747,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
@@ -791,9 +791,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
@@ -832,9 +832,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -882,9 +882,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -942,9 +942,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -983,9 +983,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1017,9 +1017,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1051,9 +1051,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
@@ -1095,9 +1095,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1156,9 +1156,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1226,9 +1226,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1299,9 +1299,9 @@ class ResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1357,8 +1357,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1393,8 +1393,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1424,8 +1424,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1454,8 +1454,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1485,8 +1485,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1515,8 +1515,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -1555,8 +1555,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1595,8 +1595,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1628,8 +1628,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
@@ -1671,8 +1671,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
@@ -1714,8 +1714,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
@@ -1757,8 +1757,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
@@ -1797,8 +1797,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1854,8 +1854,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1915,8 +1915,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1955,8 +1955,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -1988,8 +1988,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -2021,8 +2021,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ParentNotFoundError: parent directory doesn't exist
@@ -2064,8 +2064,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -2129,8 +2129,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -2198,8 +2198,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -2275,8 +2275,8 @@ class AsyncResourceObjectMethodsMixin:
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -3113,9 +3113,9 @@ class SyncTrashResourceObject(TrashResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -3145,9 +3145,9 @@ class SyncTrashResourceObject(TrashResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -3176,9 +3176,9 @@ class SyncTrashResourceObject(TrashResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -3208,9 +3208,9 @@ class SyncTrashResourceObject(TrashResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -3239,9 +3239,9 @@ class SyncTrashResourceObject(TrashResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -3280,9 +3280,9 @@ class SyncTrashResourceObject(TrashResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -3319,9 +3319,9 @@ class SyncTrashResourceObject(TrashResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -3381,9 +3381,9 @@ class SyncTrashResourceObject(TrashResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param requests_args: `dict`, additional parameters for :any:`RequestsSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession.send_request()`
-            :param curl_options: `dict`, additional options for :any:`PycURLSession.send_request()`
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -3480,8 +3480,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -3511,8 +3511,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -3541,8 +3541,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -3572,8 +3572,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -3602,8 +3602,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
@@ -3642,8 +3642,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -3680,8 +3680,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
@@ -3746,8 +3746,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
             :param n_retries: `int`, maximum number of retries
             :param retry_interval: delay between retries in seconds
             :param retry_on: `tuple`, additional exception classes to retry on
-            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession.send_request()`
-            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession.send_request()`
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises PathNotFoundError: resource was not found on Disk
