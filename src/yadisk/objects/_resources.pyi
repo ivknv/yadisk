@@ -20,10 +20,10 @@ from ._yadisk_object import YaDiskObject
 from ._link_object import LinkObject
 from ._disk import UserPublicInfoObject
 
-from typing import Any, Literal, overload, Union, Protocol, Optional
+from typing import Any, Literal, overload, Union, Protocol, Optional, Type
 
 from .._typing_compat import (
-    Generator, Dict, List, AsyncGenerator, Iterable
+    Generator, Dict, List, AsyncGenerator, Iterable, Tuple
 )
 
 from ..types import (
@@ -179,6 +179,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -200,6 +201,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -216,6 +218,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -232,6 +235,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -248,6 +252,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -264,6 +269,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -287,6 +293,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -309,6 +316,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -326,6 +334,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -342,6 +351,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -360,6 +370,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -379,6 +390,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -395,6 +407,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -412,6 +425,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -430,6 +444,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -447,6 +462,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -465,6 +481,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -482,6 +499,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -499,6 +517,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -516,6 +535,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -538,6 +558,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -560,6 +581,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -583,6 +605,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -606,6 +629,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -630,6 +654,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -654,6 +679,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -677,6 +703,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -700,6 +727,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -724,6 +752,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -748,6 +777,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -771,6 +801,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -794,6 +825,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -818,6 +850,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -842,6 +875,7 @@ class ResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -866,6 +900,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -886,6 +921,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -901,6 +937,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -916,6 +953,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -931,6 +969,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -946,6 +985,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -968,6 +1008,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -991,6 +1032,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1009,6 +1051,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1025,6 +1068,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1042,6 +1086,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1063,6 +1108,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1078,6 +1124,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1094,6 +1141,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1111,6 +1159,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1127,6 +1176,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1144,6 +1194,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1160,6 +1211,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1176,6 +1228,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1192,6 +1245,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1213,6 +1267,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1234,6 +1289,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1256,6 +1312,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1278,6 +1335,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1301,6 +1359,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1324,6 +1383,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1346,6 +1406,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1368,6 +1429,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1391,6 +1453,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1414,6 +1477,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1436,6 +1500,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1458,6 +1523,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1481,6 +1547,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1504,6 +1571,7 @@ class AsyncResourceObjectMethodsMixin:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1739,6 +1807,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -1755,6 +1824,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -1771,6 +1841,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -1787,6 +1858,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -1803,6 +1875,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -1826,6 +1899,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -1848,6 +1922,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -1870,6 +1945,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -1893,6 +1969,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -1916,6 +1993,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -1940,6 +2018,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -1964,6 +2043,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         requests_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         curl_options: Optional[Dict[int, Any]] = None,
@@ -1996,6 +2076,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -2011,6 +2092,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -2026,6 +2108,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -2041,6 +2124,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -2056,6 +2140,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -2078,6 +2163,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -2101,6 +2187,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -2122,6 +2209,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -2144,6 +2232,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -2166,6 +2255,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -2189,6 +2279,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -2212,6 +2303,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs

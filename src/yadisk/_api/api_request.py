@@ -23,8 +23,8 @@ from ..utils import auto_retry, async_auto_retry, CaseInsensitiveDict
 from .. import settings
 from .._common import is_default_timeout
 
-from typing import Any, Optional, Union, TypeVar, TYPE_CHECKING
-from .._typing_compat import Set, Dict, Callable, Awaitable
+from typing import Any, Optional, Union, Type, TypeVar, TYPE_CHECKING
+from .._typing_compat import Set, Dict, Tuple, Callable, Awaitable
 import json
 
 if TYPE_CHECKING:
@@ -46,6 +46,7 @@ class APIRequest(object):
         :param headers: `dict` or `None`, additional request headers
         :param n_retries: `int`, maximum number of retries
         :param retry_interval: delay between retries in seconds
+        :param retry_on: `tuple`, additional exception classes to retry on
         :param kwargs: other arguments for :any:`Session.send_request`
 
         :ivar base_url: `str`, base URL for sending the request
@@ -57,6 +58,7 @@ class APIRequest(object):
         :ivar n_retries: `int`, maximum number of retries
         :ivar success_codes: `list`-like, list of response codes that indicate request's success
         :ivar retry_interval: `float`, delay between retries in seconds
+        :ivar retry_on: `tuple`, additional exception classes to retry on
     """
 
     base_url: str = ""
@@ -73,6 +75,7 @@ class APIRequest(object):
     data: Union[Dict, bytes]
     params: Dict[str, Any]
     send_kwargs: Dict[str, Any]
+    retry_on: Tuple[Type[Exception], ...] = tuple()
 
     session: Any
 
@@ -83,6 +86,7 @@ class APIRequest(object):
         n_retries = kwargs.pop("n_retries", None)
         retry_interval = kwargs.pop("retry_interval", None)
         headers = kwargs.pop("headers", {})
+        retry_on = kwargs.pop("retry_on", self.retry_on)
 
         if headers is None:
             headers = {}
@@ -114,6 +118,7 @@ class APIRequest(object):
         self.data = {}
         self.content = None
         self.params = {}
+        self.retry_on = retry_on
 
         if not self.url:
             self.url = f"{self.base_url}/{self.path.lstrip('/')}"
@@ -220,7 +225,8 @@ class APIRequest(object):
             self._attempt,
             self.n_retries,
             self.retry_interval,
-            args=(yadisk, then or (lambda x: x))
+            args=(yadisk, then or (lambda x: x)),
+            retry_on=self.retry_on
         )
 
     async def asend(
@@ -241,7 +247,8 @@ class APIRequest(object):
             self._async_attempt,
             self.n_retries,
             self.retry_interval,
-            args=(yadisk, then or (lambda x: x))
+            args=(yadisk, then or (lambda x: x)),
+            retry_on=self.retry_on
         )
 
     def process_json(self, js: "JSON", **kwargs) -> Any:

@@ -16,8 +16,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-from typing import Optional, Any, Union, Literal, overload
-from ._typing_compat import Dict, AsyncGenerator, Iterable, List
+from typing import Optional, Any, Union, Literal, overload, Type
+from ._typing_compat import Dict, AsyncGenerator, Iterable, List, Tuple
 
 from .objects import (
     DeviceCodeObject, TokenObject, TokenRevokeStatusObject,
@@ -104,6 +104,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -121,6 +122,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -138,6 +140,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -153,6 +156,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -168,6 +172,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -183,6 +188,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -197,6 +203,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -218,6 +225,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -233,6 +241,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -248,6 +257,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -263,6 +273,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -278,6 +289,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -300,6 +312,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -318,6 +331,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -335,6 +349,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -352,6 +367,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -368,6 +384,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -383,6 +400,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -399,6 +417,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -415,6 +434,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -437,6 +457,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -459,6 +480,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -475,6 +497,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -496,6 +519,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -511,6 +535,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -534,6 +559,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -557,6 +583,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -580,6 +607,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -603,6 +631,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -626,6 +655,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -649,6 +679,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -672,6 +703,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -695,6 +727,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -716,6 +749,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -737,6 +771,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -753,6 +788,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -769,6 +805,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -793,6 +830,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -817,6 +855,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -839,6 +878,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -861,6 +901,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -884,6 +925,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -902,6 +944,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -918,6 +961,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -934,6 +978,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -956,6 +1001,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -973,6 +1019,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -988,6 +1035,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1003,6 +1051,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1022,6 +1071,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1039,6 +1089,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1060,6 +1111,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1080,6 +1132,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1100,6 +1153,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1115,6 +1169,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1132,6 +1187,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1146,6 +1202,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
@@ -1163,6 +1220,7 @@ class AsyncClient:
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,
         retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
         aiohttp_args: Optional[Dict[str, Any]] = None,
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs

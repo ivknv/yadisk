@@ -41,7 +41,7 @@ def _apply_default_args(args: Dict[str, Any], default_args: Dict[str, Any]) -> N
 
 def _filter_request_kwargs(kwargs: Dict[str, Any]) -> None:
     # Remove some of the yadisk-specific arguments from kwargs
-    keys_to_remove = ("n_retries", "retry_interval", "fields", "overwrite", "path")
+    keys_to_remove = ("n_retries", "retry_interval", "retry_on", "fields", "overwrite", "path")
 
     for key in keys_to_remove:
         kwargs.pop(key, None)

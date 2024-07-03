@@ -126,7 +126,8 @@ def auto_retry(
     n_retries: Optional[int] = None,
     retry_interval: Optional[Union[int, float]] = None,
     args: Optional[Tuple] = None,
-    kwargs: Optional[Dict[str, Any]] = None
+    kwargs: Optional[Dict[str, Any]] = None,
+    retry_on: Tuple[Type[Exception], ...] = tuple()
 ) -> T:
     """
         Attempt to perform a request with automatic retries.
@@ -138,6 +139,7 @@ def auto_retry(
         :param retry_interval: `int` or `float`, delay between retries (in seconds)
         :param args: `tuple` or `None`, additional arguments for `func`
         :param kwargs: `dict` or `None`, additional keyword arguments for `func`
+        :param retry_on: `tuple`, additional exception classes to retry on
 
         :returns: return value of func()
     """
@@ -154,11 +156,13 @@ def auto_retry(
     if kwargs is None:
         kwargs = {}
 
+    exceptions: Tuple[Type[Exception], ...] = (RequestError, RetriableYaDiskError, *retry_on)
+
     for i in range(n_retries + 1):
         try:
             return func(*args, **kwargs)
-        except (RequestError, RetriableYaDiskError) as e:
-            if i == n_retries or e.disable_retry:
+        except exceptions as e:
+            if i == n_retries or (isinstance(e, YaDiskError) and e.disable_retry):
                 raise
 
         if retry_interval:
@@ -173,7 +177,8 @@ async def async_auto_retry(
     n_retries: Optional[int] = None,
     retry_interval: Optional[Union[int, float]] = None,
     args: Optional[Tuple] = None,
-    kwargs: Optional[Dict[str, Any]] = None
+    kwargs: Optional[Dict[str, Any]] = None,
+    retry_on: Tuple[Type[Exception], ...] = tuple()
 ) -> Any:
     """
         Attempt to perform a request with automatic retries.
@@ -185,6 +190,7 @@ async def async_auto_retry(
         :param retry_interval: `int` or `float`, delay between retries (in seconds)
         :param args: `tuple` or `None`, additional arguments for `func`
         :param kwargs: `dict` or `None`, additional keyword arguments for `func`
+        :param retry_on: `tuple`, additional exception classes to retry on
 
         :returns: return value of func()
     """
@@ -206,14 +212,16 @@ async def async_auto_retry(
     # Suppress false type hint errors
     callback: Any = func
 
+    exceptions: Tuple[Type[Exception], ...] = (RequestError, RetriableYaDiskError, *retry_on)
+
     for i in range(n_retries + 1):
         try:
             if is_coro:
                 return await callback(*args, **kwargs)
             else:
                 return callback(*args, **kwargs)
-        except (RequestError, RetriableYaDiskError) as e:
-            if i == n_retries or e.disable_retry:
+        except exceptions as e:
+            if i == n_retries or (isinstance(e, YaDiskError) and e.disable_retry):
                 raise
 
         if retry_interval:

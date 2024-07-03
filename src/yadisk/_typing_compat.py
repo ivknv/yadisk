@@ -16,9 +16,11 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-__all__ = ["List", "Dict", "Set", "Tuple", "Callable", "Iterable", "Generator",
-           "AsyncGenerator", "Coroutine", "Awaitable", "AsyncIterable",
-           "Iterator", "AsyncIterator", "Mapping", "TypeAlias"]
+__all__ = [
+    "List", "Dict", "Set", "Tuple", "Callable", "Iterable", "Generator",
+    "AsyncGenerator", "Coroutine", "Awaitable", "AsyncIterable", "Iterator",
+    "AsyncIterator", "Mapping", "TypeAlias"
+]
 
 import sys
 
@@ -30,7 +32,7 @@ else:
 if sys.version_info < (3, 9):
     from typing import (
         List, Dict, Set, Tuple, Callable, Iterable, Generator, AsyncGenerator,
-        Coroutine, Awaitable, AsyncIterable, Iterator, AsyncIterator, Mapping
+        Coroutine, Awaitable, AsyncIterable, Iterator, AsyncIterator, Mapping,
     )
 else:
     from collections.abc import (
