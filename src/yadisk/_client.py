@@ -52,7 +52,7 @@ from ._client_common import (
     _apply_default_args, _filter_request_kwargs,
     _read_file_as_generator, _set_authorization_header,
     _add_authorization_header, _validate_listdir_response,
-    _validate_link_response
+    _validate_link_response, _validate_get_type_response
 )
 
 __all__ = ["Client"]
@@ -86,12 +86,12 @@ def _get_type(
     *args,
     **kwargs
 ) -> str:
-    type = get_meta_function(*args, fields=["type"], **kwargs).type
-
-    if type is None:
-        raise InvalidResponseError("Response did not contain the type field")
-
-    return type
+    return get_meta_function(
+        *args,
+        _then=_validate_get_type_response,
+        fields=["type"],
+        **kwargs
+    ).type  # type: ignore[return-value]
 
 
 def _listdir(

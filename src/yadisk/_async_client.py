@@ -54,7 +54,7 @@ from ._import_session import import_async_session
 from ._client_common import (
     _apply_default_args, _filter_request_kwargs, _set_authorization_header,
     _add_authorization_header, _validate_listdir_response,
-    _validate_link_response
+    _validate_link_response, _validate_get_type_response
 )
 
 _default_open_file: AsyncOpenFileCallback
@@ -62,13 +62,16 @@ _default_open_file: AsyncOpenFileCallback
 try:
     import aiofiles
 
+
     async def _open_file_with_aiofiles(path: Union[str, bytes], mode: FileOpenMode) -> BinaryAsyncFileLike:
         return await aiofiles.open(path, mode)
+
 
     _default_open_file = _open_file_with_aiofiles
 except ImportError:
     async def _open_file(path: Union[str, bytes], mode: FileOpenMode) -> BinaryIO:
         return open(path, mode)
+
 
     _default_open_file = _open_file
 
@@ -85,17 +88,24 @@ async def _exists(get_meta_function: Callable[..., Awaitable], /, *args, **kwarg
     except PathNotFoundError:
         return False
 
+
 ResourceType = Union["AsyncResourceObject", "AsyncPublicResourceObject", "AsyncTrashResourceObject"]
 
 
-async def _get_type(get_meta_function: Callable[..., Awaitable[ResourceType]],
-                    /, *args, **kwargs) -> str:
-    type = (await get_meta_function(*args, fields=["type"], **kwargs)).type
-
-    if type is None:
-        raise InvalidResponseError("Response did not contain the type field")
-
-    return type
+async def _get_type(
+    get_meta_function: Callable[..., Awaitable[ResourceType]],
+    /,
+    *args,
+    **kwargs
+) -> str:
+    return (
+        await get_meta_function(
+            *args,
+            _then=_validate_get_type_response,
+            fields=["type"],
+            **kwargs
+        )
+    ).type  # type: ignore[return-value]
 
 
 async def _listdir(

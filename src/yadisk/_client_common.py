@@ -28,7 +28,7 @@ __all__ = [
     "_apply_default_args", "_filter_request_kwargs",
     "_read_file_as_generator", "_set_authorization_header",
     "_add_authorization_header", "_validate_listdir_response",
-    "_validate_link_response"
+    "_validate_link_response", "_validate_get_type_response"
 ]
 
 
@@ -102,5 +102,12 @@ def _validate_listdir_response(response: ResourceObject) -> ResourceObject:
 def _validate_link_response(response: LinkObject) -> LinkObject:
     if not response.href:
         raise InvalidResponseError("Response did not contain the link")
+
+    return response
+
+
+def _validate_get_type_response(response: ResourceObject) -> ResourceObject:
+    if response.type is None:
+        raise InvalidResponseError("Response did not contain the type field")
 
     return response
