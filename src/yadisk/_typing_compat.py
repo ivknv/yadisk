@@ -29,6 +29,8 @@ if sys.version_info >= (3, 10):
 else:
     from typing_extensions import TypeAlias
 
+from typing import TYPE_CHECKING
+
 if sys.version_info < (3, 9):
     from typing import (
         List, Dict, Set, Tuple, Callable, Iterable, Generator, AsyncGenerator,
@@ -41,8 +43,12 @@ else:
         AsyncIterable, Iterator, AsyncIterator, Mapping
     )
 
-    List = list
-    Dict = dict
-    Set = set
-    Tuple = tuple
-    Type = type
+    if TYPE_CHECKING:
+        from typing import List, Dict, Set, Tuple, Type
+    else:
+        # mypy complains about this
+        List = list
+        Dict = dict
+        Set = set
+        Tuple = tuple
+        Type = type
