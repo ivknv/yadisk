@@ -17,19 +17,18 @@
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
 __all__ = [
-    "YaDiskError", "RequestError", "YaDiskConnectionError", "TooManyRedirectsError",
-    "RequestTimeoutError", "RetriableYaDiskError", "UnknownYaDiskError",
-    "WrongResourceTypeError", "AsyncOperationError", "AsyncOperationFailedError",
-    "AsyncOperationPollingTimeoutError", "BadRequestError",
-    "UnauthorizedError", "ForbiddenError", "NotFoundError",
+    "YaDiskError", "RequestError", "YaDiskConnectionError",
+    "TooManyRedirectsError", "RequestTimeoutError", "RetriableYaDiskError",
+    "UnknownYaDiskError", "WrongResourceTypeError",
+    "AsyncOperationFailedError", "AsyncOperationPollingTimeoutError",
+    "BadRequestError", "UnauthorizedError", "ForbiddenError", "NotFoundError",
     "NotAcceptableError", "ConflictError", "PayloadTooLargeError",
-    "UnsupportedMediaError", "LockedError",
-    "UploadTrafficLimitExceededError", "TooManyRequestsError",
-    "InternalServerError", "BadGatewayError", "UnavailableError",
-    "GatewayTimeoutError", "InsufficientStorageError", "PathNotFoundError",
-    "ParentNotFoundError", "PathExistsError", "DirectoryExistsError",
-    "FieldValidationError", "ResourceIsLockedError", "MD5DifferError",
-    "OperationNotFoundError", "InvalidResponseError",
+    "UnsupportedMediaError", "LockedError", "UploadTrafficLimitExceededError",
+    "TooManyRequestsError", "InternalServerError", "BadGatewayError",
+    "UnavailableError", "GatewayTimeoutError", "InsufficientStorageError",
+    "PathNotFoundError", "ParentNotFoundError", "PathExistsError",
+    "DirectoryExistsError", "FieldValidationError", "ResourceIsLockedError",
+    "MD5DifferError", "OperationNotFoundError", "InvalidResponseError",
     "AuthorizationPendingError", "InvalidClientError", "InvalidGrantError",
     "BadVerificationCodeError", "UnsupportedTokenTypeError"
 ]
@@ -104,19 +103,14 @@ class WrongResourceTypeError(YaDiskError):
         YaDiskError.__init__(self, None, msg, None)
 
 
-class AsyncOperationError(YaDiskError):
-    """Raised when there's an error related to an asynchronous operation"""
-    pass
-
-
-class AsyncOperationFailedError(AsyncOperationError):
+class AsyncOperationFailedError(YaDiskError):
     """Raised when an asynchronous operation fails"""
 
     def __init__(self, msg: str = "") -> None:
         YaDiskError.__init__(self, None, msg, None)
 
 
-class AsyncOperationPollingTimeoutError(AsyncOperationError):
+class AsyncOperationPollingTimeoutError(YaDiskError):
     """Raised when a polling timeout occured while waiting for an asynchronous operation"""
 
     def __init__(self, msg: str = "") -> None:
