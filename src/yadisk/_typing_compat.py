@@ -31,7 +31,7 @@ else:
 
 from typing import TYPE_CHECKING
 
-if sys.version_info < (3, 9):
+if sys.version_info < (3, 10):
     from typing import (
         List, Dict, Set, Tuple, Callable, Iterable, Generator, AsyncGenerator,
         Coroutine, Awaitable, AsyncIterable, Iterator, AsyncIterator, Mapping,
