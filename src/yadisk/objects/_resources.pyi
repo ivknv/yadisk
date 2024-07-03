@@ -20,10 +20,10 @@ from ._yadisk_object import YaDiskObject
 from ._link_object import LinkObject
 from ._disk import UserPublicInfoObject
 
-from typing import Any, Literal, overload, Union, Protocol, Optional, Type
+from typing import Any, Literal, overload, Union, Protocol, Optional
 
 from .._typing_compat import (
-    Generator, Dict, List, AsyncGenerator, Iterable, Tuple
+    Generator, Dict, List, AsyncGenerator, Iterable, Tuple, Type
 )
 
 from ..types import (

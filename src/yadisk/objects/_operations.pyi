@@ -16,8 +16,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-from typing import Optional, Any, Type
-from .._typing_compat import Dict, Tuple
+from typing import Optional, Any
+from .._typing_compat import Dict, Tuple, Type
 
 from ._yadisk_object import YaDiskObject
 from ._link_object import LinkObject

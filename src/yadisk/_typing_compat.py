@@ -19,7 +19,7 @@
 __all__ = [
     "List", "Dict", "Set", "Tuple", "Callable", "Iterable", "Generator",
     "AsyncGenerator", "Coroutine", "Awaitable", "AsyncIterable", "Iterator",
-    "AsyncIterator", "Mapping", "TypeAlias"
+    "AsyncIterator", "Mapping", "TypeAlias", "Type"
 ]
 
 import sys
@@ -33,6 +33,7 @@ if sys.version_info < (3, 9):
     from typing import (
         List, Dict, Set, Tuple, Callable, Iterable, Generator, AsyncGenerator,
         Coroutine, Awaitable, AsyncIterable, Iterator, AsyncIterator, Mapping,
+        Type
     )
 else:
     from collections.abc import (
@@ -44,3 +45,4 @@ else:
     Dict = dict
     Set = set
     Tuple = tuple
+    Type = type

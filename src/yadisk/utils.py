@@ -24,9 +24,9 @@ from .objects import ErrorObject
 from .exceptions import *
 from . import settings
 
-from typing import Any, Optional, Type, Union, TypeVar
+from typing import Any, Optional, Union, TypeVar
 
-from ._typing_compat import Callable, Awaitable, Dict, Tuple
+from ._typing_compat import Callable, Awaitable, Dict, Tuple, Type
 from .types import AnyResponse
 
 __all__ = ["get_exception", "auto_retry", "async_auto_retry", "CaseInsensitiveDict"]

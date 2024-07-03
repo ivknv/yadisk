@@ -16,8 +16,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-from typing import Optional, Any, Union, Literal, overload, Type
-from ._typing_compat import Dict, Generator, Iterable, List, Tuple
+from typing import Optional, Any, Union, Literal, overload
+from ._typing_compat import Dict, Generator, Iterable, List, Tuple, Type
 
 from .objects import (
     DeviceCodeObject, TokenObject, TokenRevokeStatusObject,
