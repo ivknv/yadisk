@@ -45,6 +45,7 @@ class BackgroundGatewayThread:
     def stop(self):
         self.disk_gateway.stop()
         self.client.close()
+        self.server_thread.join()
 
 
 def make_test_case(name: str, session_name: SessionName):
