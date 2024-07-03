@@ -212,7 +212,7 @@ AsyncSessionFactory: TypeAlias = Callable[[], "AsyncSession"]
 #: File mode for :any:`OpenFileCallback` and :any:`AsyncOpenFileCallback`
 FileOpenMode: TypeAlias = Union[Literal["rb"], Literal["wb"]]
 
-#: Function that is used for opening local files (like :any:`open()`)
+#: Function that is used for opening local files (like :any:`open`)
 OpenFileCallback: TypeAlias = Callable[[Union[str, bytes], FileOpenMode], BinaryIO]
 
 #: Function that is used for opening local files (async variant)

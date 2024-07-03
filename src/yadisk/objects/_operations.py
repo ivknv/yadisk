@@ -112,7 +112,7 @@ class SyncOperationLinkObject(OperationLinkObject):
     def wait(self, **kwargs) -> None:
         """
             Wait until an operation is completed. If the operation fails, an
-            exception is raised. Waiting is performed by calling :any:`time.sleep()`.
+            exception is raised. Waiting is performed by calling :any:`time.sleep`.
 
             :param poll_interval: `float`, interval in seconds between subsequent operation status queries
             :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),
@@ -187,7 +187,7 @@ class AsyncOperationLinkObject(OperationLinkObject):
     async def wait(self, **kwargs) -> None:
         """
             Wait until an operation is completed. If the operation fails, an
-            exception is raised. Waiting is performed by calling :any:`asyncio.sleep()`.
+            exception is raised. Waiting is performed by calling :any:`asyncio.sleep`.
 
             :param poll_interval: `float`, interval in seconds between subsequent operation status queries
             :param poll_timeout: `float` or `None`, total polling timeout (`None` means no timeout),

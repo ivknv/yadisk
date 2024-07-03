@@ -2407,7 +2407,7 @@ class Client:
     ) -> None:
         """
             Wait until an operation is completed. If the operation fails, an
-            exception is raised. Waiting is performed by calling :any:`time.sleep()`.
+            exception is raised. Waiting is performed by calling :any:`time.sleep`.
 
             :param operation_id: ID of the operation or a link
             :param poll_interval: `float`, interval in seconds between subsequent operation status queries
