@@ -46,10 +46,10 @@ Alternatively, you can manually choose which optional libraries to install:
 .. code:: bash
 
    # For use with pycurl
-   pip install yadisk pycurl
+   pip install yadisk[pycurl]
 
    # For use with aiohttp, will also install aiofiles
-   pip install yadisk[async_files] aiofiles
+   pip install yadisk[async_files,aiofiles]
 
 Examples
 ********
