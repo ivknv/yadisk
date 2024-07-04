@@ -47,7 +47,7 @@ JSON: TypeAlias = Union[Dict, List, str, int, float, None]
 #: Otherwise, both connect and read timeouts are set to the same value.
 #: A value of None means no timeout.
 #: If the timeout's value is :code:`...`, the default timeout is used
-#: (either :any:`yadisk.settings.DEFAULT_TIMEOUT` or :any:`yadisk.settings.DEFAULT_UPLOAD_TIMEOUT`)
+#: (either :any:`settings.DEFAULT_TIMEOUT` or :any:`settings.DEFAULT_UPLOAD_TIMEOUT`)
 TimeoutParameter: TypeAlias = Optional[
     Union[
         float,
