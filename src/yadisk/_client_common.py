@@ -63,7 +63,7 @@ def _set_authorization_header(
     if new_token:
         headers["Authorization"] = f"OAuth {new_token}"
     else:
-        headers["Authorization"] = None
+        headers["Authorization"] = ""
 
     kwargs["headers"] = headers
 
@@ -80,7 +80,7 @@ def _add_authorization_header(
     if new_token:
         headers["Authorization"] = f"OAuth {new_token}"
     else:
-        headers["Authorization"] = None
+        headers["Authorization"] = ""
 
     kwargs["headers"] = headers
 
