@@ -23,3 +23,71 @@ from ._disk import *
 from ._resources import *
 from ._operations import *
 from ._auth import *
+
+__all__ = [
+    # _yadisk_object
+    "YaDiskObject",
+
+    # _error_object
+    "ErrorObject",
+
+    # _link_object
+    "LinkObject",
+
+    # _disk
+    "DiskInfoObject",
+    "SystemFoldersObject",
+    "UserObject",
+    "UserPublicInfoObject",
+
+    # _resources
+    "CommentIDsObject",
+    "EXIFObject",
+    "FilesResourceListObject",
+    "SyncFilesResourceListObject",
+    "AsyncFilesResourceListObject",
+    "LastUploadedResourceListObject",
+    "SyncLastUploadedResourceListObject",
+    "AsyncLastUploadedResourceListObject",
+    "PublicResourcesListObject",
+    "SyncPublicResourcesListObject",
+    "AsyncPublicResourcesListObject",
+    "ResourceListObject",
+    "SyncResourceListObject",
+    "AsyncResourceListObject",
+    "ResourceObject",
+    "SyncResourceObject",
+    "AsyncResourceObject",
+    "ResourceUploadLinkObject",
+    "ShareInfoObject",
+    "PublicResourceObject",
+    "SyncPublicResourceObject",
+    "AsyncPublicResourceObject",
+    "PublicResourceListObject",
+    "SyncPublicResourceListObject",
+    "AsyncPublicResourceListObject",
+    "TrashResourceObject",
+    "SyncTrashResourceObject",
+    "AsyncTrashResourceObject",
+    "TrashResourceListObject",
+    "SyncTrashResourceListObject",
+    "AsyncTrashResourceListObject",
+    "ResourceLinkObject",
+    "SyncResourceLinkObject",
+    "AsyncResourceLinkObject",
+    "PublicResourceLinkObject",
+    "SyncPublicResourceLinkObject",
+    "AsyncPublicResourceLinkObject",
+    "ResourceDownloadLinkObject",
+
+    # _operations
+    "OperationStatusObject",
+    "OperationLinkObject",
+    "SyncOperationLinkObject",
+    "AsyncOperationLinkObject",
+
+    # _auth
+    "TokenObject",
+    "TokenRevokeStatusObject",
+    "DeviceCodeObject"
+]
