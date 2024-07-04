@@ -117,7 +117,7 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
         print(await client.get_disk_info())
 
         # Выводит содержимое "/some/path"
-        print([i async for i in await client.listdir("/some/path")])
+        print([i async for i in client.listdir("/some/path")])
 
         # Загружает "file_to_upload.txt" в "/destination.txt"
         await client.upload("file_to_upload.txt", "/destination.txt")

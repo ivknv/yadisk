@@ -244,7 +244,7 @@ Asynchronous API
         print(await client.get_disk_info())
 
         # Print files and directories at "/some/path"
-        print([i async for i in await client.listdir("/some/path")])
+        print([i async for i in client.listdir("/some/path")])
 
         # Upload "file_to_upload.txt" to "/destination.txt"
         await client.upload("file_to_upload.txt", "/destination.txt")
