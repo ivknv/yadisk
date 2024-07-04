@@ -178,7 +178,6 @@ Emptying the trash bin
 .. code:: python
 
     import sys
-    import time
     import yadisk
 
     def main():
@@ -189,26 +188,11 @@ Emptying the trash bin
 
         with yadisk.Client(token="<application-token>") as client:
             print("Emptying the trash bin...")
-            operation = client.remove_trash("/")
             print("It might take a while...")
 
-            if operation is None:
-                print("Nevermind. The deed is done.")
-                return
+            client.remove_trash("/")
 
-            while True:
-                status = client.get_operation_status(operation.href)
-
-                if status == "in-progress":
-                    time.sleep(5)
-                    print("Still waiting...")
-                elif status == "success":
-                    print("Success!")
-                    break
-                else:
-                    print(f"Got some weird status: {repr(status)}")
-                    print("That's not normal")
-                    break
+            print("Success!")
 
     main()
 
@@ -418,27 +402,10 @@ Emptying the trash bin
 
         async with yadisk.AsyncClient(token="<application-token>") as client:
             print("Emptying the trash bin...")
-            operation = await client.remove_trash("/")
-
             print("It might take a while...")
 
-            if operation is None:
-                print("Nevermind. The deed is done.")
-                return
-
-            while True:
-                status = await client.get_operation_status(operation.href)
-
-                if status == "in-progress":
-                    await asyncio.sleep(5)
-                    print("Still waiting...")
-                elif status == "success":
-                    print("Success!")
-                    break
-                else:
-                    print(f"Got some weird status: {repr(status)}")
-                    print("That's not normal")
-                    break
+            await client.remove_trash("/")
+            print("Success!")
 
     asyncio.run(main())
 
