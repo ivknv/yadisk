@@ -273,5 +273,5 @@ msgid ""
 "See :doc:`/api_reference/sessions` for a full list of supported HTTP "
 "client libraries and :doc:`/intro` for installation instructions."
 msgstr "См. :doc:`/api_reference/sessions` для полного списка поддерживаемых "
-"библиотек HTTP и :doc:`/intro` для инструкция по установке."
+"библиотек HTTP и :doc:`/intro` для инструкции по установке."
 
