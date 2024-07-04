@@ -12,6 +12,7 @@ Welcome to YaDisk's documentation!
 
    intro
    known_issues
+   migration_guide
    api_reference/index
    changelog
 
