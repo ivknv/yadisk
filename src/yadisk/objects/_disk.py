@@ -43,10 +43,10 @@ class DiskInfoObject(YaDiskObject):
         :ivar used_space: `int`, amount of space used (bytes)
         :ivar is_paid: `bool`, tells if the account is paid or not
         :ivar is_idm_managed_folder_address_access: `bool`, not clear what this is for
-        :ivar reg_time: `datetime.datetime`, Disk registration date
+        :ivar reg_time: :any:`datetime.datetime`, Disk registration date
         :ivar system_folders: :any:`SystemFoldersObject`, paths to the system folders
         :ivar user: :any:`UserObject`, owner of the disk
-        :ivar is_idm_managed_public_access: `bool`, not clear waht this is for
+        :ivar is_idm_managed_public_access: `bool`, not clear what this is for
         :ivar unlimited_autoupload_enabled: `bool`, tells whether unlimited
                                              autoupload from mobile devices is enabled
         :ivar revision: `int`, current revision of Yandex.Disk
@@ -162,7 +162,7 @@ class UserObject(YaDiskObject):
         :param user: `dict` or `None`
         :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
 
-        :ivar reg_time: `datetime.datetime`, Disk registration date
+        :ivar reg_time: :any:`datetime.datetime`, Disk registration date
         :ivar display_name: `str`, user's display name
         :ivar uid: `str`, user's UID
         :ivar country: `str`, user's country
