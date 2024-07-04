@@ -124,4 +124,4 @@ As for the asynchronous API, :code:`httpx` is used by default, instead of
 :code:`aiohttp`. There are now multiple supported HTTP client libraries.
 
 See :doc:`/api_reference/sessions` for a full list of supported HTTP client
-libraries.
+libraries and :doc:`/intro` for installation instructions.
