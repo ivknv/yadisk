@@ -19,8 +19,9 @@ from .test_session import TestSession
 from .disk_gateway import DiskGateway, DiskGatewayClient
 import threading
 
-import sys
+import platform
 import asyncio
+import sys
 import time
 
 __all__ = ["RequestsTestCase", "HTTPXTestCase", "PycURLTestCase"]
@@ -266,6 +267,10 @@ def make_test_case(name: str, session_name: SessionName):
 
         @record_or_replay
         def test_upload_and_download(self) -> None:
+            if platform.system() == "Windows" and sys.version_info < (3, 12):
+                self.skipTest("won't work on Windows with Python < 3.12")
+                return
+
             with BytesIO() as buf1, open_tmpfile("w+b") as buf2:
                 buf1.write(b"0" * 1024**2)
                 buf1.seek(0)

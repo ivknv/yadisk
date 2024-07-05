@@ -6,6 +6,7 @@ import tempfile
 from typing import Any
 import aiofiles
 
+import platform
 import posixpath
 from unittest import IsolatedAsyncioTestCase
 from io import BytesIO
@@ -276,6 +277,10 @@ def make_test_case(name: str, session_name: AsyncSessionName):
 
         @record_or_replay
         async def test_upload_and_download(self) -> None:
+            if platform.system() == "Windows" and sys.version_info < (3, 12):
+                self.skipTest("won't work on Windows with Python < 3.12")
+                return
+
             with BytesIO() as buf1, open_tmpfile("w+b") as buf2:
                 buf1.write(b"0" * 1024**2)
                 buf1.seek(0)
@@ -293,6 +298,10 @@ def make_test_case(name: str, session_name: AsyncSessionName):
 
         @record_or_replay
         async def test_upload_and_download_async(self) -> None:
+            if platform.system() == "Windows" and sys.version_info < (3, 12):
+                self.skipTest("won't work on Windows with Python < 3.12")
+                return
+
             content = b"0" * 1024 ** 2
             async with async_open_tmpfile("wb+") as source:
                 await source.write(content)
