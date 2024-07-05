@@ -19,10 +19,19 @@ from .test_session import TestSession
 from .disk_gateway import DiskGateway, DiskGatewayClient
 import threading
 
+import sys
 import asyncio
 import time
 
 __all__ = ["RequestsTestCase", "HTTPXTestCase", "PycURLTestCase"]
+
+
+def open_tmpfile(mode: str):
+    if sys.version_info >= (3, 12):
+        # This is needed in order to work on Windows
+        return tempfile.NamedTemporaryFile(mode, delete_on_close=False)
+    else:
+        return tempfile.NamedTemporaryFile(mode)
 
 
 class BackgroundGatewayThread:
@@ -76,7 +85,7 @@ def make_test_case(name: str, session_name: SessionName):
         @classmethod
         def setUpClass(cls) -> None:
             gateway_host = os.environ.get("PYTHON_YADISK_GATEWAY_HOST", "0.0.0.0")
-            gateway_port = int(os.environ.get("PYTHON_YADISK_GATEWAY_HOST", "8080"))
+            gateway_port = int(os.environ.get("PYTHON_YADISK_GATEWAY_PORT", "8080"))
 
             cls.replay_enabled = os.environ.get("PYTHON_YADISK_REPLAY_ENABLED", "0") == "1"
             cls.recording_enabled = os.environ.get("PYTHON_YADISK_RECORDING_ENABLED", "0") == "1"
@@ -257,22 +266,20 @@ def make_test_case(name: str, session_name: SessionName):
 
         @record_or_replay
         def test_upload_and_download(self) -> None:
-            buf1 = BytesIO()
-            buf2 = tempfile.NamedTemporaryFile("w+b")
+            with BytesIO() as buf1, open_tmpfile("w+b") as buf2:
+                buf1.write(b"0" * 1024**2)
+                buf1.seek(0)
 
-            buf1.write(b"0" * 1024**2)
-            buf1.seek(0)
+                path = posixpath.join(self.path, "zeroes.txt")
 
-            path = posixpath.join(self.path, "zeroes.txt")
+                self.client.upload(buf1, path, overwrite=True, n_retries=50)
+                self.client.download(path, buf2.name, n_retries=50)
+                self.client.remove(path, permanently=True)
 
-            self.client.upload(buf1, path, overwrite=True, n_retries=50)
-            self.client.download(path, buf2.name, n_retries=50)
-            self.client.remove(path, permanently=True)
+                buf1.seek(0)
+                buf2.seek(0)
 
-            buf1.seek(0)
-            buf2.seek(0)
-
-            self.assertEqual(buf1.read(), buf2.read())
+                self.assertEqual(buf1.read(), buf2.read())
 
         @record_or_replay
         def test_check_token(self) -> None:

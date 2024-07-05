@@ -9,6 +9,7 @@ import aiofiles
 import posixpath
 from unittest import IsolatedAsyncioTestCase
 from io import BytesIO
+import sys
 
 import yadisk
 from yadisk._common import is_operation_link, ensure_path_has_schema
@@ -20,6 +21,22 @@ from .disk_gateway import DiskGateway, AsyncDiskGatewayClient
 from .test_session import AsyncTestSession
 
 __all__ = ["AIOHTTPTestCase", "AsyncHTTPXTestCase"]
+
+
+def open_tmpfile(mode: str):
+    if sys.version_info >= (3, 12):
+        # This is needed in order to work on Windows
+        return tempfile.NamedTemporaryFile(mode, delete_on_close=False)
+    else:
+        return tempfile.NamedTemporaryFile(mode)
+
+
+def async_open_tmpfile(mode):
+    if sys.version_info >= (3, 12):
+        # This is needed in order to work on Windows
+        return aiofiles.tempfile.NamedTemporaryFile(mode, delete_on_close=False)
+    else:
+        return aiofiles.tempfile.NamedTemporaryFile(mode)
 
 
 class BackgroundGatewayTask:
@@ -72,7 +89,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
 
         async def asyncSetUp(self) -> None:
             gateway_host = os.environ.get("PYTHON_YADISK_GATEWAY_HOST", "0.0.0.0")
-            gateway_port = int(os.environ.get("PYTHON_YADISK_GATEWAY_HOST", "8080"))
+            gateway_port = int(os.environ.get("PYTHON_YADISK_GATEWAY_PORT", "8080"))
 
             self.replay_enabled = os.environ.get("PYTHON_YADISK_REPLAY_ENABLED", "0") == "1"
             self.recording_enabled = os.environ.get("PYTHON_YADISK_RECORDING_ENABLED", "0") == "1"
@@ -259,32 +276,25 @@ def make_test_case(name: str, session_name: AsyncSessionName):
 
         @record_or_replay
         async def test_upload_and_download(self) -> None:
-            buf1 = BytesIO()
-            buf2 = tempfile.NamedTemporaryFile("w+b")
+            with BytesIO() as buf1, open_tmpfile("w+b") as buf2:
+                buf1.write(b"0" * 1024**2)
+                buf1.seek(0)
 
-            def wrapper():
-                self.assertTrue(False)
+                path = posixpath.join(self.path, "zeroes.txt")
 
-            buf1.close = wrapper  # type: ignore
+                await self.client.upload(buf1, path, overwrite=True, n_retries=50)
+                await self.client.download(path, buf2.name, n_retries=50)
+                await self.client.remove(path, permanently=True)
 
-            buf1.write(b"0" * 1024**2)
-            buf1.seek(0)
+                buf1.seek(0)
+                buf2.seek(0)
 
-            path = posixpath.join(self.path, "zeroes.txt")
-
-            await self.client.upload(buf1, path, overwrite=True, n_retries=50)
-            await self.client.download(path, buf2.name, n_retries=50)
-            await self.client.remove(path, permanently=True)
-
-            buf1.seek(0)
-            buf2.seek(0)
-
-            self.assertEqual(buf1.read(), buf2.read())
+                self.assertEqual(buf1.read(), buf2.read())
 
         @record_or_replay
         async def test_upload_and_download_async(self) -> None:
             content = b"0" * 1024 ** 2
-            async with aiofiles.tempfile.NamedTemporaryFile("wb+") as source:
+            async with async_open_tmpfile("wb+") as source:
                 await source.write(content)
                 await source.seek(0)
 
@@ -299,7 +309,7 @@ def make_test_case(name: str, session_name: AsyncSessionName):
 
                 await self.client.upload(source_generator, path2, overwrite=True, n_retries=50)
 
-            async with aiofiles.tempfile.NamedTemporaryFile("wb+") as destination:
+            async with async_open_tmpfile("wb+") as destination:
                 await self.client.download(path1, destination, n_retries=50)
                 await destination.seek(0)
 
