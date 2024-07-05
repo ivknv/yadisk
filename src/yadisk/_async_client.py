@@ -23,9 +23,9 @@ from pathlib import PurePosixPath
 from urllib.parse import urlencode
 
 from .types import (
-    AsyncFileOrPath, AsyncFileOrPathDestination,
-    AsyncOpenFileCallback, AsyncSessionFactory, FileOpenMode, BinaryAsyncFileLike,
-    AsyncSessionName, OperationStatus
+    AsyncFileOrPath, AsyncFileOrPathDestination, AsyncOpenFileCallback,
+    AsyncSessionFactory, FileOpenMode, BinaryAsyncFileLike, AsyncSessionName,
+    OperationStatus
 )
 
 from . import settings
@@ -33,7 +33,7 @@ from ._api import *
 from .exceptions import (
     AsyncOperationFailedError, AsyncOperationPollingTimeoutError,
     InvalidResponseError, UnauthorizedError, OperationNotFoundError,
-    PathNotFoundError, WrongResourceTypeError
+    PathNotFoundError, WrongResourceTypeError, YaDiskError
 )
 from .utils import auto_retry, CaseInsensitiveDict
 from .objects import (
@@ -46,7 +46,7 @@ from .objects import (
 )
 
 from typing import Any, Optional, Union, IO, BinaryIO, Literal
-from ._typing_compat import Callable, AsyncGenerator, Awaitable, Dict, List
+from ._typing_compat import Callable, AsyncGenerator, Awaitable, Dict, List, Type
 
 from ._async_session import AsyncSession
 from ._import_session import import_async_session
@@ -225,21 +225,6 @@ async def _is_file_seekable(file: Any) -> bool:
     return file.seekable()
 
 
-async def _maybe_wait(response: Any, /, *, wait: bool, **kwargs) -> Any:
-    if not isinstance(response, AsyncOperationLinkObject):
-        return response
-
-    if wait:
-        args_to_filter = ("permanently", "md5", "overwrite", "force_async", "fields")
-
-        for arg in args_to_filter:
-            kwargs.pop(arg, None)
-
-        await response.wait(**kwargs)
-
-    return response
-
-
 class AsyncClient:
     """
         Implements access to Yandex.Disk REST API (provides asynchronous API).
@@ -387,6 +372,44 @@ class AsyncClient:
         """
 
         await self.session.close()
+
+    async def _maybe_wait(
+        self,
+        request_class: Type[APIRequest],
+        /,
+        *args,
+        wait: bool = False,
+        **kwargs
+    ) -> Any:
+        request = request_class(self.session, *args, **kwargs)
+
+        if wait:
+            async def then(response: Optional[AsyncOperationLinkObject]) -> Optional[AsyncOperationLinkObject]:
+                if not isinstance(response, AsyncOperationLinkObject):
+                    return response
+
+                args_to_filter = (
+                    "permanently", "md5", "overwrite", "force_async", "fields"
+                )
+
+                for arg in args_to_filter:
+                    kwargs.pop(arg, None)
+
+                try:
+                    await response.wait(**kwargs)
+                except YaDiskError as e:
+                    # We want to trigger a full retry (including the operation iteslf)
+                    # only if the asynchronous operation failed
+                    if not isinstance(e, AsyncOperationFailedError):
+                        e.disable_retry = True
+
+                    raise e from None
+
+                return response
+
+            return await request.asend(yadisk=self, then=then)
+        else:
+            return await request.asend(yadisk=self)
 
     def get_auth_url(
         self,
@@ -1297,8 +1320,6 @@ class AsyncClient:
         self,
         path: str,
         /,
-        *,
-        wait: bool = True,
         **kwargs
     ) -> Optional[AsyncOperationLinkObject]:
         """
@@ -1339,11 +1360,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return await _maybe_wait(
-            await DeleteRequest(self.session, path, **kwargs).asend(yadisk=self),
-            wait=wait,
-            **kwargs
-        )
+        return await self._maybe_wait(DeleteRequest, path, **kwargs)
 
     async def mkdir(self, path: str, /, **kwargs) -> AsyncResourceLinkObject:
         """
@@ -1473,8 +1490,6 @@ class AsyncClient:
         src_path: str,
         dst_path: str,
         /,
-        *,
-        wait: bool = True,
         **kwargs
     ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         """
@@ -1519,19 +1534,12 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return await _maybe_wait(
-            await CopyRequest(self.session, src_path, dst_path, **kwargs).asend(yadisk=self),
-            wait=wait,
-            **kwargs
-        )
+        return await self._maybe_wait(CopyRequest, src_path, dst_path, **kwargs)
 
     async def restore_trash(
         self,
         path: str,
         dst_path: Optional[str] = None,
-        /,
-        *,
-        wait: bool = True,
         **kwargs
     ) -> Union[AsyncResourceLinkObject, AsyncOperationLinkObject]:
         """
@@ -1572,12 +1580,8 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return await _maybe_wait(
-            await RestoreTrashRequest(
-                self.session, path, dst_path=dst_path, **kwargs
-            ).asend(yadisk=self),
-            wait=wait,
-            **kwargs
+        return await self._maybe_wait(
+            RestoreTrashRequest, path, dst_path=dst_path, **kwargs
         )
 
     async def move(
@@ -1585,8 +1589,6 @@ class AsyncClient:
         src_path: str,
         dst_path: str,
         /,
-        *,
-        wait: bool = True,
         **kwargs
     ) -> Union[AsyncOperationLinkObject, AsyncResourceLinkObject]:
         """
@@ -1626,11 +1628,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return await _maybe_wait(
-            await MoveRequest(self.session, src_path, dst_path, **kwargs).asend(yadisk=self),
-            wait=wait,
-            **kwargs
-        )
+        return await self._maybe_wait(MoveRequest, src_path, dst_path, **kwargs)
 
     async def rename(
         self,
@@ -1688,8 +1686,6 @@ class AsyncClient:
         self,
         path: str,
         /,
-        *,
-        wait: bool = True,
         **kwargs
     ) -> Optional[AsyncOperationLinkObject]:
         """
@@ -1726,11 +1722,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return await _maybe_wait(
-            await DeleteTrashRequest(self.session, path, **kwargs).asend(yadisk=self),
-            wait=wait,
-            **kwargs
-        )
+        return await self._maybe_wait(DeleteTrashRequest, path, **kwargs)
 
     async def publish(self, path: str, /, **kwargs) -> AsyncResourceLinkObject:
         """
@@ -1790,8 +1782,6 @@ class AsyncClient:
         self,
         public_key: str,
         /,
-        *,
-        wait: bool = True,
         **kwargs
     ) -> Union[AsyncResourceLinkObject, "AsyncOperationLinkObject"]:
         """
@@ -1835,11 +1825,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return await _maybe_wait(
-            await SaveToDiskRequest(self.session, public_key, **kwargs).asend(yadisk=self),
-            wait=wait,
-            **kwargs
-        )
+        return await self._maybe_wait(SaveToDiskRequest, public_key, **kwargs)
 
     async def get_public_meta(self, public_key: str, /, **kwargs) -> "AsyncPublicResourceObject":
         """
@@ -2301,8 +2287,6 @@ class AsyncClient:
         url: str,
         path: str,
         /,
-        *,
-        wait: bool = True,
         **kwargs
     ) -> AsyncOperationLinkObject:
         """
@@ -2343,11 +2327,7 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return await _maybe_wait(
-            await UploadURLRequest(self.session, url, path, **kwargs).asend(yadisk=self),
-            wait=wait,
-            **kwargs
-        )
+        return await self._maybe_wait(UploadURLRequest, url, path, **kwargs)
 
     async def get_public_download_link(self, public_key: str, /, **kwargs) -> str:
         """

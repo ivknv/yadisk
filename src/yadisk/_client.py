@@ -23,8 +23,9 @@ from urllib.parse import urlencode
 from ._api import *
 
 from .exceptions import (
-    AsyncOperationFailedError, AsyncOperationPollingTimeoutError, PathNotFoundError, UnauthorizedError,
-    OperationNotFoundError, InvalidResponseError, WrongResourceTypeError
+    AsyncOperationFailedError, AsyncOperationPollingTimeoutError,
+    PathNotFoundError, UnauthorizedError, OperationNotFoundError,
+    InvalidResponseError, WrongResourceTypeError, YaDiskError
 )
 
 from .utils import auto_retry, CaseInsensitiveDict
@@ -42,7 +43,7 @@ from ._import_session import import_session
 from . import settings
 
 from typing import Any, Optional, Union, Literal
-from ._typing_compat import Callable, Generator, Dict, List
+from ._typing_compat import Callable, Generator, Dict, List, Type
 from .types import (
     OpenFileCallback, FileOrPath, FileOrPathDestination, OperationStatus,
     SessionFactory, SessionName
@@ -160,21 +161,6 @@ def _listdir(
 
         limit = result.embedded.limit  # type: ignore[assignment,union-attr]
         total = result.embedded.total  # type: ignore[assignment,union-attr]
-
-
-def _maybe_wait(response: Any, /, *, wait: bool, **kwargs) -> Any:
-    if not isinstance(response, SyncOperationLinkObject):
-        return response
-
-    if wait:
-        args_to_filter = ("permanently", "md5", "overwrite", "force_async", "fields")
-
-        for arg in args_to_filter:
-            kwargs.pop(arg, None)
-
-        response.wait(**kwargs)
-
-    return response
 
 
 class Client:
@@ -313,6 +299,44 @@ class Client:
         """
 
         self.session.close()
+
+    def _maybe_wait(
+        self,
+        request_class: Type[APIRequest],
+        /,
+        *args,
+        wait: bool = False,
+        **kwargs
+    ) -> Any:
+        request = request_class(self.session, *args, **kwargs)
+
+        if wait:
+            def then(response: Optional[SyncOperationLinkObject]) -> Optional[SyncOperationLinkObject]:
+                if not isinstance(response, SyncOperationLinkObject):
+                    return response
+
+                args_to_filter = (
+                    "permanently", "md5", "overwrite", "force_async", "fields"
+                )
+
+                for arg in args_to_filter:
+                    kwargs.pop(arg, None)
+
+                try:
+                    response.wait(**kwargs)
+                except YaDiskError as e:
+                    # We want to trigger a full retry (including the operation iteslf)
+                    # only if the asynchronous operation failed
+                    if not isinstance(e, AsyncOperationFailedError):
+                        e.disable_retry = True
+
+                    raise e from None
+
+                return response
+
+            return request.send(yadisk=self, then=then)
+        else:
+            return request.send(yadisk=self)
 
     def get_auth_url(
         self,
@@ -1260,13 +1284,7 @@ class Client:
 
         self._download(lambda *args, **kwargs: link, "", file_or_path, **kwargs)
 
-    def remove(
-        self, path: str,
-        /,
-        *,
-        wait: bool = True,
-        **kwargs
-    ) -> Optional["SyncOperationLinkObject"]:
+    def remove(self, path: str, /, **kwargs) -> Optional["SyncOperationLinkObject"]:
         """
             Remove the resource.
 
@@ -1306,13 +1324,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return _maybe_wait(
-            DeleteRequest(
-                self.session, path, **kwargs
-            ).send(yadisk=self),
-            wait=wait,
-            **kwargs
-        )
+        return self._maybe_wait(DeleteRequest, path, **kwargs)
 
     def mkdir(self, path: str, /, **kwargs) -> SyncResourceLinkObject:
         """
@@ -1406,8 +1418,6 @@ class Client:
         src_path: str,
         dst_path: str,
         /,
-        *,
-        wait: bool = True,
         **kwargs
     ) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
@@ -1453,21 +1463,13 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return _maybe_wait(
-            CopyRequest(
-                self.session, src_path, dst_path, **kwargs
-            ).send(yadisk=self),
-            wait=wait,
-            **kwargs
-        )
+        return self._maybe_wait(CopyRequest, src_path, dst_path, **kwargs)
 
     def restore_trash(
         self,
         path: str,
         /,
         dst_path: Optional[str] = None,
-        *,
-        wait: bool = True,
         **kwargs
     ) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
@@ -1509,21 +1511,13 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return _maybe_wait(
-            RestoreTrashRequest(
-                self.session, path, dst_path=dst_path, **kwargs
-            ).send(yadisk=self),
-            wait=wait,
-            **kwargs
-        )
+        return self._maybe_wait(RestoreTrashRequest, path, dst_path=dst_path, **kwargs)
 
     def move(
         self,
         src_path: str,
         dst_path: str,
         /,
-        *,
-        wait: bool = True,
         **kwargs
     ) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
@@ -1564,13 +1558,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return _maybe_wait(
-            MoveRequest(
-                self.session, src_path, dst_path, **kwargs
-            ).send(yadisk=self),
-            wait=wait,
-            **kwargs
-        )
+        return self._maybe_wait(MoveRequest, src_path, dst_path, **kwargs)
 
     def rename(
         self,
@@ -1629,8 +1617,6 @@ class Client:
         self,
         path: str,
         /,
-        *,
-        wait: bool = True,
         **kwargs
     ) -> Optional["SyncOperationLinkObject"]:
         """
@@ -1668,11 +1654,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return _maybe_wait(
-            DeleteTrashRequest(self.session, path, **kwargs).send(yadisk=self),
-            wait=wait,
-            **kwargs
-        )
+        return self._maybe_wait(DeleteTrashRequest, path, **kwargs)
 
     def publish(self, path: str, /, **kwargs) -> SyncResourceLinkObject:
         """
@@ -1734,8 +1716,6 @@ class Client:
         self,
         public_key: str,
         /,
-        *,
-        wait: bool = True,
         **kwargs
     ) -> Union[SyncResourceLinkObject, "SyncOperationLinkObject"]:
         """
@@ -1780,11 +1760,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return _maybe_wait(
-            SaveToDiskRequest(self.session, public_key, **kwargs).send(yadisk=self),
-            wait=wait,
-            **kwargs
-        )
+        return self._maybe_wait(SaveToDiskRequest, public_key, **kwargs)
 
     def get_public_meta(
         self,
@@ -2249,8 +2225,6 @@ class Client:
         url: str,
         path: str,
         /,
-        *,
-        wait: bool = True,
         **kwargs
     ) -> "SyncOperationLinkObject":
         """
@@ -2292,11 +2266,7 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
-        return _maybe_wait(
-            UploadURLRequest(self.session, url, path, **kwargs).send(yadisk=self),
-            wait=wait,
-            **kwargs
-        )
+        return self._maybe_wait(UploadURLRequest, url, path, **kwargs)
 
     def get_public_download_link(self, public_key: str, /, **kwargs) -> str:
         """

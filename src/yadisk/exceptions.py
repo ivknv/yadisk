@@ -103,7 +103,12 @@ class WrongResourceTypeError(YaDiskError):
         YaDiskError.__init__(self, None, msg, None)
 
 
-class AsyncOperationFailedError(YaDiskError):
+class RetriableYaDiskError(YaDiskError):
+    """Thrown when there was an error but it would make sense to retry the request."""
+    pass
+
+
+class AsyncOperationFailedError(RetriableYaDiskError):
     """Raised when an asynchronous operation fails"""
 
     def __init__(self, msg: str = "") -> None:
@@ -115,10 +120,6 @@ class AsyncOperationPollingTimeoutError(YaDiskError):
 
     def __init__(self, msg: str = "") -> None:
         YaDiskError.__init__(self, None, msg, None)
-
-class RetriableYaDiskError(YaDiskError):
-    """Thrown when there was an error but it would make sense to retry the request."""
-    pass
 
 
 class UnknownYaDiskError(RetriableYaDiskError):
