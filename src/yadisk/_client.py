@@ -311,16 +311,16 @@ class Client:
         request = request_class(self.session, *args, **kwargs)
 
         if wait:
+            args_to_filter = (
+                "permanently", "md5", "overwrite", "force_async", "fields"
+            )
+
+            for arg in args_to_filter:
+                kwargs.pop(arg, None)
+
             def then(response: Optional[SyncOperationLinkObject]) -> Optional[SyncOperationLinkObject]:
                 if not isinstance(response, SyncOperationLinkObject):
                     return response
-
-                args_to_filter = (
-                    "permanently", "md5", "overwrite", "force_async", "fields"
-                )
-
-                for arg in args_to_filter:
-                    kwargs.pop(arg, None)
 
                 try:
                     response.wait(**kwargs)

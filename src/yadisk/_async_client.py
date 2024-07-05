@@ -384,16 +384,16 @@ class AsyncClient:
         request = request_class(self.session, *args, **kwargs)
 
         if wait:
+            args_to_filter = (
+                "permanently", "md5", "overwrite", "force_async", "fields"
+            )
+
+            for arg in args_to_filter:
+                kwargs.pop(arg, None)
+
             async def then(response: Optional[AsyncOperationLinkObject]) -> Optional[AsyncOperationLinkObject]:
                 if not isinstance(response, AsyncOperationLinkObject):
                     return response
-
-                args_to_filter = (
-                    "permanently", "md5", "overwrite", "force_async", "fields"
-                )
-
-                for arg in args_to_filter:
-                    kwargs.pop(arg, None)
 
                 try:
                     await response.wait(**kwargs)
