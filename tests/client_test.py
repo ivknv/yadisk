@@ -27,8 +27,8 @@ import time
 __all__ = ["RequestsTestCase", "HTTPXTestCase", "PycURLTestCase"]
 
 
-def open_tmpfile(mode: str):
-    if sys.version_info >= (3, 12):
+def open_tmpfile(mode):
+    if platform.system() == "Windows" and sys.version_info >= (3, 12):
         # This is needed in order to work on Windows
         return tempfile.NamedTemporaryFile(mode, delete_on_close=False)
     else:

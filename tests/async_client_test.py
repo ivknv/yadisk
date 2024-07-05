@@ -24,8 +24,8 @@ from .test_session import AsyncTestSession
 __all__ = ["AIOHTTPTestCase", "AsyncHTTPXTestCase"]
 
 
-def open_tmpfile(mode: str):
-    if sys.version_info >= (3, 12):
+def open_tmpfile(mode):
+    if platform.system() == "Windows" and sys.version_info >= (3, 12):
         # This is needed in order to work on Windows
         return tempfile.NamedTemporaryFile(mode, delete_on_close=False)
     else:
@@ -33,7 +33,7 @@ def open_tmpfile(mode: str):
 
 
 def async_open_tmpfile(mode):
-    if sys.version_info >= (3, 12):
+    if platform.system() == "Windows" and sys.version_info >= (3, 12):
         # This is needed in order to work on Windows
         return aiofiles.tempfile.NamedTemporaryFile(mode, delete_on_close=False)
     else:
