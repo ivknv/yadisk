@@ -378,7 +378,7 @@ class AsyncClient:
         request_class: Type[APIRequest],
         /,
         *args,
-        wait: bool = False,
+        wait: bool = True,
         **kwargs
     ) -> Any:
         request = request_class(self.session, *args, **kwargs)
