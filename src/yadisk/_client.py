@@ -24,8 +24,8 @@ from ._api import *
 
 from .exceptions import (
     AsyncOperationFailedError, AsyncOperationPollingTimeoutError,
-    PathNotFoundError, UnauthorizedError, OperationNotFoundError,
-    InvalidResponseError, WrongResourceTypeError, YaDiskError
+    PathNotFoundError, RetriableYaDiskError, UnauthorizedError,
+    OperationNotFoundError, InvalidResponseError, WrongResourceTypeError
 )
 
 from .utils import auto_retry, CaseInsensitiveDict
@@ -330,7 +330,7 @@ class Client:
                         poll_timeout=poll_timeout,
                         **kwargs
                     )
-                except YaDiskError as e:
+                except RetriableYaDiskError as e:
                     # We want to trigger a full retry (including the operation iteslf)
                     # only if the asynchronous operation failed
                     if not isinstance(e, AsyncOperationFailedError):
