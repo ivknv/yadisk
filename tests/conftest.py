@@ -38,7 +38,7 @@ def gateway(gateway_host: str, gateway_port: int) -> Generator[BackgroundGateway
     gateway.stop()
 
 
-@pytest.fixture
+@pytest.fixture(scope="package")
 def disk_root() -> str:
     path = os.environ["PYTHON_YADISK_TEST_ROOT"]
 
@@ -50,12 +50,12 @@ def disk_root() -> str:
     return path
 
 
-@pytest.fixture
+@pytest.fixture(scope="package")
 def replay_enabled() -> bool:
     return os.environ.get("PYTHON_YADISK_REPLAY_ENABLED", "0") == "1"
 
 
-@pytest.fixture
+@pytest.fixture(scope="package")
 def recording_enabled() -> bool:
     return os.environ.get("PYTHON_YADISK_RECORDING_ENABLED", "0") == "1"
 
@@ -90,7 +90,9 @@ def record_or_replay(
 def client(
     request: pytest.FixtureRequest,
     gateway_host: str,
-    gateway_port: int
+    gateway_port: int,
+    replay_enabled: bool,
+    recording_enabled: bool
 ) -> Generator[yadisk.Client, None, None]:
     base_gateway_url = f"http://{gateway_host}:{gateway_port}"
 
@@ -125,7 +127,9 @@ def client(
 async def async_client(
     request: pytest.FixtureRequest,
     gateway_host: str,
-    gateway_port: int
+    gateway_port: int,
+    replay_enabled: bool,
+    recording_enabled: bool
 ) -> AsyncGenerator[yadisk.AsyncClient, None]:
     base_gateway_url = f"http://{gateway_host}:{gateway_port}"
 
