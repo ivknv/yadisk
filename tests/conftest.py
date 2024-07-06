@@ -56,7 +56,11 @@ def disk_root(request: pytest.FixtureRequest) -> str:
 
 
 @pytest.fixture()
-def disk_cleanup(disk_root: str, client: yadisk.Client) -> Generator[None, None, None]:
+def disk_cleanup(
+    disk_root: str,
+    client: yadisk.Client,
+    replay_enabled: bool
+) -> Generator[None, None, None]:
     try:
         client.mkdir(disk_root)
     except yadisk.exceptions.PathExistsError:
@@ -67,13 +71,19 @@ def disk_cleanup(disk_root: str, client: yadisk.Client) -> Generator[None, None,
 
     yield
 
-    client.remove(disk_root, permanently=True)
+    poll_interval = 0.0 if replay_enabled else 1.0
+    client.remove(
+        disk_root,
+        permanently=True,
+        poll_interval=poll_interval
+    )
 
 
 @pytest.fixture()
 async def async_disk_cleanup(
     disk_root: str,
-    async_client: yadisk.AsyncClient
+    async_client: yadisk.AsyncClient,
+    replay_enabled: bool
 ) -> AsyncGenerator[None, None]:
     try:
         await async_client.mkdir(disk_root)
@@ -85,7 +95,12 @@ async def async_disk_cleanup(
 
     yield
 
-    await async_client.remove(disk_root, permanently=True)
+    poll_interval = 0.0 if replay_enabled else 1.0
+    await async_client.remove(
+        disk_root,
+        permanently=True,
+        poll_interval=poll_interval
+    )
 
 
 @pytest.fixture(scope="package")
