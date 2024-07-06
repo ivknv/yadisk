@@ -105,7 +105,7 @@ async def async_disk_cleanup(
 
 @pytest.fixture(scope="package")
 def replay_enabled() -> bool:
-    return os.environ.get("PYTHON_YADISK_REPLAY_ENABLED", "0") == "1"
+    return os.environ.get("PYTHON_YADISK_REPLAY_ENABLED", "1") == "1"
 
 
 @pytest.fixture(scope="package")
