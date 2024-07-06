@@ -633,7 +633,7 @@ class AsyncClient:
         """
             Get a new token from a device code, previously obtained with :any:`AsyncClient.get_device_code()`.
 
-            :param code: confirmation code
+            :param device_code: device code, obtained from :any:`AsyncClient.get_device_code()`
             :param device_id: unique device ID (between 6 and 50 characters)
             :param device_name: device name, should not be longer than 100 characters
             :param code_verifier: `str`, verifier code, used with the PKCE authorization flow
