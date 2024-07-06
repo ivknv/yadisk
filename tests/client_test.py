@@ -28,7 +28,7 @@ def open_tmpfile(mode):
 
 
 class TestClient:
-    @pytest.mark.usefixtures("record_or_replay")
+    @pytest.mark.usefixtures("sync_client_test")
     def test_get_meta(self, client: yadisk.Client, disk_root: str) -> None:
         resource = client.get_meta(disk_root)
 
@@ -36,7 +36,7 @@ class TestClient:
         assert resource.type == "dir"
         assert resource.name == posixpath.split(disk_root)[1]
 
-    @pytest.mark.usefixtures("record_or_replay")
+    @pytest.mark.usefixtures("sync_client_test")
     def test_listdir(self, client: yadisk.Client, disk_root: str) -> None:
         names = ["dir1", "dir2", "dir3"]
 
@@ -47,14 +47,9 @@ class TestClient:
 
         result = [i.name for i in client.listdir(disk_root)]
 
-        for name in names:
-            path = posixpath.join(disk_root, name)
-
-            client.remove(path, permanently=True)
-
         assert result == names
 
-    @pytest.mark.usefixtures("record_or_replay")
+    @pytest.mark.usefixtures("sync_client_test")
     def test_listdir_fields(self, client: yadisk.Client, disk_root: str) -> None:
         names = ["dir1", "dir2", "dir3"]
 
@@ -65,14 +60,9 @@ class TestClient:
 
         result = [(i.name, i.type, i.file) for i in client.listdir(disk_root, fields=["name", "type"])]
 
-        for name in names:
-            path = posixpath.join(disk_root, name)
-
-            client.remove(path, permanently=True)
-
         assert result == [(name, "dir", None) for name in names]
 
-    @pytest.mark.usefixtures("record_or_replay")
+    @pytest.mark.usefixtures("sync_client_test")
     def test_listdir_on_file(self, client: yadisk.Client, disk_root: str) -> None:
         buf = BytesIO()
         buf.write(b"0" * 1000)
@@ -85,9 +75,7 @@ class TestClient:
         with pytest.raises(yadisk.exceptions.WrongResourceTypeError):
             list(client.listdir(path))
 
-        client.remove(path, permanently=True)
-
-    @pytest.mark.usefixtures("record_or_replay")
+    @pytest.mark.usefixtures("sync_client_test")
     def test_listdir_with_limits(self, client: yadisk.Client, disk_root: str) -> None:
         names = ["dir1", "dir2", "dir3"]
 
@@ -98,14 +86,9 @@ class TestClient:
 
         result = [i.name for i in client.listdir(disk_root, limit=1)]
 
-        for name in names:
-            path = posixpath.join(disk_root, name)
-
-            client.remove(path, permanently=True)
-
         assert result == names
 
-    @pytest.mark.usefixtures("record_or_replay")
+    @pytest.mark.usefixtures("sync_client_test")
     def test_listdir_with_max_items(self, client: yadisk.Client, disk_root: str) -> None:
         names = ["dir1", "dir2", "dir3", "dir4", "dir5", "dir6"]
 
@@ -130,14 +113,9 @@ class TestClient:
             names[:10],
         ]
 
-        for name in names:
-            path = posixpath.join(disk_root, name)
-
-            client.remove(path, permanently=True)
-
         assert results == expected
 
-    @pytest.mark.usefixtures("record_or_replay")
+    @pytest.mark.usefixtures("sync_client_test")
     def test_mkdir_and_exists(self, client: yadisk.Client, disk_root: str) -> None:
         names = ["dir1", "dir2"]
 
@@ -150,7 +128,7 @@ class TestClient:
             client.remove(path, permanently=True)
             assert not client.exists(path)
 
-    @pytest.mark.usefixtures("record_or_replay")
+    @pytest.mark.usefixtures("sync_client_test")
     def test_upload_and_download(self, client: yadisk.Client, disk_root: str) -> None:
         if platform.system() == "Windows" and sys.version_info < (3, 12):
             pytest.skip("won't work on Windows with Python < 3.12")
@@ -164,19 +142,18 @@ class TestClient:
 
             client.upload(buf1, path, overwrite=True, n_retries=50)
             client.download(path, buf2.name, n_retries=50)
-            client.remove(path, permanently=True)
 
             buf1.seek(0)
             buf2.seek(0)
 
             assert buf1.read() == buf2.read()
 
-    @pytest.mark.usefixtures("record_or_replay")
+    @pytest.mark.usefixtures("sync_client_test")
     def test_check_token(self, client: yadisk.Client, disk_root: str) -> None:
         assert client.check_token()
         assert not client.check_token("asdasdasd")
 
-    @pytest.mark.usefixtures("record_or_replay")
+    @pytest.mark.usefixtures("sync_client_test")
     def test_permanent_remove(self, client: yadisk.Client, disk_root: str) -> None:
         path = posixpath.join(disk_root, "dir")
         origin_path = "disk:" + path
@@ -187,7 +164,7 @@ class TestClient:
         for i in client.trash_listdir("/"):
             assert i.origin_path != origin_path
 
-    @pytest.mark.usefixtures("record_or_replay")
+    @pytest.mark.usefixtures("sync_client_test")
     def test_restore_trash(self, client: yadisk.Client, disk_root: str) -> None:
         path = posixpath.join(disk_root, "dir")
         origin_path = "disk:" + path
@@ -206,9 +183,8 @@ class TestClient:
 
         client.restore_trash(trash_path, path)
         assert client.exists(path)
-        client.remove(path, permanently=True)
 
-    @pytest.mark.usefixtures("record_or_replay")
+    @pytest.mark.usefixtures("sync_client_test")
     def test_move(self, client: yadisk.Client, disk_root: str) -> None:
         path1 = posixpath.join(disk_root, "dir1")
         path2 = posixpath.join(disk_root, "dir2")
@@ -217,9 +193,7 @@ class TestClient:
 
         assert client.exists(path2)
 
-        client.remove(path2, permanently=True)
-
-    @pytest.mark.usefixtures("record_or_replay")
+    @pytest.mark.usefixtures("sync_client_test")
     def test_remove_trash(self, client: yadisk.Client, disk_root: str) -> None:
         path = posixpath.join(disk_root, "dir-to-remove")
         origin_path = "disk:" + path
@@ -239,7 +213,7 @@ class TestClient:
         client.remove_trash(trash_path)
         assert not client.trash_exists(trash_path)
 
-    @pytest.mark.usefixtures("record_or_replay")
+    @pytest.mark.usefixtures("sync_client_test")
     def test_publish_unpublish(self, client: yadisk.Client, disk_root: str) -> None:
         path = disk_root
 
@@ -249,7 +223,7 @@ class TestClient:
         client.unpublish(path)
         assert client.get_meta(path).public_url is None
 
-    @pytest.mark.usefixtures("record_or_replay")
+    @pytest.mark.usefixtures("sync_client_test")
     def test_patch(self, client: yadisk.Client, disk_root: str) -> None:
         path = disk_root
 
@@ -263,7 +237,7 @@ class TestClient:
         client.patch(path, {"test_property": None})
         assert client.get_meta(path).custom_properties is None
 
-    @pytest.mark.usefixtures("record_or_replay")
+    @pytest.mark.usefixtures("sync_client_test")
     def test_issue7(self, client: yadisk.Client, disk_root: str) -> None:
         # See https://github.com/ivknv/yadisk/issues/7
 
@@ -307,7 +281,7 @@ class TestClient:
         assert ensure_path_has_schema("example/path") == "disk:/example/path"
         assert ensure_path_has_schema("app:/test") == "app:/test"
 
-    @pytest.mark.usefixtures("record_or_replay")
+    @pytest.mark.usefixtures("sync_client_test")
     def test_upload_download_non_seekable(self, client: yadisk.Client, disk_root: str) -> None:
         # It should be possible to upload/download non-seekable file objects (such as sys.stdin/sys.stdout)
         # See https://github.com/ivknv/yadisk/pull/31 for more details
@@ -330,12 +304,10 @@ class TestClient:
 
         client.download(dst_path, test_output_file, n_retries=50)
 
-        client.remove(dst_path, permanently=True)
-
         assert test_input_file.tell() == 1000
         assert test_output_file.tell() == 1000
 
-    @pytest.mark.usefixtures("record_or_replay")
+    @pytest.mark.usefixtures("sync_client_test")
     def test_upload_generator(self, client: yadisk.Client, disk_root: str) -> None:
         data = b"0" * 1000
 
@@ -347,7 +319,7 @@ class TestClient:
 
         output = BytesIO()
 
-        client.upload(payload, dst_path).download(output).remove(permanently=True)
+        client.upload(payload, dst_path).download(output)
 
         output.seek(0)
 

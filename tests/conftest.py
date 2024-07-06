@@ -38,8 +38,8 @@ def gateway(gateway_host: str, gateway_port: int) -> Generator[BackgroundGateway
     gateway.stop()
 
 
-@pytest.fixture(scope="package")
-def disk_root() -> str:
+@pytest.fixture
+def disk_root(request: pytest.FixtureRequest) -> str:
     path = os.environ["PYTHON_YADISK_TEST_ROOT"]
 
     # Get rid of 'disk:/' prefix in the path and make it start with a slash
@@ -47,7 +47,45 @@ def disk_root() -> str:
     if path.startswith("disk:/"):
         path = posixpath.join("/", path[len("disk:/"):])
 
-    return path
+    if len([i for i in path.split("/") if i]) < 1:
+        raise ValueError("PYTHON_YADISK_TEST_ROOT set to /")
+
+    test_name = request.function.__name__
+
+    return posixpath.join(path, test_name)
+
+
+@pytest.fixture()
+def disk_cleanup(disk_root: str, client: yadisk.Client) -> Generator[None, None, None]:
+    try:
+        client.mkdir(disk_root)
+    except yadisk.exceptions.PathExistsError:
+        pass
+    except yadisk.exceptions.ParentNotFoundError:
+        client.mkdir(posixpath.split(disk_root)[0])
+        client.mkdir(disk_root)
+
+    yield
+
+    client.remove(disk_root, permanently=True)
+
+
+@pytest.fixture()
+async def async_disk_cleanup(
+    disk_root: str,
+    async_client: yadisk.AsyncClient
+) -> AsyncGenerator[None, None]:
+    try:
+        await async_client.mkdir(disk_root)
+    except yadisk.exceptions.PathExistsError:
+        pass
+    except yadisk.exceptions.ParentNotFoundError:
+        await async_client.mkdir(posixpath.split(disk_root)[0])
+        await async_client.mkdir(disk_root)
+
+    yield
+
+    await async_client.remove(disk_root, permanently=True)
 
 
 @pytest.fixture(scope="package")
@@ -163,3 +201,12 @@ async def async_client(
 @pytest.fixture(scope="package")
 def anyio_backend() -> str:
     return "asyncio"
+
+
+@pytest.fixture
+def sync_client_test(record_or_replay, disk_cleanup) -> None:
+    pass
+
+@pytest.fixture
+def async_client_test(record_or_replay, async_disk_cleanup) -> None:
+    pass
