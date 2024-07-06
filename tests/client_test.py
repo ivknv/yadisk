@@ -128,12 +128,12 @@ class TestClient:
             client.remove(path, permanently=True)
             assert not client.exists(path)
 
+    @pytest.mark.skipif(
+        platform.system() == "Windows" and sys.version_info < (3, 12),
+        reason="won't work on Windows with Python < 3.12"
+    )
     @pytest.mark.usefixtures("sync_client_test")
     def test_upload_and_download(self, client: yadisk.Client, disk_root: str) -> None:
-        if platform.system() == "Windows" and sys.version_info < (3, 12):
-            pytest.skip("won't work on Windows with Python < 3.12")
-            return
-
         with BytesIO() as buf1, open_tmpfile("w+b") as buf2:
             buf1.write(b"0" * 1024**2)
             buf1.seek(0)

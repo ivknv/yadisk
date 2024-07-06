@@ -145,12 +145,12 @@ class TestAsyncClient:
         for path in paths:
             await check_existence(path)
 
+    @pytest.mark.skipif(
+        platform.system() == "Windows" and sys.version_info < (3, 12),
+        reason="won't work on Windows with Python < 3.12"
+    )
     @pytest.mark.usefixtures("async_client_test")
     async def test_upload_and_download(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
-        if platform.system() == "Windows" and sys.version_info < (3, 12):
-            pytest.skip("won't work on Windows with Python < 3.12")
-            return
-
         with BytesIO() as buf1, open_tmpfile("w+b") as buf2:
             buf1.write(b"0" * 1024**2)
             buf1.seek(0)
@@ -165,12 +165,12 @@ class TestAsyncClient:
 
             assert buf1.read() == buf2.read()
 
+    @pytest.mark.skipif(
+        platform.system() == "Windows" and sys.version_info < (3, 12),
+        reason="won't work on Windows with Python < 3.12"
+    )
     @pytest.mark.usefixtures("async_client_test")
     async def test_upload_and_download_async(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
-        if platform.system() == "Windows" and sys.version_info < (3, 12):
-            pytest.skip("won't work on Windows with Python < 3.12")
-            return
-
         content = b"0" * 1024 ** 2
         async with async_open_tmpfile("wb+") as source:
             await source.write(content)
