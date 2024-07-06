@@ -6,6 +6,8 @@ types-requests
 types-pycurl
 
 # Tests
+pytest==8.2.2
+anyio==4.4.0
 starlette==0.37.2
 uvicorn==0.30.1
 

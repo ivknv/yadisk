@@ -1,27 +1,21 @@
 # -*- coding: utf-8 -*-
 
-import asyncio
-import os
 import tempfile
 from typing import Any
 import aiofiles
 
 import platform
 import posixpath
-from unittest import IsolatedAsyncioTestCase
 from io import BytesIO
 import sys
 
 import yadisk
 from yadisk._common import is_operation_link, ensure_path_has_schema
-from yadisk._typing_compat import Callable
 from yadisk._api import GetOperationStatusRequest
-from yadisk.types import AsyncSessionName
 
-from .disk_gateway import DiskGateway, AsyncDiskGatewayClient
-from .test_session import AsyncTestSession
+import pytest
 
-__all__ = ["AIOHTTPTestCase", "AsyncHTTPXTestCase"]
+__all__ = ["TestAsyncClient"]
 
 
 def open_tmpfile(mode):
@@ -40,481 +34,364 @@ def async_open_tmpfile(mode):
         return aiofiles.tempfile.NamedTemporaryFile(mode)
 
 
-class BackgroundGatewayTask:
-    def __init__(self, host: str, port: int):
-        self.disk_gateway = DiskGateway()
-
-        self.client = AsyncDiskGatewayClient(f"http://{host}:{port}")
-        self.host = host
-        self.port = port
-        self.server_task = None
-
-    async def start(self):
-        self.server_task = asyncio.create_task(self.disk_gateway.run(self.host, self.port))
-
-        while not await self.client.is_running():
-            await asyncio.sleep(0.01)
-
-    async def stop(self):
-        self.disk_gateway.stop()
-        await self.client.close()
-
-        if self.server_task is not None:
-            await self.server_task
-
-
-def make_test_case(name: str, session_name: AsyncSessionName):
-    class AsyncClientTestCase(IsolatedAsyncioTestCase):
-        client: yadisk.AsyncClient
-        path: str
-        gateway: BackgroundGatewayTask
-        recording_enabled: bool
-        replay_enabled: bool
-
-        def record_or_replay(func: Callable):
-            async def decorated_test(self):
-                directory = os.path.join("tests", "recorded", "async")
-
-                if self.recording_enabled:
-                    os.makedirs(directory, exist_ok=True)
-
-                    async with self.gateway.client.record_as(os.path.join(directory, f"{func.__name__}.json")):
-                        await func(self)
-                elif self.replay_enabled:
-                    async with self.gateway.client.replay(os.path.join(directory, f"{func.__name__}.json")):
-                        await func(self)
-                else:
-                    await func(self)
-
-            return decorated_test
-
-        async def asyncSetUp(self) -> None:
-            gateway_host = os.environ.get("PYTHON_YADISK_GATEWAY_HOST", "0.0.0.0")
-            gateway_port = int(os.environ.get("PYTHON_YADISK_GATEWAY_PORT", "8080"))
+@pytest.mark.anyio
+class TestAsyncClient:
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_get_meta(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        resource = await async_client.get_meta(disk_root)
 
-            self.replay_enabled = os.environ.get("PYTHON_YADISK_REPLAY_ENABLED", "0") == "1"
-            self.recording_enabled = os.environ.get("PYTHON_YADISK_RECORDING_ENABLED", "0") == "1"
+        assert isinstance(resource, yadisk.objects.ResourceObject)
+        assert resource.type == "dir"
+        assert resource.name == posixpath.split(disk_root)[1]
 
-            base_gateway_url = f"http://{gateway_host}:{gateway_port}"
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_listdir(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        names = ["dir1", "dir2", "dir3"]
+        paths = [posixpath.join(disk_root, name) for name in names]
 
-            self.gateway = BackgroundGatewayTask(gateway_host, gateway_port)
-            await self.gateway.start()
+        for path in paths:
+            await async_client.mkdir(path)
 
-            if not os.environ.get("PYTHON_YADISK_APP_TOKEN"):
-                raise ValueError("Environment variable PYTHON_YADISK_APP_TOKEN must be set")
+        async def get_result():
+            return [i.name async for i in async_client.listdir(disk_root)]
 
-            if not os.environ.get("PYTHON_YADISK_TEST_ROOT"):
-                raise ValueError("Environment variable PYTHON_YADISK_TEST_ROOT must be set")
+        result = await get_result()
 
-            self.path: str = os.environ["PYTHON_YADISK_TEST_ROOT"]
+        for path in paths:
+            await async_client.remove(path, permanently=True)
 
-            # Get rid of 'disk:/' prefix in the path and make it start with a slash
-            # for consistency
-            if self.path.startswith("disk:/"):
-                self.path = posixpath.join("/", self.path[len("disk:/"):])
+        assert result == names
 
-            if self.replay_enabled:
-                test_session = AsyncTestSession(
-                    yadisk.import_async_session(session_name)(),
-                    disk_base_url=f"{base_gateway_url}/replay/response/disk",
-                    auth_base_url=f"{base_gateway_url}/replay/response/auth",
-                    download_base_url=f"{base_gateway_url}/replay/response/download",
-                    upload_base_url=f"{base_gateway_url}/replay/response/upload"
-                )
-            else:
-                test_session = AsyncTestSession(
-                    yadisk.import_async_session(session_name)(),
-                    disk_base_url=f"{base_gateway_url}/forward/disk",
-                    auth_base_url=f"{base_gateway_url}/forward/auth",
-                    download_base_url=f"{base_gateway_url}/forward/download",
-                    upload_base_url=f"{base_gateway_url}/forward/upload"
-                )
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_listdir_fields(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        names = ["dir1", "dir2", "dir3"]
+        paths = [posixpath.join(disk_root, name) for name in names]
 
-            self.client = yadisk.AsyncClient(
-                os.environ.get("PYTHON_YADISK_APP_ID", ""),
-                os.environ.get("PYTHON_YADISK_APP_SECRET", ""),
-                os.environ["PYTHON_YADISK_APP_TOKEN"],
-                session=test_session
-            )
+        for path in paths:
+            await async_client.mkdir(path)
 
-            self.client.default_args.update({"n_retries": 50})
+        async def get_result():
+            return [(i.name, i.type, i.file)
+                    async for i in async_client.listdir(disk_root, fields=["name", "type"])]
 
-            # Make sure the actual API token won't be exposed in the recorded requests
-            await self.gateway.client.update_token_map({self.client.token: "supposedly_valid_token"})
+        result = await get_result()
 
-        async def asyncTearDown(self) -> None:
-            await self.client.close()
-            await self.gateway.stop()
+        for path in paths:
+            await async_client.remove(path, permanently=True)
 
-            if session_name == "aiohttp":
-                # Needed for aiohttp to correctly release its resources (see https://github.com/aio-libs/aiohttp/issues/1115)
-                await asyncio.sleep(0.1)
+        assert result == [(name, "dir", None) for name in names]
 
-        @record_or_replay
-        async def test_get_meta(self) -> None:
-            resource = await self.client.get_meta(self.path)
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_listdir_on_file(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        buf = BytesIO()
+        buf.write(b"0" * 1000)
+        buf.seek(0)
 
-            self.assertIsInstance(resource, yadisk.objects.ResourceObject)
-            self.assertEqual(resource.type, "dir")
-            self.assertEqual(resource.name, posixpath.split(self.path)[1])
+        path = posixpath.join(disk_root, "zeroes.txt")
 
-        @record_or_replay
-        async def test_listdir(self) -> None:
-            names = ["dir1", "dir2", "dir3"]
-            paths = [posixpath.join(self.path, name) for name in names]
+        await async_client.upload(buf, path)
 
-            for path in paths:
-                await self.client.mkdir(path)
+        with pytest.raises(yadisk.exceptions.WrongResourceTypeError):
+            [i async for i in async_client.listdir(path)]
 
-            async def get_result():
-                return [i.name async for i in self.client.listdir(self.path)]
+        await async_client.remove(path, permanently=True)
 
-            result = await get_result()
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_listdir_with_limits(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        names = ["dir1", "dir2", "dir3"]
+        paths = [posixpath.join(disk_root, name) for name in names]
 
-            for path in paths:
-                await self.client.remove(path, permanently=True)
+        for path in paths:
+            await async_client.mkdir(path)
 
-            self.assertEqual(result, names)
+        async def get_result():
+            return [i.name async for i in async_client.listdir(disk_root, limit=1)]
 
-        @record_or_replay
-        async def test_listdir_fields(self) -> None:
-            names = ["dir1", "dir2", "dir3"]
-            paths = [posixpath.join(self.path, name) for name in names]
+        result = await get_result()
 
-            for path in paths:
-                await self.client.mkdir(path)
+        for path in paths:
+            await async_client.remove(path, permanently=True)
 
-            async def get_result():
-                return [(i.name, i.type, i.file)
-                        async for i in self.client.listdir(self.path, fields=["name", "type"])]
+        assert result == names
 
-            result = await get_result()
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_listdir_with_max_items(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        names = ["dir1", "dir2", "dir3", "dir4", "dir5", "dir6"]
 
-            for path in paths:
-                await self.client.remove(path, permanently=True)
+        for name in names:
+            path = posixpath.join(disk_root, name)
 
-            self.assertEqual(result, [(name, "dir", None) for name in names])
+            await async_client.mkdir(path)
 
-        @record_or_replay
-        async def test_listdir_on_file(self) -> None:
-            buf = BytesIO()
-            buf.write(b"0" * 1000)
-            buf.seek(0)
+        results = [
+            [i.name async for i in async_client.listdir(disk_root, max_items=0)],
+            [i.name async for i in async_client.listdir(disk_root, max_items=1, limit=1)],
+            [i.name async for i in async_client.listdir(disk_root, max_items=2, limit=1)],
+            [i.name async for i in async_client.listdir(disk_root, max_items=3, limit=1)],
+            [i.name async for i in async_client.listdir(disk_root, max_items=10, limit=1)],
+        ]
 
-            path = posixpath.join(self.path, "zeroes.txt")
+        expected = [
+            [],
+            names[:1],
+            names[:2],
+            names[:3],
+            names[:10],
+        ]
 
-            await self.client.upload(buf, path)
+        for name in names:
+            path = posixpath.join(disk_root, name)
 
-            with self.assertRaises(yadisk.exceptions.WrongResourceTypeError):
-                [i async for i in self.client.listdir(path)]
+            await async_client.remove(path, permanently=True)
 
-            await self.client.remove(path, permanently=True)
+        assert results == expected
 
-        @record_or_replay
-        async def test_listdir_with_limits(self) -> None:
-            names = ["dir1", "dir2", "dir3"]
-            paths = [posixpath.join(self.path, name) for name in names]
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_mkdir_and_exists(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        names = ["dir1", "dir2", "dir3"]
+        paths = [posixpath.join(disk_root, name) for name in names]
 
-            for path in paths:
-                await self.client.mkdir(path)
+        async def check_existence(path):
+            await async_client.mkdir(path)
+            assert await async_client.exists(path)
 
-            async def get_result():
-                return [i.name async for i in self.client.listdir(self.path, limit=1)]
+            await async_client.remove(path, permanently=True)
+            assert not await async_client.exists(path)
 
-            result = await get_result()
+        for path in paths:
+            await check_existence(path)
 
-            for path in paths:
-                await self.client.remove(path, permanently=True)
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_upload_and_download(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        if platform.system() == "Windows" and sys.version_info < (3, 12):
+            pytest.skip("won't work on Windows with Python < 3.12")
+            return
 
-            self.assertEqual(result, names)
-
-        @record_or_replay
-        async def test_listdir_with_max_items(self) -> None:
-            names = ["dir1", "dir2", "dir3", "dir4", "dir5", "dir6"]
-
-            for name in names:
-                path = posixpath.join(self.path, name)
-
-                await self.client.mkdir(path)
-
-            results = [
-                [i.name async for i in self.client.listdir(self.path, max_items=0)],
-                [i.name async for i in self.client.listdir(self.path, max_items=1, limit=1)],
-                [i.name async for i in self.client.listdir(self.path, max_items=2, limit=1)],
-                [i.name async for i in self.client.listdir(self.path, max_items=3, limit=1)],
-                [i.name async for i in self.client.listdir(self.path, max_items=10, limit=1)],
-            ]
-
-            expected = [
-                [],
-                names[:1],
-                names[:2],
-                names[:3],
-                names[:10],
-            ]
-
-            for name in names:
-                path = posixpath.join(self.path, name)
-
-                await self.client.remove(path, permanently=True)
-
-            self.assertEqual(results, expected)
-
-        @record_or_replay
-        async def test_mkdir_and_exists(self) -> None:
-            names = ["dir1", "dir2", "dir3"]
-            paths = [posixpath.join(self.path, name) for name in names]
-
-            async def check_existence(path):
-                await self.client.mkdir(path)
-                self.assertTrue(await self.client.exists(path))
-
-                await self.client.remove(path, permanently=True)
-                self.assertFalse(await self.client.exists(path))
-
-            for path in paths:
-                await check_existence(path)
-
-        @record_or_replay
-        async def test_upload_and_download(self) -> None:
-            if platform.system() == "Windows" and sys.version_info < (3, 12):
-                self.skipTest("won't work on Windows with Python < 3.12")
-                return
-
-            with BytesIO() as buf1, open_tmpfile("w+b") as buf2:
-                buf1.write(b"0" * 1024**2)
-                buf1.seek(0)
-
-                path = posixpath.join(self.path, "zeroes.txt")
-
-                await self.client.upload(buf1, path, overwrite=True, n_retries=50)
-                await self.client.download(path, buf2.name, n_retries=50)
-                await self.client.remove(path, permanently=True)
-
-                buf1.seek(0)
-                buf2.seek(0)
-
-                self.assertEqual(buf1.read(), buf2.read())
-
-        @record_or_replay
-        async def test_upload_and_download_async(self) -> None:
-            if platform.system() == "Windows" and sys.version_info < (3, 12):
-                self.skipTest("won't work on Windows with Python < 3.12")
-                return
-
-            content = b"0" * 1024 ** 2
-            async with async_open_tmpfile("wb+") as source:
-                await source.write(content)
-                await source.seek(0)
-
-                path1 = posixpath.join(self.path, "zeroes.txt")
-                path2 = posixpath.join(self.path, "zeroes_from_generator.txt")
-
-                await self.client.upload(source, path1, overwrite=True, n_retries=50)
-
-                async def source_generator():
-                    for _ in range(1024):
-                        yield b"0" * 1024
-
-                await self.client.upload(source_generator, path2, overwrite=True, n_retries=50)
-
-            async with async_open_tmpfile("wb+") as destination:
-                await self.client.download(path1, destination, n_retries=50)
-                await destination.seek(0)
-
-                self.assertEqual(content, await destination.read())
-                await self.client.remove(path1, permanently=True)
-
-                await destination.seek(0)
-                await destination.truncate()
-                await self.client.download(path2, destination, n_retries=50)
-                await destination.seek(0)
-
-                self.assertEqual(content, await destination.read())
-                await self.client.remove(path2, permanently=True)
-
-        @record_or_replay
-        async def test_check_token(self) -> None:
-            self.assertTrue(await self.client.check_token())
-            self.assertFalse(await self.client.check_token("asdasdasd"))
-
-        @record_or_replay
-        async def test_permanent_remove(self) -> None:
-            path = posixpath.join(self.path, "dir")
-            origin_path = "disk:" + path
-
-            await self.client.mkdir(path)
-            await self.client.remove(path, permanently=True)
-
-            async for i in self.client.trash_listdir("/"):
-                self.assertFalse(i.origin_path == origin_path)
-
-        @record_or_replay
-        async def test_restore_trash(self) -> None:
-            path = posixpath.join(self.path, "dir")
-            origin_path = "disk:" + path
-
-            await self.client.mkdir(path)
-            await self.client.remove(path)
-
-            trash_path: Any = None
-
-            async for i in self.client.trash_listdir("/"):
-                if i.origin_path == origin_path:
-                    trash_path = i.path
-                    break
-
-            self.assertTrue(trash_path is not None)
-
-            await self.client.restore_trash(trash_path, path)
-            self.assertTrue(await self.client.exists(path))
-            await self.client.remove(path, permanently=True)
-
-        @record_or_replay
-        async def test_move(self) -> None:
-            path1 = posixpath.join(self.path, "dir1")
-            path2 = posixpath.join(self.path, "dir2")
-            await self.client.mkdir(path1)
-            await self.client.move(path1, path2)
-
-            self.assertTrue(await self.client.exists(path2))
-
-            await self.client.remove(path2, permanently=True)
-
-        @record_or_replay
-        async def test_remove_trash(self) -> None:
-            path = posixpath.join(self.path, "dir-to-remove")
-            origin_path = "disk:" + path
-
-            await self.client.mkdir(path)
-            await self.client.remove(path)
-
-            trash_path: Any = None
-
-            async for i in self.client.trash_listdir("/"):
-                if i.origin_path == origin_path:
-                    trash_path = i.path
-                    break
-
-            self.assertTrue(trash_path is not None)
-
-            await self.client.remove_trash(trash_path)
-            self.assertFalse(await self.client.trash_exists(trash_path))
-
-        @record_or_replay
-        async def test_publish_unpublish(self) -> None:
-            path = self.path
-
-            await self.client.publish(path)
-            self.assertIsNotNone((await self.client.get_meta(path)).public_url)
-
-            await self.client.unpublish(path)
-            self.assertIsNone((await self.client.get_meta(path)).public_url)
-
-        @record_or_replay
-        async def test_patch(self) -> None:
-            path = self.path
-
-            await self.client.patch(path, {"test_property": "I'm a value!"})
-
-            props: Any = (await self.client.get_meta(path)).custom_properties
-            self.assertIsNotNone(props)
-            self.assertEqual(props["test_property"], "I'm a value!")
-
-            await self.client.patch(path, {"test_property": None})
-            self.assertIsNone((await self.client.get_meta(path)).custom_properties)
-
-        @record_or_replay
-        async def test_issue7(self) -> None:
-            # See https://github.com/ivknv/yadisk/issues/7
-
-            try:
-                [i async for i in self.client.public_listdir("any value here", path="any value here")]
-            except yadisk.exceptions.PathNotFoundError:
-                pass
-
-        def test_is_operation_link(self) -> None:
-            self.assertTrue(is_operation_link("https://cloud-api.yandex.net/v1/disk/operations/123asd"))
-            self.assertTrue(is_operation_link("http://cloud-api.yandex.net/v1/disk/operations/123asd"))
-            self.assertFalse(is_operation_link("https://cloud-api.yandex.net/v1/disk/operation/1283718"))
-            self.assertFalse(is_operation_link("https://asd8iaysd89asdgiu"))
-            self.assertFalse(is_operation_link("http://asd8iaysd89asdgiu"))
-
-        async def test_get_operation_status_request_url(self) -> None:
-            request = GetOperationStatusRequest(
-                self.client.session,
-                "https://cloud-api.yandex.net/v1/disk/operations/123asd")
-            self.assertTrue(is_operation_link(request.url))
-
-            request = GetOperationStatusRequest(
-                self.client.session,
-                "http://cloud-api.yandex.net/v1/disk/operations/123asd")
-            self.assertTrue(is_operation_link(request.url))
-            self.assertTrue(request.url.startswith("https://"))
-
-            request = GetOperationStatusRequest(
-                self.client.session,
-                "https://asd8iaysd89asdgiu")
-            self.assertTrue(is_operation_link(request.url))
-            self.assertTrue(request.url.startswith("https://"))
-
-        @record_or_replay
-        async def test_is_file(self) -> None:
-            # See https://github.com/ivknv/yadisk-async/pull/6
-            buf1 = BytesIO()
-
+        with BytesIO() as buf1, open_tmpfile("w+b") as buf2:
             buf1.write(b"0" * 1024**2)
             buf1.seek(0)
 
-            path = posixpath.join(self.path, "zeroes.txt")
+            path = posixpath.join(disk_root, "zeroes.txt")
 
-            await self.client.upload(buf1, path, overwrite=True, n_retries=50)
-            self.assertTrue(await self.client.is_file(path))
-            await self.client.remove(path, permanently=True)
+            await async_client.upload(buf1, path, overwrite=True, n_retries=50)
+            await async_client.download(path, buf2.name, n_retries=50)
+            await async_client.remove(path, permanently=True)
 
-        def test_ensure_path_has_schema(self) -> None:
-            # See https://github.com/ivknv/yadisk/issues/26 for more details
+            buf1.seek(0)
+            buf2.seek(0)
 
-            self.assertEqual(ensure_path_has_schema("disk:"), "disk:/disk:")
-            self.assertEqual(ensure_path_has_schema("trash:", default_schema="trash"), "trash:/trash:")
-            self.assertEqual(ensure_path_has_schema("/asd:123"), "disk:/asd:123")
-            self.assertEqual(ensure_path_has_schema("/asd:123", "trash"), "trash:/asd:123")
-            self.assertEqual(ensure_path_has_schema("example/path"), "disk:/example/path")
-            self.assertEqual(ensure_path_has_schema("app:/test"), "app:/test")
+            assert buf1.read() == buf2.read()
 
-        @record_or_replay
-        async def test_upload_download_non_seekable(self) -> None:
-            # It should be possible to upload/download non-seekable file objects (such as stdin/stdout)
-            # See https://github.com/ivknv/yadisk/pull/31 for more details
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_upload_and_download_async(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        if platform.system() == "Windows" and sys.version_info < (3, 12):
+            pytest.skip("won't work on Windows with Python < 3.12")
+            return
 
-            test_input_file = BytesIO(b"0" * 1000)
-            test_input_file.seekable = lambda: False  # type: ignore
+        content = b"0" * 1024 ** 2
+        async with async_open_tmpfile("wb+") as source:
+            await source.write(content)
+            await source.seek(0)
 
-            def seek(*args, **kwargs):
-                raise NotImplementedError
+            path1 = posixpath.join(disk_root, "zeroes.txt")
+            path2 = posixpath.join(disk_root, "zeroes_from_generator.txt")
 
-            test_input_file.seek = seek  # type: ignore
+            await async_client.upload(source, path1, overwrite=True, n_retries=50)
 
-            dst_path = posixpath.join(self.path, "zeroes.txt")
+            async def source_generator():
+                for _ in range(1024):
+                    yield b"0" * 1024
 
-            await self.client.upload(test_input_file, dst_path, n_retries=50)
+            await async_client.upload(source_generator, path2, overwrite=True, n_retries=50)
 
-            test_output_file = BytesIO()
-            test_output_file.seekable = lambda: False  # type: ignore
-            test_output_file.seek = seek  # type: ignore
+        async with async_open_tmpfile("wb+") as destination:
+            await async_client.download(path1, destination, n_retries=50)
+            await destination.seek(0)
 
-            await self.client.download(dst_path, test_output_file, n_retries=50)
+            assert content == await destination.read()
+            await async_client.remove(path1, permanently=True)
 
-            await self.client.remove(dst_path, permanently=True)
+            await destination.seek(0)
+            await destination.truncate()
+            await async_client.download(path2, destination, n_retries=50)
+            await destination.seek(0)
 
-            self.assertEqual(test_input_file.tell(), 1000)
-            self.assertEqual(test_output_file.tell(), 1000)
+            assert content == await destination.read()
+            await async_client.remove(path2, permanently=True)
 
-    AsyncClientTestCase.__name__ = name
-    AsyncClientTestCase.__qualname__ = AsyncClientTestCase.__qualname__.rpartition(".")[0] + "." + name
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_check_token(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        assert await async_client.check_token()
+        assert not await async_client.check_token("asdasdasd")
 
-    return AsyncClientTestCase
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_permanent_remove(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        path = posixpath.join(disk_root, "dir")
+        origin_path = "disk:" + path
 
+        await async_client.mkdir(path)
+        await async_client.remove(path, permanently=True)
 
-AIOHTTPTestCase = make_test_case("AIOHTTPTestCase", "aiohttp")
-AsyncHTTPXTestCase = make_test_case("AsyncHTTPXTestCase", "httpx")
+        async for i in async_client.trash_listdir("/"):
+            assert i.origin_path != origin_path
+
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_restore_trash(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        path = posixpath.join(disk_root, "dir")
+        origin_path = "disk:" + path
+
+        await async_client.mkdir(path)
+        await async_client.remove(path)
+
+        trash_path: Any = None
+
+        async for i in async_client.trash_listdir("/"):
+            if i.origin_path == origin_path:
+                trash_path = i.path
+                break
+
+        assert trash_path is not None
+
+        await async_client.restore_trash(trash_path, path)
+        assert await async_client.exists(path)
+        await async_client.remove(path, permanently=True)
+
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_move(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        path1 = posixpath.join(disk_root, "dir1")
+        path2 = posixpath.join(disk_root, "dir2")
+        await async_client.mkdir(path1)
+        await async_client.move(path1, path2)
+
+        assert await async_client.exists(path2)
+
+        await async_client.remove(path2, permanently=True)
+
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_remove_trash(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        path = posixpath.join(disk_root, "dir-to-remove")
+        origin_path = "disk:" + path
+
+        await async_client.mkdir(path)
+        await async_client.remove(path)
+
+        trash_path: Any = None
+
+        async for i in async_client.trash_listdir("/"):
+            if i.origin_path == origin_path:
+                trash_path = i.path
+                break
+
+        assert trash_path is not None
+
+        await async_client.remove_trash(trash_path)
+        assert not await async_client.trash_exists(trash_path)
+
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_publish_unpublish(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        path = disk_root
+
+        await async_client.publish(path)
+        assert (await async_client.get_meta(path)).public_url is not None
+
+        await async_client.unpublish(path)
+        assert (await async_client.get_meta(path)).public_url is None
+
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_patch(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        path = disk_root
+
+        await async_client.patch(path, {"test_property": "I'm a value!"})
+
+        props: Any = (await async_client.get_meta(path)).custom_properties
+        assert props is not None
+        assert props["test_property"] == "I'm a value!"
+
+        await async_client.patch(path, {"test_property": None})
+        assert (await async_client.get_meta(path)).custom_properties is None
+
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_issue7(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        # See https://github.com/ivknv/yadisk/issues/7
+
+        try:
+            [i async for i in async_client.public_listdir("any value here", path="any value here")]
+        except yadisk.exceptions.PathNotFoundError:
+            pass
+
+    def test_is_operation_link(self) -> None:
+        assert is_operation_link("https://cloud-api.yandex.net/v1/disk/operations/123asd")
+        assert is_operation_link("http://cloud-api.yandex.net/v1/disk/operations/123asd")
+        assert not is_operation_link("https://cloud-api.yandex.net/v1/disk/operation/1283718")
+        assert not is_operation_link("https://asd8iaysd89asdgiu")
+        assert not is_operation_link("http://asd8iaysd89asdgiu")
+
+    async def test_get_operation_status_request_url(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        request = GetOperationStatusRequest(
+            async_client.session,
+            "https://cloud-api.yandex.net/v1/disk/operations/123asd")
+        assert is_operation_link(request.url)
+
+        request = GetOperationStatusRequest(
+            async_client.session,
+            "http://cloud-api.yandex.net/v1/disk/operations/123asd")
+        assert is_operation_link(request.url)
+        assert request.url.startswith("https://")
+
+        request = GetOperationStatusRequest(
+            async_client.session,
+            "https://asd8iaysd89asdgiu")
+        assert is_operation_link(request.url)
+        assert request.url.startswith("https://")
+
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_is_file(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        # See https://github.com/ivknv/yadisk-async/pull/6
+        buf1 = BytesIO()
+
+        buf1.write(b"0" * 1024**2)
+        buf1.seek(0)
+
+        path = posixpath.join(disk_root, "zeroes.txt")
+
+        await async_client.upload(buf1, path, overwrite=True, n_retries=50)
+        assert await async_client.is_file(path)
+        await async_client.remove(path, permanently=True)
+
+    def test_ensure_path_has_schema(self) -> None:
+        # See https://github.com/ivknv/yadisk/issues/26 for more details
+
+        assert ensure_path_has_schema("disk:") == "disk:/disk:"
+        assert ensure_path_has_schema("trash:", default_schema="trash") == "trash:/trash:"
+        assert ensure_path_has_schema("/asd:123") == "disk:/asd:123"
+        assert ensure_path_has_schema("/asd:123", "trash") == "trash:/asd:123"
+        assert ensure_path_has_schema("example/path") == "disk:/example/path"
+        assert ensure_path_has_schema("app:/test") == "app:/test"
+
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_upload_download_non_seekable(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        # It should be possible to upload/download non-seekable file objects (such as stdin/stdout)
+        # See https://github.com/ivknv/yadisk/pull/31 for more details
+
+        test_input_file = BytesIO(b"0" * 1000)
+        test_input_file.seekable = lambda: False  # type: ignore
+
+        def seek(*args, **kwargs):
+            raise NotImplementedError
+
+        test_input_file.seek = seek  # type: ignore
+
+        dst_path = posixpath.join(disk_root, "zeroes.txt")
+
+        await async_client.upload(test_input_file, dst_path, n_retries=50)
+
+        test_output_file = BytesIO()
+        test_output_file.seekable = lambda: False  # type: ignore
+        test_output_file.seek = seek  # type: ignore
+
+        await async_client.download(dst_path, test_output_file, n_retries=50)
+
+        await async_client.remove(dst_path, permanently=True)
+
+        assert test_input_file.tell() == 1000
+        assert test_output_file.tell() == 1000

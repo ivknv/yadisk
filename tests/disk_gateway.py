@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+import threading
+import time
 from typing import Any
 from urllib.parse import urlencode, quote, quote_plus
 import base64
@@ -18,7 +20,9 @@ from starlette.routing import Route
 
 import uvicorn
 
-__all__ = ["DiskGateway", "DiskGatewayClient", "AsyncDiskGatewayClient", "main"]
+__all__ = [
+    "DiskGateway", "DiskGatewayClient", "main", "BackgroundGatewayThread"
+]
 
 YADISK_BASE_URL = "https://cloud-api.yandex.net"
 AUTH_BASE_URL = "https://oauth.yandex.ru"
@@ -27,17 +31,22 @@ DOWNLOAD_BASE_URL = "https://downloader.disk.yandex.ru"
 RELEVANT_REQUEST_HEADERS = ["content-type", "connection", "authorization"]
 RELEVANT_RESPONSE_HEADERS = ["content-type", "content-length"]
 
+
 def get_upload_base_url(subdomain: str) -> str:
     return f"https://{subdomain}.disk.yandex.net:443"
+
 
 def select_keys(d, keys):
     return {key: d[key] for key in keys if key in d}
 
+
 def serialize_content(content: bytes) -> str:
     return base64.b64encode(zlib.compress(content)).decode("utf8")
 
+
 def deserialize_content(content: str) -> bytes:
     return zlib.decompress(base64.b64decode(content))
+
 
 def serialize_request(request: httpx.Request, response: httpx.Response):
     return {
@@ -47,6 +56,7 @@ def serialize_request(request: httpx.Request, response: httpx.Response):
         "content":  serialize_content(request.content),
         "response": serialize_response(response)
     }
+
 
 def deserialize_request(request: dict):
     return (
@@ -59,12 +69,14 @@ def deserialize_request(request: dict):
         deserialize_response(request["response"])
     )
 
+
 def deserialize_response(response: dict) -> httpx.Response:
     return httpx.Response(
         status_code=response["status_code"],
         headers=response["headers"],
         content=deserialize_content(response["content"])
     )
+
 
 def serialize_response(response: httpx.Response):
     return {
@@ -393,6 +405,7 @@ class DiskGateway:
         except asyncio.CancelledError:
             await server.shutdown()
 
+
 async def main(args: list) -> None:
     parser = argparse.ArgumentParser(description="Yandex.Disk test gateway")
     parser.add_argument("--host", default="0.0.0.0", help="Server host")
@@ -401,6 +414,7 @@ async def main(args: list) -> None:
     ns = parser.parse_args(args)
 
     await DiskGateway().run(ns.host, ns.port)
+
 
 class DiskGatewayClient:
     def __init__(self, base_url: str):
@@ -470,73 +484,29 @@ class DiskGatewayClient:
 
         self.clear_recorded_requests()
 
-class AsyncDiskGatewayClient:
-    def __init__(self, base_url: str):
-        self.base_url = base_url
-        self._client = httpx.AsyncClient()
 
-    async def __aenter__(self):
-        await self._client.__aenter__()
-        return self
+class BackgroundGatewayThread:
+    def __init__(self, host: str, port: int):
+        self.disk_gateway = DiskGateway()
 
-    async def __aexit__(self, *args, **kwargs):
-        await self._client.__aexit__(*args, **kwargs)
+        self.client = DiskGatewayClient(f"http://{host}:{port}")
 
-    async def close(self):
-        await self._client.aclose()
+        self.server_thread = threading.Thread(
+            target=asyncio.run,
+            args=(self.disk_gateway.run(host, port),)
+        )
 
-    async def start_recording(self):
-        (await self._client.post(f"{self.base_url}/record/start")).raise_for_status()
+    def start(self):
+        self.server_thread.start()
 
-    async def stop_recording(self):
-        (await self._client.post(f"{self.base_url}/record/stop")).raise_for_status()
+        while not self.client.is_running():
+            time.sleep(0.01)
 
-    async def clear_recorded_requests(self):
-        (await self._client.post(f"{self.base_url}/record/clear")).raise_for_status()
+    def stop(self):
+        self.disk_gateway.stop()
+        self.client.close()
+        self.server_thread.join()
 
-    async def dump_recorded_requests(self):
-        return (await self._client.get(f"{self.base_url}/record/json")).json()
-
-    async def set_replay_index(self, index: int):
-        (await self._client.get(f"{self.base_url}/replay/set/{index}")).raise_for_status()
-
-    async def set_replay(self, json: Any):
-        (await self._client.post(f"{self.base_url}/replay/set", json=json)).raise_for_status()
-
-    async def is_running(self) -> bool:
-        try:
-            return (await self._client.get(f"{self.base_url}/status")).status_code == 204
-        except httpx.ConnectError:
-            return False
-
-    async def update_token_map(self, tokens: dict):
-        return (await self._client.post(f"{self.base_url}/tokens/update", json=tokens)).raise_for_status()
-
-    async def clear_token_map(self):
-        return (await self._client.post(f"{self.base_url}/tokens/clear")).raise_for_status()
-
-    @contextlib.asynccontextmanager
-    async def record_as(self, filename: str):
-        await self.start_recording()
-        yield
-
-        await self.stop_recording()
-        recorded_requests = await self.dump_recorded_requests()
-
-        with open(filename, "w") as output:
-            json.dump(recorded_requests, output, indent=4)
-
-        await self.clear_recorded_requests()
-
-    @contextlib.asynccontextmanager
-    async def replay(self, filename: str):
-        with open(filename, "r") as in_file:
-            recorded_requests = json.load(in_file)
-            await self.set_replay(recorded_requests)
-
-        yield
-
-        await self.clear_recorded_requests()
 
 if __name__ == "__main__":
     import logging

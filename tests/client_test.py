@@ -1,30 +1,22 @@
 # -*- coding: utf-8 -*-
 
-import os
 import tempfile
 
 import posixpath
-from unittest import TestCase
 from io import BytesIO
 from typing import Any
 
 import yadisk
 
 from yadisk._common import is_operation_link, ensure_path_has_schema
-from yadisk._typing_compat import Callable
 from yadisk._api import GetOperationStatusRequest
-from yadisk.types import SessionName
-
-from .test_session import TestSession
-from .disk_gateway import DiskGateway, DiskGatewayClient
-import threading
 
 import platform
-import asyncio
 import sys
-import time
 
-__all__ = ["RequestsTestCase", "HTTPXTestCase", "PycURLTestCase"]
+import pytest
+
+__all__ = ["TestClient"]
 
 
 def open_tmpfile(mode):
@@ -35,445 +27,328 @@ def open_tmpfile(mode):
         return tempfile.NamedTemporaryFile(mode)
 
 
-class BackgroundGatewayThread:
-    def __init__(self, host: str, port: int):
-        self.disk_gateway = DiskGateway()
-
-        self.client = DiskGatewayClient(f"http://{host}:{port}")
-
-        self.server_thread = threading.Thread(
-            target=asyncio.run,
-            args=(self.disk_gateway.run(host, port),)
-        )
-
-    def start(self):
-        self.server_thread.start()
-
-        while not self.client.is_running():
-            time.sleep(0.01)
-
-    def stop(self):
-        self.disk_gateway.stop()
-        self.client.close()
-        self.server_thread.join()
-
-
-def make_test_case(name: str, session_name: SessionName):
-    class ClientTestCase(TestCase):
-        client: yadisk.Client
-        path: str
-        gateway: BackgroundGatewayThread
-        recording_enabled: bool
-        replay_enabled: bool
-
-        def record_or_replay(func: Callable):
-            def decorated_test(self):
-                directory = os.path.join("tests", "recorded", "sync")
+class TestClient:
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_get_meta(self, client: yadisk.Client, disk_root: str) -> None:
+        resource = client.get_meta(disk_root)
 
-                if self.recording_enabled:
-                    os.makedirs(directory, exist_ok=True)
-
-                    with self.gateway.client.record_as(os.path.join(directory, f"{func.__name__}.json")):
-                        func(self)
-                elif self.replay_enabled:
-                    with self.gateway.client.replay(os.path.join(directory, f"{func.__name__}.json")):
-                        func(self)
-                else:
-                    func(self)
+        assert isinstance(resource, yadisk.objects.ResourceObject)
+        assert resource.type == "dir"
+        assert resource.name == posixpath.split(disk_root)[1]
 
-            return decorated_test
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_listdir(self, client: yadisk.Client, disk_root: str) -> None:
+        names = ["dir1", "dir2", "dir3"]
 
-        @classmethod
-        def setUpClass(cls) -> None:
-            gateway_host = os.environ.get("PYTHON_YADISK_GATEWAY_HOST", "0.0.0.0")
-            gateway_port = int(os.environ.get("PYTHON_YADISK_GATEWAY_PORT", "8080"))
+        for name in names:
+            path = posixpath.join(disk_root, name)
 
-            cls.replay_enabled = os.environ.get("PYTHON_YADISK_REPLAY_ENABLED", "0") == "1"
-            cls.recording_enabled = os.environ.get("PYTHON_YADISK_RECORDING_ENABLED", "0") == "1"
+            client.mkdir(path)
 
-            base_gateway_url = f"http://{gateway_host}:{gateway_port}"
+        result = [i.name for i in client.listdir(disk_root)]
 
-            cls.gateway = BackgroundGatewayThread(gateway_host, gateway_port)
-            cls.gateway.start()
+        for name in names:
+            path = posixpath.join(disk_root, name)
 
-            if not os.environ.get("PYTHON_YADISK_APP_TOKEN"):
-                raise ValueError("Environment variable PYTHON_YADISK_APP_TOKEN must be set")
+            client.remove(path, permanently=True)
 
-            if not os.environ.get("PYTHON_YADISK_TEST_ROOT"):
-                raise ValueError("Environment variable PYTHON_YADISK_TEST_ROOT must be set")
+        assert result == names
 
-            if cls.replay_enabled:
-                test_session = TestSession(
-                    yadisk.import_session(session_name)(),
-                    disk_base_url=f"{base_gateway_url}/replay/response/disk",
-                    auth_base_url=f"{base_gateway_url}/replay/response/auth",
-                    download_base_url=f"{base_gateway_url}/replay/response/download",
-                    upload_base_url=f"{base_gateway_url}/replay/response/upload"
-                )
-            else:
-                test_session = TestSession(
-                    yadisk.import_session(session_name)(),
-                    disk_base_url=f"{base_gateway_url}/forward/disk",
-                    auth_base_url=f"{base_gateway_url}/forward/auth",
-                    download_base_url=f"{base_gateway_url}/forward/download",
-                    upload_base_url=f"{base_gateway_url}/forward/upload"
-                )
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_listdir_fields(self, client: yadisk.Client, disk_root: str) -> None:
+        names = ["dir1", "dir2", "dir3"]
 
-            cls.client = yadisk.Client(
-                os.environ["PYTHON_YADISK_APP_ID"],
-                os.environ["PYTHON_YADISK_APP_SECRET"],
-                os.environ["PYTHON_YADISK_APP_TOKEN"],
-                session=test_session
-            )
+        for name in names:
+            path = posixpath.join(disk_root, name)
 
-            cls.client.default_args.update({"n_retries": 50})
+            client.mkdir(path)
 
-            cls.path = os.environ["PYTHON_YADISK_TEST_ROOT"]
+        result = [(i.name, i.type, i.file) for i in client.listdir(disk_root, fields=["name", "type"])]
 
-            # Get rid of 'disk:/' prefix in the path and make it start with a slash
-            # for consistency
-            if cls.path.startswith("disk:/"):
-                cls.path = posixpath.join("/", cls.path[len("disk:/"):])
+        for name in names:
+            path = posixpath.join(disk_root, name)
 
-            # Make sure the actual API token won't be exposed in the recorded requests
-            cls.gateway.client.update_token_map({cls.client.token: "supposedly_valid_token"})
+            client.remove(path, permanently=True)
 
-        @classmethod
-        def tearDownClass(cls) -> None:
-            cls.gateway.stop()
-            cls.client.close()
+        assert result == [(name, "dir", None) for name in names]
 
-        @record_or_replay
-        def test_get_meta(self) -> None:
-            resource = self.client.get_meta(self.path)
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_listdir_on_file(self, client: yadisk.Client, disk_root: str) -> None:
+        buf = BytesIO()
+        buf.write(b"0" * 1000)
+        buf.seek(0)
 
-            self.assertIsInstance(resource, yadisk.objects.ResourceObject)
-            self.assertEqual(resource.type, "dir")
-            self.assertEqual(resource.name, posixpath.split(self.path)[1])
+        path = posixpath.join(disk_root, "zeroes.txt")
 
-        @record_or_replay
-        def test_listdir(self) -> None:
-            names = ["dir1", "dir2", "dir3"]
+        client.upload(buf, path)
 
-            for name in names:
-                path = posixpath.join(self.path, name)
+        with pytest.raises(yadisk.exceptions.WrongResourceTypeError):
+            list(client.listdir(path))
 
-                self.client.mkdir(path)
+        client.remove(path, permanently=True)
 
-            result = [i.name for i in self.client.listdir(self.path)]
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_listdir_with_limits(self, client: yadisk.Client, disk_root: str) -> None:
+        names = ["dir1", "dir2", "dir3"]
 
-            for name in names:
-                path = posixpath.join(self.path, name)
+        for name in names:
+            path = posixpath.join(disk_root, name)
 
-                self.client.remove(path, permanently=True)
+            client.mkdir(path)
 
-            self.assertEqual(result, names)
+        result = [i.name for i in client.listdir(disk_root, limit=1)]
 
-        @record_or_replay
-        def test_listdir_fields(self) -> None:
-            names = ["dir1", "dir2", "dir3"]
+        for name in names:
+            path = posixpath.join(disk_root, name)
 
-            for name in names:
-                path = posixpath.join(self.path, name)
+            client.remove(path, permanently=True)
 
-                self.client.mkdir(path)
+        assert result == names
 
-            result = [(i.name, i.type, i.file) for i in self.client.listdir(self.path, fields=["name", "type"])]
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_listdir_with_max_items(self, client: yadisk.Client, disk_root: str) -> None:
+        names = ["dir1", "dir2", "dir3", "dir4", "dir5", "dir6"]
 
-            for name in names:
-                path = posixpath.join(self.path, name)
+        for name in names:
+            path = posixpath.join(disk_root, name)
 
-                self.client.remove(path, permanently=True)
+            client.mkdir(path)
 
-            self.assertEqual(result, [(name, "dir", None) for name in names])
+        results = [
+            [i.name for i in client.listdir(disk_root, max_items=0)],
+            [i.name for i in client.listdir(disk_root, max_items=1, limit=1)],
+            [i.name for i in client.listdir(disk_root, max_items=2, limit=1)],
+            [i.name for i in client.listdir(disk_root, max_items=3, limit=1)],
+            [i.name for i in client.listdir(disk_root, max_items=10, limit=1)],
+        ]
 
-        @record_or_replay
-        def test_listdir_on_file(self) -> None:
-            buf = BytesIO()
-            buf.write(b"0" * 1000)
-            buf.seek(0)
+        expected = [
+            [],
+            names[:1],
+            names[:2],
+            names[:3],
+            names[:10],
+        ]
 
-            path = posixpath.join(self.path, "zeroes.txt")
+        for name in names:
+            path = posixpath.join(disk_root, name)
 
-            self.client.upload(buf, path)
+            client.remove(path, permanently=True)
 
-            with self.assertRaises(yadisk.exceptions.WrongResourceTypeError):
-                list(self.client.listdir(path))
+        assert results == expected
 
-            self.client.remove(path, permanently=True)
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_mkdir_and_exists(self, client: yadisk.Client, disk_root: str) -> None:
+        names = ["dir1", "dir2"]
 
-        @record_or_replay
-        def test_listdir_with_limits(self) -> None:
-            names = ["dir1", "dir2", "dir3"]
+        for name in names:
+            path = posixpath.join(disk_root, name)
 
-            for name in names:
-                path = posixpath.join(self.path, name)
+            client.mkdir(path)
+            assert client.exists(path)
 
-                self.client.mkdir(path)
+            client.remove(path, permanently=True)
+            assert not client.exists(path)
 
-            result = [i.name for i in self.client.listdir(self.path, limit=1)]
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_upload_and_download(self, client: yadisk.Client, disk_root: str) -> None:
+        if platform.system() == "Windows" and sys.version_info < (3, 12):
+            pytest.skip("won't work on Windows with Python < 3.12")
+            return
 
-            for name in names:
-                path = posixpath.join(self.path, name)
+        with BytesIO() as buf1, open_tmpfile("w+b") as buf2:
+            buf1.write(b"0" * 1024**2)
+            buf1.seek(0)
 
-                self.client.remove(path, permanently=True)
+            path = posixpath.join(disk_root, "zeroes.txt")
 
-            self.assertEqual(result, names)
+            client.upload(buf1, path, overwrite=True, n_retries=50)
+            client.download(path, buf2.name, n_retries=50)
+            client.remove(path, permanently=True)
 
-        @record_or_replay
-        def test_listdir_with_max_items(self) -> None:
-            names = ["dir1", "dir2", "dir3", "dir4", "dir5", "dir6"]
+            buf1.seek(0)
+            buf2.seek(0)
 
-            for name in names:
-                path = posixpath.join(self.path, name)
+            assert buf1.read() == buf2.read()
 
-                self.client.mkdir(path)
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_check_token(self, client: yadisk.Client, disk_root: str) -> None:
+        assert client.check_token()
+        assert not client.check_token("asdasdasd")
 
-            results = [
-                [i.name for i in self.client.listdir(self.path, max_items=0)],
-                [i.name for i in self.client.listdir(self.path, max_items=1, limit=1)],
-                [i.name for i in self.client.listdir(self.path, max_items=2, limit=1)],
-                [i.name for i in self.client.listdir(self.path, max_items=3, limit=1)],
-                [i.name for i in self.client.listdir(self.path, max_items=10, limit=1)],
-            ]
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_permanent_remove(self, client: yadisk.Client, disk_root: str) -> None:
+        path = posixpath.join(disk_root, "dir")
+        origin_path = "disk:" + path
 
-            expected = [
-                [],
-                names[:1],
-                names[:2],
-                names[:3],
-                names[:10],
-            ]
+        client.mkdir(path)
+        client.remove(path, permanently=True)
 
-            for name in names:
-                path = posixpath.join(self.path, name)
+        for i in client.trash_listdir("/"):
+            assert i.origin_path != origin_path
 
-                self.client.remove(path, permanently=True)
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_restore_trash(self, client: yadisk.Client, disk_root: str) -> None:
+        path = posixpath.join(disk_root, "dir")
+        origin_path = "disk:" + path
 
-            self.assertEqual(results, expected)
+        client.mkdir(path)
+        client.remove(path)
 
-        @record_or_replay
-        def test_mkdir_and_exists(self) -> None:
-            names = ["dir1", "dir2"]
+        trash_path: Any = None
 
-            for name in names:
-                path = posixpath.join(self.path, name)
+        for i in client.trash_listdir("/"):
+            if i.origin_path == origin_path:
+                trash_path = i.path
+                break
 
-                self.client.mkdir(path)
-                self.assertTrue(self.client.exists(path))
+        assert trash_path is not None
 
-                self.client.remove(path, permanently=True)
-                self.assertFalse(self.client.exists(path))
+        client.restore_trash(trash_path, path)
+        assert client.exists(path)
+        client.remove(path, permanently=True)
 
-        @record_or_replay
-        def test_upload_and_download(self) -> None:
-            if platform.system() == "Windows" and sys.version_info < (3, 12):
-                self.skipTest("won't work on Windows with Python < 3.12")
-                return
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_move(self, client: yadisk.Client, disk_root: str) -> None:
+        path1 = posixpath.join(disk_root, "dir1")
+        path2 = posixpath.join(disk_root, "dir2")
+        client.mkdir(path1)
+        client.move(path1, path2)
 
-            with BytesIO() as buf1, open_tmpfile("w+b") as buf2:
-                buf1.write(b"0" * 1024**2)
-                buf1.seek(0)
+        assert client.exists(path2)
 
-                path = posixpath.join(self.path, "zeroes.txt")
+        client.remove(path2, permanently=True)
 
-                self.client.upload(buf1, path, overwrite=True, n_retries=50)
-                self.client.download(path, buf2.name, n_retries=50)
-                self.client.remove(path, permanently=True)
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_remove_trash(self, client: yadisk.Client, disk_root: str) -> None:
+        path = posixpath.join(disk_root, "dir-to-remove")
+        origin_path = "disk:" + path
 
-                buf1.seek(0)
-                buf2.seek(0)
+        client.mkdir(path)
+        client.remove(path)
 
-                self.assertEqual(buf1.read(), buf2.read())
+        trash_path: Any = None
 
-        @record_or_replay
-        def test_check_token(self) -> None:
-            self.assertTrue(self.client.check_token())
-            self.assertFalse(self.client.check_token("asdasdasd"))
+        for i in client.trash_listdir("/"):
+            if i.origin_path == origin_path:
+                trash_path = i.path
+                break
 
-        @record_or_replay
-        def test_permanent_remove(self) -> None:
-            path = posixpath.join(self.path, "dir")
-            origin_path = "disk:" + path
+        assert trash_path is not None
 
-            self.client.mkdir(path)
-            self.client.remove(path, permanently=True)
+        client.remove_trash(trash_path)
+        assert not client.trash_exists(trash_path)
 
-            for i in self.client.trash_listdir("/"):
-                self.assertFalse(i.origin_path == origin_path)
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_publish_unpublish(self, client: yadisk.Client, disk_root: str) -> None:
+        path = disk_root
 
-        @record_or_replay
-        def test_restore_trash(self) -> None:
-            path = posixpath.join(self.path, "dir")
-            origin_path = "disk:" + path
+        client.publish(path)
+        assert client.get_meta(path).public_url is not None
 
-            self.client.mkdir(path)
-            self.client.remove(path)
+        client.unpublish(path)
+        assert client.get_meta(path).public_url is None
 
-            trash_path: Any = None
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_patch(self, client: yadisk.Client, disk_root: str) -> None:
+        path = disk_root
 
-            for i in self.client.trash_listdir("/"):
-                if i.origin_path == origin_path:
-                    trash_path = i.path
-                    break
+        client.patch(path, {"test_property": "I'm a value!"})
 
-            self.assertTrue(trash_path is not None)
+        props: Any = client.get_meta(path).custom_properties
+        assert props is not None
 
-            self.client.restore_trash(trash_path, path)
-            self.assertTrue(self.client.exists(path))
-            self.client.remove(path, permanently=True)
+        assert props["test_property"] == "I'm a value!"
 
-        @record_or_replay
-        def test_move(self) -> None:
-            path1 = posixpath.join(self.path, "dir1")
-            path2 = posixpath.join(self.path, "dir2")
-            self.client.mkdir(path1)
-            self.client.move(path1, path2)
+        client.patch(path, {"test_property": None})
+        assert client.get_meta(path).custom_properties is None
 
-            self.assertTrue(self.client.exists(path2))
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_issue7(self, client: yadisk.Client, disk_root: str) -> None:
+        # See https://github.com/ivknv/yadisk/issues/7
 
-            self.client.remove(path2, permanently=True)
+        try:
+            list(client.public_listdir("any value here", path="any value here"))
+        except yadisk.exceptions.PathNotFoundError:
+            pass
 
-        @record_or_replay
-        def test_remove_trash(self) -> None:
-            path = posixpath.join(self.path, "dir-to-remove")
-            origin_path = "disk:" + path
+    def test_is_operation_link(self) -> None:
+        assert is_operation_link("https://cloud-api.yandex.net/v1/disk/operations/123asd")
+        assert is_operation_link("http://cloud-api.yandex.net/v1/disk/operations/123asd")
+        assert not is_operation_link("https://cloud-api.yandex.net/v1/disk/operation/1283718")
+        assert not is_operation_link("https://asd8iaysd89asdgiu")
+        assert not is_operation_link("http://asd8iaysd89asdgiu")
 
-            self.client.mkdir(path)
-            self.client.remove(path)
+    def test_get_operation_status_request_url(self, client: yadisk.Client, disk_root: str) -> None:
+        request = GetOperationStatusRequest(
+            client.session,
+            "https://cloud-api.yandex.net/v1/disk/operations/123asd")
+        assert is_operation_link(request.url)
 
-            trash_path: Any = None
+        request = GetOperationStatusRequest(
+            client.session,
+            "http://cloud-api.yandex.net/v1/disk/operations/123asd")
+        assert is_operation_link(request.url)
+        assert request.url.startswith("https://")
 
-            for i in self.client.trash_listdir("/"):
-                if i.origin_path == origin_path:
-                    trash_path = i.path
-                    break
+        request = GetOperationStatusRequest(
+            client.session,
+            "https://asd8iaysd89asdgiu")
+        assert is_operation_link(request.url)
+        assert request.url.startswith("https://")
 
-            self.assertTrue(trash_path is not None)
+    def test_ensure_path_has_schema(self) -> None:
+        # See https://github.com/ivknv/yadisk/issues/26 for more details
 
-            self.client.remove_trash(trash_path)
-            self.assertFalse(self.client.trash_exists(trash_path))
+        assert ensure_path_has_schema("disk:") == "disk:/disk:"
+        assert ensure_path_has_schema("trash:", default_schema="trash") == "trash:/trash:"
+        assert ensure_path_has_schema("/asd:123") == "disk:/asd:123"
+        assert ensure_path_has_schema("/asd:123", "trash") == "trash:/asd:123"
+        assert ensure_path_has_schema("example/path") == "disk:/example/path"
+        assert ensure_path_has_schema("app:/test") == "app:/test"
 
-        @record_or_replay
-        def test_publish_unpublish(self) -> None:
-            path = self.path
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_upload_download_non_seekable(self, client: yadisk.Client, disk_root: str) -> None:
+        # It should be possible to upload/download non-seekable file objects (such as sys.stdin/sys.stdout)
+        # See https://github.com/ivknv/yadisk/pull/31 for more details
 
-            self.client.publish(path)
-            self.assertIsNotNone(self.client.get_meta(path).public_url)
+        test_input_file = BytesIO(b"0" * 1000)
+        test_input_file.seekable = lambda: False  # type: ignore
 
-            self.client.unpublish(path)
-            self.assertIsNone(self.client.get_meta(path).public_url)
+        def seek(*args, **kwargs):
+            raise NotImplementedError
 
-        @record_or_replay
-        def test_patch(self) -> None:
-            path = self.path
+        test_input_file.seek = seek  # type: ignore
 
-            self.client.patch(path, {"test_property": "I'm a value!"})
+        dst_path = posixpath.join(disk_root, "zeroes.txt")
 
-            props: Any = self.client.get_meta(path).custom_properties
-            self.assertIsNotNone(props)
+        client.upload(test_input_file, dst_path, n_retries=50)
 
-            self.assertEqual(props["test_property"], "I'm a value!")
+        test_output_file = BytesIO()
+        test_output_file.seekable = lambda: False  # type: ignore
+        test_output_file.seek = seek  # type: ignore
 
-            self.client.patch(path, {"test_property": None})
-            self.assertIsNone(self.client.get_meta(path).custom_properties)
+        client.download(dst_path, test_output_file, n_retries=50)
 
-        @record_or_replay
-        def test_issue7(self) -> None:
-            # See https://github.com/ivknv/yadisk/issues/7
+        client.remove(dst_path, permanently=True)
 
-            try:
-                list(self.client.public_listdir("any value here", path="any value here"))
-            except yadisk.exceptions.PathNotFoundError:
-                pass
+        assert test_input_file.tell() == 1000
+        assert test_output_file.tell() == 1000
 
-        def test_is_operation_link(self) -> None:
-            self.assertTrue(is_operation_link("https://cloud-api.yandex.net/v1/disk/operations/123asd"))
-            self.assertTrue(is_operation_link("http://cloud-api.yandex.net/v1/disk/operations/123asd"))
-            self.assertFalse(is_operation_link("https://cloud-api.yandex.net/v1/disk/operation/1283718"))
-            self.assertFalse(is_operation_link("https://asd8iaysd89asdgiu"))
-            self.assertFalse(is_operation_link("http://asd8iaysd89asdgiu"))
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_upload_generator(self, client: yadisk.Client, disk_root: str) -> None:
+        data = b"0" * 1000
 
-        def test_get_operation_status_request_url(self) -> None:
-            request = GetOperationStatusRequest(
-                self.client.session,
-                "https://cloud-api.yandex.net/v1/disk/operations/123asd")
-            self.assertTrue(is_operation_link(request.url))
+        def payload():
+            yield data[:500]
+            yield data[500:]
 
-            request = GetOperationStatusRequest(
-                self.client.session,
-                "http://cloud-api.yandex.net/v1/disk/operations/123asd")
-            self.assertTrue(is_operation_link(request.url))
-            self.assertTrue(request.url.startswith("https://"))
+        dst_path = posixpath.join(disk_root, "zeroes.txt")
 
-            request = GetOperationStatusRequest(
-                self.client.session,
-                "https://asd8iaysd89asdgiu")
-            self.assertTrue(is_operation_link(request.url))
-            self.assertTrue(request.url.startswith("https://"))
+        output = BytesIO()
 
-        def test_ensure_path_has_schema(self) -> None:
-            # See https://github.com/ivknv/yadisk/issues/26 for more details
+        client.upload(payload, dst_path).download(output).remove(permanently=True)
 
-            self.assertEqual(ensure_path_has_schema("disk:"), "disk:/disk:")
-            self.assertEqual(ensure_path_has_schema("trash:", default_schema="trash"), "trash:/trash:")
-            self.assertEqual(ensure_path_has_schema("/asd:123"), "disk:/asd:123")
-            self.assertEqual(ensure_path_has_schema("/asd:123", "trash"), "trash:/asd:123")
-            self.assertEqual(ensure_path_has_schema("example/path"), "disk:/example/path")
-            self.assertEqual(ensure_path_has_schema("app:/test"), "app:/test")
+        output.seek(0)
 
-        @record_or_replay
-        def test_upload_download_non_seekable(self) -> None:
-            # It should be possible to upload/download non-seekable file objects (such as sys.stdin/sys.stdout)
-            # See https://github.com/ivknv/yadisk/pull/31 for more details
-
-            test_input_file = BytesIO(b"0" * 1000)
-            test_input_file.seekable = lambda: False  # type: ignore
-
-            def seek(*args, **kwargs):
-                raise NotImplementedError
-
-            test_input_file.seek = seek  # type: ignore
-
-            dst_path = posixpath.join(self.path, "zeroes.txt")
-
-            self.client.upload(test_input_file, dst_path, n_retries=50)
-
-            test_output_file = BytesIO()
-            test_output_file.seekable = lambda: False  # type: ignore
-            test_output_file.seek = seek  # type: ignore
-
-            self.client.download(dst_path, test_output_file, n_retries=50)
-
-            self.client.remove(dst_path, permanently=True)
-
-            self.assertEqual(test_input_file.tell(), 1000)
-            self.assertEqual(test_output_file.tell(), 1000)
-
-        @record_or_replay
-        def test_upload_generator(self) -> None:
-            data = b"0" * 1000
-
-            def payload():
-                yield data[:500]
-                yield data[500:]
-
-            dst_path = posixpath.join(self.path, "zeroes.txt")
-
-            output = BytesIO()
-
-            self.client.upload(payload, dst_path).download(output).remove(permanently=True)
-
-            output.seek(0)
-
-            self.assertEqual(output.read(), data)
-
-    ClientTestCase.__name__ = name
-    ClientTestCase.__qualname__ = ClientTestCase.__qualname__.rpartition(".")[0] + "." + name
-
-    return ClientTestCase
-
-
-RequestsTestCase = make_test_case("RequestsTestCase", "requests")
-HTTPXTestCase = make_test_case("HTTPXTestCase", "httpx")
-PycURLTestCase = make_test_case("PycURLTestCase", "pycurl")
+        assert output.read() == data

@@ -36,4 +36,4 @@ jobs:
         PYTHON_YADISK_GATEWAY_PORT: ${{ vars.PYTHON_YADISK_GATEWAY_PORT }}
         PYTHON_YADISK_REPLAY_ENABLED: 1
       run: |
-        python -Wall -m unittest tests -v
+        python -Wall -m pytest -v --log-cli-level=WARNING tests

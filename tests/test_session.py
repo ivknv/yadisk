@@ -16,6 +16,8 @@ def _ensure_trailing_slash(s: str) -> str:
     return s
 
 class TestSession(yadisk.Session):
+    __test__ = False
+
     def __init__(
         self,
         session:           yadisk.Session,
@@ -62,6 +64,8 @@ class TestSession(yadisk.Session):
         self._session.close()
 
 class AsyncTestSession(yadisk.AsyncSession):
+    __test__ = False
+
     def __init__(
         self,
         session:           yadisk.AsyncSession,
