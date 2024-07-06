@@ -63,7 +63,7 @@ def _set_authorization_header(
     if new_token:
         headers["Authorization"] = f"OAuth {new_token}"
     else:
-        headers["Authorization"] = ""
+        headers.pop("Authorization", None)
 
     kwargs["headers"] = headers
 
