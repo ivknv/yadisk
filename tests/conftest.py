@@ -231,5 +231,5 @@ def async_client_test(record_or_replay, async_disk_cleanup) -> None:
 
 
 @pytest.fixture
-def poll_interval() -> float:
+def poll_interval(replay_enabled: bool) -> float:
     return 0.0 if replay_enabled else 1.0
