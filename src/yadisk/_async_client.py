@@ -379,6 +379,8 @@ class AsyncClient:
         /,
         *args,
         wait: bool = True,
+        poll_interval: float = 1.0,
+        poll_timeout: Optional[float] = None,
         **kwargs
     ) -> Any:
         request = request_class(self.session, *args, **kwargs)
@@ -396,7 +398,11 @@ class AsyncClient:
                     return response
 
                 try:
-                    await response.wait(**kwargs)
+                    await response.wait(
+                        poll_interval=poll_interval,
+                        poll_timeout=poll_timeout,
+                        **kwargs
+                    )
                 except YaDiskError as e:
                     # We want to trigger a full retry (including the operation iteslf)
                     # only if the asynchronous operation failed
