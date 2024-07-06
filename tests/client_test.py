@@ -324,3 +324,35 @@ class TestClient:
         output.seek(0)
 
         assert output.read() == data
+
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_copy(
+        self,
+        client: yadisk.Client,
+        disk_root: str,
+        poll_interval: float
+    ) -> None:
+        dir = client.mkdir(posixpath.join(disk_root, "directory_to_copy"))
+        dir.upload(BytesIO(b"example text"), "file.txt")
+        dir.mkdir("nested directory 1")
+        dir.mkdir("nested directory 2")
+
+        dst_path = posixpath.join(disk_root, "directory_copy")
+
+        dir.copy(dst_path, poll_interval=poll_interval)
+
+        copy_info = client.get_meta(dst_path)
+
+        assert copy_info.embedded is not None
+        assert copy_info.embedded.items is not None
+
+        contents = sorted([(resource.type, resource.name) for resource in copy_info.embedded.items])
+
+        expected_contents = [
+            ("dir", "nested directory 1"),
+            ("dir", "nested directory 2"),
+            ("file", "file.txt"),
+        ]
+
+        assert copy_info.type == "dir"
+        assert contents == expected_contents

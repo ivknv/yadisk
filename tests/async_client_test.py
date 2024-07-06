@@ -370,3 +370,35 @@ class TestAsyncClient:
 
         assert test_input_file.tell() == 1000
         assert test_output_file.tell() == 1000
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_copy(
+        self,
+        async_client: yadisk.AsyncClient,
+        disk_root: str,
+        poll_interval: float
+    ) -> None:
+        dir = await async_client.mkdir(posixpath.join(disk_root, "directory_to_copy"))
+        await dir.upload(BytesIO(b"example text"), "file.txt")
+        await dir.mkdir("nested directory 1")
+        await dir.mkdir("nested directory 2")
+
+        dst_path = posixpath.join(disk_root, "directory_copy")
+
+        await dir.copy(dst_path, poll_interval=poll_interval)
+
+        copy_info = await async_client.get_meta(dst_path)
+
+        assert copy_info.embedded is not None
+        assert copy_info.embedded.items is not None
+
+        contents = sorted([(resource.type, resource.name) for resource in copy_info.embedded.items])
+
+        expected_contents = [
+            ("dir", "nested directory 1"),
+            ("dir", "nested directory 2"),
+            ("file", "file.txt"),
+        ]
+
+        assert copy_info.type == "dir"
+        assert contents == expected_contents

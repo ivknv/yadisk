@@ -59,11 +59,11 @@ def disk_root(request: pytest.FixtureRequest) -> str:
 def disk_cleanup(
     disk_root: str,
     client: yadisk.Client,
-    replay_enabled: bool
+    poll_interval: float
 ) -> Generator[None, None, None]:
     try:
         client.mkdir(disk_root)
-    except yadisk.exceptions.PathExistsError:
+    except yadisk.exceptions.DirectoryExistsError:
         pass
     except yadisk.exceptions.ParentNotFoundError:
         client.mkdir(posixpath.split(disk_root)[0])
@@ -71,7 +71,6 @@ def disk_cleanup(
 
     yield
 
-    poll_interval = 0.0 if replay_enabled else 1.0
     client.remove(
         disk_root,
         permanently=True,
@@ -87,7 +86,7 @@ async def async_disk_cleanup(
 ) -> AsyncGenerator[None, None]:
     try:
         await async_client.mkdir(disk_root)
-    except yadisk.exceptions.PathExistsError:
+    except yadisk.exceptions.DirectoryExistsError:
         pass
     except yadisk.exceptions.ParentNotFoundError:
         await async_client.mkdir(posixpath.split(disk_root)[0])
@@ -126,6 +125,9 @@ def record_or_replay(
         directory = os.path.join("tests", "recorded", "sync")
 
     test_name = request.function.__name__
+
+    if recording_enabled and replay_enabled:
+        raise ValueError("Both recording and replay enabled at the same time")
 
     if recording_enabled:
         os.makedirs(directory, exist_ok=True)
@@ -222,6 +224,12 @@ def anyio_backend() -> str:
 def sync_client_test(record_or_replay, disk_cleanup) -> None:
     pass
 
+
 @pytest.fixture
 def async_client_test(record_or_replay, async_disk_cleanup) -> None:
     pass
+
+
+@pytest.fixture
+def poll_interval() -> float:
+    return 0.0 if replay_enabled else 1.0
