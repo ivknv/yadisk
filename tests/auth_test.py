@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
 
+import os
+
 import pytest
 import yadisk
 
 confirmation_code = "5320215"
 
+@pytest.mark.skipif(
+    os.environ.get("PYTHON_YADISK_REPLAY_ENABLED", "1") != "1",
+    reason="this test has to be explicitly modified to be run outside of replay mode"
+)
 @pytest.mark.usefixtures("record_or_replay")
 def test_auth(client: yadisk.Client) -> None:
     # Recording data for this test requires human intervention
@@ -28,6 +34,10 @@ def test_auth(client: yadisk.Client) -> None:
     assert client.revoke_token(token.access_token).status == "ok"
     assert not client.check_token(token.access_token)
 
+@pytest.mark.skipif(
+    os.environ.get("PYTHON_YADISK_REPLAY_ENABLED", "1") != "1",
+    reason="this test has to be explicitly modified to be run outside of replay mode"
+)
 @pytest.mark.usefixtures("record_or_replay")
 @pytest.mark.anyio
 async def test_auth_async(async_client: yadisk.AsyncClient) -> None:
