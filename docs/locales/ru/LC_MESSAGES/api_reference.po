@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 3.0.0\n"
 "Report-Msgid-Bugs-To: ivknv0@gmail.com\n"
-"POT-Creation-Date: 2024-07-05 01:13+0500\n"
-"PO-Revision-Date: 2024-07-05 02:01+0500\n"
+"POT-Creation-Date: 2024-07-07 04:33+0500\n"
+"PO-Revision-Date: 2024-07-07 04:35+0500\n"
 "Last-Translator: Ivan Konovalov <ivknv0@gmail.com>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -2489,9 +2489,7 @@ msgid "Get a new token."
 msgstr "Получает новый токен."
 
 #: of yadisk._async_client.AsyncClient.get_token:3
-#: yadisk._async_client.AsyncClient.get_token_from_device_code:3
 #: yadisk._client.Client.get_token:3
-#: yadisk._client.Client.get_token_from_device_code:3
 msgid "confirmation code"
 msgstr "код подтверждения"
 
@@ -2526,7 +2524,12 @@ msgid ""
 ":any:`AsyncClient.get_device_code()`."
 msgstr ""
 "Получает новый токен с помощью кода устройства (device_code), "
-"полученногос помощью :any:`AsyncClient.get_device_code()`"
+"полученного с помощью :any:`AsyncClient.get_device_code()`"
+
+#: of yadisk._async_client.AsyncClient.get_token_from_device_code:3
+msgid "device code, obtained from :any:`AsyncClient.get_device_code()`"
+msgstr ""
+"код устройства, полученный с помощью :any:`AsyncClient.get_device_code()`"
 
 #: of yadisk._async_client.AsyncClient.get_token_from_device_code:7
 #: yadisk._async_client.AsyncClient.get_upload_link_object:9
@@ -3106,7 +3109,17 @@ msgid "Exceptions"
 msgstr "Исключения"
 
 #: of yadisk.exceptions.AsyncOperationFailedError:1
-#: yadisk.exceptions.AsyncOperationPollingTimeoutError:1
+#: yadisk.exceptions.BadGatewayError:1 yadisk.exceptions.GatewayTimeoutError:1
+#: yadisk.exceptions.InternalServerError:1 yadisk.exceptions.UnavailableError:1
+#: yadisk.exceptions.UnknownYaDiskError:1
+msgid "Bases: :py:class:`~yadisk.exceptions.RetriableYaDiskError`"
+msgstr "Базовые классы: :py:class:`~yadisk.exceptions.RetriableYaDiskError`"
+
+#: of yadisk.exceptions.AsyncOperationFailedError:1
+msgid "Raised when an asynchronous operation fails"
+msgstr "Вызывается, когда асинхронная операция завершается с ошибкой"
+
+#: of yadisk.exceptions.AsyncOperationPollingTimeoutError:1
 #: yadisk.exceptions.BadRequestError:1 yadisk.exceptions.ConflictError:1
 #: yadisk.exceptions.ForbiddenError:1
 #: yadisk.exceptions.InsufficientStorageError:1
@@ -3120,10 +3133,6 @@ msgstr "Исключения"
 #: yadisk.exceptions.WrongResourceTypeError:1
 msgid "Bases: :py:class:`~yadisk.exceptions.YaDiskError`"
 msgstr "Базовые классы: :py:class:`~yadisk.exceptions.YaDiskError`"
-
-#: of yadisk.exceptions.AsyncOperationFailedError:1
-msgid "Raised when an asynchronous operation fails"
-msgstr "Вызывается, когда асинхронная операция завершается с ошибкой"
 
 #: of yadisk.exceptions.AsyncOperationPollingTimeoutError:1
 msgid ""
@@ -3146,13 +3155,6 @@ msgid ""
 msgstr ""
 "Вызывается, когда авторизация находится в процессе, приложение должно "
 "подождать."
-
-#: of yadisk.exceptions.BadGatewayError:1
-#: yadisk.exceptions.GatewayTimeoutError:1
-#: yadisk.exceptions.InternalServerError:1 yadisk.exceptions.UnavailableError:1
-#: yadisk.exceptions.UnknownYaDiskError:1
-msgid "Bases: :py:class:`~yadisk.exceptions.RetriableYaDiskError`"
-msgstr "Базовые классы: :py:class:`~yadisk.exceptions.RetriableYaDiskError`"
 
 #: of yadisk.exceptions.BadGatewayError:1
 msgid "Thrown when the server returns code 502"
@@ -5520,6 +5522,11 @@ msgstr ""
 "Получает новый токен с помощью кода устройства (device_code), полученного"
 " с помощью :any:`Client.get_device_code()`"
 
+#: of yadisk._client.Client.get_token_from_device_code:3
+msgid "device code, obtained from :any:`Client.get_device_code()`"
+msgstr ""
+"код устройства (device_code), полученный с помощью :any:`Client.get_device_code()`"
+
 #: of yadisk._client.Client.get_upload_link_object:1
 msgid ""
 "Get a link to upload the file using the PUT request. This is similar to "
@@ -5806,12 +5813,8 @@ msgid "Return the value for key if key is in the dictionary, else default."
 msgstr "Return the value for key if key is in the dictionary, else default."
 
 #: of yadisk.utils.CaseInsensitiveDict.pop:1
-msgid ""
-"If the key is not found, return the default if given; otherwise, raise a "
-"KeyError."
-msgstr ""
-"If the key is not found, return the default if given; otherwise, raise a "
-"KeyError."
+msgid "If key is not found, d is returned if given, otherwise KeyError is raised"
+msgstr "If key is not found, d is returned if given, otherwise KeyError is raised"
 
 #: of yadisk.utils.CaseInsensitiveDict.setdefault:1
 msgid "Insert key with a value of default if key is not in the dictionary."
