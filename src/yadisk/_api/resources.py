@@ -840,7 +840,7 @@ class SaveToDiskRequest(APIRequest):
     """
 
     method = "POST"
-    path = "/v1/disk/resources/save-to-disk"
+    path = "/v1/disk/public/resources/save-to-disk"
     success_codes = {201, 202}
 
     def __init__(
