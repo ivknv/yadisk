@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import hashlib
 import tempfile
 from typing import Any
 import aiofiles
@@ -402,3 +403,33 @@ class TestAsyncClient:
 
         assert copy_info.type == "dir"
         assert contents == expected_contents
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_save_to_disk(
+        self,
+        async_client: yadisk.AsyncClient,
+        disk_root: str,
+        poll_interval: float
+    ) -> None:
+        test_contents = b"test file contents"
+
+        public_file_path = posixpath.join(disk_root, "public_file.txt")
+        await async_client.upload(BytesIO(test_contents), public_file_path)
+
+        await async_client.publish(public_file_path)
+
+        public_file_info = await async_client.get_meta(public_file_path)
+
+        assert public_file_info.public_url is not None
+
+        await async_client.save_to_disk(
+            public_file_info.public_url,
+            name="saved_public_file.txt",
+            save_path=disk_root,
+            poll_interval=poll_interval
+        )
+
+        saved_file_path = posixpath.join(disk_root, "saved_public_file.txt")
+        saved_file_info = await async_client.get_meta(saved_file_path)
+
+        assert saved_file_info.md5 == hashlib.md5(test_contents).hexdigest() == public_file_info.md5

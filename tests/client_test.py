@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import hashlib
 import tempfile
 
 import posixpath
@@ -356,3 +357,33 @@ class TestClient:
 
         assert copy_info.type == "dir"
         assert contents == expected_contents
+
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_save_to_disk(
+        self,
+        client: yadisk.Client,
+        disk_root: str,
+        poll_interval: float
+    ) -> None:
+        test_contents = b"test file contents"
+
+        public_file_path = posixpath.join(disk_root, "public_file.txt")
+        client.upload(BytesIO(test_contents), public_file_path)
+
+        client.publish(public_file_path)
+
+        public_file_info = client.get_meta(public_file_path)
+
+        assert public_file_info.public_url is not None
+
+        client.save_to_disk(
+            public_file_info.public_url,
+            name="saved_public_file.txt",
+            save_path=disk_root,
+            poll_interval=poll_interval
+        )
+
+        saved_file_path = posixpath.join(disk_root, "saved_public_file.txt")
+        saved_file_info = client.get_meta(saved_file_path)
+
+        assert saved_file_info.md5 == hashlib.md5(test_contents).hexdigest() == public_file_info.md5
