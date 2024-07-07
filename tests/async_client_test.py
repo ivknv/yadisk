@@ -433,3 +433,23 @@ class TestAsyncClient:
         saved_file_info = await async_client.get_meta(saved_file_path)
 
         assert saved_file_info.md5 == hashlib.md5(test_contents).hexdigest() == public_file_info.md5
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_upload_url(
+        self,
+        async_client: yadisk.AsyncClient,
+        disk_root: str,
+        poll_interval: float
+    ) -> None:
+        test_contents = b"test file contents"
+
+        file_path = posixpath.join(disk_root, "example_file.txt")
+        dst_path = posixpath.join(disk_root, "uploaded_from_url.txt")
+
+        await async_client.upload(BytesIO(test_contents), file_path)
+        download_link = await async_client.get_download_link(file_path)
+
+        await async_client.upload_url(download_link, dst_path, poll_interval=poll_interval)
+
+        dst_file_info = await async_client.get_meta(dst_path)
+        assert dst_file_info.md5 == hashlib.md5(test_contents).hexdigest()
