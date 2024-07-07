@@ -161,3 +161,35 @@ class YaDiskObject:
 
     def __repr__(self) -> str:
         return "<%s%r>" % (self.__class__.__name__, self.FIELDS)
+
+    def field(self, name: str) -> Any:
+        """
+            Get value of field `name`, guarantee it's not :code:`None` or
+            raise a :any:`ValueError`.
+
+            :param name: `str`, name of the field
+
+            :raises ValueError: value of the given field is :code:`None`
+
+            :returns: field's value
+        """
+
+        value = self.__getattr__(name)
+
+        if value is not None:
+            return value
+
+        raise ValueError(f"field {repr(name)} is None")
+
+    def __matmul__(self, name: str) -> Any:
+        """
+            Same as :any:`YaDiskObject.field()`.
+
+            :param name: `str`, name of the field
+
+            :raises ValueError: value of the given field is :code:`None`
+
+            :returns: field's value
+        """
+
+        return self.field(name)
