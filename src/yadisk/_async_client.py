@@ -80,7 +80,7 @@ __all__ = ["AsyncClient"]
 
 async def _exists(get_meta_function: Callable[..., Awaitable], /, *args, **kwargs) -> bool:
     try:
-        # We want ot query the bare minimum number of fields, that's what
+        # We want to query the bare minimum number of fields, that's what
         # the fields parameter is for
         await get_meta_function(*args, fields=["type"], **kwargs)
 
@@ -1080,6 +1080,8 @@ class AsyncClient:
                 else:
                     data = generator_factory()
 
+                settings.logger.info(f"uploading file to {dst_path} at {link}")
+
                 async with await session.send_request("PUT", link, data=data, **temp_kwargs) as response:
                     if response.status != 201:
                         raise await response.get_exception()
@@ -1248,6 +1250,8 @@ class AsyncClient:
 
                 if await _is_file_seekable(file):
                     await _file_seek(file, file_position)
+
+                settings.logger.info(f"downloading file {src_path} from {link}")
 
                 async with await session.send_request("GET", link, **temp_kwargs) as response:
                     await response.download(file.write)

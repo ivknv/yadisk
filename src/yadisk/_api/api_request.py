@@ -221,6 +221,8 @@ class APIRequest(object):
             :returns: :any:`Response` (`self.response`)
         """
 
+        settings.logger.info(f"sending APIRequest {self.__class__.__name__}, {self.method} {self.url}")
+
         return auto_retry(
             self._attempt,
             self.n_retries,
@@ -242,6 +244,8 @@ class APIRequest(object):
 
             :returns: :any:`AsyncResponse` (`self.response`)
         """
+
+        settings.logger.info(f"sending APIRequest {self.__class__.__name__}, {self.method} {self.url}")
 
         return await async_auto_retry(
             self._async_attempt,

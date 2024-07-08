@@ -72,7 +72,7 @@ def _exists(
     **kwargs
 ) -> bool:
     try:
-        # We want ot query the bare minimum number of fields, that's what
+        # We want to query the bare minimum number of fields, that's what
         # the fields parameter is for
         get_meta_function(*args, fields=["type"], **kwargs)
 
@@ -1046,6 +1046,8 @@ class Client:
                     # To bypass this problem we pass the file as a generator instead.
                     payload = _read_file_as_generator(file)
 
+                settings.logger.info(f"uploading file to {dst_path} at {link}")
+
                 with session.send_request("PUT", link, data=payload, **temp_kwargs) as response:
                     if response.status != 201:
                         raise response.get_exception()
@@ -1215,6 +1217,8 @@ class Client:
 
                 if file.seekable():
                     file.seek(file_position)
+
+                settings.logger.info(f"downloading file {src_path} from {link}")
 
                 with session.send_request("GET", link, **temp_kwargs) as response:
                     response.download(file.write)

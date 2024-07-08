@@ -16,12 +16,13 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
+import logging
 from .types import TimeoutParameter
 
 __all__ = [
     "DEFAULT_TIMEOUT", "DEFAULT_N_RETRIES", "DEFAULT_RETRY_INTERVAL",
     "DEFAULT_UPLOAD_TIMEOUT", "DEFAULT_UPLOAD_RETRY_INTERVAL", "BASE_API_URL",
-    "BASE_OAUTH_API_URL"
+    "BASE_OAUTH_API_URL", "logger"
 ]
 
 #: `tuple` of 2 numbers (`int` or `float`), default timeout for requests.
@@ -49,3 +50,7 @@ BASE_API_URL: str = "https://cloud-api.yandex.net"
 #: Base URL for Yandex.Disk's OAuth API.
 #: Can be overriden for testing and other purposes
 BASE_OAUTH_API_URL: str = "https://oauth.yandex.ru"
+
+#: Logger for the library. Logs include information about requests to the API
+#: and automatic retry attempts.
+logger = logging.getLogger("yadisk")

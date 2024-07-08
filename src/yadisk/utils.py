@@ -163,7 +163,14 @@ def auto_retry(
             return func(*args, **kwargs)
         except exceptions as e:
             if i == n_retries or (isinstance(e, YaDiskError) and e.disable_retry):
+                settings.logger.info(
+                    f"not triggering an automatic retry: ({i} out of {n_retries}), got {e.__class__.__name__}: {e}"
+                )
                 raise
+
+            settings.logger.info(
+                f"automatic retry triggered: ({i} out of {n_retries}), got {e.__class__.__name__}: {e}"
+            )
 
         if retry_interval:
             time.sleep(retry_interval)
@@ -222,7 +229,14 @@ async def async_auto_retry(
                 return callback(*args, **kwargs)
         except exceptions as e:
             if i == n_retries or (isinstance(e, YaDiskError) and e.disable_retry):
+                settings.logger.info(
+                    f"not triggering an automatic retry: ({i} out of {n_retries}), got {e.__class__.__name__}: {e}"
+                )
                 raise
+
+            settings.logger.info(
+                f"automatic retry triggered: ({i} out of {n_retries}), got {e.__class__.__name__}: {e}"
+            )
 
         if retry_interval:
             await asyncio.sleep(retry_interval)
