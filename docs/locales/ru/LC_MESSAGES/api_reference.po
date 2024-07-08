@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 3.0.0\n"
 "Report-Msgid-Bugs-To: ivknv0@gmail.com\n"
-"POT-Creation-Date: 2024-07-07 04:33+0500\n"
-"PO-Revision-Date: 2024-07-07 04:35+0500\n"
+"POT-Creation-Date: 2024-07-08 19:33+0500\n"
+"PO-Revision-Date: 2024-07-08 19:41+0500\n"
 "Last-Translator: Ivan Konovalov <ivknv0@gmail.com>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -252,6 +252,7 @@ msgstr ""
 #: yadisk.objects._resources.TrashResourceListObject
 #: yadisk.objects._resources.TrashResourceObject
 #: yadisk.objects._yadisk_object.YaDiskObject
+#: yadisk.objects._yadisk_object.YaDiskObject.field
 #: yadisk.objects._yadisk_object.YaDiskObject.import_fields
 #: yadisk.objects._yadisk_object.YaDiskObject.remove_alias
 #: yadisk.objects._yadisk_object.YaDiskObject.remove_field
@@ -530,6 +531,7 @@ msgstr "Большинство запросов к API могут вызвать
 #: yadisk.objects._resources.SyncTrashResourceObject.listdir
 #: yadisk.objects._resources.SyncTrashResourceObject.remove
 #: yadisk.objects._resources.SyncTrashResourceObject.restore
+#: yadisk.objects._yadisk_object.YaDiskObject.field
 msgid "Raises"
 msgstr "Вызывает"
 
@@ -1426,6 +1428,7 @@ msgstr "другие параметры для :any:`Session.send_request()`"
 #: yadisk.objects._resources.SyncTrashResourceObject.listdir
 #: yadisk.objects._resources.SyncTrashResourceObject.remove
 #: yadisk.objects._resources.SyncTrashResourceObject.restore
+#: yadisk.objects._yadisk_object.YaDiskObject.field
 #: yadisk.types.AsyncFileLike.read yadisk.types.AsyncFileLike.seek
 #: yadisk.types.AsyncFileLike.tell yadisk.types.AsyncFileLike.write
 #: yadisk.types.BinaryAsyncFileLike.read yadisk.types.BinaryAsyncFileLike.seek
@@ -2523,13 +2526,12 @@ msgid ""
 "Get a new token from a device code, previously obtained with "
 ":any:`AsyncClient.get_device_code()`."
 msgstr ""
-"Получает новый токен с помощью кода устройства (device_code), "
-"полученного с помощью :any:`AsyncClient.get_device_code()`"
+"Получает новый токен с помощью кода устройства (device_code), полученного"
+" с помощью :any:`AsyncClient.get_device_code()`"
 
 #: of yadisk._async_client.AsyncClient.get_token_from_device_code:3
 msgid "device code, obtained from :any:`AsyncClient.get_device_code()`"
-msgstr ""
-"код устройства, полученный с помощью :any:`AsyncClient.get_device_code()`"
+msgstr "код устройства, полученный с помощью :any:`AsyncClient.get_device_code()`"
 
 #: of yadisk._async_client.AsyncClient.get_token_from_device_code:7
 #: yadisk._async_client.AsyncClient.get_upload_link_object:9
@@ -4826,6 +4828,25 @@ msgstr ""
 "API Яндекс.Диска. У наследующего объекта фиксированное количество полей, "
 "каждое со своим типом. Поддерживает доступ по индексу и через точку."
 
+#: of yadisk.objects._yadisk_object.YaDiskObject.field:1
+msgid ""
+"Get value of field `name`, guarantee it's not :code:`None` or raise a "
+":any:`ValueError`."
+msgstr "Получает значение поля `name`, гарантируя, что оно не :code:`None` или "
+"вызывает :any:`ValueError` в противном случае"
+
+#: of yadisk.objects._yadisk_object.YaDiskObject.field:4
+msgid "`str`, name of the field"
+msgstr "`str`, имя поля"
+
+#: of yadisk.objects._yadisk_object.YaDiskObject.field:6
+msgid "value of the given field is :code:`None`"
+msgstr "значение требуемого поля - :code:`None`"
+
+#: of yadisk.objects._yadisk_object.YaDiskObject.field:8
+msgid "field's value"
+msgstr "значение поля"
+
 #: of yadisk.objects._yadisk_object.YaDiskObject.import_fields:1
 msgid ""
 "Set all the fields of the object to the values in `source_dict`. All the "
@@ -5371,6 +5392,13 @@ msgstr ""
 "Аналогично :any:`settings.DEFAULT_TIMEOUT`, но для функции "
 ":any:`Client.upload()`/:any:`AsyncClient.upload()`"
 
+#: ../../docstring of yadisk.settings.logger:1
+msgid ""
+"Logger for the library. Logs include information about requests to the "
+"API and automatic retry attempts."
+msgstr "Логгер библиотеки. Логи включают в себя информацию о запросах к API и "
+"автоматических повторных попытках."
+
 #: ../../api_reference/sync_api.rst:2
 msgid "Synchronous API"
 msgstr "Синхронный API"
@@ -5525,7 +5553,8 @@ msgstr ""
 #: of yadisk._client.Client.get_token_from_device_code:3
 msgid "device code, obtained from :any:`Client.get_device_code()`"
 msgstr ""
-"код устройства (device_code), полученный с помощью :any:`Client.get_device_code()`"
+"код устройства (device_code), полученный с помощью "
+":any:`Client.get_device_code()`"
 
 #: of yadisk._client.Client.get_upload_link_object:1
 msgid ""
@@ -5813,8 +5842,12 @@ msgid "Return the value for key if key is in the dictionary, else default."
 msgstr "Return the value for key if key is in the dictionary, else default."
 
 #: of yadisk.utils.CaseInsensitiveDict.pop:1
-msgid "If key is not found, d is returned if given, otherwise KeyError is raised"
-msgstr "If key is not found, d is returned if given, otherwise KeyError is raised"
+msgid ""
+"If the key is not found, return the default if given; otherwise, raise a "
+"KeyError."
+msgstr ""
+"If the key is not found, return the default if given; otherwise, raise a "
+"KeyError."
 
 #: of yadisk.utils.CaseInsensitiveDict.setdefault:1
 msgid "Insert key with a value of default if key is not in the dictionary."
