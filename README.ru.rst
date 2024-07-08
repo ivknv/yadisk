@@ -1,19 +1,21 @@
 YaDisk
 ======
 
-.. image:: https://img.shields.io/readthedocs/yadisk.svg
+.. |RTD Badge| image:: https://img.shields.io/readthedocs/yadisk.svg
    :alt: Read the Docs
    :target: https://yadisk.readthedocs.io/en/latest/
 
-.. image:: https://img.shields.io/github/actions/workflow/status/ivknv/yadisk/lint_and_test.yml
+.. |CI Badge| image:: https://img.shields.io/github/actions/workflow/status/ivknv/yadisk/lint_and_test.yml
    :alt: GitHub Actions Workflow Status
 
-.. image:: https://img.shields.io/pypi/v/yadisk.svg
+.. |PyPI Badge| image:: https://img.shields.io/pypi/v/yadisk.svg
    :alt: PyPI
    :target: https://pypi.org/project/yadisk
 
-.. image:: https://img.shields.io/pypi/pyversions/yadisk
+.. |Python Version Badge| image:: https://img.shields.io/pypi/pyversions/yadisk
    :alt: PyPI - Python Version
+
+|RTD Badge| |CI Badge| |PyPI Badge| |Python Version Badge|
 
 .. _English version of this document: https://github.com/ivknv/yadisk/blob/master/README.en.rst
 
