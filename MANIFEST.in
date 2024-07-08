@@ -1,5 +1,6 @@
 include COPYING
 include COPYING.lesser
+include CONTRIBUTORS.rst
 include README.rst
 include README.en.rst
 include README.ru.rst
