@@ -183,7 +183,14 @@ class YaDiskObject:
 
     def __matmul__(self, name: str) -> Any:
         """
-            Same as :any:`YaDiskObject.field()`.
+            The :code:`@` operator. Same as :any:`YaDiskObject.field()`.
+            Can be used like this:
+
+            .. code:: python
+
+                # if embedded or embedded.total turn out to be None, we'll get a ValueError
+                file_count = client.get_meta("/some_folder") @ "embedded" @ "total"
+                print(f"/some_folder contains {file_count} files")
 
             :param name: `str`, name of the field
 
