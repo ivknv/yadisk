@@ -1,0 +1,146 @@
+[
+    {
+        "method": "PUT",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Ftest_listdir_fields",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 201,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "138"
+            },
+            "content": "eJwVjUEKwjAQRe8S6E4b1F1BRNB6gW5claEzIYNpEzJTUcS7O67+e2/zPy5WCq5zUbVI5/2U8opbKNy+YUF6tQupf+48sjx8JclrnUhOBTQe/605nJt9f4eL8UCiJmozJhZFrmNgSihu42bSmNGebtfBVGkuCZSsBEhC3x9L2zDP"
+        }
+    },
+    {
+        "method": "PUT",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Ftest_listdir_fields%2Fdir1",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 201,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "145"
+            },
+            "content": "eJwVjcsKwjAQRf8l0J02VHcFEcHHD3TjqgydCRlMm5CZiiL+u+PqnnM29+NipeB6F1WL9N5PKa+4hcLtGxakV7uQ+mfnkeXhK0le60RyLKDx8G/N/tTsrnc4Gw8kaqI2Y2JR5DoGpoRi1aRzGzeTxox2eLsMpkpzSaBkJUAS+v4AoRIy3A=="
+        }
+    },
+    {
+        "method": "PUT",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Ftest_listdir_fields%2Fdir2",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 201,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "145"
+            },
+            "content": "eJwVjcsKwjAQRf8l0J02WHcFEcHHD3TjqgydCRlMm5CZiiL+u+PqnnM29+NipeB6F1WL9N5PKa+4hcLtGxakV7uQ+ufOI8vDV5K81onkWEDj4d+a/anprnc4Gw8kaqI2Y2JR5DoGpoRi1aRzGzeTxox2eLsMpkpzSaBkJUAS+v4AoTYy3Q=="
+        }
+    },
+    {
+        "method": "PUT",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Ftest_listdir_fields%2Fdir3",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 201,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "145"
+            },
+            "content": "eJwVjcsKwjAQRf8l0J02aHcFEcHHD3TjqgydCRlMm5CZiiL+u+PqnnM29+NipeB6F1WL9N5PKa+4hcLtGxakV7uQ+ufOI8vDV5K81onkWEDj4d+a7tTsr3c4Gw8kaqI2Y2JR5DoGpoRi1aRzGzeTxox2eLsMpkpzSaBkJUAS+v4AoVoy3g=="
+        }
+    },
+    {
+        "method": "GET",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Ftest_listdir_fields&limit=500&fields=_embedded.items.name%2C_embedded.items.type%2Ctype%2C_embedded%2C_embedded.offset%2C_embedded.limit%2C_embedded.total%2C_embedded.items",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 200,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "158"
+            },
+            "content": "eJx9yzEKgDAQBdG7/HqLaLDZq4hIJCsEEiNmGwm5uxYWNloOj6mYJS3ivXhwRVBJBTxW6LkLGD4cIGwuPdGh0Sf2f2jRJoJmdRFsCTGkoODBGEJe1yJ3mEbvvV2pBjGI"
+        }
+    },
+    {
+        "method": "DELETE",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Ftest_listdir_fields&permanently=true&force_async=false",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 202,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "156"
+            },
+            "content": "eJwNzUEOwiAURdG9MNZCKfyWzo0bcAMfeE0bayEFjca4dzu8Z3K/Yt4xiVHMteYyShnW9Ixnzkvz4S3i3Wyo8tXKuJS7TBk71yVtRbreKky6cwqxszGE0PaDdkZRBx88MZQCEznHA4KPRlmQNtYr0kww4iQeqHOKx/t6uR1Z8cgrVxwy8Vrw+wOcKDGb"
+        }
+    },
+    {
+        "method": "GET",
+        "url": "https://cloud-api.yandex.net/v1/disk/operations/9750ef2390ed35dccc178294063ebcb6ae00ea6699a8ecbd405e6245b062a6e4?fields=status",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 200,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "24"
+            },
+            "content": "eJyrViouSSwpLVayUsrM0y0oyk8vSi0uVqoFAG0lCNg="
+        }
+    },
+    {
+        "method": "GET",
+        "url": "https://cloud-api.yandex.net/v1/disk/operations/9750ef2390ed35dccc178294063ebcb6ae00ea6699a8ecbd405e6245b062a6e4?fields=status",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 200,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "20"
+            },
+            "content": "eJyrViouSSwpLVayUiouTU5OLS5WqgUATRwHWA=="
+        }
+    }
+]

@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["yadisk"]
+
+[project]
+name = "yadisk"
+dynamic = ["version"]
+description = "Библиотека-клиент REST API Яндекс.Диска / Yandex.Disk REST API client library"
+readme = "README.rst"
+requires-python = ">=3.8"
+license = {text = "LGPLv3"}
+keywords = ["yandex.disk", "yandex", "rest"]
+authors = [
+    {name = "Ivan Konovalov", email = "ivknv0@gmail.com"}
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Topic :: Internet",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+dependencies = ["typing_extensions; python_version<'3.10'"]
+
+[tool.setuptools.dynamic]
+version = {attr = "yadisk.__version__"}
+
+[project.optional-dependencies]
+sync_defaults  = ["requests"]
+async_defaults = ["aiofiles", "httpx"]
+async_files    = ["aiofiles"]
+aiohttp        = ["aiohttp"]
+httpx          = ["httpx"]
+pycurl         = ["pycurl"]
+requests       = ["requests"]
+
+[project.urls]
+"Source code" = "https://github.com/ivknv/yadisk"
+"Documentation (EN)" = "https://yadisk.readthedocs.io/en/latest"
+"Documentation (RU)" = "https://yadisk.readthedocs.io/ru/latest"
+"Bug tracker" = "https://github.com/ivknv/yadisk/issues"
+
+[tool.mypy]
+packages = ["yadisk", "tests"]
+
+[tool.pyright]
+reportInvalidTypeForm = "none"
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "B", "PIE", "RUF"]
+ignore = ["F403", "F405", "RUF010", "I001", "PIE790", "RUF012"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]

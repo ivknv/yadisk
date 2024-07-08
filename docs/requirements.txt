@@ -1,7 +1,6 @@
-sphinx
-sphinx-intl
-sphinx_rtd_theme
-requests
-httpx
-aiohttp
-pycurl
+# It is expected that the install command is run from the parent directory
+-e .[async_files,aiohttp,httpx,pycurl,requests]
+
+sphinx==7.1.2
+sphinx-intl==2.2.0
+sphinx_rtd_theme==2.0.0

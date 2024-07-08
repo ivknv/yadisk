@@ -1,0 +1,277 @@
+# migration_guide.rst translations.
+# Copyright (C) 2024, Ivan Konovalov
+# This file is distributed under the same license as the YaDisk package.
+# Ivan Konovalov <ivknv0@gmail.com>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: YaDisk 3.0.0\n"
+"Report-Msgid-Bugs-To: ivknv0@gmail.com\n"
+"POT-Creation-Date: 2024-07-04 22:17+0500\n"
+"PO-Revision-Date: 2024-07-05 02:01+0500\n"
+"Last-Translator: Ivan Konovalov <ivknv0@gmail.com>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.15.0\n"
+
+#: ../../migration_guide.rst:2
+msgid "Migration Guide"
+msgstr "Руководство по миграции"
+
+#: ../../migration_guide.rst:5
+msgid "Migrating From 2.x to 3.x"
+msgstr "Миграция с 2.x на 3.x"
+
+#: ../../migration_guide.rst:8
+msgid "Waiting for asynchronous operations to complete"
+msgstr "Ожидание завершения асинхронной операции"
+
+#: ../../migration_guide.rst:10
+msgid ""
+"Starting with the version 3.0.0, the following methods will automatically"
+" wait for the asynchronous operation to complete:"
+msgstr "Начиная с версии 3.0.0, следующие методы автоматически ожидают "
+"завершения асинхронной операции:"
+
+#: ../../migration_guide.rst:13
+msgid ":any:`Client.copy()`, :any:`AsyncClient.copy()`"
+msgstr ":any:`Client.copy()`, :any:`AsyncClient.copy()`"
+
+#: ../../migration_guide.rst:14
+msgid ":any:`Client.move()`, :any:`AsyncClient.move()`"
+msgstr ":any:`Client.move()`, :any:`AsyncClient.move()`"
+
+#: ../../migration_guide.rst:15
+msgid ":any:`Client.remove()`, :any:`AsyncClient.remove()`"
+msgstr ":any:`Client.remove()`, :any:`AsyncClient.remove()`"
+
+#: ../../migration_guide.rst:16
+msgid ":any:`Client.remove_trash()`, :any:`AsyncClient.remove_trash()`"
+msgstr ":any:`Client.remove_trash()`, :any:`AsyncClient.remove_trash()`"
+
+#: ../../migration_guide.rst:17
+msgid ":any:`Client.rename()`, :any:`AsyncClient.rename()`"
+msgstr ":any:`Client.rename()`, :any:`AsyncClient.rename()`"
+
+#: ../../migration_guide.rst:18
+msgid ":any:`Client.restore_trash()`, :any:`AsyncClient.restore_trash()`"
+msgstr ":any:`Client.restore_trash()`, :any:`AsyncClient.restore_trash()`"
+
+#: ../../migration_guide.rst:19
+msgid ":any:`Client.save_to_disk()`, :any:`AsyncClient.save_to_disk()`"
+msgstr ":any:`Client.save_to_disk()`, :any:`AsyncClient.save_to_disk()`"
+
+#: ../../migration_guide.rst:20
+msgid ":any:`Client.upload_url()`, :any:`AsyncClient.upload_url()`."
+msgstr ":any:`Client.upload_url()`, :any:`AsyncClient.upload_url()`."
+
+#: ../../migration_guide.rst:22
+msgid ""
+"This new behavior is controlled by the :code:`wait` parameter, which "
+"defaults to :code:`True`. Waiting is performed by repeatedly checking the"
+" operation status (see :any:`Client.get_operation_status()` and "
+":any:`Client.wait_for_operation()`) and calling :any:`time.sleep` / "
+":any:`asyncio.sleep`. If this parameter is explicitly set to "
+":code:`False`, no additional waiting is performed, this matches the old "
+"behavior."
+msgstr "Новое поведение контролируется параметром :code:`wait`, который по "
+"умолчанию задан как :code:`True`. Ожидание осуществляется за счёт периодической "
+"проверки статуса операции (см. :any:`Client.get_operation_status()` и "
+":any:`Client.wait_for_operation()`) и вызова :any:`time.sleep` / "
+":any:`asyncio.sleep`. Если этот параметр установлен в значение :code:`False`, "
+"ожидание операции не будет выполнено, это соответствует старому поведению."
+
+#: ../../migration_guide.rst:31
+msgid ""
+"If :code:`wait=True` is set, there is a possibility of getting an "
+":any:`AsyncOperationFailedError`, though this is very unlikely in "
+"practice."
+msgstr "Если :code:`wait=True`, то существует вероятность получить "
+":any:`AsyncOperationFailedError`, хотя это маловероятно на практике."
+
+#: ../../migration_guide.rst:34
+msgid ""
+"For more details, see documentation for any of the above-mentioned "
+"methods."
+msgstr "См. документацию для вышеупомянутых методов для дополнительных "
+"подробностей."
+
+#: ../../migration_guide.rst:37
+msgid "Iterating over AsyncClient.listdir()"
+msgstr "Итерация по AsyncClient.listdir()"
+
+#: ../../migration_guide.rst:39
+msgid ""
+"Iterating over the result of :any:`AsyncClient.listdir()` no longer "
+"requires the additional :code:`await` keyword:"
+msgstr "Итерация по результату :any:`AsyncClient.listdir()` больше не требует "
+"дополнительного ключевого слова :code:`await`:"
+
+#: ../../migration_guide.rst:54
+msgid "Changes with get_files()"
+msgstr "Изменения, касающиеся get_files()"
+
+#: ../../migration_guide.rst:56
+msgid ""
+"Before the version 3.0.0, :any:`Client.get_files()` / "
+":any:`AsyncClient.get_files()` would return up to :code:`limit` files, "
+"unless it was set to :code:`None`, in which case it would return all of "
+"them."
+msgstr "До версии 3.0.0., :any:`Client.get_files()` / "
+":any:`AsyncClient.get_files()` возвращал не более :code:`limit` файлов, "
+"если :code:`limit != None`, иначе метод возвращал все файлы."
+
+#: ../../migration_guide.rst:60
+msgid ""
+"Starting with the version 3.0.0, to control the number of returned files,"
+" a new parameter :code:`max_items` is introduced. :code:`limit` only "
+"affects the number of files queried by a single request (requests are "
+"sent until :code:`max_items` files are obtained or end of the list is "
+"reached). This new behavior is consistent with :any:`Client.listdir()` / "
+":any:`AsyncClient.listdir()`."
+msgstr "Начиная с версии 3.0.0, для контроля числа возвращённых файлов "
+"доступен новый параметр :code:`max_items`. :code:`limit` влияет только на "
+"количество файлов, запрашиваемых одним запросом (запросы отправляются до тех "
+"пор, пока не получено :code:`max_items` файлов или достигнут конец списка). "
+"Новое поведение соответствует :any:`Client.listdir()` / "
+":any:`AsyncClient.listdir()`."
+
+#: ../../migration_guide.rst:68
+msgid "get_last_uploaded() returns a list instead of a generator"
+msgstr "get_last_uploaded() возвращает список вместо генератора"
+
+#: ../../migration_guide.rst:70
+msgid ""
+"Starting with the version 3.0.0, :any:`Client.get_last_uploaded()` / "
+":any:`AsyncClient.get_last_uploaded()` return a list of files instead of "
+"a generator."
+msgstr "Начиная с версии 3.0.0, :any:`Client.get_last_uploaded()` / "
+":any:`AsyncClient.get_last_uploaded()` возвращает список файлов вместо "
+"генератора."
+
+#: ../../migration_guide.rst:75
+msgid "Changes with the Session interface"
+msgstr "Изменения интерфейса Session"
+
+#: ../../migration_guide.rst:77
+msgid "In version 3.0.0, the following methods were removed:"
+msgstr "В версии 3.0.0 были удалены следующие методы:"
+
+#: ../../migration_guide.rst:79
+msgid ":code:`Session.set_token()`, :code:`AsyncSession.set_token()`"
+msgstr ":code:`Session.set_token()`, :code:`AsyncSession.set_token()`"
+
+#: ../../migration_guide.rst:80
+msgid ":code:`Session.set_headers()`, :code:`AsyncSession.set_headers()`."
+msgstr ":code:`Session.set_headers()`, :code:`AsyncSession.set_headers()`."
+
+#: ../../migration_guide.rst:82
+msgid ""
+"Starting with the version 3.0.0, all HTTP headers (including the "
+":code:`Authorization` header) are explicitly passed to "
+":any:`Session.send_request()` / :any:`AsyncSession.send_request()`."
+msgstr "Начиная с версии 3.0.0, все заголовки HTTP запросов (включая заголовок "
+":code:`Authorization`) передаются явным образом напрямую в "
+":any:`Session.send_request()` / :any:`AsyncSession.send_request()`."
+
+#: ../../migration_guide.rst:87
+msgid "Some methods no longer accept the fields parameter"
+msgstr "Некоторые методы больше не принимают параметр fields"
+
+#: ../../migration_guide.rst:89
+msgid ""
+"Prior to version 3.0.0, the following methods used to accept the optional"
+" :code:`fields` parameter:"
+msgstr "До версии 3.0.0, следующие методы принимали опциональный параметр "
+":code:`fields`:"
+
+#: ../../migration_guide.rst:92
+msgid ""
+":any:`Client.get_operation_status()`, "
+":any:`AsyncClient.get_operation_status()`"
+msgstr ""
+":any:`Client.get_operation_status()`, "
+":any:`AsyncClient.get_operation_status()`"
+
+#: ../../migration_guide.rst:93
+msgid ":any:`Client.get_download_link()`, :any:`AsyncClient.get_download_link()`"
+msgstr ":any:`Client.get_download_link()`, :any:`AsyncClient.get_download_link()`"
+
+#: ../../migration_guide.rst:94
+msgid ""
+":any:`Client.get_public_download_link()`, "
+":any:`AsyncClient.get_public_download_link()`"
+msgstr ""
+":any:`Client.get_public_download_link()`, "
+":any:`AsyncClient.get_public_download_link()`"
+
+#: ../../migration_guide.rst:95
+msgid ":any:`Client.get_upload_link()`, :any:`AsyncClient.get_upload_link()`."
+msgstr ":any:`Client.get_upload_link()`, :any:`AsyncClient.get_upload_link()`."
+
+#: ../../migration_guide.rst:98
+msgid "Migrating From 1.x to 2.x"
+msgstr "Миграция с 1.x на 2.x"
+
+#: ../../migration_guide.rst:101
+msgid "Merge with yadisk-async"
+msgstr "Слияние с yadisk-async"
+
+#: ../../migration_guide.rst:103
+msgid ""
+"Starting with version 2.0.0, the library provides both synchronous and "
+"asynchronous APIs."
+msgstr "Начиная с версии 2.0.0, библиотека предоставляет как синхронный, так и "
+"асинхронный интерфейсы."
+
+#: ../../migration_guide.rst:107
+msgid "Changes to exception handling"
+msgstr "Изменения в обработке исключений"
+
+#: ../../migration_guide.rst:109
+msgid ""
+"Starting with version 2.0.0, all exceptions raised by :any:`Client` and "
+":any:`AsyncClient` are derived from :any:`YaDiskError`. Exceptions from "
+"underlying dependencies (e.g. :code:`requests` or :code:`aiohttp`) are "
+"converted to :any:`RequestError`. A non-exhaustive list of possible "
+"exceptions is provided by the documentation for :any:`Client` and "
+":any:`AsyncClient`. More details about exceptions are available in "
+"documentation for each specific API method."
+msgstr "Начиная с версии 2.0.0, все исключения, вызванные :any:`Client` и "
+":any:`AsyncClient` наследуются от :any:`YaDiskError`. Исключения от "
+"нижележащих зависимостей (например, :code:`requests` или :code:`aiohttp`) "
+"преобразуются в :any:`RequestError`. Частичный список возможных исключений "
+"приведён в документации для :any:`Client` и :any:`AsyncClient`. Дополнительные "
+"подробности доступны для каждого отдельного метода API."
+
+#: ../../migration_guide.rst:118
+msgid "requests and aiohttp are optional dependencies"
+msgstr "requests и aiohttp - теперь опциональные зависимости"
+
+#: ../../migration_guide.rst:120
+msgid ""
+"Prior to version 2.0.0, :code:`requests` was listed as a dependency (and "
+":code:`aiohttp` was listed as a dependency for :code:`yadisk-async`). "
+":code:`requests` is still used by default but must be explicitly "
+"installed. As for the asynchronous API, :code:`httpx` is used by default,"
+" instead of :code:`aiohttp`. There are now multiple supported HTTP client"
+" libraries."
+msgstr "До версии 2.0.0, :code:`requests` была указана в качестве обязательной "
+"зависимости (и :code:`aiohttp` была указана как зависимость для "
+":code:`yadisk-async`). Библиотека :code:`requests` всё ещё используется по "
+"умолчанию, но должна быть явным образом установлена. Что касается асинхронного "
+"API, по умолчанию теперь используется :code:`httpx`, вместо :code:`aiohttp`. "
+"Поддерживается несколько библиотек HTTP."
+
+#: ../../migration_guide.rst:126
+msgid ""
+"See :doc:`/api_reference/sessions` for a full list of supported HTTP "
+"client libraries and :doc:`/intro` for installation instructions."
+msgstr "См. :doc:`/api_reference/sessions` для полного списка поддерживаемых "
+"библиотек HTTP и :doc:`/intro` для инструкции по установке."
+

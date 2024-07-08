@@ -1,330 +1,409 @@
 # -*- coding: utf-8 -*-
 
-import os
+import hashlib
 import tempfile
 
 import posixpath
-from unittest import TestCase
 from io import BytesIO
 from typing import Any
 
 import yadisk
 
-from yadisk.common import is_operation_link, ensure_path_has_schema
-from yadisk.api.operations import GetOperationStatusRequest
-from yadisk.types import SessionName
+from yadisk._common import is_operation_link, ensure_path_has_schema
+from yadisk._api import GetOperationStatusRequest
 
-__all__ = ["RequestsTestCase", "HTTPXTestCase", "PycURLTestCase"]
+import platform
+import sys
 
-def make_test_case(name: str, session: SessionName):
-    class ClientTestCase(TestCase):
-        client: yadisk.Client
-        path: str
+import pytest
 
-        @classmethod
-        def setUpClass(cls):
-            if not os.environ.get("PYTHON_YADISK_APP_TOKEN"):
-                raise ValueError("Environment variable PYTHON_YADISK_APP_TOKEN must be set")
+__all__ = ["TestClient"]
 
-            if not os.environ.get("PYTHON_YADISK_TEST_ROOT"):
-                raise ValueError("Environment variable PYTHON_YADISK_TEST_ROOT must be set")
 
-            cls.client = yadisk.Client(os.environ["PYTHON_YADISK_APP_ID"],
-                                       os.environ["PYTHON_YADISK_APP_SECRET"],
-                                       os.environ["PYTHON_YADISK_APP_TOKEN"],
-                                       session=session)
-            cls.client.default_args["n_retries"] = 50
+def open_tmpfile(mode):
+    if platform.system() == "Windows" and sys.version_info >= (3, 12):
+        # This is needed in order to work on Windows
+        return tempfile.NamedTemporaryFile(mode, delete_on_close=False)
+    else:
+        return tempfile.NamedTemporaryFile(mode)
 
-            cls.path = os.environ["PYTHON_YADISK_TEST_ROOT"]
 
-            # Get rid of 'disk:/' prefix in the path and make it start with a slash
-            # for consistency
-            if cls.path.startswith("disk:/"):
-                cls.path = posixpath.join("/", cls.path[len("disk:/"):])
+class TestClient:
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_get_meta(self, client: yadisk.Client, disk_root: str) -> None:
+        resource = client.get_meta(disk_root)
 
-        @classmethod
-        def tearDownClass(cls):
-            cls.client.close()
+        assert isinstance(resource, yadisk.objects.ResourceObject)
+        assert resource.type == "dir"
+        assert resource.name == posixpath.split(disk_root)[1]
 
-        def test_get_meta(self):
-            resource = self.client.get_meta(self.path)
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_listdir(self, client: yadisk.Client, disk_root: str) -> None:
+        names = ["dir1", "dir2", "dir3"]
 
-            self.assertIsInstance(resource, yadisk.objects.ResourceObject)
-            self.assertEqual(resource.type, "dir")
-            self.assertEqual(resource.name, posixpath.split(self.path)[1])
+        for name in names:
+            path = posixpath.join(disk_root, name)
 
-        def test_listdir(self):
-            names = ["dir1", "dir2", "dir3"]
+            client.mkdir(path)
 
-            for name in names:
-                path = posixpath.join(self.path, name)
+        result = [i.name for i in client.listdir(disk_root)]
 
-                self.client.mkdir(path)
+        assert result == names
 
-            result = [i.name for i in self.client.listdir(self.path)]
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_listdir_fields(self, client: yadisk.Client, disk_root: str) -> None:
+        names = ["dir1", "dir2", "dir3"]
 
-            for name in names:
-                path = posixpath.join(self.path, name)
+        for name in names:
+            path = posixpath.join(disk_root, name)
 
-                self.client.remove(path, permanently=True)
+            client.mkdir(path)
 
-            self.assertEqual(result, names)
+        result = [(i.name, i.type, i.file) for i in client.listdir(disk_root, fields=["name", "type"])]
 
-        def test_listdir_fields(self):
-            names = ["dir1", "dir2", "dir3"]
+        assert result == [(name, "dir", None) for name in names]
 
-            for name in names:
-                path = posixpath.join(self.path, name)
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_listdir_on_file(self, client: yadisk.Client, disk_root: str) -> None:
+        buf = BytesIO()
+        buf.write(b"0" * 1000)
+        buf.seek(0)
 
-                self.client.mkdir(path)
+        path = posixpath.join(disk_root, "zeroes.txt")
 
-            result = [(i.name, i.type, i.file) for i in self.client.listdir(self.path, fields=["name", "type"])]
+        client.upload(buf, path)
 
-            for name in names:
-                path = posixpath.join(self.path, name)
+        with pytest.raises(yadisk.exceptions.WrongResourceTypeError):
+            list(client.listdir(path))
 
-                self.client.remove(path, permanently=True)
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_listdir_with_limits(self, client: yadisk.Client, disk_root: str) -> None:
+        names = ["dir1", "dir2", "dir3"]
 
-            self.assertEqual(result, [(name, "dir", None) for name in names])
+        for name in names:
+            path = posixpath.join(disk_root, name)
 
-        def test_listdir_on_file(self):
-            buf = BytesIO()
-            buf.write(b"0" * 1000)
-            buf.seek(0)
+            client.mkdir(path)
 
-            path = posixpath.join(self.path, "zeroes.txt")
+        result = [i.name for i in client.listdir(disk_root, limit=1)]
 
-            self.client.upload(buf, path)
+        assert result == names
 
-            with self.assertRaises(yadisk.exceptions.WrongResourceTypeError):
-                list(self.client.listdir(path))
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_listdir_with_max_items(self, client: yadisk.Client, disk_root: str) -> None:
+        names = ["dir1", "dir2", "dir3", "dir4", "dir5", "dir6"]
 
-            self.client.remove(path, permanently=True)
+        for name in names:
+            path = posixpath.join(disk_root, name)
 
-        def test_listdir_with_limits(self):
-            names = ["dir1", "dir2", "dir3"]
+            client.mkdir(path)
 
-            for name in names:
-                path = posixpath.join(self.path, name)
+        results = [
+            [i.name for i in client.listdir(disk_root, max_items=0)],
+            [i.name for i in client.listdir(disk_root, max_items=1, limit=1)],
+            [i.name for i in client.listdir(disk_root, max_items=2, limit=1)],
+            [i.name for i in client.listdir(disk_root, max_items=3, limit=1)],
+            [i.name for i in client.listdir(disk_root, max_items=10, limit=1)],
+        ]
 
-                self.client.mkdir(path)
+        expected = [
+            [],
+            names[:1],
+            names[:2],
+            names[:3],
+            names[:10],
+        ]
 
-            result = [i.name for i in self.client.listdir(self.path, limit=1)]
+        assert results == expected
 
-            for name in names:
-                path = posixpath.join(self.path, name)
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_mkdir_and_exists(self, client: yadisk.Client, disk_root: str) -> None:
+        names = ["dir1", "dir2"]
 
-                self.client.remove(path, permanently=True)
+        for name in names:
+            path = posixpath.join(disk_root, name)
 
-            self.assertEqual(result, names)
+            client.mkdir(path)
+            assert client.exists(path)
 
-        def test_mkdir_and_exists(self):
-            names = ["dir1", "dir2"]
+            client.remove(path, permanently=True)
+            assert not client.exists(path)
 
-            for name in names:
-                path = posixpath.join(self.path, name)
-
-                self.client.mkdir(path)
-                self.assertTrue(self.client.exists(path))
-
-                self.client.remove(path, permanently=True)
-                self.assertFalse(self.client.exists(path))
-
-        def test_upload_and_download(self):
-            buf1 = BytesIO()
-            buf2 = tempfile.NamedTemporaryFile("w+b")
-
+    @pytest.mark.skipif(
+        platform.system() == "Windows" and sys.version_info < (3, 12),
+        reason="won't work on Windows with Python < 3.12"
+    )
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_upload_and_download(self, client: yadisk.Client, disk_root: str) -> None:
+        with BytesIO() as buf1, open_tmpfile("w+b") as buf2:
             buf1.write(b"0" * 1024**2)
             buf1.seek(0)
 
-            path = posixpath.join(self.path, "zeroes.txt")
+            path = posixpath.join(disk_root, "zeroes.txt")
 
-            self.client.upload(buf1, path, overwrite=True, n_retries=50)
-            self.client.download(path, buf2.name, n_retries=50)
-            self.client.remove(path, permanently=True)
+            client.upload(buf1, path, overwrite=True, n_retries=50)
+            client.download(path, buf2.name, n_retries=50)
 
             buf1.seek(0)
             buf2.seek(0)
 
-            self.assertEqual(buf1.read(), buf2.read())
+            assert buf1.read() == buf2.read()
 
-        def test_check_token(self):
-            self.assertTrue(self.client.check_token())
-            self.assertFalse(self.client.check_token("asdasdasd"))
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_check_token(self, client: yadisk.Client, disk_root: str) -> None:
+        assert client.check_token()
+        assert not client.check_token("asdasdasd")
 
-        def test_permanent_remove(self):
-            path = posixpath.join(self.path, "dir")
-            origin_path = "disk:" + path
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_permanent_remove(self, client: yadisk.Client, disk_root: str) -> None:
+        path = posixpath.join(disk_root, "dir")
+        origin_path = "disk:" + path
 
-            self.client.mkdir(path)
-            self.client.remove(path, permanently=True)
+        client.mkdir(path)
+        client.remove(path, permanently=True)
 
-            for i in self.client.trash_listdir("/"):
-                self.assertFalse(i.origin_path == origin_path)
+        for i in client.trash_listdir("/"):
+            assert i.origin_path != origin_path
 
-        def test_restore_trash(self):
-            path = posixpath.join(self.path, "dir")
-            origin_path = "disk:" + path
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_restore_trash(self, client: yadisk.Client, disk_root: str) -> None:
+        path = posixpath.join(disk_root, "dir")
+        origin_path = "disk:" + path
 
-            self.client.mkdir(path)
-            self.client.remove(path)
+        client.mkdir(path)
+        client.remove(path)
 
-            trash_path: Any = None
+        trash_path: Any = None
 
-            for i in self.client.trash_listdir("/"):
-                if i.origin_path == origin_path:
-                    trash_path = i.path
-                    break
+        for i in client.trash_listdir("/"):
+            if i.origin_path == origin_path:
+                trash_path = i.path
+                break
 
-            self.assertTrue(trash_path is not None)
+        assert trash_path is not None
 
-            self.client.restore_trash(trash_path, path)
-            self.assertTrue(self.client.exists(path))
-            self.client.remove(path, permanently=True)
+        client.restore_trash(trash_path, path)
+        assert client.exists(path)
 
-        def test_move(self):
-            path1 = posixpath.join(self.path, "dir1")
-            path2 = posixpath.join(self.path, "dir2")
-            self.client.mkdir(path1)
-            self.client.move(path1, path2)
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_move(self, client: yadisk.Client, disk_root: str) -> None:
+        path1 = posixpath.join(disk_root, "dir1")
+        path2 = posixpath.join(disk_root, "dir2")
+        client.mkdir(path1)
+        client.move(path1, path2)
 
-            self.assertTrue(self.client.exists(path2))
+        assert client.exists(path2)
 
-            self.client.remove(path2, permanently=True)
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_remove_trash(self, client: yadisk.Client, disk_root: str) -> None:
+        path = posixpath.join(disk_root, "dir-to-remove")
+        origin_path = "disk:" + path
 
-        def test_remove_trash(self):
-            path = posixpath.join(self.path, "dir-to-remove")
-            origin_path = "disk:" + path
+        client.mkdir(path)
+        client.remove(path)
 
-            self.client.mkdir(path)
-            self.client.remove(path)
+        trash_path: Any = None
 
-            trash_path: Any = None
+        for i in client.trash_listdir("/"):
+            if i.origin_path == origin_path:
+                trash_path = i.path
+                break
 
-            for i in self.client.trash_listdir("/"):
-                if i.origin_path == origin_path:
-                    trash_path = i.path
-                    break
+        assert trash_path is not None
 
-            self.assertTrue(trash_path is not None)
+        client.remove_trash(trash_path)
+        assert not client.trash_exists(trash_path)
 
-            self.client.remove_trash(trash_path)
-            self.assertFalse(self.client.trash_exists(trash_path))
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_publish_unpublish(self, client: yadisk.Client, disk_root: str) -> None:
+        path = disk_root
 
-        def test_publish_unpublish(self):
-            path = self.path
+        client.publish(path)
+        assert client.get_meta(path).public_url is not None
 
-            self.client.publish(path)
-            self.assertIsNotNone(self.client.get_meta(path).public_url)
+        client.unpublish(path)
+        assert client.get_meta(path).public_url is None
 
-            self.client.unpublish(path)
-            self.assertIsNone(self.client.get_meta(path).public_url)
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_patch(self, client: yadisk.Client, disk_root: str) -> None:
+        path = disk_root
 
-        def test_patch(self):
-            path = self.path
+        client.patch(path, {"test_property": "I'm a value!"})
 
-            self.client.patch(path, {"test_property": "I'm a value!"})
+        props: Any = client.get_meta(path).custom_properties
+        assert props is not None
 
-            props: Any = self.client.get_meta(path).custom_properties
-            self.assertIsNotNone(props)
+        assert props["test_property"] == "I'm a value!"
 
-            self.assertEqual(props["test_property"], "I'm a value!")
+        client.patch(path, {"test_property": None})
+        assert client.get_meta(path).custom_properties is None
 
-            self.client.patch(path, {"test_property": None})
-            self.assertIsNone(self.client.get_meta(path).custom_properties)
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_issue7(self, client: yadisk.Client, disk_root: str) -> None:
+        # See https://github.com/ivknv/yadisk/issues/7
 
-        def test_issue7(self):
-            # See https://github.com/ivknv/yadisk/issues/7
+        try:
+            list(client.public_listdir("any value here", path="any value here"))
+        except yadisk.exceptions.PathNotFoundError:
+            pass
 
-            try:
-                self.client.public_listdir("any value here", path="any value here")
-            except yadisk.exceptions.PathNotFoundError:
-                pass
+    def test_is_operation_link(self) -> None:
+        assert is_operation_link("https://cloud-api.yandex.net/v1/disk/operations/123asd")
+        assert is_operation_link("http://cloud-api.yandex.net/v1/disk/operations/123asd")
+        assert not is_operation_link("https://cloud-api.yandex.net/v1/disk/operation/1283718")
+        assert not is_operation_link("https://asd8iaysd89asdgiu")
+        assert not is_operation_link("http://asd8iaysd89asdgiu")
 
-        def test_is_operation_link(self):
-            self.assertTrue(is_operation_link("https://cloud-api.yandex.net/v1/disk/operations/123asd"))
-            self.assertTrue(is_operation_link("http://cloud-api.yandex.net/v1/disk/operations/123asd"))
-            self.assertFalse(is_operation_link("https://cloud-api.yandex.net/v1/disk/operation/1283718"))
-            self.assertFalse(is_operation_link("https://asd8iaysd89asdgiu"))
-            self.assertFalse(is_operation_link("http://asd8iaysd89asdgiu"))
+    def test_get_operation_status_request_url(self, client: yadisk.Client, disk_root: str) -> None:
+        request = GetOperationStatusRequest(
+            client.session,
+            "https://cloud-api.yandex.net/v1/disk/operations/123asd")
+        assert is_operation_link(request.url)
 
-        def test_get_operation_status_request_url(self):
-            request = GetOperationStatusRequest(
-                self.client.session,
-                "https://cloud-api.yandex.net/v1/disk/operations/123asd")
-            self.assertTrue(is_operation_link(request.url))
+        request = GetOperationStatusRequest(
+            client.session,
+            "http://cloud-api.yandex.net/v1/disk/operations/123asd")
+        assert is_operation_link(request.url)
+        assert request.url.startswith("https://")
 
-            request = GetOperationStatusRequest(
-                self.client.session,
-                "http://cloud-api.yandex.net/v1/disk/operations/123asd")
-            self.assertTrue(is_operation_link(request.url))
-            self.assertTrue(request.url.startswith("https://"))
+        request = GetOperationStatusRequest(
+            client.session,
+            "https://asd8iaysd89asdgiu")
+        assert is_operation_link(request.url)
+        assert request.url.startswith("https://")
 
-            request = GetOperationStatusRequest(
-                self.client.session,
-                "https://asd8iaysd89asdgiu")
-            self.assertTrue(is_operation_link(request.url))
-            self.assertTrue(request.url.startswith("https://"))
+    def test_ensure_path_has_schema(self) -> None:
+        # See https://github.com/ivknv/yadisk/issues/26 for more details
 
-        def test_ensure_path_has_schema(self):
-            # See https://github.com/ivknv/yadisk/issues/26 for more details
+        assert ensure_path_has_schema("disk:") == "disk:/disk:"
+        assert ensure_path_has_schema("trash:", default_schema="trash") == "trash:/trash:"
+        assert ensure_path_has_schema("/asd:123") == "disk:/asd:123"
+        assert ensure_path_has_schema("/asd:123", "trash") == "trash:/asd:123"
+        assert ensure_path_has_schema("example/path") == "disk:/example/path"
+        assert ensure_path_has_schema("app:/test") == "app:/test"
 
-            self.assertEqual(ensure_path_has_schema("disk:"), "disk:/disk:")
-            self.assertEqual(ensure_path_has_schema("trash:", default_schema="trash"), "trash:/trash:")
-            self.assertEqual(ensure_path_has_schema("/asd:123"), "disk:/asd:123")
-            self.assertEqual(ensure_path_has_schema("/asd:123", "trash"), "trash:/asd:123")
-            self.assertEqual(ensure_path_has_schema("example/path"), "disk:/example/path")
-            self.assertEqual(ensure_path_has_schema("app:/test"), "app:/test")
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_upload_download_non_seekable(self, client: yadisk.Client, disk_root: str) -> None:
+        # It should be possible to upload/download non-seekable file objects (such as sys.stdin/sys.stdout)
+        # See https://github.com/ivknv/yadisk/pull/31 for more details
 
-        def test_upload_download_non_seekable(self):
-            # It should be possible to upload/download non-seekable file objects (such as sys.stdin/sys.stdout)
-            # See https://github.com/ivknv/yadisk/pull/31 for more details
+        test_input_file = BytesIO(b"0" * 1000)
+        test_input_file.seekable = lambda: False  # type: ignore
 
-            test_input_file = BytesIO(b"0" * 1000)
-            test_input_file.seekable = lambda: False
+        def seek(*args, **kwargs):
+            raise NotImplementedError
 
-            def seek(*args, **kwargs):
-                raise NotImplementedError
+        test_input_file.seek = seek  # type: ignore
 
-            test_input_file.seek = seek
+        dst_path = posixpath.join(disk_root, "zeroes.txt")
 
-            dst_path = posixpath.join(self.path, "zeroes.txt")
+        client.upload(test_input_file, dst_path, n_retries=50)
 
-            self.client.upload(test_input_file, dst_path, n_retries=50)
+        test_output_file = BytesIO()
+        test_output_file.seekable = lambda: False  # type: ignore
+        test_output_file.seek = seek  # type: ignore
 
-            test_output_file = BytesIO()
-            test_output_file.seekable = lambda: False
-            test_output_file.seek = seek
+        client.download(dst_path, test_output_file, n_retries=50)
 
-            self.client.download(dst_path, test_output_file, n_retries=50)
+        assert test_input_file.tell() == 1000
+        assert test_output_file.tell() == 1000
 
-            self.client.remove(dst_path, permanently=True)
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_upload_generator(self, client: yadisk.Client, disk_root: str) -> None:
+        data = b"0" * 1000
 
-            self.assertEqual(test_input_file.tell(), 1000)
-            self.assertEqual(test_output_file.tell(), 1000)
+        def payload():
+            yield data[:500]
+            yield data[500:]
 
-        def test_upload_generator(self):
-            data = b"0" * 1000
+        dst_path = posixpath.join(disk_root, "zeroes.txt")
 
-            def payload():
-                yield data[:500]
-                yield data[500:]
+        output = BytesIO()
 
-            dst_path = posixpath.join(self.path, "zeroes.txt")
+        client.upload(payload, dst_path).download(output)
 
-            output = BytesIO()
+        output.seek(0)
 
-            self.client.upload(payload, dst_path).download(output).remove(permanently=True)
+        assert output.read() == data
 
-            output.seek(0)
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_copy(
+        self,
+        client: yadisk.Client,
+        disk_root: str,
+        poll_interval: float
+    ) -> None:
+        dir = client.mkdir(posixpath.join(disk_root, "directory_to_copy"))
+        dir.upload(BytesIO(b"example text"), "file.txt")
+        dir.mkdir("nested directory 1")
+        dir.mkdir("nested directory 2")
 
-            self.assertEqual(output.read(), data)
+        dst_path = posixpath.join(disk_root, "directory_copy")
 
-    ClientTestCase.__name__ = name
-    ClientTestCase.__qualname__ = ClientTestCase.__qualname__.rpartition(".")[0] + "." + name
+        dir.copy(dst_path, poll_interval=poll_interval)
 
-    return ClientTestCase
+        copy_info = client.get_meta(dst_path)
 
-RequestsTestCase = make_test_case("RequestsTestCase", "requests")
-HTTPXTestCase = make_test_case("HTTPXTestCase", "httpx")
-PycURLTestCase = make_test_case("PycURLTestCase", "pycurl")
+        assert copy_info.embedded is not None
+        assert copy_info.embedded.items is not None
+
+        contents = sorted([(resource.type, resource.name) for resource in copy_info.embedded.items])
+
+        expected_contents = [
+            ("dir", "nested directory 1"),
+            ("dir", "nested directory 2"),
+            ("file", "file.txt"),
+        ]
+
+        assert copy_info.type == "dir"
+        assert contents == expected_contents
+
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_save_to_disk(
+        self,
+        client: yadisk.Client,
+        disk_root: str,
+        poll_interval: float
+    ) -> None:
+        test_contents = b"test file contents"
+
+        public_file_path = posixpath.join(disk_root, "public_file.txt")
+        client.upload(BytesIO(test_contents), public_file_path)
+
+        client.publish(public_file_path)
+
+        public_file_info = client.get_meta(public_file_path)
+
+        assert public_file_info.public_url is not None
+
+        client.save_to_disk(
+            public_file_info.public_url,
+            name="saved_public_file.txt",
+            save_path=disk_root,
+            poll_interval=poll_interval
+        )
+
+        saved_file_path = posixpath.join(disk_root, "saved_public_file.txt")
+        saved_file_info = client.get_meta(saved_file_path)
+
+        assert saved_file_info.md5 == hashlib.md5(test_contents).hexdigest() == public_file_info.md5
+
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_upload_url(
+        self,
+        client: yadisk.Client,
+        disk_root: str,
+        poll_interval: float
+    ) -> None:
+        test_contents = b"test file contents"
+
+        file_path = posixpath.join(disk_root, "example_file.txt")
+        dst_path = posixpath.join(disk_root, "uploaded_from_url.txt")
+
+        client.upload(BytesIO(test_contents), file_path)
+        download_link = client.get_download_link(file_path)
+
+        client.upload_url(download_link, dst_path, poll_interval=poll_interval)
+
+        dst_file_info = client.get_meta(dst_path)
+        assert dst_file_info.md5 == hashlib.md5(test_contents).hexdigest()

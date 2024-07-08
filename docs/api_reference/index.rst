@@ -7,10 +7,10 @@ API Reference
 
    sync_api
    async_api
+   types
    sessions
    settings
    exceptions
    response_objects
    session_interface
    utilities
-   low_level_api

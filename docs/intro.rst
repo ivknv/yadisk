@@ -33,10 +33,10 @@ Alternatively, you can manually choose which optional libraries to install:
 .. code:: bash
 
    # For use with pycurl
-   pip install yadisk pycurl
+   pip install yadisk[pycurl]
 
    # For use with aiohttp, will also install aiofiles
-   pip install yadisk[async_files] aiohttp
+   pip install yadisk[async_files,aiohttp]
 
 Examples
 ********
@@ -178,7 +178,6 @@ Emptying the trash bin
 .. code:: python
 
     import sys
-    import time
     import yadisk
 
     def main():
@@ -189,26 +188,11 @@ Emptying the trash bin
 
         with yadisk.Client(token="<application-token>") as client:
             print("Emptying the trash bin...")
-            operation = client.remove_trash("/")
             print("It might take a while...")
 
-            if operation is None:
-                print("Nevermind. The deed is done.")
-                return
+            client.remove_trash("/")
 
-            while True:
-                status = client.get_operation_status(operation.href)
-
-                if status == "in-progress":
-                    time.sleep(5)
-                    print("Still waiting...")
-                elif status == "success":
-                    print("Success!")
-                    break
-                else:
-                    print(f"Got some weird status: {repr(status)}")
-                    print("That's not normal")
-                    break
+            print("Success!")
 
     main()
 
@@ -244,7 +228,7 @@ Asynchronous API
         print(await client.get_disk_info())
 
         # Print files and directories at "/some/path"
-        print([i async for i in await client.listdir("/some/path")])
+        print([i async for i in client.listdir("/some/path")])
 
         # Upload "file_to_upload.txt" to "/destination.txt"
         await client.upload("file_to_upload.txt", "/destination.txt")
@@ -418,27 +402,10 @@ Emptying the trash bin
 
         async with yadisk.AsyncClient(token="<application-token>") as client:
             print("Emptying the trash bin...")
-            operation = await client.remove_trash("/")
-
             print("It might take a while...")
 
-            if operation is None:
-                print("Nevermind. The deed is done.")
-                return
-
-            while True:
-                status = await client.get_operation_status(operation.href)
-
-                if status == "in-progress":
-                    await asyncio.sleep(5)
-                    print("Still waiting...")
-                elif status == "success":
-                    print("Success!")
-                    break
-                else:
-                    print(f"Got some weird status: {repr(status)}")
-                    print("That's not normal")
-                    break
+            await client.remove_trash("/")
+            print("Success!")
 
     asyncio.run(main())
 

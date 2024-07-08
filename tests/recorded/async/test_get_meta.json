@@ -1,0 +1,56 @@
+[
+    {
+        "method": "PUT",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Ftest_get_meta",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 201,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "132"
+            },
+            "content": "eJwVjcsKwjAQRf8l0J12UHcFEcHHD3TjqgzNrSmmTchMRRH/3XF17jmb+3GhYHCNC6pZGqI+psWvOY/1m2ePVz1D6bkhP8qDCiQtpYccMmvY/1u1O1bby41PtluImqihu0O7Ccpu5Qwhefu4nltTxZQjK6wMHAXfHxgALkQ="
+        }
+    },
+    {
+        "method": "GET",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Ftest_get_meta",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 200,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "597"
+            },
+            "content": "eJy1kcFOwzAMht/FVzrNTZqmzZlH2AUhVKWJAxHNUjXZBJr27nhIXLjAAS6JZf3+7c++wERpJu/Jg7lAyVsFA9BArJQKmMenBpaYImcFNpBDKMQxh6utLyz1sbya/YO95/9Ape4rP9Mz1SlRtWxUc7ULV1wbONpEXPJdQW8xcHMWbFTyaXM0RZ4GOqV6rVotjNAWOy17FN4KNeiBcJSIHfZeur4XKgTnrR1nKWU7DHp2chZCWs4KG6ziJm4jW2+QIFB0O9Q77A/taNrBtOIO0SCyKmUfQ/xR9lt2l1OiY2WcctvuusUzDzF9Yf4143qal+j+yZ7PU99X+sTe4HarcywxH8GwPYpRdqNQ4zBIff0AX4qu6g=="
+        }
+    },
+    {
+        "method": "DELETE",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Ftest_get_meta&permanently=true&force_async=false",
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJwDAAAAAAE=",
+        "response": {
+            "status_code": 204,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "0"
+            },
+            "content": "eJwDAAAAAAE="
+        }
+    }
+]

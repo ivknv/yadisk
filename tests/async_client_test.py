@@ -1,372 +1,455 @@
 # -*- coding: utf-8 -*-
 
-import asyncio
-import os
+import hashlib
 import tempfile
 from typing import Any
 import aiofiles
 
+import platform
 import posixpath
-from unittest import IsolatedAsyncioTestCase
 from io import BytesIO
+import sys
 
 import yadisk
-from yadisk.common import is_operation_link, ensure_path_has_schema
-from yadisk.api.operations import GetOperationStatusRequest
-from yadisk.types import AsyncSessionName
+from yadisk._common import is_operation_link, ensure_path_has_schema
+from yadisk._api import GetOperationStatusRequest
 
-__all__ = ["AIOHTTPTestCase", "AsyncHTTPXTestCase"]
+import pytest
 
-def make_test_case(name: str, session: AsyncSessionName):
-    class AsyncClientTestCase(IsolatedAsyncioTestCase):
-        client: yadisk.AsyncClient
-        path: str
+__all__ = ["TestAsyncClient"]
 
-        async def asyncSetUp(self):
-            if not os.environ.get("PYTHON_YADISK_APP_TOKEN"):
-                raise ValueError("Environment variable PYTHON_YADISK_APP_TOKEN must be set")
 
-            if not os.environ.get("PYTHON_YADISK_TEST_ROOT"):
-                raise ValueError("Environment variable PYTHON_YADISK_TEST_ROOT must be set")
+def open_tmpfile(mode):
+    if platform.system() == "Windows" and sys.version_info >= (3, 12):
+        # This is needed in order to work on Windows
+        return tempfile.NamedTemporaryFile(mode, delete_on_close=False)
+    else:
+        return tempfile.NamedTemporaryFile(mode)
 
-            self.path: str = os.environ["PYTHON_YADISK_TEST_ROOT"]
 
-            # Get rid of 'disk:/' prefix in the path and make it start with a slash
-            # for consistency
-            if self.path.startswith("disk:/"):
-                self.path = posixpath.join("/", self.path[len("disk:/"):])
+def async_open_tmpfile(mode):
+    if platform.system() == "Windows" and sys.version_info >= (3, 12):
+        # This is needed in order to work on Windows
+        return aiofiles.tempfile.NamedTemporaryFile(mode, delete_on_close=False)
+    else:
+        return aiofiles.tempfile.NamedTemporaryFile(mode)
 
-            self.client: yadisk.AsyncClient = yadisk.AsyncClient(
-                os.environ.get("PYTHON_YADISK_APP_ID", ""),
-                os.environ.get("PYTHON_YADISK_APP_SECRET", ""),
-                os.environ["PYTHON_YADISK_APP_TOKEN"],
-                session=session)
-            self.client.default_args["n_retries"] = 50
 
-        async def asyncTearDown(self):
-            await self.client.close()
+@pytest.mark.anyio
+class TestAsyncClient:
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_get_meta(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        resource = await async_client.get_meta(disk_root)
 
-            if session == "aiohttp":
-                # Needed for aiohttp to correctly release its resources (see https://github.com/aio-libs/aiohttp/issues/1115)
-                await asyncio.sleep(0.1)
+        assert isinstance(resource, yadisk.objects.ResourceObject)
+        assert resource.type == "dir"
+        assert resource.name == posixpath.split(disk_root)[1]
 
-        async def test_get_meta(self):
-            resource = await self.client.get_meta(self.path)
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_listdir(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        names = ["dir1", "dir2", "dir3"]
+        paths = [posixpath.join(disk_root, name) for name in names]
 
-            self.assertIsInstance(resource, yadisk.objects.ResourceObject)
-            self.assertEqual(resource.type, "dir")
-            self.assertEqual(resource.name, posixpath.split(self.path)[1])
+        for path in paths:
+            await async_client.mkdir(path)
 
-        async def test_listdir(self):
-            names = ["dir1", "dir2", "dir3"]
-            paths = [posixpath.join(self.path, name) for name in names]
-            mkdir_tasks = [self.client.mkdir(path) for path in paths]
+        async def get_result():
+            return [i.name async for i in async_client.listdir(disk_root)]
 
-            await asyncio.gather(*mkdir_tasks)
+        result = await get_result()
 
-            async def get_result():
-                return [i.name async for i in await self.client.listdir(self.path)]
+        assert result == names
 
-            result = await get_result()
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_listdir_fields(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        names = ["dir1", "dir2", "dir3"]
+        paths = [posixpath.join(disk_root, name) for name in names]
 
-            remove_tasks = [self.client.remove(path, permanently=True) for path in paths]
+        for path in paths:
+            await async_client.mkdir(path)
 
-            await asyncio.gather(*remove_tasks)
+        async def get_result():
+            return [(i.name, i.type, i.file)
+                    async for i in async_client.listdir(disk_root, fields=["name", "type"])]
 
-            self.assertEqual(result, names)
+        result = await get_result()
 
-        async def test_listdir_fields(self):
-            names = ["dir1", "dir2", "dir3"]
-            paths = [posixpath.join(self.path, name) for name in names]
-            mkdir_tasks = [self.client.mkdir(path) for path in paths]
+        assert result == [(name, "dir", None) for name in names]
 
-            await asyncio.gather(*mkdir_tasks)
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_listdir_on_file(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        buf = BytesIO()
+        buf.write(b"0" * 1000)
+        buf.seek(0)
 
-            async def get_result():
-                return [(i.name, i.type, i.file)
-                        async for i in await self.client.listdir(self.path, fields=["name", "type"])]
+        path = posixpath.join(disk_root, "zeroes.txt")
 
-            result = await get_result()
+        await async_client.upload(buf, path)
 
-            remove_tasks = [self.client.remove(path, permanently=True) for path in paths]
+        with pytest.raises(yadisk.exceptions.WrongResourceTypeError):
+            [i async for i in async_client.listdir(path)]
 
-            await asyncio.gather(*remove_tasks)
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_listdir_with_limits(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        names = ["dir1", "dir2", "dir3"]
+        paths = [posixpath.join(disk_root, name) for name in names]
 
-            self.assertEqual(result, [(name, "dir", None) for name in names])
+        for path in paths:
+            await async_client.mkdir(path)
 
-        async def test_listdir_on_file(self):
-            buf = BytesIO()
-            buf.write(b"0" * 1000)
-            buf.seek(0)
+        async def get_result():
+            return [i.name async for i in async_client.listdir(disk_root, limit=1)]
 
-            path = posixpath.join(self.path, "zeroes.txt")
+        result = await get_result()
 
-            await self.client.upload(buf, path)
+        assert result == names
 
-            with self.assertRaises(yadisk.exceptions.WrongResourceTypeError):
-                [i async for i in await self.client.listdir(path)]
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_listdir_with_max_items(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        names = ["dir1", "dir2", "dir3", "dir4", "dir5", "dir6"]
 
-            await self.client.remove(path, permanently=True)
+        for name in names:
+            path = posixpath.join(disk_root, name)
 
-        async def test_listdir_with_limits(self):
-            names = ["dir1", "dir2", "dir3"]
-            paths = [posixpath.join(self.path, name) for name in names]
-            mkdir_tasks = [self.client.mkdir(path) for path in paths]
+            await async_client.mkdir(path)
 
-            await asyncio.gather(*mkdir_tasks)
+        results = [
+            [i.name async for i in async_client.listdir(disk_root, max_items=0)],
+            [i.name async for i in async_client.listdir(disk_root, max_items=1, limit=1)],
+            [i.name async for i in async_client.listdir(disk_root, max_items=2, limit=1)],
+            [i.name async for i in async_client.listdir(disk_root, max_items=3, limit=1)],
+            [i.name async for i in async_client.listdir(disk_root, max_items=10, limit=1)],
+        ]
 
-            async def get_result():
-                return [i.name async for i in await self.client.listdir(self.path, limit=1)]
+        expected = [
+            [],
+            names[:1],
+            names[:2],
+            names[:3],
+            names[:10],
+        ]
 
-            result = await get_result()
+        assert results == expected
 
-            remove_tasks = [self.client.remove(path, permanently=True) for path in paths]
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_mkdir_and_exists(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        names = ["dir1", "dir2", "dir3"]
+        paths = [posixpath.join(disk_root, name) for name in names]
 
-            await asyncio.gather(*remove_tasks)
+        async def check_existence(path):
+            await async_client.mkdir(path)
+            assert await async_client.exists(path)
 
-            self.assertEqual(result, names)
+            await async_client.remove(path, permanently=True)
+            assert not await async_client.exists(path)
 
-        async def test_mkdir_and_exists(self):
-            names = ["dir1", "dir2", "dir3"]
-            paths = [posixpath.join(self.path, name) for name in names]
+        for path in paths:
+            await check_existence(path)
 
-            async def check_existence(path):
-                await self.client.mkdir(path)
-                self.assertTrue(await self.client.exists(path))
-
-                await self.client.remove(path, permanently=True)
-                self.assertFalse(await self.client.exists(path))
-
-            tasks = [check_existence(path) for path in paths]
-
-            await asyncio.gather(*tasks)
-
-        async def test_upload_and_download(self):
-            buf1 = BytesIO()
-            buf2 = tempfile.NamedTemporaryFile("w+b")
-
-            def wrapper():
-                self.assertTrue(False)
-
-            buf1.close = wrapper
-
+    @pytest.mark.skipif(
+        platform.system() == "Windows" and sys.version_info < (3, 12),
+        reason="won't work on Windows with Python < 3.12"
+    )
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_upload_and_download(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        with BytesIO() as buf1, open_tmpfile("w+b") as buf2:
             buf1.write(b"0" * 1024**2)
             buf1.seek(0)
 
-            path = posixpath.join(self.path, "zeroes.txt")
+            path = posixpath.join(disk_root, "zeroes.txt")
 
-            await self.client.upload(buf1, path, overwrite=True, n_retries=50)
-            await self.client.download(path, buf2.name, n_retries=50)
-            await self.client.remove(path, permanently=True)
+            await async_client.upload(buf1, path, overwrite=True, n_retries=50)
+            await async_client.download(path, buf2.name, n_retries=50)
 
             buf1.seek(0)
             buf2.seek(0)
 
-            self.assertEqual(buf1.read(), buf2.read())
+            assert buf1.read() == buf2.read()
 
-        async def test_upload_and_download_async(self):
-            content = b"0" * 1024 ** 2
-            async with aiofiles.tempfile.NamedTemporaryFile("wb+") as source:
-                await source.write(content)
-                await source.seek(0)
+    @pytest.mark.skipif(
+        platform.system() == "Windows" and sys.version_info < (3, 12),
+        reason="won't work on Windows with Python < 3.12"
+    )
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_upload_and_download_async(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        content = b"0" * 1024 ** 2
+        async with async_open_tmpfile("wb+") as source:
+            await source.write(content)
+            await source.seek(0)
 
-                path1 = posixpath.join(self.path, "zeroes.txt")
-                path2 = posixpath.join(self.path, "zeroes_from_generator.txt")
+            path1 = posixpath.join(disk_root, "zeroes.txt")
+            path2 = posixpath.join(disk_root, "zeroes_from_generator.txt")
 
-                await self.client.upload(source, path1, overwrite=True, n_retries=50)
+            await async_client.upload(source, path1, overwrite=True, n_retries=50)
 
-                async def source_generator():
-                    for _ in range(1024):
-                        yield b"0" * 1024
+            async def source_generator():
+                for _ in range(1024):
+                    yield b"0" * 1024
 
-                await self.client.upload(source_generator, path2, overwrite=True, n_retries=50)
+            await async_client.upload(source_generator, path2, overwrite=True, n_retries=50)
 
-            async with aiofiles.tempfile.NamedTemporaryFile("wb+") as destination:
-                await self.client.download(path1, destination, n_retries=50)
-                await destination.seek(0)
+        async with async_open_tmpfile("wb+") as destination:
+            await async_client.download(path1, destination, n_retries=50)
+            await destination.seek(0)
 
-                self.assertEqual(content, await destination.read())
-                await self.client.remove(path1, permanently=True)
+            assert content == await destination.read()
 
-                await destination.seek(0)
-                await destination.truncate()
-                await self.client.download(path2, destination, n_retries=50)
-                await destination.seek(0)
+            await destination.seek(0)
+            await destination.truncate()
+            await async_client.download(path2, destination, n_retries=50)
+            await destination.seek(0)
 
-                self.assertEqual(content, await destination.read())
-                await self.client.remove(path2, permanently=True)
+            assert content == await destination.read()
 
-        async def test_check_token(self):
-            self.assertTrue(await self.client.check_token())
-            self.assertFalse(await self.client.check_token("asdasdasd"))
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_check_token(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        assert await async_client.check_token()
+        assert not await async_client.check_token("asdasdasd")
 
-        async def test_permanent_remove(self):
-            path = posixpath.join(self.path, "dir")
-            origin_path = "disk:" + path
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_permanent_remove(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        path = posixpath.join(disk_root, "dir")
+        origin_path = "disk:" + path
 
-            await self.client.mkdir(path)
-            await self.client.remove(path, permanently=True)
+        await async_client.mkdir(path)
+        await async_client.remove(path, permanently=True)
 
-            async for i in await self.client.trash_listdir("/"):
-                self.assertFalse(i.origin_path == origin_path)
+        async for i in async_client.trash_listdir("/"):
+            assert i.origin_path != origin_path
 
-        async def test_restore_trash(self):
-            path = posixpath.join(self.path, "dir")
-            origin_path = "disk:" + path
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_restore_trash(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        path = posixpath.join(disk_root, "dir")
+        origin_path = "disk:" + path
 
-            await self.client.mkdir(path)
-            await self.client.remove(path)
+        await async_client.mkdir(path)
+        await async_client.remove(path)
 
-            trash_path: Any = None
+        trash_path: Any = None
 
-            async for i in await self.client.trash_listdir("/"):
-                if i.origin_path == origin_path:
-                    trash_path = i.path
-                    break
+        async for i in async_client.trash_listdir("/"):
+            if i.origin_path == origin_path:
+                trash_path = i.path
+                break
 
-            self.assertTrue(trash_path is not None)
+        assert trash_path is not None
 
-            await self.client.restore_trash(trash_path, path)
-            self.assertTrue(await self.client.exists(path))
-            await self.client.remove(path, permanently=True)
+        await async_client.restore_trash(trash_path, path)
+        assert await async_client.exists(path)
 
-        async def test_move(self):
-            path1 = posixpath.join(self.path, "dir1")
-            path2 = posixpath.join(self.path, "dir2")
-            await self.client.mkdir(path1)
-            await self.client.move(path1, path2)
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_move(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        path1 = posixpath.join(disk_root, "dir1")
+        path2 = posixpath.join(disk_root, "dir2")
+        await async_client.mkdir(path1)
+        await async_client.move(path1, path2)
 
-            self.assertTrue(await self.client.exists(path2))
+        assert await async_client.exists(path2)
 
-            await self.client.remove(path2, permanently=True)
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_remove_trash(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        path = posixpath.join(disk_root, "dir-to-remove")
+        origin_path = "disk:" + path
 
-        async def test_remove_trash(self):
-            path = posixpath.join(self.path, "dir-to-remove")
-            origin_path = "disk:" + path
+        await async_client.mkdir(path)
+        await async_client.remove(path)
 
-            await self.client.mkdir(path)
-            await self.client.remove(path)
+        trash_path: Any = None
 
-            trash_path: Any = None
+        async for i in async_client.trash_listdir("/"):
+            if i.origin_path == origin_path:
+                trash_path = i.path
+                break
 
-            async for i in await self.client.trash_listdir("/"):
-                if i.origin_path == origin_path:
-                    trash_path = i.path
-                    break
+        assert trash_path is not None
 
-            self.assertTrue(trash_path is not None)
+        await async_client.remove_trash(trash_path)
+        assert not await async_client.trash_exists(trash_path)
 
-            await self.client.remove_trash(trash_path)
-            self.assertFalse(await self.client.trash_exists(trash_path))
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_publish_unpublish(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        path = disk_root
 
-        async def test_publish_unpublish(self):
-            path = self.path
+        await async_client.publish(path)
+        assert (await async_client.get_meta(path)).public_url is not None
 
-            await self.client.publish(path)
-            self.assertIsNotNone((await self.client.get_meta(path)).public_url)
+        await async_client.unpublish(path)
+        assert (await async_client.get_meta(path)).public_url is None
 
-            await self.client.unpublish(path)
-            self.assertIsNone((await self.client.get_meta(path)).public_url)
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_patch(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        path = disk_root
 
-        async def test_patch(self):
-            path = self.path
+        await async_client.patch(path, {"test_property": "I'm a value!"})
 
-            await self.client.patch(path, {"test_property": "I'm a value!"})
+        props: Any = (await async_client.get_meta(path)).custom_properties
+        assert props is not None
+        assert props["test_property"] == "I'm a value!"
 
-            props: Any = (await self.client.get_meta(path)).custom_properties
-            self.assertIsNotNone(props)
-            self.assertEqual(props["test_property"], "I'm a value!")
+        await async_client.patch(path, {"test_property": None})
+        assert (await async_client.get_meta(path)).custom_properties is None
 
-            await self.client.patch(path, {"test_property": None})
-            self.assertIsNone((await self.client.get_meta(path)).custom_properties)
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_issue7(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        # See https://github.com/ivknv/yadisk/issues/7
 
-        async def test_issue7(self):
-            # See https://github.com/ivknv/yadisk/issues/7
+        try:
+            [i async for i in async_client.public_listdir("any value here", path="any value here")]
+        except yadisk.exceptions.PathNotFoundError:
+            pass
 
-            try:
-                await self.client.public_listdir("any value here", path="any value here")
-            except yadisk.exceptions.PathNotFoundError:
-                pass
+    def test_is_operation_link(self) -> None:
+        assert is_operation_link("https://cloud-api.yandex.net/v1/disk/operations/123asd")
+        assert is_operation_link("http://cloud-api.yandex.net/v1/disk/operations/123asd")
+        assert not is_operation_link("https://cloud-api.yandex.net/v1/disk/operation/1283718")
+        assert not is_operation_link("https://asd8iaysd89asdgiu")
+        assert not is_operation_link("http://asd8iaysd89asdgiu")
 
-        def test_is_operation_link(self):
-            self.assertTrue(is_operation_link("https://cloud-api.yandex.net/v1/disk/operations/123asd"))
-            self.assertTrue(is_operation_link("http://cloud-api.yandex.net/v1/disk/operations/123asd"))
-            self.assertFalse(is_operation_link("https://cloud-api.yandex.net/v1/disk/operation/1283718"))
-            self.assertFalse(is_operation_link("https://asd8iaysd89asdgiu"))
-            self.assertFalse(is_operation_link("http://asd8iaysd89asdgiu"))
+    async def test_get_operation_status_request_url(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        request = GetOperationStatusRequest(
+            async_client.session,
+            "https://cloud-api.yandex.net/v1/disk/operations/123asd")
+        assert is_operation_link(request.url)
 
-        async def test_get_operation_status_request_url(self):
-            request = GetOperationStatusRequest(
-                self.client.session,
-                "https://cloud-api.yandex.net/v1/disk/operations/123asd")
-            self.assertTrue(is_operation_link(request.url))
+        request = GetOperationStatusRequest(
+            async_client.session,
+            "http://cloud-api.yandex.net/v1/disk/operations/123asd")
+        assert is_operation_link(request.url)
+        assert request.url.startswith("https://")
 
-            request = GetOperationStatusRequest(
-                self.client.session,
-                "http://cloud-api.yandex.net/v1/disk/operations/123asd")
-            self.assertTrue(is_operation_link(request.url))
-            self.assertTrue(request.url.startswith("https://"))
+        request = GetOperationStatusRequest(
+            async_client.session,
+            "https://asd8iaysd89asdgiu")
+        assert is_operation_link(request.url)
+        assert request.url.startswith("https://")
 
-            request = GetOperationStatusRequest(
-                self.client.session,
-                "https://asd8iaysd89asdgiu")
-            self.assertTrue(is_operation_link(request.url))
-            self.assertTrue(request.url.startswith("https://"))
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_is_file(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        # See https://github.com/ivknv/yadisk-async/pull/6
+        buf1 = BytesIO()
 
-        async def test_is_file(self):
-            # See https://github.com/ivknv/yadisk-async/pull/6
-            buf1 = BytesIO()
+        buf1.write(b"0" * 1024**2)
+        buf1.seek(0)
 
-            buf1.write(b"0" * 1024**2)
-            buf1.seek(0)
+        path = posixpath.join(disk_root, "zeroes.txt")
 
-            path = posixpath.join(self.path, "zeroes.txt")
+        await async_client.upload(buf1, path, overwrite=True, n_retries=50)
+        assert await async_client.is_file(path)
 
-            await self.client.upload(buf1, path, overwrite=True, n_retries=50)
-            self.assertTrue(await self.client.is_file(path))
-            await self.client.remove(path, permanently=True)
+    def test_ensure_path_has_schema(self) -> None:
+        # See https://github.com/ivknv/yadisk/issues/26 for more details
 
-        def test_ensure_path_has_schema(self):
-            # See https://github.com/ivknv/yadisk/issues/26 for more details
+        assert ensure_path_has_schema("disk:") == "disk:/disk:"
+        assert ensure_path_has_schema("trash:", default_schema="trash") == "trash:/trash:"
+        assert ensure_path_has_schema("/asd:123") == "disk:/asd:123"
+        assert ensure_path_has_schema("/asd:123", "trash") == "trash:/asd:123"
+        assert ensure_path_has_schema("example/path") == "disk:/example/path"
+        assert ensure_path_has_schema("app:/test") == "app:/test"
 
-            self.assertEqual(ensure_path_has_schema("disk:"), "disk:/disk:")
-            self.assertEqual(ensure_path_has_schema("trash:", default_schema="trash"), "trash:/trash:")
-            self.assertEqual(ensure_path_has_schema("/asd:123"), "disk:/asd:123")
-            self.assertEqual(ensure_path_has_schema("/asd:123", "trash"), "trash:/asd:123")
-            self.assertEqual(ensure_path_has_schema("example/path"), "disk:/example/path")
-            self.assertEqual(ensure_path_has_schema("app:/test"), "app:/test")
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_upload_download_non_seekable(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        # It should be possible to upload/download non-seekable file objects (such as stdin/stdout)
+        # See https://github.com/ivknv/yadisk/pull/31 for more details
 
-        async def test_upload_download_non_seekable(self):
-            # It should be possible to upload/download non-seekable file objects (such as stdin/stdout)
-            # See https://github.com/ivknv/yadisk/pull/31 for more details
+        test_input_file = BytesIO(b"0" * 1000)
+        test_input_file.seekable = lambda: False  # type: ignore
 
-            test_input_file = BytesIO(b"0" * 1000)
-            test_input_file.seekable = lambda: False
+        def seek(*args, **kwargs):
+            raise NotImplementedError
 
-            def seek(*args, **kwargs):
-                raise NotImplementedError
+        test_input_file.seek = seek  # type: ignore
 
-            test_input_file.seek = seek
+        dst_path = posixpath.join(disk_root, "zeroes.txt")
 
-            dst_path = posixpath.join(self.path, "zeroes.txt")
+        await async_client.upload(test_input_file, dst_path, n_retries=50)
 
-            await self.client.upload(test_input_file, dst_path, n_retries=50)
+        test_output_file = BytesIO()
+        test_output_file.seekable = lambda: False  # type: ignore
+        test_output_file.seek = seek  # type: ignore
 
-            test_output_file = BytesIO()
-            test_output_file.seekable = lambda: False
-            test_output_file.seek = seek
+        await async_client.download(dst_path, test_output_file, n_retries=50)
 
-            await self.client.download(dst_path, test_output_file, n_retries=50)
+        assert test_input_file.tell() == 1000
+        assert test_output_file.tell() == 1000
 
-            await self.client.remove(dst_path, permanently=True)
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_copy(
+        self,
+        async_client: yadisk.AsyncClient,
+        disk_root: str,
+        poll_interval: float
+    ) -> None:
+        dir = await async_client.mkdir(posixpath.join(disk_root, "directory_to_copy"))
+        await dir.upload(BytesIO(b"example text"), "file.txt")
+        await dir.mkdir("nested directory 1")
+        await dir.mkdir("nested directory 2")
 
-            self.assertEqual(test_input_file.tell(), 1000)
-            self.assertEqual(test_output_file.tell(), 1000)
+        dst_path = posixpath.join(disk_root, "directory_copy")
 
-    AsyncClientTestCase.__name__ = name
-    AsyncClientTestCase.__qualname__ = AsyncClientTestCase.__qualname__.rpartition(".")[0] + "." + name
+        await dir.copy(dst_path, poll_interval=poll_interval)
 
-    return AsyncClientTestCase
+        copy_info = await async_client.get_meta(dst_path)
 
-AIOHTTPTestCase = make_test_case("AIOHTTPTestCase", "aiohttp")
-AsyncHTTPXTestCase = make_test_case("AsyncHTTPXTestCase", "httpx")
+        assert copy_info.embedded is not None
+        assert copy_info.embedded.items is not None
+
+        contents = sorted([(resource.type, resource.name) for resource in copy_info.embedded.items])
+
+        expected_contents = [
+            ("dir", "nested directory 1"),
+            ("dir", "nested directory 2"),
+            ("file", "file.txt"),
+        ]
+
+        assert copy_info.type == "dir"
+        assert contents == expected_contents
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_save_to_disk(
+        self,
+        async_client: yadisk.AsyncClient,
+        disk_root: str,
+        poll_interval: float
+    ) -> None:
+        test_contents = b"test file contents"
+
+        public_file_path = posixpath.join(disk_root, "public_file.txt")
+        await async_client.upload(BytesIO(test_contents), public_file_path)
+
+        await async_client.publish(public_file_path)
+
+        public_file_info = await async_client.get_meta(public_file_path)
+
+        assert public_file_info.public_url is not None
+
+        await async_client.save_to_disk(
+            public_file_info.public_url,
+            name="saved_public_file.txt",
+            save_path=disk_root,
+            poll_interval=poll_interval
+        )
+
+        saved_file_path = posixpath.join(disk_root, "saved_public_file.txt")
+        saved_file_info = await async_client.get_meta(saved_file_path)
+
+        assert saved_file_info.md5 == hashlib.md5(test_contents).hexdigest() == public_file_info.md5
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_upload_url(
+        self,
+        async_client: yadisk.AsyncClient,
+        disk_root: str,
+        poll_interval: float
+    ) -> None:
+        test_contents = b"test file contents"
+
+        file_path = posixpath.join(disk_root, "example_file.txt")
+        dst_path = posixpath.join(disk_root, "uploaded_from_url.txt")
+
+        await async_client.upload(BytesIO(test_contents), file_path)
+        download_link = await async_client.get_download_link(file_path)
+
+        await async_client.upload_url(download_link, dst_path, poll_interval=poll_interval)
+
+        dst_file_info = await async_client.get_meta(dst_path)
+        assert dst_file_info.md5 == hashlib.md5(test_contents).hexdigest()

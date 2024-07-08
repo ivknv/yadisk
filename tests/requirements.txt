@@ -1,5 +1,0 @@
-aiofiles
-aiohttp
-httpx
-pycurl
-requests
