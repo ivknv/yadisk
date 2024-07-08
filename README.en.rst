@@ -5,9 +5,15 @@ YaDisk
    :alt: Read the Docs
    :target: https://yadisk.readthedocs.io/en/latest/
 
+.. image:: https://img.shields.io/github/actions/workflow/status/ivknv/yadisk/lint_and_test.yml
+   :alt: GitHub Actions Workflow Status
+
 .. image:: https://img.shields.io/pypi/v/yadisk.svg
    :alt: PyPI
    :target: https://pypi.org/project/yadisk
+
+.. image:: https://img.shields.io/pypi/pyversions/yadisk
+   :alt: PyPI - Python Version
 
 YaDisk is a Yandex.Disk REST API client library.
 
