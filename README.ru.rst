@@ -160,11 +160,97 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 .. _issue #28: https://github.com/ivknv/yadisk/issues/28
 .. _issue #29: https://github.com/ivknv/yadisk/issues/29
 .. _PR #31: https://github.com/ivknv/yadisk/pull/31
+.. _issue #43: https://github.com/ivknv/yadisk/issues/43
+.. _issue #45: https://github.com/ivknv/yadisk/issues/45
 .. _Введение: https://yadisk.readthedocs.io/ru/latest/intro.html
 .. _Справочник API: https://yadisk.readthedocs.io/ru/latest/api_reference/index.html
 .. _Доступные реализации сессий: https://yadisk.readthedocs.io/ru/latest/api_reference/sessions.html
 .. _Интерфейс Session: https://yadisk.readthedocs.io/ru/latest/api_reference/session_interface.html
 .. _requests: https://pypi.org/project/requests
+.. _Руководство по миграции: https://yadisk.readthedocs.io/ru/latest/migration_guide.html
+
+* **Release 3.0.0 (2024-07-09)**
+
+  * Несовместимые изменения:
+
+    - См. `Руководство по миграции`_ для подробностей
+    - Все методы теперь ожидают завершения асинхронных операций по умолчанию
+      (см. новый параметр :code:`wait=<bool>`)
+    - Итерация по результату :code:`AsyncClient.listdir()` больше не требует
+      дополнительного ключевого слова await
+    - Число возвращаемых файлов :code:`Client.get_files()` /
+      :code:`AsyncClient.get_files()` теперь контролируется параметром
+      :code:`max_items`, вместо :code:`limit`
+    - Методы :code:`set_token()`, :code:`set_headers()` интерфейсов
+      :code:`Session` и :code:`AsyncSession` были удалены
+    - Некоторые методы больше не принимают параметр :code:`fields`
+    - :code:`Client.get_last_uploaded()` /
+      :code:`AsyncClient.get_last_uploaded()` теперь возвращает список вместо
+      генератора
+    - :code:`yadisk.api` - теперь скрытый модуль
+    - Все скрытые модули были переименованы, их имена начинаются с :code:`_`
+      (например, :code:`yadisk._api`)
+  * Нововведения:
+
+    - Добавлены методы для ожидания завершения асинхронной операции (см.
+      :code:`Client.wait_for_operation()` /
+      :code:`AsyncClient.wait_for_operation()`)
+    - Методы, которые могут запускать асинхронную операцию, теперь принимают
+      дополнительные параметры: :code:`wait: bool = True`,
+      :code:`poll_interval: float = 1.0` и
+      :code:`poll_timeout: Optional[float] = None`
+    - :code:`Client.listdir()`, :code:`Client.get_files()` и их асинхронные
+      вариации теперь принимают новый параметр :code:`max_items: Optional[int] =
+      None`, который может быть использован, чтобы ограничить максимальное число
+      возвращаемых файлов
+    - Большинство методов :code:`Client` и :code:`AsyncClient` теперь принимает
+      :code:`retry_on: Optional[Tuple[Type[Exception], ...]] = None`, который
+      позволяет указывать кортеж из дополнительных исключений, которые могут вызвать
+      автоматическую повторную попытку
+    - Модуль :code:`yadisk.types` - теперь публичный
+    - Добавлено логирование исходящих запросов к API и автоматических
+      повторных попыток
+    - Объект логгера библиотеки доступен как :code:`yadisk.settings.logger`
+    - Добавлен метод :code:`YaDiskObject.field()` и оператор :code:`@`
+      (:code:`YaDiskObject.__matmul__()`), который удостоверяется, что указанное
+      поле объекта не является :code:`None`
+    - Добавлены методы :code:`Client.get_upload_link_object()`,
+      :code:`AsyncClient.get_upload_link_object()`, возвращаемые значения которых
+      дополнительно содержат :code:`operation_id`
+    - :code:`utils.auto_retry()` теперь принимает больше параметров
+    - Добавлено несколько недостающих полей :code:`DiskInfoObject`
+    - :code:`EXIFObject` теперь содержит GPS-координаты
+    - :code:`CaseInsensitiveDict` - теперь часть :code:`yadisk.utils`
+  * Улучшения:
+
+    - Добавлены полные подсказки типов для :code:`Client` и :code:`AsyncClient` с
+      помощью файлов :code:`.pyi`
+    - Строки документации для :code:`Client` / :code:`AsyncClient` теперь
+      включают в себя больше параметров
+    - Ошибки во время обработки JSON (например, :code:`InvalidResponseError`)
+      также вызывают автоматические повторные попытки
+    - Сообщение об ошибке в случае, когда модуль сессии по умолчанию
+      недоступен, теперь не вводит в заблуждение (см. `issue #43`_)
+    - Уменьшено значение :code:`limit` до :code:`500` (было :code:`10000`)
+      для :code:`Client.listdir()` для избежания таймаутов при больших папках
+      (см. `issue #45`_)
+    - Уменьшено значение :code:`limit` до :code:`200` (было :code:`1000`)
+      для :code:`Client.get_files()` для избежания таймаутов
+    - :code:`Client.download()` и подобные методы больше не задают заголовок
+      :code:`Connection: close` т.к. в этом нет необходимости (в отличие от
+      :code:`Client.upload()`)
+    - :code:`UnknownYaDiskError` теперь включает код статуса в сообщение об
+      ошибке
+  * Исправления:
+
+    - Исправлены реализации на основе :code:`httpx` и :code:`aiohttp`:
+      реализации методов :code:`Response.json()` / :code:`AsyncResponse.json()`
+      не преобразовывали свои исключения в :code:`RequestError`
+    - Исправлено: параметр :code:`stream=True` был не задан по умолчанию в
+      :code:`AsyncClient.download()`, :code:`AsyncClient.download_public()`
+  * Другие изменения:
+
+    - :code:`typing_extensions` теперь требуется для Python < 3.10
 
 * **Release 2.1.0 (2024-01-03)**
 

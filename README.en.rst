@@ -156,11 +156,94 @@ Changelog
 .. _issue #28: https://github.com/ivknv/yadisk/issues/28
 .. _issue #29: https://github.com/ivknv/yadisk/issues/29
 .. _PR #31: https://github.com/ivknv/yadisk/pull/31
+.. _issue #43: https://github.com/ivknv/yadisk/issues/43
+.. _issue #45: https://github.com/ivknv/yadisk/issues/45
 .. _Introduction: https://yadisk.readthedocs.io/en/latest/intro.html
 .. _API Reference: https://yadisk.readthedocs.io/en/latest/api_reference/index.html
 .. _Available Session Implementations: https://yadisk.readthedocs.io/en/latest/api_reference/sessions.html
 .. _Session Interface: https://yadisk.readthedocs.io/en/latest/api_reference/session_interface.html
 .. _requests: https://pypi.org/project/requests
+.. _Migration Guide: https://yadisk.readthedocs.io/en/latest/migration_guide.html
+
+* **Release 3.0.0 (2024-07-09)**
+
+  * Breaking changes:
+
+    - See `Migration Guide`_ for full details
+    - All methods wait for asynchronous operations to complete by default
+      (see the new :code:`wait=<bool>` parameter)
+    - Iterating over the result of :code:`AsyncClient.listdir()` no longer
+      requires the additional await keyword.
+    - Number of returned items of :code:`Client.get_files()` /
+      :code:`AsyncClient.get_files()` is now controlled by the :code:`max_items`
+      parameter, rather than :code:`limit`
+    - Methods :code:`set_token()`, :code:`set_headers()` of :code:`Session` and
+      :code:`AsyncSession` were removed
+    - Some methods no longer accept the :code:`fields` parameter
+    - :code:`Client.get_last_uploaded()` / :code:`AsyncClient.get_last_uploaded()`
+      now return a list instead of a generator
+    - :code:`yadisk.api` is now a private module
+    - All private modules were renamed to have names that start with :code:`_`
+      (e.g, :code:`yadisk._api`)
+  * New features:
+
+    - Added methods to wait until an asynchronous operation completes
+      (see :code:`Client.wait_for_operation()` / :code:`AsyncClient.wait_for_operation()`)
+    - Methods that may start an asynchronous operation now accept additional
+      parameters: :code:`wait: bool = True`,
+      :code:`poll_interval: float = 1.0` and
+      :code:`poll_timeout: Optional[float] = None`
+    - :code:`Client.listdir()`, :code:`Client.get_files()` and their async
+      variants now accept a new parameter
+      :code:`max_items: Optional[int] = None`, which can be used to limit
+      the maximum number of returned items
+    - Most :code:`Client` and :code:`AsyncClient` methods now accept an optional
+      parameter :code:`retry_on: Optional[Tuple[Type[Exception], ...]] = None`,
+      which lets you specify a tuple of additional exceptions that can trigger
+      an automatic retry
+    - :code:`yadisk.types` module is now public
+    - Added basic logging of outgoing API requests and automatic retries
+    - The logger instance for the library can be accessed as
+      :code:`yadisk.settings.logger`
+    - Added :code:`YaDiskObject.field()` and the :code:`@` operator
+      (:code:`YaDiskObject.__matmul__()`) which verify that the given field is
+      not :code:`None`
+    - Added :code:`Client.get_upload_link_object()`,
+      :code:`AsyncClient.get_upload_link_object()` whose return values
+      additionally contain :code:`operation_id`
+    - :code:`utils.auto_retry()` now accepts more parameters
+    - Added a few missing fields for :code:`DiskInfoObject`
+    - :code:`EXIFObject` now contains GPS coordinates
+    - :code:`CaseInsensitiveDict` is now part of :code:`yadisk.utils`
+  * Improvements:
+
+    - Added full type hints for :code:`Client`, :code:`AsyncClient` through
+      :code:`.pyi` stub files
+    - Docstrings for :code:`Client` / :code:`AsyncClient` now include more
+      parameters
+    - Errors during JSON processing (e.g. :code:`InvalidResponseError`) also
+      trigger automatic retries
+    - Error message when the default session module is not available is now
+      less confusing (see `issue #43`_)
+    - Reduced :code:`Client.listdir()`'s default :code:`limit` to :code:`500`
+      from :code:`10000` to avoid timeouts on large directories (see `issue #45`_)
+    - Reduced :code:`Client.get_files()`'s default :code:`limit` to :code:`200`
+      from :code:`1000` to avoid timeouts
+    - :code:`Client.download()` and similar methods no longer set
+      :code:`Connection: close` header, since it's not necessary (unlike with
+      :code:`Client.upload()`)
+    - :code:`UnknownYaDiskError` now includes status code in the error message
+  * Bug fixes:
+
+    - Fixed :code:`httpx`- and :code:`aiohttp`-based session implementations
+      not converting their exceptions to :code:`RequestError` in their
+      :code:`Response.json()` / :code:`AsyncResponse.json()` implementations
+    - Fixed :code:`stream=True` not being set by default in
+      :code:`AsyncClient.download()`, :code:`AsyncClient.download_public()`
+  * Other changes:
+
+    - :code:`typing_extensions` is now required for Python < 3.10
+
 
 * **Release 2.1.0 (2024-01-03)**
 
