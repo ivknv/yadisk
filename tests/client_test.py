@@ -407,3 +407,14 @@ class TestClient:
 
         dst_file_info = client.get_meta(dst_path)
         assert dst_file_info.md5 == hashlib.md5(test_contents).hexdigest()
+
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_none_args(self, client: yadisk.Client) -> None:
+        # Passing headers=None, <session_name>_args=None should not trigger any errors
+
+        assert client.check_token(
+            headers=None,
+            requests_args=None,
+            httpx_args=None,
+            curl_options=None
+        )

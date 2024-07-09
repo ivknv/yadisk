@@ -453,3 +453,14 @@ class TestAsyncClient:
 
         dst_file_info = await async_client.get_meta(dst_path)
         assert dst_file_info.md5 == hashlib.md5(test_contents).hexdigest()
+
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_none_args(self, async_client: yadisk.AsyncClient) -> None:
+        # Passing headers=None, <session_name>_args=None should not trigger any errors
+
+        assert await async_client.check_token(
+            headers=None,
+            requests_args=None,
+            httpx_args=None,
+            curl_options=None
+        )
