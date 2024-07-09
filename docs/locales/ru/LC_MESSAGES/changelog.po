@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: YaDisk 3.0.0\n"
+"Project-Id-Version: YaDisk 3.0.1\n"
 "Report-Msgid-Bugs-To: ivknv0@gmail.com\n"
-"POT-Creation-Date: 2024-07-08 23:28+0500\n"
-"PO-Revision-Date: 2024-07-09 00:44+0500\n"
+"POT-Creation-Date: 2024-07-09 22:39+0500\n"
+"PO-Revision-Date: 2024-07-09 22:44+0500\n"
 "Last-Translator: Ivan Konovalov <ivknv0@gmail.com>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -20,53 +20,69 @@ msgstr ""
 msgid "Changelog"
 msgstr "История изменений"
 
-#: ../../changelog.rst:18
+#: ../../changelog.rst:20
+msgid "**Release 3.0.1 (2024-07-09)**"
+msgstr "**Release 3.0.1 (2024-07-09)**"
+
+#: ../../changelog.rst:22
+msgid ""
+"Fixed broken :code:`pyproject.toml` that did not include full package "
+"contents (see `issue #49`_)"
+msgstr ""
+"Исправлен сломанный :code:`pyproject.toml`, который не включал в сборку "
+"полное содержимое пакета (см. `issue #49`_)"
+
+#: ../../changelog.rst:25
 msgid "**Release 3.0.0 (2024-07-09)**"
 msgstr "**Release 3.0.0 (2024-07-09)**"
 
-#: ../../changelog.rst:20
+#: ../../changelog.rst:27
 msgid "Breaking changes:"
 msgstr "Несовместимые изменения:"
 
-#: ../../changelog.rst:22
+#: ../../changelog.rst:29
 msgid "See :doc:`/migration_guide` for full details"
 msgstr "См. :doc:`/migration_guide` для подробностей"
 
-#: ../../changelog.rst:23
+#: ../../changelog.rst:30
 msgid ""
 "All methods wait for asynchronous operations to complete by default (see "
 "the new :code:`wait=<bool>` parameter)"
-msgstr "Все методы теперь ожидают завершения асинхронных операций по умолчанию "
+msgstr ""
+"Все методы теперь ожидают завершения асинхронных операций по умолчанию "
 "(см. новый параметр :code:`wait=<bool>`)"
 
-#: ../../changelog.rst:25
+#: ../../changelog.rst:32
 msgid ""
 "Iterating over the result of :any:`AsyncClient.listdir()` no longer "
 "requires the additional await keyword."
-msgstr "Итерация по результату :any:`AsyncClient.listdir()` больше не требует "
+msgstr ""
+"Итерация по результату :any:`AsyncClient.listdir()` больше не требует "
 "дополнительного ключевого слова await"
 
-#: ../../changelog.rst:27
+#: ../../changelog.rst:34
 msgid ""
 "Number of returned items of :any:`Client.get_files()` / "
 ":any:`AsyncClient.get_files()` is now controlled by the :code:`max_items`"
 " parameter, rather than :code:`limit`"
-msgstr "Число возвращаемых файлов :any:`Client.get_files()` / "
-":any:`AsyncClient.get_files()` теперь контролируется параметром :code:`max_items`, "
-"вместо :code:`limit`"
+msgstr ""
+"Число возвращаемых файлов :any:`Client.get_files()` / "
+":any:`AsyncClient.get_files()` теперь контролируется параметром "
+":code:`max_items`, вместо :code:`limit`"
 
-#: ../../changelog.rst:30
+#: ../../changelog.rst:37
 msgid ""
 "Methods :code:`set_token()`, :code:`set_headers()` of :any:`Session` and "
 ":any:`AsyncSession` were removed"
-msgstr "Методы :code:`set_token()`, :code:`set_headers()` интерфейсов :any:`Session` "
-"и :any:`AsyncSession` были удалены"
+msgstr ""
+"Методы :code:`set_token()`, :code:`set_headers()` интерфейсов "
+":any:`Session` и :any:`AsyncSession` были удалены"
 
-#: ../../changelog.rst:32
+#: ../../changelog.rst:39
 msgid "Some methods no longer accept the :code:`fields` parameter"
 msgstr "Некоторые методы больше не принимают параметр :code:`fields`"
 
-#: ../../changelog.rst:33
+#: ../../changelog.rst:40
 msgid ""
 ":any:`Client.get_last_uploaded()` / "
 ":any:`AsyncClient.get_last_uploaded()` now return a list instead of a "
@@ -76,11 +92,11 @@ msgstr ""
 ":any:`AsyncClient.get_last_uploaded()` теперь возвращает список вместо "
 "генератора"
 
-#: ../../changelog.rst:35
+#: ../../changelog.rst:42
 msgid ":code:`yadisk.api` is now a private module"
 msgstr ":code:`yadisk.api` - теперь скрытый модуль"
 
-#: ../../changelog.rst:36
+#: ../../changelog.rst:43
 msgid ""
 "All private modules were renamed to have names that start with :code:`_` "
 "(e.g, :code:`yadisk._api`)"
@@ -88,11 +104,11 @@ msgstr ""
 "Все скрытые модули были переименованы, их имена начинаются с :code:`_` "
 "(например, :code:`yadisk._api`)"
 
-#: ../../changelog.rst:38
+#: ../../changelog.rst:45
 msgid "New features:"
 msgstr "Нововведения:"
 
-#: ../../changelog.rst:40
+#: ../../changelog.rst:47
 msgid ""
 "Added methods to wait until an asynchronous operation completes (see "
 ":any:`Client.wait_for_operation()` / "
@@ -102,7 +118,7 @@ msgstr ""
 ":any:`Client.wait_for_operation()` / "
 ":any:`AsyncClient.wait_for_operation()`)"
 
-#: ../../changelog.rst:42
+#: ../../changelog.rst:49
 msgid ""
 "Methods that may start an asynchronous operation now accept additional "
 "parameters: :python:`wait: bool = True`, :python:`poll_interval: float = "
@@ -110,182 +126,195 @@ msgid ""
 msgstr ""
 "Методы, которые могут запускать асинхронную операцию, теперь принимают "
 "дополнительные параметры: :python:`wait: bool = True`, "
-":python:`poll_interval: float = 1.0` и "
-":python:`poll_timeout: Optional[float] = None`"
+":python:`poll_interval: float = 1.0` и :python:`poll_timeout: "
+"Optional[float] = None`"
 
-#: ../../changelog.rst:46
+#: ../../changelog.rst:53
 msgid ""
 ":any:`Client.listdir()`, :any:`Client.get_files()` and their async "
 "variants now accept a new parameter :python:`max_items: Optional[int] = "
 "None`, which can be used to limit the maximum number of returned items"
 msgstr ""
 ":any:`Client.listdir()`, :any:`Client.get_files()` и их асинхронные "
-"вариации теперь принимают новый параметр :python:`max_items: Optional[int] = "
-"None`, который может быть использован, чтобы ограничить максимальное число "
-"возвращаемых файлов"
+"вариации теперь принимают новый параметр :python:`max_items: "
+"Optional[int] = None`, который может быть использован, чтобы ограничить "
+"максимальное число возвращаемых файлов"
 
-#: ../../changelog.rst:50
+#: ../../changelog.rst:57
 msgid ""
 "Most :any:`Client` and :any:`AsyncClient` methods now accept an optional "
 "parameter :python:`retry_on: Optional[Tuple[Type[Exception], ...]] = "
 "None`, which lets you specify a tuple of additional exceptions that can "
 "trigger an automatic retry"
-msgstr "Большинство методов :any:`Client` и :any:`AsyncClient` теперь принимает "
-":python:`retry_on: Optional[Tuple[Type[Exception], ...]] = None`, который "
-"позволяет указывать кортеж из дополнительных исключений, которые могут вызвать "
-"автоматическую повторную попытку"
+msgstr ""
+"Большинство методов :any:`Client` и :any:`AsyncClient` теперь принимает "
+":python:`retry_on: Optional[Tuple[Type[Exception], ...]] = None`, который"
+" позволяет указывать кортеж из дополнительных исключений, которые могут "
+"вызвать автоматическую повторную попытку"
 
-#: ../../changelog.rst:54
+#: ../../changelog.rst:61
 msgid ":any:`yadisk.types` module is now public"
 msgstr "Модуль :any:`yadisk.types` - теперь публичный"
 
-#: ../../changelog.rst:55
+#: ../../changelog.rst:62
 msgid "Added basic logging of outgoing API requests and automatic retries"
-msgstr "Добавлено логирование исходящих запросов к API и автоматических "
-"повторных попыток"
+msgstr ""
+"Добавлено логирование исходящих запросов к API и автоматических повторных"
+" попыток"
 
-#: ../../changelog.rst:56
+#: ../../changelog.rst:63
 msgid ""
 "The logger instance for the library can be accessed as "
 ":any:`yadisk.settings.logger`"
 msgstr "Объект логгера библиотеки доступен как :any:`yadisk.settings.logger`"
 
-#: ../../changelog.rst:58
+#: ../../changelog.rst:65
 msgid ""
 "Added :any:`YaDiskObject.field()` and the :code:`@` operator "
 "(:any:`YaDiskObject.__matmul__()`) which verify that the given field is "
 "not :code:`None`"
-msgstr "Добавлен метод :any:`YaDiskObject.field()` и оператор :code:`@` "
-"(:any:`YaDiskObject.__matmul__()`), который удостоверяется, что указанное "
-"поле объекта не является :code:`None`"
+msgstr ""
+"Добавлен метод :any:`YaDiskObject.field()` и оператор :code:`@` "
+"(:any:`YaDiskObject.__matmul__()`), который удостоверяется, что указанное"
+" поле объекта не является :code:`None`"
 
-#: ../../changelog.rst:61
+#: ../../changelog.rst:68
 msgid ""
 "Added :any:`Client.get_upload_link_object()`, "
 ":any:`AsyncClient.get_upload_link_object()` whose return values "
 "additionally contain :code:`operation_id`"
-msgstr "Добавлены методы :any:`Client.get_upload_link_object()`, "
-":any:`AsyncClient.get_upload_link_object()`, возвращаемые значения которых "
-"дополнительно содержат :code:`operation_id`"
+msgstr ""
+"Добавлены методы :any:`Client.get_upload_link_object()`, "
+":any:`AsyncClient.get_upload_link_object()`, возвращаемые значения "
+"которых дополнительно содержат :code:`operation_id`"
 
-#: ../../changelog.rst:64
+#: ../../changelog.rst:71
 msgid ":any:`utils.auto_retry()` now accepts more parameters"
 msgstr ":any:`utils.auto_retry()` теперь принимает больше параметров"
 
-#: ../../changelog.rst:65
+#: ../../changelog.rst:72
 msgid "Added a few missing fields for :any:`DiskInfoObject`"
-msgstr ""
-"Добавлено несколько недостающих полей :any:`DiskInfoObject`"
+msgstr "Добавлено несколько недостающих полей :any:`DiskInfoObject`"
 
-#: ../../changelog.rst:66
+#: ../../changelog.rst:73
 msgid ":any:`EXIFObject` now contains GPS coordinates"
 msgstr ":any:`EXIFObject` теперь содержит GPS-координаты"
 
-#: ../../changelog.rst:67
+#: ../../changelog.rst:74
 msgid ":any:`CaseInsensitiveDict` is now part of :any:`yadisk.utils`"
 msgstr ":any:`CaseInsensitiveDict` - теперь часть :any:`yadisk.utils`"
 
-#: ../../changelog.rst:68
+#: ../../changelog.rst:75
 msgid "Improvements:"
 msgstr "Улучшения:"
 
-#: ../../changelog.rst:70
+#: ../../changelog.rst:77
 msgid ""
 "Added full type hints for :any:`Client`, :any:`AsyncClient` through "
 ":code:`.pyi` stub files"
 msgstr ""
-"Добавлены полные подсказки типов для :any:`Client` и :any:`AsyncClient` с "
-"помощью файлов :code:`.pyi`"
+"Добавлены полные подсказки типов для :any:`Client` и :any:`AsyncClient` с"
+" помощью файлов :code:`.pyi`"
 
-#: ../../changelog.rst:72
+#: ../../changelog.rst:79
 msgid ""
 "Docstrings for :any:`Client` / :any:`AsyncClient` now include more "
 "parameters"
-msgstr "Строки документации для :any:`Client` / :any:`AsyncClient` теперь "
+msgstr ""
+"Строки документации для :any:`Client` / :any:`AsyncClient` теперь "
 "включают в себя больше параметров"
 
-#: ../../changelog.rst:74
+#: ../../changelog.rst:81
 msgid ""
 "Errors during JSON processing (e.g. :any:`InvalidResponseError`) also "
 "trigger automatic retries"
-msgstr "Ошибки во время обработки JSON (например, :any:`InvalidResponseError`) "
+msgstr ""
+"Ошибки во время обработки JSON (например, :any:`InvalidResponseError`) "
 "также вызывают автоматические повторные попытки"
 
-#: ../../changelog.rst:76
+#: ../../changelog.rst:83
 msgid ""
 "Error message when the default session module is not available is now "
 "less confusing (see `issue #43`_)"
-msgstr "Сообщение об ошибке в случае, когда модуль сессии по умолчанию "
+msgstr ""
+"Сообщение об ошибке в случае, когда модуль сессии по умолчанию "
 "недоступен, теперь не вводит в заблуждение (см. `issue #43`_)"
 
-#: ../../changelog.rst:78
+#: ../../changelog.rst:85
 msgid ""
 "Reduced :any:`Client.listdir()`'s default :code:`limit` to :code:`500` "
-"from :code:`10000` to avoid timeouts on large directories (see `issue #45`_)"
-msgstr "Уменьшено значение :code:`limit` до :code:`500` (было :code:`10000`) "
-"для :any:`Client.listdir()` для избежания таймаутов при больших папках "
-"(см. `issue #45`_)"
+"from :code:`10000` to avoid timeouts on large directories (see `issue "
+"#45`_)"
+msgstr ""
+"Уменьшено значение :code:`limit` до :code:`500` (было :code:`10000`) для "
+":any:`Client.listdir()` для избежания таймаутов при больших папках (см. "
+"`issue #45`_)"
 
-#: ../../changelog.rst:80
+#: ../../changelog.rst:87
 msgid ""
 "Reduced :any:`Client.get_files()`'s default :code:`limit` to :code:`200` "
 "from :code:`1000` to avoid timeouts"
-msgstr "Уменьшено значение :code:`limit` до :code:`200` (было :code:`1000`) "
-"для :any:`Client.get_files()` для избежания таймаутов"
+msgstr ""
+"Уменьшено значение :code:`limit` до :code:`200` (было :code:`1000`) для "
+":any:`Client.get_files()` для избежания таймаутов"
 
-#: ../../changelog.rst:82
+#: ../../changelog.rst:89
 msgid ""
 ":any:`Client.download()` and similar methods no longer set "
 ":code:`Connection: close` header, since it's not necessary (unlike with "
 ":any:`Client.upload()`)"
-msgstr ":any:`Client.download()` и подобные методы больше не задают заголовок "
+msgstr ""
+":any:`Client.download()` и подобные методы больше не задают заголовок "
 ":code:`Connection: close` т.к. в этом нет необходимости (в отличие от "
 ":any:`Client.upload()`)"
 
-#: ../../changelog.rst:85
+#: ../../changelog.rst:92
 msgid ":any:`UnknownYaDiskError` now includes status code in the error message"
-msgstr ":any:`UnknownYaDiskError` теперь включает код статуса в сообщение об "
+msgstr ""
+":any:`UnknownYaDiskError` теперь включает код статуса в сообщение об "
 "ошибке"
 
-#: ../../changelog.rst:86
+#: ../../changelog.rst:93
 msgid "Bug fixes:"
 msgstr "Исправления:"
 
-#: ../../changelog.rst:88
+#: ../../changelog.rst:95
 msgid ""
 "Fixed :code:`httpx`- and :code:`aiohttp`-based session implementations "
 "not converting their exceptions to :any:`RequestError` in their "
 ":any:`Response.json()` / :any:`AsyncResponse.json()` implementations"
-msgstr "Исправлены реализации на основе :code:`httpx` и :code:`aiohttp`: "
+msgstr ""
+"Исправлены реализации на основе :code:`httpx` и :code:`aiohttp`: "
 "реализации методов :any:`Response.json()` / :any:`AsyncResponse.json()` "
 "не преобразовывали свои исключения в :any:`RequestError`"
 
-#: ../../changelog.rst:91
+#: ../../changelog.rst:98
 msgid ""
 "Fixed :python:`stream=True` not being set by default in "
 ":any:`AsyncClient.download()`, :any:`AsyncClient.download_public()`"
-msgstr "Исправлено: параметр :python:`stream=True` был не задан по умолчанию в "
+msgstr ""
+"Исправлено: параметр :python:`stream=True` был не задан по умолчанию в "
 ":any:`AsyncClient.download()`, :any:`AsyncClient.download_public()`"
 
-#: ../../changelog.rst:93
+#: ../../changelog.rst:100
 msgid "Other changes:"
 msgstr "Другие изменения:"
 
-#: ../../changelog.rst:95
+#: ../../changelog.rst:102
 msgid ":code:`typing_extensions` is now required for Python < 3.10"
 msgstr ":code:`typing_extensions` теперь требуется для Python < 3.10"
 
-#: ../../changelog.rst:97
+#: ../../changelog.rst:104
 msgid "**Release 2.1.0 (2024-01-03)**"
 msgstr "**Release 2.1.0 (2024-01-03)**"
 
-#: ../../changelog.rst:99
+#: ../../changelog.rst:106
 msgid "Fixed a bug where POST request parameters were not encoded correctly"
 msgstr ""
 "Исправлен баг, из-за которого параметры в теле POST-запроса неправильно "
 "кодировались"
 
-#: ../../changelog.rst:100
+#: ../../changelog.rst:107
 msgid ""
 "Fixed a bug in :code:`PycURLSession.send_request()` that made it ignore "
 "passed headers"
@@ -293,13 +322,13 @@ msgstr ""
 "Исправлен баг в :code:`PycURLSession.send_request()`, из-за которого "
 "переданные заголовки игнорировались"
 
-#: ../../changelog.rst:101
+#: ../../changelog.rst:108
 msgid ""
 ":code:`RequestsSession.close()` now closes all underlying session "
 "instances, instead of only the current thread-local one"
 msgstr ":code:`RequestsSession.close()` теперь закрывает сессию для всех потоков"
 
-#: ../../changelog.rst:103
+#: ../../changelog.rst:110
 msgid ""
 "All methods of :any:`Client` and :any:`AsyncClient` now use existing "
 "session"
@@ -307,7 +336,7 @@ msgstr ""
 "Все методы :any:`Client` и :any:`AsyncClient` теперь используют "
 "существующую сессию"
 
-#: ../../changelog.rst:104
+#: ../../changelog.rst:111
 msgid ""
 "Removed :code:`session_factory` attribute and :code:`make_session()` "
 "method of :any:`Client` and :any:`AsyncClient`"
@@ -315,7 +344,7 @@ msgstr ""
 "Удалены аттрибут :code:`session_factory` и метод :code:`make_session()` "
 "классов :any:`Client` и :any:`AsyncClient`"
 
-#: ../../changelog.rst:106
+#: ../../changelog.rst:113
 msgid ""
 "Session class can now be specified as a string (see "
 ":any:`Client`/:any:`AsyncClient`)"
@@ -323,7 +352,7 @@ msgstr ""
 "Класс сессии теперь может быть указан в качестве строки (см. "
 ":any:`Client`/:any:`AsyncClient`)"
 
-#: ../../changelog.rst:107
+#: ../../changelog.rst:114
 msgid ""
 "Added "
 ":any:`Client.get_device_code()`/:any:`AsyncClient.get_device_code()` "
@@ -332,7 +361,7 @@ msgstr ""
 "Добавлены методы "
 ":any:`Client.get_device_code()`/:any:`AsyncClient.get_device_code()`"
 
-#: ../../changelog.rst:108
+#: ../../changelog.rst:115
 msgid ""
 "Added "
 ":any:`Client.get_token_from_device_code()`/:any:`AsyncClient.get_token_from_device_code()`"
@@ -341,7 +370,7 @@ msgstr ""
 "Добавлены методы "
 ":any:`Client.get_token_from_device_code()`/:any:`AsyncClient.get_token_from_device_code()`"
 
-#: ../../changelog.rst:109
+#: ../../changelog.rst:116
 msgid ""
 "Added missing :code:`redirect_uri` parameter for "
 ":any:`Client.get_auth_url()`/:any:`AsyncClient.get_auth_url()` and "
@@ -351,7 +380,7 @@ msgstr ""
 ":any:`Client.get_auth_url()`/:any:`AsyncClient.get_auth_url()` и "
 ":any:`Client.get_code_url()`/:any:`AsyncClient.get_code_url()`"
 
-#: ../../changelog.rst:111
+#: ../../changelog.rst:118
 msgid ""
 "Added support for PKCE parameters for "
 ":any:`Client.get_auth_url()`/:any:`AsyncClient.get_auth_url()`, "
@@ -363,11 +392,11 @@ msgstr ""
 ":any:`Client.get_code_url()`/:any:`AsyncClient.get_code_url()` и "
 ":any:`Client.get_token()`/:any:`AsyncClient.get_token()`"
 
-#: ../../changelog.rst:114
+#: ../../changelog.rst:121
 msgid "Added :code:`scope` attribute for :any:`TokenObject`"
 msgstr "Добавлен аттрибут :code:`scope` для :any:`TokenObject`"
 
-#: ../../changelog.rst:115
+#: ../../changelog.rst:122
 msgid ""
 "Added new exception classes: :any:`InvalidClientError`, "
 ":any:`InvalidGrantError`, :any:`AuthorizationPendingError`, "
@@ -377,11 +406,11 @@ msgstr ""
 ":any:`InvalidGrantError`, :any:`AuthorizationPendingError`, "
 ":any:`BadVerificationCodeError` и :any:`UnsupportedTokenTypeError`"
 
-#: ../../changelog.rst:119
+#: ../../changelog.rst:126
 msgid "**Release 2.0.0 (2023-12-12)**"
 msgstr "**Release 2.0.0 (2023-12-12)**"
 
-#: ../../changelog.rst:121
+#: ../../changelog.rst:128
 msgid ""
 "The library now provides both synchronous and asynchronous APIs (see "
 ":doc:`/intro` and :doc:`/api_reference/index`)"
@@ -389,7 +418,7 @@ msgstr ""
 "Библиотека теперь предоставляет как синхронный, так и асинхронный API "
 "(см. :doc:`/intro` и :doc:`/api_reference/index`)"
 
-#: ../../changelog.rst:123
+#: ../../changelog.rst:130
 msgid ""
 "Multiple HTTP libraries are supported by default (see "
 ":doc:`/api_reference/sessions` for the full list)"
@@ -397,7 +426,7 @@ msgstr ""
 "Теперь поддерживается несколько HTTP библиотек (см. "
 ":doc:`/api_reference/sessions` для полного списка)"
 
-#: ../../changelog.rst:125
+#: ../../changelog.rst:132
 msgid ""
 "It is now possible to add support for any HTTP library (see "
 ":doc:`/api_reference/session_interface`)"
@@ -405,7 +434,7 @@ msgstr ""
 "Теперь возможно добавить поддержку любой HTTP библиотеки (см. "
 ":doc:`/api_reference/session_interface`)"
 
-#: ../../changelog.rst:127
+#: ../../changelog.rst:134
 msgid ""
 "`requests`_ is now an optional dependency (although it's still used by "
 "default for synchronous API)"
@@ -413,7 +442,7 @@ msgstr ""
 "`requests`_ - теперь опциональная зависимость (хотя всё ещё используется "
 "по умолчанию для синхронного API)"
 
-#: ../../changelog.rst:129
+#: ../../changelog.rst:136
 msgid ""
 "Note that now requests-specific arguments must be passed differently (see"
 " :doc:`/api_reference/sessions`)"
@@ -421,7 +450,7 @@ msgstr ""
 "Обратите внимание, что аргументы, специфичные для requests теперь "
 "передаются по другому (см. :doc:`/api_reference/sessions`)"
 
-#: ../../changelog.rst:130
+#: ../../changelog.rst:137
 msgid ""
 "Preferred HTTP client libraries must be explicitly installed now (see "
 ":doc:`/intro`)"
@@ -429,7 +458,7 @@ msgstr ""
 "Предпочитаемые HTTP библиотеки теперь должны быть установлены явным "
 "образом (см. :doc:`/intro`)"
 
-#: ../../changelog.rst:131
+#: ../../changelog.rst:138
 msgid ""
 ":any:`Client.upload()` and :any:`Client.upload_by_link()` can now accept "
 "a function that returns an iterator (or a generator) as a payload"
@@ -438,11 +467,11 @@ msgstr ""
 "принимать функцию, возвращающую итератор (или генератор) в качестве "
 "полезной нагрузки"
 
-#: ../../changelog.rst:134
+#: ../../changelog.rst:141
 msgid "**Release 1.3.4 (2023-10-15)**"
 msgstr "**Release 1.3.4 (2023-10-15)**"
 
-#: ../../changelog.rst:136
+#: ../../changelog.rst:143
 msgid ""
 "`upload()` and `download()` (and related) methods can now upload/download"
 " non-seekable file-like objects (e.g. `stdin` or `stdout` when open in "
@@ -453,27 +482,27 @@ msgstr ""
 " `stdin` и `stdout`, при условии, что они открыты в режиме `\"rb\"` или "
 "`\"wb\"`), см. `PR #31`_"
 
-#: ../../changelog.rst:140
+#: ../../changelog.rst:147
 msgid "**Release 1.3.3 (2023-04-22)**"
 msgstr "**Release 1.3.3 (2023-04-22)**"
 
-#: ../../changelog.rst:142
+#: ../../changelog.rst:149
 msgid "`app:/` paths now work correctly (see `issue #26`_)"
 msgstr "Пути вида `app:/` теперь работают правильно (см. `issue #26`_)"
 
-#: ../../changelog.rst:144
+#: ../../changelog.rst:151
 msgid "**Release 1.3.2 (2023-03-20)**"
 msgstr "**Release 1.3.2 (2023-03-20)**"
 
-#: ../../changelog.rst:146
+#: ../../changelog.rst:153
 msgid "Fixed `issue #29`_: TypeError: 'type' object is not subscriptable"
 msgstr "Исправлено `issue #29`_: TypeError: 'type' object is not subscriptable"
 
-#: ../../changelog.rst:148
+#: ../../changelog.rst:155
 msgid "**Release 1.3.1 (2023-02-28)**"
 msgstr "**Release 1.3.1 (2023-02-28)**"
 
-#: ../../changelog.rst:150
+#: ../../changelog.rst:157
 msgid ""
 "Fixed `issue #28`_: calling `download_public()` with `path` keyword "
 "argument raises `TypeError`"
@@ -481,7 +510,7 @@ msgstr ""
 "Исправлено `issue #28`_: `TypeError` при вызове `download_public()` с "
 "параметром `path`"
 
-#: ../../changelog.rst:151
+#: ../../changelog.rst:158
 msgid ""
 "Fixed `AttributeError` raised when calling "
 "`ResourceLinkObject.public_listdir()`"
@@ -489,11 +518,11 @@ msgstr ""
 "Исправлено `AttributeError` при вызове "
 "`ResourceLinkObject.public_listdir()`"
 
-#: ../../changelog.rst:153
+#: ../../changelog.rst:160
 msgid "**Release 1.3.0 (2023-01-30)**"
 msgstr "**Release 1.3.0 (2023-01-30)**"
 
-#: ../../changelog.rst:155
+#: ../../changelog.rst:162
 msgid ""
 "Added convenience methods to `...Object` objects (e.g. see "
 "`ResourceObject`)"
@@ -501,15 +530,15 @@ msgstr ""
 "Добавлены convenience-методы для объектов `...Object` (например, см. "
 "`ResourceObject`)"
 
-#: ../../changelog.rst:156
+#: ../../changelog.rst:163
 msgid "Added type hints"
 msgstr "Добавлены подсказки типов (type hints)"
 
-#: ../../changelog.rst:157
+#: ../../changelog.rst:164
 msgid "Improved error checking and response validation"
 msgstr "Улучшены проверки ошибок и проверка ответа"
 
-#: ../../changelog.rst:158
+#: ../../changelog.rst:165
 msgid ""
 "Added `InvalidResponseError`, `PayloadTooLargeError`, "
 "`UploadTrafficLimitExceededError`"
@@ -517,25 +546,25 @@ msgstr ""
 "Добавлены `InvalidResponseError`, `PayloadTooLargeError`, "
 "`UploadTrafficLimitExceededError`"
 
-#: ../../changelog.rst:159
+#: ../../changelog.rst:166
 msgid "Added a few missing fields to `DiskInfoObject` and `SystemFoldersObject`"
 msgstr ""
 "Добавлено несколько недостающих полей объектов `DiskInfoObject` и "
 "`SystemFoldersObject`"
 
-#: ../../changelog.rst:160
+#: ../../changelog.rst:167
 msgid "Added `rename()`, `upload_by_link()` and `download_by_link()` methods"
 msgstr "Добавлены методы `rename()`, `upload_by_link()` и `download_by_link()`"
 
-#: ../../changelog.rst:161
+#: ../../changelog.rst:168
 msgid "Added `default_args` field for `YaDisk` object"
 msgstr "Добавлен аттрибут `default_args` объекта `YaDisk`"
 
-#: ../../changelog.rst:162
+#: ../../changelog.rst:169
 msgid "`download()` and `upload()` now return `ResourceLinkObject`"
 msgstr "`download()` и `upload()` теперь возвращают `ResourceLinkObject`"
 
-#: ../../changelog.rst:163
+#: ../../changelog.rst:170
 msgid ""
 "Returned `LinkObject` instances have been replaced by more specific "
 "subclasses"
@@ -543,15 +572,15 @@ msgstr ""
 "До этого возвращаемые объекты `LinkObject` были заменены более "
 "конкретными подклассами"
 
-#: ../../changelog.rst:164
+#: ../../changelog.rst:171
 msgid ":any:`ConnectionError` now also triggers a retry"
 msgstr ":any:`ConnectionError` теперь тоже вызывает повторную попытку"
 
-#: ../../changelog.rst:166
+#: ../../changelog.rst:173
 msgid "**Release 1.2.19 (2023-01-20)**"
 msgstr "**Release 1.2.19 (2023-01-20)**"
 
-#: ../../changelog.rst:168
+#: ../../changelog.rst:175
 msgid ""
 "Fixed incorrect behavior of the fix from 1.2.18 for paths `disk:` and "
 "`trash:` (only these two)."
@@ -559,11 +588,11 @@ msgstr ""
 "Исправлено неправильное поведение фикса из 1.2.18 для путей `disk:` и "
 "`trash:`."
 
-#: ../../changelog.rst:171
+#: ../../changelog.rst:178
 msgid "**Release 1.2.18 (2023-01-20)**"
 msgstr "**Release 1.2.18 (2023-01-20)**"
 
-#: ../../changelog.rst:173
+#: ../../changelog.rst:180
 msgid ""
 "Fixed `issue #26`_: ':' character in filenames causes `BadRequestError`. "
 "This is due the behavior of Yandex.Disk's REST API itself but is avoided "
@@ -573,11 +602,11 @@ msgstr ""
 "`BadRequestError`. Это поведение вызвано работой самого REST API "
 "Яндекс.Диска, но было исправлено на уровне библиотеки."
 
-#: ../../changelog.rst:177
+#: ../../changelog.rst:184
 msgid "**Release 1.2.17 (2022-12-11)**"
 msgstr "**Release 1.2.17 (2022-12-11)**"
 
-#: ../../changelog.rst:179
+#: ../../changelog.rst:186
 msgid ""
 "Fixed a minor bug which could cause a `ReferenceError` (which would not "
 "cause a crash, but still show an error message). The bug involved using "
@@ -589,11 +618,11 @@ msgstr ""
 "`ReferenceError` (ошибка игнорировалась, но сообщение выводилось).Баг "
 "проявляется по большей части в старых версиях Python (например 3.4)."
 
-#: ../../changelog.rst:185
+#: ../../changelog.rst:192
 msgid "**Release 1.2.16 (2022-08-17)**"
 msgstr "**Release 1.2.16 (2022-08-17)**"
 
-#: ../../changelog.rst:187
+#: ../../changelog.rst:194
 msgid ""
 "Fixed a bug in `check_token()`: could throw `ForbiddenError` if the "
 "application lacks necessary permissions (`issue #23`_)."
@@ -602,11 +631,11 @@ msgstr ""
 ":code:`ForbiddenError`, если у приложения недостатчно прав (`issue "
 "#23`_)."
 
-#: ../../changelog.rst:190
+#: ../../changelog.rst:197
 msgid "**Release 1.2.15 (2021-12-31)**"
 msgstr "**Release 1.2.15 (2021-12-31)**"
 
-#: ../../changelog.rst:192
+#: ../../changelog.rst:199
 msgid ""
 "Fixed an issue where `http://` links were not recognized as operation "
 "links (they were assumed to always be `https://`, since all the other "
@@ -623,11 +652,11 @@ msgstr ""
 "операции (через `get_operation_status()`) всегда используется `https://` "
 "версия ссылки, даже если Яндекс.Диск вернул `http://`."
 
-#: ../../changelog.rst:201
+#: ../../changelog.rst:208
 msgid "**Release 1.2.14 (2019-03-26)**"
 msgstr "**Release 1.2.14 (2019-03-26)**"
 
-#: ../../changelog.rst:203
+#: ../../changelog.rst:210
 msgid ""
 "Fixed a `TypeError` in `get_public_*` functions when passing `path` "
 "parameter (see `issue #7`_)"
@@ -635,27 +664,27 @@ msgstr ""
 "Исправлена ошибка `TypeError` в функциях `get_public_*` при использовании"
 " с параметром `path` (`issue #7`_)"
 
-#: ../../changelog.rst:205
+#: ../../changelog.rst:212
 msgid "Added `unlimited_autoupload_enabled` attribute for `DiskInfoObject`"
 msgstr "Добавлен аттрибут `unlimited_autoupload_enabled` для `DiskInfoObject`"
 
-#: ../../changelog.rst:207
+#: ../../changelog.rst:214
 msgid "**Release 1.2.13 (2019-02-23)**"
 msgstr "**Release 1.2.13 (2019-02-23)**"
 
-#: ../../changelog.rst:209
+#: ../../changelog.rst:216
 msgid "Added `md5` parameter for `remove()`"
 msgstr "Добавлен параметр `md5` для `remove()`"
 
-#: ../../changelog.rst:210
+#: ../../changelog.rst:217
 msgid "Added `UserPublicInfoObject`"
 msgstr "Добавлен `UserPublicInfoObject`"
 
-#: ../../changelog.rst:211
+#: ../../changelog.rst:218
 msgid "Added `country` attribute for `UserObject`"
 msgstr "Добавлен аттрибут `country` для `UserObject`"
 
-#: ../../changelog.rst:212
+#: ../../changelog.rst:219
 msgid ""
 "Added `photoslice_time` attribute for `ResourceObject`, "
 "`PublicResourceObject` and `TrashResourceObject`"
@@ -663,23 +692,23 @@ msgstr ""
 "Добавлен аттрибут `photoslice_time` для `ResourceObject`, "
 "`PublicResourceObject` и `TrashResourceObject`"
 
-#: ../../changelog.rst:215
+#: ../../changelog.rst:222
 msgid "**Release 1.2.12 (2018-10-11)**"
 msgstr "**Release 1.2.12 (2018-10-11)**"
 
-#: ../../changelog.rst:217
+#: ../../changelog.rst:224
 msgid "Fixed `fields` parameter not working properly in `listdir()` (`issue #4`_)"
 msgstr "Исправлен баг: не работает параметр `fields` в `listdir()` (`issue #4`_)"
 
-#: ../../changelog.rst:219
+#: ../../changelog.rst:226
 msgid "**Release 1.2.11 (2018-06-30)**"
 msgstr "**Release 1.2.11 (2018-06-30)**"
 
-#: ../../changelog.rst:221
+#: ../../changelog.rst:228
 msgid "Added the missing parameter `sort` for `get_meta()`"
 msgstr "Добавлен недостающий параметр `sort` для `get_meta()`"
 
-#: ../../changelog.rst:222
+#: ../../changelog.rst:229
 msgid ""
 "Added `file` and `antivirus_status` attributes for `ResourceObject`, "
 "`PublicResourceObject` and `TrashResourceObject`"
@@ -687,23 +716,23 @@ msgstr ""
 "Добавлены аттрибуты `file` и `antivirus_status` для `ResourceObject`, "
 "`PublicResourceObject` и `TrashResourceObject`"
 
-#: ../../changelog.rst:224
+#: ../../changelog.rst:231
 msgid "Added `headers` parameter"
 msgstr "Добавлен параметр `headers`"
 
-#: ../../changelog.rst:225
+#: ../../changelog.rst:232
 msgid "Fixed a typo in `download()` and `download_public()` (`issue #2`_)"
 msgstr "Исправлена опечатка в `download()` и `download_public()` (`issue #2`_)"
 
-#: ../../changelog.rst:226
+#: ../../changelog.rst:233
 msgid "Removed `*args` parameter everywhere"
 msgstr "Убран параметр `*args`"
 
-#: ../../changelog.rst:228
+#: ../../changelog.rst:235
 msgid "**Release 1.2.10 (2018-06-14)**"
 msgstr "**Release 1.2.10 (2018-06-14)**"
 
-#: ../../changelog.rst:230
+#: ../../changelog.rst:237
 msgid ""
 "Fixed `timeout=None` behavior. `None` is supposed to mean 'no timeout' "
 "but in the older versions it was synonymous with the default timeout."
@@ -712,23 +741,23 @@ msgstr ""
 "таймаута', но в предыдущих версиях значение `None` было синонимично со "
 "стандартным таймаутом."
 
-#: ../../changelog.rst:233
+#: ../../changelog.rst:240
 msgid "**Release 1.2.9 (2018-04-28)**"
 msgstr "**Release 1.2.9 (2018-04-28)**"
 
-#: ../../changelog.rst:235
+#: ../../changelog.rst:242
 msgid "Changed the license to LGPLv3 (see `COPYING` and `COPYING.lesser`)"
 msgstr "Изменена лицензия на LGPLv3 (см. `COPYING` и `COPYING.lesser`)"
 
-#: ../../changelog.rst:236
+#: ../../changelog.rst:243
 msgid "Other package info updates"
 msgstr "Другие изменения информации о пакете"
 
-#: ../../changelog.rst:238
+#: ../../changelog.rst:245
 msgid "**Release 1.2.8 (2018-04-17)**"
 msgstr "**Release 1.2.8 (2018-04-17)**"
 
-#: ../../changelog.rst:240
+#: ../../changelog.rst:247
 msgid ""
 "Fixed a couple of typos: `PublicResourceListObject.items` and "
 "`TrashResourceListObject.items` had wrong types"
@@ -736,7 +765,7 @@ msgstr ""
 "Исправлено несколько опечаток: у `PublicResourceListObject.items` и "
 "`TrashResourceListObject.items` были неправильные типы данных"
 
-#: ../../changelog.rst:242
+#: ../../changelog.rst:249
 msgid ""
 "Substitute field aliases in `fields` parameter when performing API "
 "requests (e.g. `embedded` -> `_embedded`)"
@@ -744,21 +773,21 @@ msgstr ""
 "Псевдонимы полей в параметре `fields` заменяются при выполнении запросов "
 "API (например, `embedded` -> `_embedded`)"
 
-#: ../../changelog.rst:245
+#: ../../changelog.rst:252
 msgid "**Release 1.2.7 (2018-04-15)**"
 msgstr "**Release 1.2.7 (2018-04-15)**"
 
-#: ../../changelog.rst:247
+#: ../../changelog.rst:254
 msgid "Fixed a file rewinding bug when uploading/downloading files after a retry"
 msgstr ""
 "Исправлен баг перемотки файла при загрузке/скачивании после повторной "
 "попытки"
 
-#: ../../changelog.rst:249
+#: ../../changelog.rst:256
 msgid "**Release 1.2.6 (2018-04-13)**"
 msgstr "**Release 1.2.6 (2018-04-13)**"
 
-#: ../../changelog.rst:251
+#: ../../changelog.rst:258
 msgid ""
 "Now caching `requests` sessions so that open connections can be reused "
 "(which can significantly speed things up sometimes)"
@@ -766,15 +795,15 @@ msgstr ""
 "Теперь объекты сессий `requests` кэшируются, чтобы их можно было "
 "переиспользовать (иногда может существенно ускорить выполнение запросов)"
 
-#: ../../changelog.rst:253
+#: ../../changelog.rst:260
 msgid "Disable `keep-alive` when uploading/downloading files by default"
 msgstr "`keep-alive` отключается при загрузке/скачивании файлов по умолчанию"
 
-#: ../../changelog.rst:255
+#: ../../changelog.rst:262
 msgid "**Release 1.2.5 (2018-03-31)**"
 msgstr "**Release 1.2.5 (2018-03-31)**"
 
-#: ../../changelog.rst:257
+#: ../../changelog.rst:264
 msgid ""
 "Fixed an off-by-one bug in `utils.auto_retry()` (which could sometimes "
 "result in `AttributeError`)"
@@ -782,7 +811,7 @@ msgstr ""
 "Исправлен баг (ошибка на единицу) в `utils.auto_retry()` (иногда мог "
 "вызвать `AttributeError`)"
 
-#: ../../changelog.rst:259
+#: ../../changelog.rst:266
 msgid ""
 "Retry the whole request for `upload()`, `download()` and "
 "`download_public()`"
@@ -790,19 +819,19 @@ msgstr ""
 "Повторные попытки применяются для `upload()`, `download()` и "
 "`download_public()` целиком"
 
-#: ../../changelog.rst:260
+#: ../../changelog.rst:267
 msgid "Set `stream=True` for `download()` and `download_public()`"
 msgstr "Задано `stream=True` для `download()` и `download_public()`"
 
-#: ../../changelog.rst:261
+#: ../../changelog.rst:268
 msgid "Other minor fixes"
 msgstr "Другие мелкие исправления"
 
-#: ../../changelog.rst:263
+#: ../../changelog.rst:270
 msgid "**Release 1.2.4 (2018-02-19)**"
 msgstr "**Release 1.2.4 (2018-02-19)**"
 
-#: ../../changelog.rst:265
+#: ../../changelog.rst:272
 msgid ""
 "Fixed `TokenObject` having `exprires_in` instead of `expires_in` (fixed a"
 " typo)"
@@ -810,35 +839,35 @@ msgstr ""
 "Исправлена опечатка (`TokenObject.exprires_in` -> "
 "`TokenObject.expires_in`)"
 
-#: ../../changelog.rst:267
+#: ../../changelog.rst:274
 msgid "**Release 1.2.3 (2018-01-20)**"
 msgstr "**Release 1.2.3 (2018-01-20)**"
 
-#: ../../changelog.rst:269
+#: ../../changelog.rst:276
 msgid "Fixed a `TypeError` when `WrongResourceTypeError` is raised"
 msgstr "Исправлено `TypeError` при вызове `WrongResourceTypeError`"
 
-#: ../../changelog.rst:271
+#: ../../changelog.rst:278
 msgid "**Release 1.2.2 (2018-01-19)**"
 msgstr "**Release 1.2.2 (2018-01-19)**"
 
-#: ../../changelog.rst:273
+#: ../../changelog.rst:280
 msgid "`refresh_token()` no longer requires a valid or empty token."
 msgstr "`refresh_token()` больше не требует валидный или пустой токен."
 
-#: ../../changelog.rst:275
+#: ../../changelog.rst:282
 msgid "**Release 1.2.1 (2018-01-14)**"
 msgstr "**Release 1.2.1 (2018-01-14)**"
 
-#: ../../changelog.rst:277
+#: ../../changelog.rst:284
 msgid "Fixed auto retries not working. Whoops."
 msgstr "Исправлена неработоспособность повторных попыток."
 
-#: ../../changelog.rst:279
+#: ../../changelog.rst:286
 msgid "**Release 1.2.0 (2018-01-14)**"
 msgstr "**Release 1.2.0 (2018-01-14)**"
 
-#: ../../changelog.rst:281
+#: ../../changelog.rst:288
 msgid ""
 "Fixed passing `n_retries=0` to `upload()`, `download()` and "
 "`download_public()`"
@@ -846,7 +875,7 @@ msgstr ""
 "Исправлено использование `n_retries=0` в `upload()`, `download()` и "
 "`download_public()`"
 
-#: ../../changelog.rst:283
+#: ../../changelog.rst:290
 msgid ""
 "`upload()`, `download()` and `download_public()` no longer return "
 "anything (see the docs)"
@@ -854,11 +883,11 @@ msgstr ""
 "`upload()`, `download()` и `download_public()` больше не возвращают "
 "ничего (см. документацию)"
 
-#: ../../changelog.rst:285
+#: ../../changelog.rst:292
 msgid "Added `utils` module (see the docs)"
 msgstr "Добавлен модуль `utils` (см. документацию)"
 
-#: ../../changelog.rst:286
+#: ../../changelog.rst:293
 msgid ""
 "Added `RetriableYaDiskError`, `WrongResourceTypeError`, `BadGatewayError`"
 " and `GatewayTimeoutError`"
@@ -866,7 +895,7 @@ msgstr ""
 "Добавлены `RetriableYaDiskError`, `WrongResourceTypeError`, "
 "`BadGatewayError` и `GatewayTimeoutError`"
 
-#: ../../changelog.rst:288
+#: ../../changelog.rst:295
 msgid ""
 "`listdir()` now raises `WrongResourceTypeError` instead of "
 "`NotADirectoryError`"
@@ -874,11 +903,11 @@ msgstr ""
 "`listdir()` теперь вызывает `WrongResourceTypeError` вместо "
 "`NotADirectoryError`"
 
-#: ../../changelog.rst:291
+#: ../../changelog.rst:298
 msgid "**Release 1.1.1 (2017-12-29)**"
 msgstr "**Release 1.1.1 (2017-12-29)**"
 
-#: ../../changelog.rst:293
+#: ../../changelog.rst:300
 msgid ""
 "Fixed argument handling in `upload()`, `download()` and "
 "`download_public()`. Previously, passing `n_retries` and `retry_interval`"
@@ -888,97 +917,97 @@ msgstr ""
 "`download_public()`. До этого использование `n_retries` и "
 "`retry_interval` вызывало исключение (`TypeError`)."
 
-#: ../../changelog.rst:296
+#: ../../changelog.rst:303
 msgid "**Release 1.1.0 (2017-12-27)**"
 msgstr "**Release 1.1.0 (2017-12-27)**"
 
-#: ../../changelog.rst:298
+#: ../../changelog.rst:305
 msgid "Better exceptions (see the docs)"
 msgstr "Усовершенствованные исключения (см. документацию)"
 
-#: ../../changelog.rst:299
+#: ../../changelog.rst:306
 msgid "Added support for `force_async` parameter"
 msgstr "Добавлена поддержка параметра `force_async`"
 
-#: ../../changelog.rst:300
+#: ../../changelog.rst:307
 msgid "Minor bug fixes"
 msgstr "Мелкие исправления багов"
 
-#: ../../changelog.rst:302
+#: ../../changelog.rst:309
 msgid "**Release 1.0.8 (2017-11-29)**"
 msgstr "**Release 1.0.8 (2017-11-29)**"
 
-#: ../../changelog.rst:304
+#: ../../changelog.rst:311
 msgid "Fixed yet another `listdir()` bug"
 msgstr "Исправлен ещё один баг в `listdir()`"
 
-#: ../../changelog.rst:306
+#: ../../changelog.rst:313
 msgid "**Release 1.0.7 (2017-11-04)**"
 msgstr "**Release 1.0.7 (2017-11-04)**"
 
-#: ../../changelog.rst:308
+#: ../../changelog.rst:315
 msgid "Added `install_requires` argument to `setup.py`"
 msgstr "Добавлен `install_requires` в `setup.py`"
 
-#: ../../changelog.rst:310
+#: ../../changelog.rst:317
 msgid "**Release 1.0.6 (2017-11-04)**"
 msgstr "**Release 1.0.6 (2017-11-04)**"
 
-#: ../../changelog.rst:312
+#: ../../changelog.rst:319
 msgid "Return `OperationLinkObject` in some functions"
 msgstr "Некоторые функции теперь возвращают `OperationLinkObject`"
 
-#: ../../changelog.rst:314
+#: ../../changelog.rst:321
 msgid "**Release 1.0.5 (2017-10-29)**"
 msgstr "**Release 1.0.5 (2017-10-29)**"
 
-#: ../../changelog.rst:316
+#: ../../changelog.rst:323
 msgid "Fixed `setup.py` to exclude tests"
 msgstr "Исправлен `setup.py`, теперь исключает тесты"
 
-#: ../../changelog.rst:318
+#: ../../changelog.rst:325
 msgid "**Release 1.0.4 (2017-10-23)**"
 msgstr "**Release 1.0.4 (2017-10-23)**"
 
-#: ../../changelog.rst:320
+#: ../../changelog.rst:327
 msgid "Fixed bugs in `upload`, `download` and `listdir` functions"
 msgstr "Исправлены баги в `upload`, `download` и `listdir`"
 
-#: ../../changelog.rst:321
+#: ../../changelog.rst:328
 msgid "Set default `listdir` `limit` to `10000`"
 msgstr "Значение по-умолчанию `limit` в `listdir` установлено в `10000`"
 
-#: ../../changelog.rst:323
+#: ../../changelog.rst:330
 msgid "**Release 1.0.3 (2017-10-22)**"
 msgstr "**Release 1.0.3 (2017-10-22)**"
 
-#: ../../changelog.rst:325
+#: ../../changelog.rst:332
 msgid "Added settings"
 msgstr "Добавлен модуль `settings`"
 
-#: ../../changelog.rst:327
+#: ../../changelog.rst:334
 msgid "**Release 1.0.2 (2017-10-19)**"
 msgstr "**Release 1.0.2 (2017-10-19)**"
 
-#: ../../changelog.rst:329
+#: ../../changelog.rst:336
 msgid "Fixed `get_code_url` function (added missing parameters)"
 msgstr "Исправлена функция `get_code_url` (добавлены недостающие параметры)"
 
-#: ../../changelog.rst:331
+#: ../../changelog.rst:338
 msgid "**Release 1.0.1 (2017-10-18)**"
 msgstr "**Release 1.0.1 (2017-10-18)**"
 
-#: ../../changelog.rst:333
+#: ../../changelog.rst:340
 msgid "Fixed a major bug in `GetTokenRequest` (added missing parameter)"
 msgstr ""
 "Исправлен серьёзный баг в `GetTokenRequest` (добавлен недостающий "
 "параметр)"
 
-#: ../../changelog.rst:335
+#: ../../changelog.rst:342
 msgid "**Release 1.0.0 (2017-10-18)**"
 msgstr "**Release 1.0.0 (2017-10-18)**"
 
-#: ../../changelog.rst:337
+#: ../../changelog.rst:344
 msgid "Initial release"
 msgstr "Первый релиз"
 
@@ -989,5 +1018,11 @@ msgstr "Первый релиз"
 #~ msgstr ""
 
 #~ msgid "Fix a bug where POST request parameters were not encoded correctly"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "**Release 3.0.1 (2024-07-09)** * Fixed "
+#~ "broken :code:`pyproject.toml` that did not "
+#~ "include full package contents"
 #~ msgstr ""
 
