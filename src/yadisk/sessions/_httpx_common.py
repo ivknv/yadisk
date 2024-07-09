@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-from typing import Optional, Union
+from typing import Any, Optional, Union
 
 from ..exceptions import (
     RequestError, TooManyRedirectsError,
@@ -24,6 +24,7 @@ from ..exceptions import (
 )
 
 from ..types import TimeoutParameter
+from .._typing_compat import Dict, Tuple
 from .. import settings
 
 import httpx
@@ -57,28 +58,29 @@ def convert_timeout(timeout: TimeoutParameter) -> Optional[httpx.Timeout]:
     return httpx.Timeout(connect=connect, pool=connect, read=read, write=read)
 
 
-def convert_args_for_httpx(session, kwargs):
-    if "timeout" in kwargs:
-        kwargs["timeout"] = convert_timeout(kwargs["timeout"])
-
-    if "data" in kwargs:
-        kwargs["content"] = kwargs.pop("data")
-
-    if "httpx_args" in kwargs:
-        kwargs.update(kwargs.pop("httpx_args"))
-
+def convert_args_for_httpx(
+    session: Union[httpx.Client, httpx.AsyncClient],
+    kwargs: Dict[str, Any]
+) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     request_kwargs = {
-        "content": kwargs.pop("content", None),
         "params": kwargs.get("params"),
-        "cookies": kwargs.get("cookies"),
         "headers": kwargs.get("headers"),
-        "extensions": kwargs.get("extensions"),
-        "timeout": kwargs.get("timeout", session.timeout)
+        "content": kwargs.get("data"),
+        "timeout": session.timeout
     }
 
-    for i in request_kwargs:
-        kwargs.pop(i, None)
+    if "timeout" in kwargs:
+        request_kwargs["timeout"] = convert_timeout(kwargs["timeout"])
 
-    send_kwargs = kwargs
+    send_kwargs = {"stream": kwargs.get("stream", False)}
+
+    if "httpx_args" in kwargs:
+        httpx_args = dict(kwargs["httpx_args"] or {})
+
+        for key in ("stream", "auth", "follow_redirects"):
+            if key in httpx_args:
+                send_kwargs[key] = httpx_args.pop(key)
+
+        request_kwargs.update(httpx_args)
 
     return request_kwargs, send_kwargs

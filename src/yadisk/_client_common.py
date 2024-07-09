@@ -58,7 +58,7 @@ def _set_authorization_header(
     kwargs: Dict[str, Any],
     new_token: Optional[str] = None
 ) -> None:
-    headers = CaseInsensitiveDict(kwargs.get("headers", {}))
+    headers = CaseInsensitiveDict(kwargs.get("headers") or {})
 
     if new_token:
         headers["Authorization"] = f"OAuth {new_token}"
@@ -72,7 +72,7 @@ def _add_authorization_header(
     kwargs: Dict[str, Any],
     new_token: Optional[str] = None
 ) -> None:
-    headers = CaseInsensitiveDict(kwargs.get("headers", {}))
+    headers = CaseInsensitiveDict(kwargs.get("headers") or {})
 
     if "Authorization" in headers:
         return
