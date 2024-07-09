@@ -25,6 +25,7 @@ jobs:
     - name: Build the package
       run: python -m build
     - name: Install the built wheel
+      shell: bash
       run: |
         # Use the wheel to prevent broken releases, instead of the editable install
         pip uninstall -y yadisk
