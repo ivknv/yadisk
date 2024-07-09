@@ -12,12 +12,15 @@ import yadisk
 from yadisk._common import is_operation_link, ensure_path_has_schema
 from yadisk._api import GetOperationStatusRequest
 
+import os
 import platform
 import sys
 
 import pytest
 
 __all__ = ["TestClient"]
+
+replay_disabled = os.environ.get("PYTHON_YADISK_REPLAY_ENABLED", "1") != "1"
 
 
 def open_tmpfile(mode):
@@ -29,6 +32,21 @@ def open_tmpfile(mode):
 
 
 class TestClient:
+    @pytest.mark.skipif(
+        replay_disabled,
+        reason="this test is not meant to run outside of replay mode, it must be modified first"
+    )
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_get_disk_info(self, client: yadisk.Client) -> None:
+        disk_info = client.get_disk_info()
+
+        assert isinstance(disk_info, yadisk.objects.DiskInfoObject)
+        assert disk_info.user is not None
+
+        # If you re-record this test, you'll have to put your account data here
+        assert disk_info.user.login == "ivknv"
+        assert disk_info.field("reg_time").year == 2017
+
     @pytest.mark.usefixtures("sync_client_test")
     def test_get_meta(self, client: yadisk.Client, disk_root: str) -> None:
         resource = client.get_meta(disk_root)

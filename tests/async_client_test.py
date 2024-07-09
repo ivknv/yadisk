@@ -5,6 +5,7 @@ import tempfile
 from typing import Any
 import aiofiles
 
+import os
 import platform
 import posixpath
 from io import BytesIO
@@ -17,6 +18,8 @@ from yadisk._api import GetOperationStatusRequest
 import pytest
 
 __all__ = ["TestAsyncClient"]
+
+replay_disabled = os.environ.get("PYTHON_YADISK_REPLAY_ENABLED", "1") != "1"
 
 
 def open_tmpfile(mode):
@@ -37,6 +40,21 @@ def async_open_tmpfile(mode):
 
 @pytest.mark.anyio
 class TestAsyncClient:
+    @pytest.mark.skipif(
+        replay_disabled,
+        reason="this test is not meant to run outside of replay mode, it must be modified first"
+    )
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_get_disk_info(self, async_client: yadisk.AsyncClient) -> None:
+        disk_info = await async_client.get_disk_info()
+
+        assert isinstance(disk_info, yadisk.objects.DiskInfoObject)
+        assert disk_info.user is not None
+
+        # If you re-record this test, you'll have to put your account data here
+        assert disk_info.user.login == "ivknv"
+        assert disk_info.field("reg_time").year == 2017
+
     @pytest.mark.usefixtures("async_client_test")
     async def test_get_meta(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
         resource = await async_client.get_meta(disk_root)
