@@ -160,12 +160,18 @@ Changelog
 .. _PR #31: https://github.com/ivknv/yadisk/pull/31
 .. _issue #43: https://github.com/ivknv/yadisk/issues/43
 .. _issue #45: https://github.com/ivknv/yadisk/issues/45
+.. _issue #49: https://github.com/ivknv/yadisk/issues/49
 .. _Introduction: https://yadisk.readthedocs.io/en/latest/intro.html
 .. _API Reference: https://yadisk.readthedocs.io/en/latest/api_reference/index.html
 .. _Available Session Implementations: https://yadisk.readthedocs.io/en/latest/api_reference/sessions.html
 .. _Session Interface: https://yadisk.readthedocs.io/en/latest/api_reference/session_interface.html
 .. _requests: https://pypi.org/project/requests
 .. _Migration Guide: https://yadisk.readthedocs.io/en/latest/migration_guide.html
+
+* **Release 3.0.1 (2024-07-09)**
+
+  * Fixed broken :code:`pyproject.toml` that did not include full package
+    contents (see `issue #49`_)
 
 * **Release 3.0.0 (2024-07-09)**
 

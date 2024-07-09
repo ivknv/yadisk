@@ -11,10 +11,16 @@ Changelog
 .. _PR #31: https://github.com/ivknv/yadisk/pull/31
 .. _issue #43: https://github.com/ivknv/yadisk/issues/43
 .. _issue #45: https://github.com/ivknv/yadisk/issues/45
+.. _issue #49: https://github.com/ivknv/yadisk/issues/49
 .. _requests: https://pypi.org/project/requests
 
 .. role:: python(code)
    :language: python
+
+* **Release 3.0.1 (2024-07-09)**
+
+  * Fixed broken :code:`pyproject.toml` that did not include full package
+    contents (see `issue #49`_)
 
 * **Release 3.0.0 (2024-07-09)**
 
