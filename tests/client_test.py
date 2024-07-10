@@ -279,17 +279,13 @@ class TestClient:
 
     @pytest.mark.usefixtures("sync_client_test")
     def test_patch(self, client: yadisk.Client, disk_root: str) -> None:
-        path = disk_root
+        directory = client.patch(disk_root, {"test_property": "I'm a value!"})
+        assert directory.custom_properties is not None
 
-        client.patch(path, {"test_property": "I'm a value!"})
+        assert directory.custom_properties["test_property"] == "I'm a value!"
 
-        props: Any = client.get_meta(path).custom_properties
-        assert props is not None
-
-        assert props["test_property"] == "I'm a value!"
-
-        client.patch(path, {"test_property": None})
-        assert client.get_meta(path).custom_properties is None
+        directory = directory.patch({"test_property": None})
+        assert directory.custom_properties is None
 
     @pytest.mark.usefixtures("sync_client_test")
     def test_issue7(self, client: yadisk.Client, disk_root: str) -> None:
