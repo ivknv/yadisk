@@ -450,3 +450,24 @@ class TestClient:
                 httpx_args=None,
                 curl_options=None
             )
+
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_get_files(self, client: yadisk.Client) -> None:
+        files = list(client.get_files(max_items=25))
+
+        assert len(files) <= 25
+
+        for file in files:
+            assert file.is_file()
+
+        offset = 15
+        files_with_offset = list(client.get_files(max_items=10, offset=offset))
+
+        assert len(files_with_offset) <= 10
+
+        for file in files_with_offset:
+            assert file.is_file()
+
+        assert [file @ "path" for file in files[offset:]] == [file @ "path" for file in files_with_offset]
+
+        assert len(list(client.get_files(max_items=10, limit=3))) <= 10

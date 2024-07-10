@@ -496,3 +496,24 @@ class TestAsyncClient:
                 httpx_args=None,
                 curl_options=None
             )
+
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_get_files(self, async_client: yadisk.AsyncClient) -> None:
+        files = [i async for i in async_client.get_files(max_items=25)]
+
+        assert len(files) <= 25
+
+        for file in files:
+            assert await file.is_file()
+
+        offset = 15
+        files_with_offset = [i async for i in async_client.get_files(max_items=10, offset=offset)]
+
+        assert len(files_with_offset) <= 10
+
+        for file in files_with_offset:
+            assert await file.is_file()
+
+        assert [file @ "path" for file in files[offset:]] == [file @ "path" for file in files_with_offset]
+
+        assert len([i async for i in async_client.get_files(max_items=10, limit=3)]) <= 10
