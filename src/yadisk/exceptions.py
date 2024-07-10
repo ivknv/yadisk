@@ -24,11 +24,12 @@ __all__ = [
     "BadRequestError", "UnauthorizedError", "ForbiddenError", "NotFoundError",
     "NotAcceptableError", "ConflictError", "GoneError", "PayloadTooLargeError",
     "UnsupportedMediaError", "LockedError", "UploadTrafficLimitExceededError",
-    "TooManyRequestsError", "InternalServerError", "BadGatewayError",
-    "UnavailableError", "GatewayTimeoutError", "InsufficientStorageError",
-    "PathNotFoundError", "ParentNotFoundError", "PathExistsError",
-    "DirectoryExistsError", "FieldValidationError", "ResourceIsLockedError",
-    "MD5DifferError", "OperationNotFoundError", "InvalidResponseError",
+    "TooManyRequestsError", "ResourceDownloadLimitExceededError",
+    "InternalServerError", "BadGatewayError", "UnavailableError",
+    "GatewayTimeoutError", "InsufficientStorageError", "PathNotFoundError",
+    "ParentNotFoundError", "PathExistsError", "DirectoryExistsError",
+    "FieldValidationError", "ResourceIsLockedError", "MD5DifferError",
+    "OperationNotFoundError", "InvalidResponseError",
     "AuthorizationPendingError", "InvalidClientError", "InvalidGrantError",
     "BadVerificationCodeError", "UnsupportedTokenTypeError"
 ]
@@ -191,6 +192,11 @@ class UploadTrafficLimitExceededError(LockedError):
 
 class TooManyRequestsError(YaDiskError):
     """Thrown when the server returns code 429."""
+    pass
+
+
+class ResourceDownloadLimitExceededError(TooManyRequestsError):
+    """Raised when the download limit for a resource is exceeded."""
     pass
 
 

@@ -78,7 +78,10 @@ EXCEPTION_MAP: Dict[int, Dict[str, Type[YaDiskError]]] = {
             "DiskUploadTrafficLimitExceeded": UploadTrafficLimitExceededError
         }
     ),
-    429: defaultdict(lambda: TooManyRequestsError),
+    429: defaultdict(
+        lambda: TooManyRequestsError,
+        {"DiskResourceDownloadLimitExceededError": ResourceDownloadLimitExceededError}
+    ),
     500: defaultdict(lambda: InternalServerError),
     502: defaultdict(lambda: BadGatewayError),
     503: defaultdict(lambda: UnavailableError),
