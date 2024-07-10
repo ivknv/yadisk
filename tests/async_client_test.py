@@ -20,6 +20,7 @@ import pytest
 __all__ = ["TestAsyncClient"]
 
 replay_disabled = os.environ.get("PYTHON_YADISK_REPLAY_ENABLED", "1") != "1"
+recording_enabled = os.environ.get("PYTHON_YADISK_RECORDING_ENABLED", "0") == "1"
 
 
 def open_tmpfile(mode):
@@ -613,3 +614,21 @@ class TestAsyncClient:
 
         await public_directory.unpublish()
         assert not await async_client.is_public_dir(public_directory.public_key)
+
+    @pytest.mark.skipif(
+        recording_enabled,
+        reason="before recording this test, ensure it's not a privacy concern for you"
+    )
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_get_public_resources(self, async_client: yadisk.AsyncClient) -> None:
+        first_10 = (await async_client.get_public_resources(limit=10)).items
+        with_offset = (await async_client.get_public_resources(limit=5, offset=5)).items
+
+        assert first_10 is not None
+        assert with_offset is not None
+
+        for public_resource in first_10 + with_offset:
+            print(f"{public_resource @ 'path'}")
+            assert await async_client.public_exists(public_resource @ "public_key")
+
+        assert [i.path for i in first_10[5:]] == [i.path for i in with_offset]
