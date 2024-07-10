@@ -517,3 +517,29 @@ class TestAsyncClient:
         assert [file @ "path" for file in files[offset:]] == [file @ "path" for file in files_with_offset]
 
         assert len([i async for i in async_client.get_files(max_items=10, limit=3)]) <= 10
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_get_last_uploaded(
+        self,
+        async_client: yadisk.AsyncClient,
+        disk_root: str
+    ) -> None:
+        files_to_upload = [
+            ("first.txt", b"example content"),
+            ("second.txt", b"this is the second file"),
+            ("third.txt", b"this is the third file")
+        ]
+
+        for filename, content in files_to_upload:
+            await async_client.upload(BytesIO(content), posixpath.join(disk_root, filename))
+
+        last_uploaded = await async_client.get_last_uploaded(limit=3)
+
+        for uploaded_file, (filename, content) in zip(last_uploaded, files_to_upload[::-1]):
+            assert uploaded_file.path == "disk:" + posixpath.join(disk_root, filename)
+
+            output = BytesIO()
+            await uploaded_file.download(output)
+
+            output.seek(0)
+            assert output.read() == content

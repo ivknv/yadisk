@@ -471,3 +471,23 @@ class TestClient:
         assert [file @ "path" for file in files[offset:]] == [file @ "path" for file in files_with_offset]
 
         assert len(list(client.get_files(max_items=10, limit=3))) <= 10
+
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_get_last_uploaded(self, client: yadisk.Client, disk_root: str) -> None:
+        files_to_upload = [
+            ("first.txt", b"example content"),
+            ("second.txt", b"this is the second file"),
+            ("third.txt", b"this is the third file")
+        ]
+
+        for filename, content in files_to_upload:
+            client.upload(BytesIO(content), posixpath.join(disk_root, filename))
+
+        for uploaded_file, (filename, content) in zip(client.get_last_uploaded(limit=3), files_to_upload[::-1]):
+            assert uploaded_file.path == "disk:" + posixpath.join(disk_root, filename)
+
+            output = BytesIO()
+            uploaded_file.download(output)
+
+            output.seek(0)
+            assert output.read() == content
