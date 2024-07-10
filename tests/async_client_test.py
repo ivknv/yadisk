@@ -265,6 +265,24 @@ class TestAsyncClient:
         assert await async_client.exists(path2)
 
     @pytest.mark.usefixtures("async_client_test")
+    async def test_rename(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        filename1 = "dir1"
+        filename2 = "dir2/"
+
+        path1 = posixpath.join(disk_root, filename1)
+        path2 = posixpath.join(disk_root, filename2)
+
+        await async_client.mkdir(path1)
+        await async_client.rename(path1, filename2)
+
+        assert not await async_client.exists(path1)
+        assert await async_client.is_dir(path2)
+
+        for bad_filename in ("", ".", "..", "/", "something/else"):
+            with pytest.raises(ValueError):
+                await async_client.rename(path2, bad_filename)
+
+    @pytest.mark.usefixtures("async_client_test")
     async def test_remove_trash(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
         path = posixpath.join(disk_root, "dir-to-remove")
         origin_path = "disk:" + path

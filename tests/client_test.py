@@ -213,6 +213,24 @@ class TestClient:
         assert client.exists(path2)
 
     @pytest.mark.usefixtures("sync_client_test")
+    def test_rename(self, client: yadisk.Client, disk_root: str) -> None:
+        filename1 = "dir1"
+        filename2 = "dir2/"
+
+        path1 = posixpath.join(disk_root, filename1)
+        path2 = posixpath.join(disk_root, filename2)
+
+        client.mkdir(path1)
+        client.rename(path1, filename2)
+
+        assert not client.exists(path1)
+        assert client.is_dir(path2)
+
+        for bad_filename in ("", ".", "..", "/", "something/else"):
+            with pytest.raises(ValueError):
+                client.rename(path2, bad_filename)
+
+    @pytest.mark.usefixtures("sync_client_test")
     def test_remove_trash(self, client: yadisk.Client, disk_root: str) -> None:
         path = posixpath.join(disk_root, "dir-to-remove")
         origin_path = "disk:" + path
