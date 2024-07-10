@@ -272,15 +272,23 @@ class TestAsyncClient:
         path1 = posixpath.join(disk_root, filename1)
         path2 = posixpath.join(disk_root, filename2)
 
-        await async_client.mkdir(path1)
-        await async_client.rename(path1, filename2)
+        assert not await async_client.exists(path1)
+        assert not await async_client.exists(path2)
+
+        dir = await async_client.mkdir(path1)
+
+        assert await dir.is_dir()
+        rename_result = await dir.rename(filename2)
+
+        assert isinstance(rename_result, yadisk.objects.AsyncResourceLinkObject)
+        dir = rename_result
 
         assert not await async_client.exists(path1)
-        assert await async_client.is_dir(path2)
+        assert await dir.is_dir()
 
         for bad_filename in ("", ".", "..", "/", "something/else"):
             with pytest.raises(ValueError):
-                await async_client.rename(path2, bad_filename)
+                await dir.rename(bad_filename)
 
     @pytest.mark.usefixtures("async_client_test")
     async def test_remove_trash(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
