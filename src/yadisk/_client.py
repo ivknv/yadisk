@@ -1616,7 +1616,7 @@ class Client:
 
         new_name = new_name.rstrip("/")
 
-        if "/" in new_name or new_name in (".", ".."):
+        if "/" in new_name or new_name in (".", "..", ""):
             raise ValueError(f"Invalid filename: {new_name}")
 
         dst_path = str(PurePosixPath(src_path).parent / new_name)
