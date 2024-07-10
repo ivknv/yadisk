@@ -49,3 +49,11 @@ def test_import_unknown_session() -> None:
 
     with pytest.raises(ValueError):
         yadisk.import_async_session(typing.cast(typing.Any, "notreal"))
+
+
+def test_default_imported_session() -> None:
+    client = yadisk.Client()
+    async_client = yadisk.AsyncClient()
+
+    assert client.session.__class__ is yadisk.import_session("requests")
+    assert async_client.session.__class__ is yadisk.import_async_session("httpx")
