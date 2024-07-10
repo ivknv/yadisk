@@ -38,6 +38,8 @@ class HTTPXResponse(Response):
             self._response.read()
         except httpx.HTTPError as e:
             raise convert_httpx_exception(e) from e
+        except httpx.StreamConsumed as e:
+            raise ValueError(f"Could not parse JSON: {e}") from e
 
         return self._response.json()
 
