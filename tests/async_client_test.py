@@ -574,3 +574,42 @@ class TestAsyncClient:
 
             output.seek(0)
             assert output.read() == content
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_public_listdir(
+        self,
+        async_client: yadisk.AsyncClient,
+        disk_root: str
+    ) -> None:
+        directory = await async_client.mkdir(posixpath.join(disk_root, "public"))
+        await directory.publish()
+
+        directory = await directory.get_meta()
+
+        assert await directory.is_dir()
+        assert await async_client.is_public_dir(directory.public_key)
+
+        files_to_upload = [
+            ("first.txt", b"example content"),
+            ("second.txt", b"this is the second file"),
+            ("third.txt", b"this is the third file")
+        ]
+
+        for filename, content in files_to_upload:
+            file = await directory.upload(BytesIO(content), filename)
+            await file.publish()
+
+        public_files = [i async for i in directory.public_listdir(sort="modified")]
+
+        for file, (filename, content) in zip(public_files, files_to_upload):
+            assert file.name == filename
+            assert await async_client.is_public_file(directory.public_key, path=file.path)
+
+            output = BytesIO()
+            await async_client.download_public(directory.public_key, output, path=file.path)
+
+            output.seek(0)
+            assert output.read() == content
+
+        await directory.unpublish()
+        assert not await async_client.is_public_dir(directory.public_key)
