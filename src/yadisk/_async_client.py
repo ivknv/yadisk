@@ -2400,7 +2400,6 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
-        _add_authorization_header(kwargs, self.token)
 
         await self._download(
             lambda *args, **kwargs: self.get_public_download_link(public_key, **kwargs),
