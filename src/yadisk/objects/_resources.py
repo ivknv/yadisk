@@ -38,7 +38,7 @@ from typing import (
 
 from .._typing_compat import Generator, Dict, List, AsyncGenerator
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     import datetime
     from ._operations import (
         OperationLinkObject, AsyncOperationLinkObject, SyncOperationLinkObject

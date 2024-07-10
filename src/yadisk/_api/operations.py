@@ -26,7 +26,7 @@ from ..exceptions import InvalidResponseError
 from typing import Optional, TYPE_CHECKING
 from .._typing_compat import Iterable
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from ..types import AnySession, JSON
 
 __all__ = ["GetOperationStatusRequest"]

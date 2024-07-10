@@ -23,7 +23,7 @@ from .._common import str_or_error, bool_or_error, int_or_error, yandex_date
 
 from typing import Any, Optional, NoReturn, TYPE_CHECKING
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     import datetime
 
 __all__ = ["DiskInfoObject", "SystemFoldersObject", "UserObject", "UserPublicInfoObject"]

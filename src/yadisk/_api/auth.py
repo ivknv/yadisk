@@ -26,7 +26,7 @@ from typing import Optional, Union, Literal, TYPE_CHECKING
 
 from urllib.parse import urlencode
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from ..types import AnySession
 
 __all__ = [

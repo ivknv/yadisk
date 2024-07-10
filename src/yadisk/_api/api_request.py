@@ -27,7 +27,7 @@ from typing import Any, Optional, Union, Type, TypeVar, TYPE_CHECKING
 from .._typing_compat import Set, Dict, Tuple, Callable, Awaitable
 import json
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from .._session import Session
     from .._async_session import AsyncSession
     from ..types import AnySession, HTTPMethod, JSON, TimeoutParameter

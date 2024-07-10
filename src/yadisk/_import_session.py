@@ -19,7 +19,7 @@
 from typing import TYPE_CHECKING
 from ._typing_compat import Type
 
-if TYPE_CHECKING: # pragma: no cover
+if TYPE_CHECKING:  # pragma: no cover
     from ._session import Session
     from ._async_session import AsyncSession
     from .types import AsyncSessionName, SessionName
