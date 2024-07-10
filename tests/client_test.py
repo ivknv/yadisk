@@ -55,6 +55,9 @@ class TestClient:
         assert resource.type == "dir"
         assert resource.name == posixpath.split(disk_root)[1]
 
+        # Test the convenience method as well
+        assert resource.get_meta(".").resource_id == resource.resource_id
+
     @pytest.mark.usefixtures("sync_client_test")
     def test_listdir(self, client: yadisk.Client, disk_root: str) -> None:
         names = ["dir1", "dir2", "dir3"]
@@ -64,9 +67,14 @@ class TestClient:
 
             client.mkdir(path)
 
-        result = [i.name for i in client.listdir(disk_root)]
+        contents = list(client.listdir(disk_root))
+        result = [i.name for i in contents]
 
         assert result == names
+
+        # Test the convenience method as well
+        for dir in contents:
+            assert list(dir.listdir(".")) == []
 
     @pytest.mark.usefixtures("sync_client_test")
     def test_listdir_fields(self, client: yadisk.Client, disk_root: str) -> None:

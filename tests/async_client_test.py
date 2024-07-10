@@ -63,6 +63,9 @@ class TestAsyncClient:
         assert resource.type == "dir"
         assert resource.name == posixpath.split(disk_root)[1]
 
+        # Test convenience method as well
+        assert (await resource.get_meta(".")).resource_id == resource.resource_id
+
     @pytest.mark.usefixtures("async_client_test")
     async def test_listdir(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
         names = ["dir1", "dir2", "dir3"]
@@ -71,12 +74,14 @@ class TestAsyncClient:
         for path in paths:
             await async_client.mkdir(path)
 
-        async def get_result():
-            return [i.name async for i in async_client.listdir(disk_root)]
-
-        result = await get_result()
+        contents = [i async for i in async_client.listdir(disk_root)]
+        result = [i.name for i in contents]
 
         assert result == names
+
+        # Test the convenience method as well
+        for dir in contents:
+            assert [i async for i in dir.listdir(".")] == []
 
     @pytest.mark.usefixtures("async_client_test")
     async def test_listdir_fields(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
