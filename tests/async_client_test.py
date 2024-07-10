@@ -584,10 +584,11 @@ class TestAsyncClient:
         directory = await async_client.mkdir(posixpath.join(disk_root, "public"))
         await directory.publish()
 
-        directory = await directory.get_meta()
+        public_directory = await directory.get_meta()
 
-        assert await directory.is_dir()
-        assert await async_client.is_public_dir(directory.public_key)
+        assert await public_directory.is_dir()
+        assert public_directory.public_key is not None
+        assert await async_client.is_public_dir(public_directory.public_key)
 
         files_to_upload = [
             ("first.txt", b"example content"),
@@ -596,20 +597,19 @@ class TestAsyncClient:
         ]
 
         for filename, content in files_to_upload:
-            file = await directory.upload(BytesIO(content), filename)
-            await file.publish()
+            await (await public_directory.upload(BytesIO(content), filename)).publish()
 
-        public_files = [i async for i in directory.public_listdir(sort="modified")]
+        public_files = [i async for i in public_directory.public_listdir(sort="modified")]
 
         for file, (filename, content) in zip(public_files, files_to_upload):
             assert file.name == filename
-            assert await async_client.is_public_file(directory.public_key, path=file.path)
+            assert await async_client.is_public_file(public_directory.public_key, path=file.path)
 
             output = BytesIO()
-            await async_client.download_public(directory.public_key, output, path=file.path)
+            await async_client.download_public(public_directory.public_key, output, path=file.path)
 
             output.seek(0)
             assert output.read() == content
 
-        await directory.unpublish()
-        assert not await async_client.is_public_dir(directory.public_key)
+        await public_directory.unpublish()
+        assert not await async_client.is_public_dir(public_directory.public_key)

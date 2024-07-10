@@ -531,10 +531,11 @@ class TestClient:
         directory = client.mkdir(posixpath.join(disk_root, "public"))
         directory.publish()
 
-        directory = directory.get_meta()
+        public_directory = directory.get_meta()
 
-        assert directory.is_dir()
-        assert client.is_public_dir(directory.public_key)
+        assert public_directory.is_dir()
+        assert public_directory.public_key is not None
+        assert client.is_public_dir(public_directory.public_key)
 
         files_to_upload = [
             ("first.txt", b"example content"),
@@ -543,20 +544,19 @@ class TestClient:
         ]
 
         for filename, content in files_to_upload:
-            file = directory.upload(BytesIO(content), filename)
-            file.publish()
+            public_directory.upload(BytesIO(content), filename).publish()
 
-        public_files = list(directory.public_listdir(sort="modified"))
+        public_files = list(public_directory.public_listdir(sort="modified"))
 
         for file, (filename, content) in zip(public_files, files_to_upload):
             assert file.name == filename
-            assert client.is_public_file(directory.public_key, path=file.path)
+            assert client.is_public_file(public_directory.public_key, path=file.path)
 
             output = BytesIO()
-            client.download_public(directory.public_key, output, path=file.path)
+            client.download_public(public_directory.public_key, output, path=file.path)
 
             output.seek(0)
             assert output.read() == content
 
-        directory.unpublish()
-        assert not client.is_public_dir(directory.public_key)
+        public_directory.unpublish()
+        assert not client.is_public_dir(public_directory.public_key)
