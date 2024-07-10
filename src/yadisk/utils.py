@@ -68,6 +68,7 @@ EXCEPTION_MAP: Dict[int, Dict[str, Type[YaDiskError]]] = {
             "MD5DifferError":                         MD5DifferError
         }
     ),
+    410: defaultdict(lambda: GoneError),
     413: defaultdict(lambda: PayloadTooLargeError),
     415: defaultdict(lambda: UnsupportedMediaError),
     423: defaultdict(

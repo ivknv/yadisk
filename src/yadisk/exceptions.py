@@ -22,7 +22,7 @@ __all__ = [
     "UnknownYaDiskError", "WrongResourceTypeError",
     "AsyncOperationFailedError", "AsyncOperationPollingTimeoutError",
     "BadRequestError", "UnauthorizedError", "ForbiddenError", "NotFoundError",
-    "NotAcceptableError", "ConflictError", "PayloadTooLargeError",
+    "NotAcceptableError", "ConflictError", "GoneError", "PayloadTooLargeError",
     "UnsupportedMediaError", "LockedError", "UploadTrafficLimitExceededError",
     "TooManyRequestsError", "InternalServerError", "BadGatewayError",
     "UnavailableError", "GatewayTimeoutError", "InsufficientStorageError",
@@ -161,6 +161,11 @@ class NotAcceptableError(YaDiskError):
 
 class ConflictError(YaDiskError):
     """Thrown when the server returns code 409."""
+    pass
+
+
+class GoneError(YaDiskError):
+    """Raised when the server returns code 410."""
     pass
 
 
