@@ -56,7 +56,10 @@ class RequestsResponse(Response):
         self.status = self._response.status_code
 
     def json(self) -> JSON:
-        return self._response.json()
+        try:
+            return self._response.json()
+        except RuntimeError as e:
+            raise ValueError(f"Could not parse JSON: {e}") from e
 
     def download(self, consume_callback: ConsumeCallback) -> None:
         try:
@@ -140,7 +143,7 @@ class RequestsSession(Session):
     ) -> Response:
         requests_headers = CaseInsensitiveDict(self.requests_session.headers)
 
-        requests_headers.update(headers)
+        requests_headers.update(headers or {})
 
         converted_kwargs: Dict[str, Any] = {
             "params": params,
