@@ -317,7 +317,7 @@ class SyncPublicResourcesListObject(PublicResourcesListObject):
                  public_resources_list: Optional[Dict] = None,
                  yadisk: Optional[Any] = None):
         PublicResourcesListObject.__init__(self, None, yadisk)
-        self.set_field_type("items", typed_list(partial(SyncPublicResourcesListObject, yadisk=yadisk)))
+        self.set_field_type("items", typed_list(partial(SyncPublicResourceObject, yadisk=yadisk)))
 
         self.import_fields(public_resources_list)
 
@@ -341,7 +341,7 @@ class AsyncPublicResourcesListObject(PublicResourcesListObject):
                  public_resources_list: Optional[Dict] = None,
                  yadisk: Optional[Any] = None):
         PublicResourcesListObject.__init__(self, None, yadisk)
-        self.set_field_type("items", typed_list(partial(AsyncPublicResourcesListObject, yadisk=yadisk)))
+        self.set_field_type("items", typed_list(partial(AsyncPublicResourceObject, yadisk=yadisk)))
 
         self.import_fields(public_resources_list)
 
