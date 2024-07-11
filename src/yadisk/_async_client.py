@@ -1248,10 +1248,10 @@ class AsyncClient:
                 settings.logger.info(f"downloading file {src_path} from {link}")
 
                 async with await session.send_request("GET", link, **temp_kwargs) as response:
-                    await response.download(file.write)
-
                     if response.status != 200:
                         raise await response.get_exception()
+
+                    await response.download(file.write)
 
             return await auto_retry(attempt, n_retries, retry_interval)
         finally:

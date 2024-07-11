@@ -633,7 +633,7 @@ class TestClient:
         output = BytesIO()
 
         with pytest.raises((yadisk.exceptions.GoneError, yadisk.exceptions.InternalServerError)):
-            client.download_by_link(link, output)
+            client.download_by_link(link, output, n_retries=5)
 
         output.seek(0)
         assert output.read() == b""

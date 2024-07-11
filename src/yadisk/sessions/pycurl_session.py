@@ -50,7 +50,11 @@ def convert_curl_error(error: pycurl.error) -> RequestError:
     return exc(msg)
 
 
-class PycurlResponse(Response):
+# see PycurlResponse.download() implementation
+MAX_RESPONSE_BUFFER_SIZE = 128 * 1024
+
+
+class PycURLResponse(Response):
     def __init__(self, curl: pycurl.Curl, response: bytes):
         super().__init__()
 
@@ -85,13 +89,35 @@ class PycurlResponse(Response):
         return json.loads(self._response)
 
     def download(self, consume_callback: ConsumeCallback) -> None:
+        buffer = BytesIO()
+
         def write_cb(chunk: bytes) -> int:
+            # Write up to `MAX_RESPONSE_BUFFER_SIZE` bytes of data into an in-memory buffer
+            # This is a hack to detect bad HTTP status codes to give
+            # `consume_callback` an opportunity to check status before writing
+            if buffer.tell() < MAX_RESPONSE_BUFFER_SIZE:
+                buffer.write(chunk)
+                return len(chunk)
+            elif buffer.tell():
+                buffer.seek(0)
+
+                chunk_from_buffer = buffer.read()
+                consume_callback(chunk_from_buffer)
+
+                buffer.seek(0)
+                buffer.truncate(0)
+
             consume_callback(chunk)
             return len(chunk)
 
         self._curl.setopt(pycurl.WRITEFUNCTION, write_cb)
 
         self._perform()
+
+        # Write left over data from the buffer
+        if buffer.tell():
+            buffer.seek(0)
+            consume_callback(buffer.read())
 
     def close(self) -> None:
         self._curl.close()
@@ -271,7 +297,7 @@ class PycURLSession(Session):
         else:
             response = b""
 
-        return PycurlResponse(curl, response)
+        return PycURLResponse(curl, response)
 
     def close(self) -> None:
         self._share.close()

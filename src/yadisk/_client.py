@@ -1221,10 +1221,24 @@ class Client:
                 settings.logger.info(f"downloading file {src_path} from {link}")
 
                 with session.send_request("GET", link, **temp_kwargs) as response:
-                    response.download(file.write)
+                    # pycurl can't get status until the response is actually read
+                    # in that case, status will be set to 0
+                    if response.status == 0:
+                        def consume(chunk: bytes) -> None:
+                            if response.status not in (0, 200):
+                                return
 
-                    if response.status != 200:
-                        raise response.get_exception()
+                            file.write(chunk)
+
+                        response.download(consume)
+
+                        if response.status != 200:
+                            raise response.get_exception()
+                    else:
+                        if response.status != 200:
+                            raise response.get_exception()
+
+                        response.download(file.write)
 
             auto_retry(attempt, n_retries, retry_interval)
         finally:
