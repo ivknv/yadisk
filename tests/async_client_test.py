@@ -686,3 +686,20 @@ class TestAsyncClient:
                 await operation.wait(poll_interval=poll_interval)
         finally:
             async_client.get_operation_status = old_get_operation_status  # type: ignore[method-assign]
+
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_download_by_link_error(self, async_client: yadisk.AsyncClient) -> None:
+        # Make sure that if the server returns a bad status code (e.g. 500),
+        # download_by_link() will not write the response into the file
+
+        # Sample link, should either produce a 500 or 410 error
+        # In case of error it outputs an HTML page, rather than a file
+        link = "https://downloader.disk.yandex.ru/disk/4deb67f875582dfa8dd53c5d3b72e8fb49ce7cc1502765175dc3af1183a575b6/668ddef2/nsHIkeXKnaRGpTyn0UiRqaUl8Jt3QPRPLeFAjvpBi81sWp-27VfwQ64jjvznGt8kNwE-ofj0cgVKPtPiYwpOA%3D%3D?uid=455675172&filename=CsVGRa8itZzMzH19HCCF4ceXpFpwJAUHpCRAqGOb4O6I59R-oDeDyKMqTq8daIAvY89CJ64noQqRebmQ3C08d8%3D&disposition=attachment&hash=&limit=0&contenttype=application%2Foctet-stream&owneruid=455675172&fsize=72&hid=3e96286ac2b9f0703688be31e7dd0843&media_type=data&tknv=v2&etag=747ce618999f04e43b6435ab69d7108a"
+
+        output = BytesIO()
+
+        with pytest.raises((yadisk.exceptions.GoneError, yadisk.exceptions.InternalServerError)):
+            await async_client.download_by_link(link, output)
+
+        output.seek(0)
+        assert output.read() == b""
