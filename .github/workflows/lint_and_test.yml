@@ -44,4 +44,14 @@ jobs:
         PYTHON_YADISK_GATEWAY_PORT: ${{ vars.PYTHON_YADISK_GATEWAY_PORT }}
         PYTHON_YADISK_REPLAY_ENABLED: 1
       run: |
-        python -Wall -m pytest -v --log-cli-level=WARNING tests
+        pytest --cov=src/yadisk -v --log-cli-level=WARNING tests
+    - name: Upload coverage
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      shell: bash
+      run: |
+        if [[ "${{ matrix.os }}" == "ubuntu-latest" ]] && [[ "${{ matrix.python-version }}" == "3.12" ]]; then
+          pip install coveralls
+          coveralls
+        fi
