@@ -324,13 +324,28 @@ class TestAsyncClient:
 
     @pytest.mark.usefixtures("async_client_test")
     async def test_publish_unpublish(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
-        path = disk_root
+        await async_client.publish(disk_root)
+        meta = await async_client.get_meta(disk_root)
+        assert meta.public_url is not None
+        assert meta.public_key is not None
 
-        await async_client.publish(path)
-        assert (await async_client.get_meta(path)).public_url is not None
+        public_key, public_url = meta.public_key, meta.public_url
 
-        await async_client.unpublish(path)
-        assert (await async_client.get_meta(path)).public_url is None
+        assert await async_client.is_public_dir(public_key)
+        assert await async_client.is_public_dir(public_url)
+        assert not await async_client.is_public_file(public_key)
+        assert not await async_client.is_public_file(public_url)
+
+        await async_client.unpublish(disk_root)
+
+        meta = await async_client.get_meta(disk_root)
+        assert meta.public_url is None
+        assert meta.public_key is None
+
+        assert not await async_client.is_public_dir(public_key)
+        assert not await async_client.is_public_dir(public_url)
+        assert not await async_client.is_public_file(public_key)
+        assert not await async_client.is_public_file(public_url)
 
     @pytest.mark.usefixtures("async_client_test")
     async def test_patch(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:

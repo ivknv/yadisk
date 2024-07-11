@@ -273,13 +273,29 @@ class TestClient:
 
     @pytest.mark.usefixtures("sync_client_test")
     def test_publish_unpublish(self, client: yadisk.Client, disk_root: str) -> None:
-        path = disk_root
+        client.publish(disk_root)
 
-        client.publish(path)
-        assert client.get_meta(path).public_url is not None
+        meta = client.get_meta(disk_root)
+        assert meta.public_url is not None
+        assert meta.public_key is not None
 
-        client.unpublish(path)
-        assert client.get_meta(path).public_url is None
+        public_key, public_url = meta.public_key, meta.public_url
+
+        assert client.is_public_dir(public_key)
+        assert client.is_public_dir(public_url)
+        assert not client.is_public_file(public_key)
+        assert not client.is_public_file(public_url)
+
+        client.unpublish(disk_root)
+
+        meta = client.get_meta(disk_root)
+        assert meta.public_url is None
+        assert meta.public_key is None
+
+        assert not client.is_public_dir(public_key)
+        assert not client.is_public_dir(public_url)
+        assert not client.is_public_file(public_key)
+        assert not client.is_public_file(public_url)
 
     @pytest.mark.usefixtures("sync_client_test")
     def test_patch(self, client: yadisk.Client, disk_root: str) -> None:
