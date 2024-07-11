@@ -45,8 +45,13 @@ jobs:
         PYTHON_YADISK_GATEWAY_PORT: ${{ vars.PYTHON_YADISK_GATEWAY_PORT }}
         PYTHON_YADISK_REPLAY_ENABLED: 1
       run: |
-        source_path=$(python -c 'import importlib.util, os; print(os.path.dirname(importlib.util.find_spec("yadisk").origin))')
-        pytest --cov="$source_path" -v --log-cli-level=WARNING tests
+        if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+          # running with --cov fails on Windows in CI
+          pytest -v --log-cli-level=WARNING tests
+        else
+          source_path=$(python -c 'import importlib.util, os; print(os.path.dirname(importlib.util.find_spec("yadisk").origin))')
+          pytest --cov="$source_path" -v --log-cli-level=WARNING tests
+        fi
     - name: Upload coverage
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
