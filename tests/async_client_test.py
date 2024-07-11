@@ -255,6 +255,10 @@ class TestAsyncClient:
 
         async for i in async_client.trash_listdir("/"):
             if i.origin_path == origin_path:
+                assert await i.exists()
+                assert await i.is_dir()
+                assert not await i.is_file()
+
                 trash_path = i.path
                 break
 

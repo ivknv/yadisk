@@ -204,6 +204,10 @@ class TestClient:
 
         for i in client.trash_listdir("/"):
             if i.origin_path == origin_path:
+                assert i.exists()
+                assert i.is_dir()
+                assert not i.is_file()
+
                 trash_path = i.path
                 break
 
