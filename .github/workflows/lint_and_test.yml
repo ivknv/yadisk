@@ -45,7 +45,7 @@ jobs:
         PYTHON_YADISK_GATEWAY_PORT: ${{ vars.PYTHON_YADISK_GATEWAY_PORT }}
         PYTHON_YADISK_REPLAY_ENABLED: 1
       run: |
-        source_path=$(python3 -c 'import importlib, os; print(os.path.dirname(importlib.util.find_spec("yadisk").origin))')
+        source_path=$(python -c 'import importlib.util, os; print(os.path.dirname(importlib.util.find_spec("yadisk").origin))')
         pytest --cov="$source_path" -v --log-cli-level=WARNING tests
     - name: Upload coverage
       env:
