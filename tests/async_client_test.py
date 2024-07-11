@@ -629,3 +629,18 @@ class TestAsyncClient:
             assert await async_client.public_exists(public_resource @ "public_key")
 
         assert [i.path for i in first_10[5:]] == [i.path for i in with_offset]
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_get_upload_link_object(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        directory = await async_client.get_meta(disk_root)
+        upload_link = await directory.get_upload_link_object("test.txt")
+
+        assert (
+            await async_client.get_operation_status(upload_link @ "operation_id")
+        ) == "in-progress"
+
+        await async_client.upload_by_link(BytesIO(b"test file"), upload_link @ "href")
+
+        assert (
+            await async_client.get_operation_status(upload_link @ "operation_id")
+        ) == "success"

@@ -571,7 +571,17 @@ class TestClient:
         assert with_offset is not None
 
         for public_resource in first_10 + with_offset:
-            print(f"{public_resource @ 'path'}")
             assert client.public_exists(public_resource @ "public_key")
 
         assert [i.path for i in first_10[5:]] == [i.path for i in with_offset]
+
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_get_upload_link_object(self, client: yadisk.Client, disk_root: str) -> None:
+        directory = client.get_meta(disk_root)
+        upload_link = directory.get_upload_link_object("test.txt")
+
+        assert client.get_operation_status(upload_link @ "operation_id") == "in-progress"
+
+        client.upload_by_link(BytesIO(b"test file"), upload_link @ "href")
+
+        assert client.get_operation_status(upload_link @ "operation_id") == "success"
