@@ -644,3 +644,14 @@ class TestAsyncClient:
         assert (
             await async_client.get_operation_status(upload_link @ "operation_id")
         ) == "success"
+
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_streaming_requests(self, async_client: yadisk.AsyncClient) -> None:
+        # stream=True should not break requests
+
+        assert await async_client.check_token(stream=True)
+        assert len(
+            await async_client.get_last_uploaded(
+                stream=True, limit=10, fields=["items.type"]
+            )
+        ) == 10

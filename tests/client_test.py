@@ -585,3 +585,10 @@ class TestClient:
         client.upload_by_link(BytesIO(b"test file"), upload_link @ "href")
 
         assert client.get_operation_status(upload_link @ "operation_id") == "success"
+
+    @pytest.mark.usefixtures("record_or_replay")
+    def test_streaming_requests(self, client: yadisk.Client) -> None:
+        # stream=True should not break requests
+
+        assert client.check_token(stream=True)
+        assert len(client.get_last_uploaded(stream=True, limit=10, fields=["items.type"])) == 10
