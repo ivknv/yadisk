@@ -609,3 +609,14 @@ class TestClient:
         operation.wait(poll_interval=poll_interval)
 
         assert operation.get_status() == "success"
+
+        # Mock get_operation_status() to trigger an AsyncOperationFailedError
+        old_get_operation_status = client.get_operation_status
+
+        try:
+            client.get_operation_status = lambda *args, **kwargs: "failed"  # type: ignore[method-assign]
+
+            with pytest.raises(yadisk.exceptions.AsyncOperationFailedError):
+                operation.wait(poll_interval=poll_interval)
+        finally:
+            client.get_operation_status = old_get_operation_status  # type: ignore[method-assign]

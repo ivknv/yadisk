@@ -672,3 +672,17 @@ class TestAsyncClient:
         await operation.wait(poll_interval=poll_interval)
 
         assert await operation.get_status() == "success"
+
+        # Mock get_operation_status() to trigger an AsyncOperationFailedError
+        old_get_operation_status = async_client.get_operation_status
+
+        async def fake_get_operation_status(*args, **kwargs) -> yadisk.types.OperationStatus:
+            return "failed"
+
+        try:
+            async_client.get_operation_status = fake_get_operation_status  # type: ignore[method-assign]
+
+            with pytest.raises(yadisk.exceptions.AsyncOperationFailedError):
+                await operation.wait(poll_interval=poll_interval)
+        finally:
+            async_client.get_operation_status = old_get_operation_status  # type: ignore[method-assign]
