@@ -162,14 +162,14 @@ class TestClient:
     )
     @pytest.mark.usefixtures("sync_client_test")
     def test_upload_and_download(self, client: yadisk.Client, disk_root: str) -> None:
-        with BytesIO() as buf1, open_tmpfile("w+b") as buf2:
+        with open_tmpfile("w+b") as buf1, open_tmpfile("w+b") as buf2:
             buf1.write(b"0" * 1024**2)
             buf1.seek(0)
 
             path = posixpath.join(disk_root, "zeroes.txt")
 
-            client.upload(buf1, path, overwrite=True, n_retries=50)
-            client.download(path, buf2.name, n_retries=50)
+            client.upload(buf1.name, path, overwrite=True)
+            client.download(path, buf2.name)
 
             buf1.seek(0)
             buf2.seek(0)
