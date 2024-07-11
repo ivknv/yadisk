@@ -22,6 +22,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements-dev.txt
+    - name: Lint with ruff
+      run: ruff check
+    - name: Lint with mypy
+      run: mypy
     - name: Build the package
       run: python -m build
     - name: Install the built wheel
@@ -30,10 +34,6 @@ jobs:
         # Use the wheel to prevent broken releases, instead of the editable install
         pip uninstall -y yadisk
         pip install dist/yadisk-*.whl
-    - name: Lint with ruff
-      run: ruff check
-    - name: Lint with mypy
-      run: mypy
     - name: Run pre-recored tests
       env:
         PYTHON_YADISK_APP_ID: ${{ vars.PYTHON_YADISK_APP_ID }}
