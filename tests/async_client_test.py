@@ -655,3 +655,20 @@ class TestAsyncClient:
                 stream=True, limit=10, fields=["items.type"]
             )
         ) == 10
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_wait_for_operation(
+        self,
+        async_client: yadisk.AsyncClient,
+        disk_root: str,
+        poll_interval: float
+    ) -> None:
+        directory = await async_client.mkdir("directory")
+        operation = await directory.remove(permanently=True, force_async=True, wait=False)
+
+        with pytest.raises(yadisk.exceptions.AsyncOperationPollingTimeoutError):
+            await operation.wait(poll_timeout=0.0)
+
+        await operation.wait(poll_interval=poll_interval)
+
+        assert await operation.get_status() == "success"

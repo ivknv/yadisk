@@ -592,3 +592,20 @@ class TestClient:
 
         assert client.check_token(stream=True)
         assert len(client.get_last_uploaded(stream=True, limit=10, fields=["items.type"])) == 10
+
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_wait_for_operation(
+        self,
+        client: yadisk.Client,
+        disk_root: str,
+        poll_interval: float
+    ) -> None:
+        directory = client.mkdir("directory")
+        operation = directory.remove(permanently=True, force_async=True, wait=False)
+
+        with pytest.raises(yadisk.exceptions.AsyncOperationPollingTimeoutError):
+            operation.wait(poll_timeout=0.0)
+
+        operation.wait(poll_interval=poll_interval)
+
+        assert operation.get_status() == "success"
