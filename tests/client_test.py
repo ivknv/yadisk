@@ -591,11 +591,8 @@ class TestClient:
     )
     @pytest.mark.usefixtures("record_or_replay")
     def test_get_public_resources(self, client: yadisk.Client) -> None:
-        first_10 = client.get_public_resources(limit=10).items
-        with_offset = client.get_public_resources(limit=5, offset=5).items
-
-        assert first_10 is not None
-        assert with_offset is not None
+        first_10 = list(client.get_all_public_resources(max_items=10, limit=3))
+        with_offset = list(client.get_all_public_resources(max_items=5, offset=5, limit=2))
 
         for public_resource in first_10 + with_offset:
             assert client.public_exists(public_resource @ "public_key")

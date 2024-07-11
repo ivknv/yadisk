@@ -644,8 +644,8 @@ class TestAsyncClient:
     )
     @pytest.mark.usefixtures("record_or_replay")
     async def test_get_public_resources(self, async_client: yadisk.AsyncClient) -> None:
-        first_10 = (await async_client.get_public_resources(limit=10)).items
-        with_offset = (await async_client.get_public_resources(limit=5, offset=5)).items
+        first_10 = [i async for i in async_client.get_all_public_resources(max_items=10, limit=3)]
+        with_offset = [i async for i in async_client.get_all_public_resources(max_items=5, offset=5, limit=2)]
 
         assert first_10 is not None
         assert with_offset is not None

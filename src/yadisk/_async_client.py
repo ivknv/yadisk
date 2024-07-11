@@ -2139,6 +2139,67 @@ class AsyncClient:
 
         return await GetPublicResourcesRequest(self.session, **kwargs).asend(yadisk=self)
 
+    async def get_all_public_resources(
+        self,
+        *,
+        max_items: Optional[int] = None,
+        **kwargs
+    ) -> AsyncGenerator[AsyncPublicResourceObject, None]:
+        """
+            Get a list of all public resources.
+
+            :param max_items: `int` or `None`, maximum number of returned items (`None` means unlimited)
+            :param offset: offset from the beginning of the list
+            :param limit: maximum number of elements in the list
+            :param preview_size: size of the file preview
+            :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+            :param type: filter based on type of resources ("file" or "dir")
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
+            :returns: async generator of :any:`AsyncPublicResourceObject`
+        """
+
+        if kwargs.get("offset") is None:
+            kwargs["offset"] = 0
+
+        if kwargs.get("limit") is None:
+            kwargs["limit"] = 100
+
+        remaining_items = max_items
+
+        while True:
+            # Do not query more items than necessary
+            if remaining_items is not None:
+                kwargs["limit"] = min(remaining_items, kwargs["limit"])
+
+            files = (await self.get_public_resources(**kwargs)).items or []
+            file_count = len(files)
+
+            for i in files[:remaining_items]:
+                yield i
+
+            if remaining_items is not None:
+                remaining_items -= file_count
+
+                if remaining_items <= 0:
+                    break
+
+            if file_count < kwargs["limit"]:
+                break
+
+            kwargs["offset"] += kwargs["limit"]
+
     async def patch(self, path: str, properties: dict, /, **kwargs) -> "AsyncResourceObject":
         """
             Update custom properties of a resource.
