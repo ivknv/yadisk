@@ -2398,8 +2398,8 @@ class AsyncClient:
         _apply_default_args(kwargs, self.default_args)
 
         await self._download(
-            lambda *args, **kwargs: self.get_public_download_link(public_key, **kwargs),
-            "", file_or_path, **kwargs)
+            lambda public_key, **kwargs: self.get_public_download_link(public_key, **kwargs),
+            public_key, file_or_path, **kwargs)
         return AsyncPublicResourceLinkObject.from_public_key(public_key, yadisk=self)
 
     async def get_operation_status(self, operation_id: str, /, **kwargs) -> OperationStatus:

@@ -2357,8 +2357,8 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
 
         self._download(
-            lambda *args, **kwargs: self.get_public_download_link(public_key, **kwargs),
-            "", file_or_path, **kwargs)
+            lambda public_key, **kwargs: self.get_public_download_link(public_key, **kwargs),
+            public_key, file_or_path, **kwargs)
 
         return SyncPublicResourceLinkObject.from_public_key(public_key, yadisk=self)
 
