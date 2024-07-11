@@ -300,11 +300,12 @@ class TestClient:
     @pytest.mark.usefixtures("sync_client_test")
     def test_patch(self, client: yadisk.Client, disk_root: str) -> None:
         directory = client.patch(disk_root, {"test_property": "I'm a value!"})
-        assert directory.custom_properties is not None
+        assert directory.custom_properties == {"test_property": "I'm a value!"}
 
-        assert directory.custom_properties["test_property"] == "I'm a value!"
+        directory = client.patch(disk_root, {"number": 42})
+        assert directory.custom_properties == {"test_property": "I'm a value!", "number": 42}
 
-        directory = directory.patch({"test_property": None})
+        directory = directory.patch({"test_property": None, "number": None})
         assert directory.custom_properties is None
 
     @pytest.mark.usefixtures("sync_client_test")

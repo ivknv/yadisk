@@ -32,7 +32,7 @@
                 "content-type": "application/json; charset=utf-8",
                 "content-length": "537"
             },
-            "content": "eJy1kT9PwzAQxb9K8cJAq57/JE48s7B3YYoc+6Ja1ElkOxFV1e/OtcDAxALTSb6n9373fGGjjcgMK5hLN9vijmzL8D0MzFyuW5YwT0ty2AVPIlVVta64FqbtbeWdHEA2g2qkElaD8rWSLfceaeHBSyu0VYPVDWou674avATwqGrpKcQtuUyxm9M0YyoBMyV+YXw+nSnx5TFu7Ga1pwUfGPG4hLbgjUWAUDvQOw4HAUa2RvInAANA1nHyYQi/yujcI0l8yG9m/2qfaR4of/+jCzfFiGOhAu6AcworEXTfxfx1K/PSn4L7J3sqsJxnvN+c2O1315DDNDJD9nAz0pxLSf7XD1X8nlo="
+            "content": "eJy1kTFPwzAQhf9K8cJAq56d5BJ7ZmHvwhS59lW1aGLLcSKqqv+da4GBiQUkSyed3t377vkiRjuQMKLQVPpkizuKtaD3cBDmcl2LTFOcs6M+eBbVTYNtI1tlsNJaEbRa6xobqSxWeKi6RgOi9tgp0ug1dqzV1KpO7r13yqoKO4u+IjZx81Ti0KccE+USaGLHL4zP1pkdXx6HlV0t9jTTg2Ael8kWurEoUPUG2o2UO9kZUAbwCcAA8Ooh+nAIv8r43CNLfJjezPbVPnPdsf/2RxYuDgONhQO4A6YcFibov4P561TSvD8F90/rOcByTnS/OYvb7y5hCnEUhkeAn1YIVY2yvn4AIaeY7A=="
         }
     },
     {
@@ -43,14 +43,32 @@
             "connection": "keep-alive",
             "authorization": "OAuth supposedly_valid_token"
         },
-        "content": "eJyrVkouLS7Jz40vKMovSC0qyUwtVrJSqFYqSS0ugYlVAkXySnNyamsBpKUR0w==",
+        "content": "eJyrVkouLS7Jz40vKMovSC0qyUwtVrJSqFbKK81NSi0CMk2MamsBDR8NYw==",
+        "response": {
+            "status_code": 200,
+            "headers": {
+                "content-type": "application/json; charset=utf-8",
+                "content-length": "549"
+            },
+            "content": "eJy1kTFvwyAQhf9KytKhiYKxfRjmLt2zdLIwnBXUYCPAVqMo/72XtB06dWklJCT0Hu+7dxc2mYBMs4K59NEUe2Rbhu9+ZPpy3bKEeV6Sxd47EjVtC7KtpNBQKyWQS6VUA20lDNQw1l2rOIBy0AlU4BR0pFUoRVcNzllhRA2dAVcjhdgllzn0Mc0RU/GYKfEL4/PpTIkvj2FjNqs5LfhAnmkJAyamG0FsNqEpeOMSXDQ7LndVdag6zYXm8MS55pwsYXZ+9L/KaPQjSZzPb3r/ap7pPhDL/kcvdg4Bp0Jl3GFj8isR9N8l/XVDcRlO3v7T91RgOUe8z5zYbdOrz36emCYLp6MEQKskNNcPzwecmA=="
+        }
+    },
+    {
+        "method": "PATCH",
+        "url": "https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2FYaDiskTest%2Ftest_patch",
+        "headers": {
+            "content-type": "application/json",
+            "connection": "keep-alive",
+            "authorization": "OAuth supposedly_valid_token"
+        },
+        "content": "eJyrVkouLS7Jz40vKMovSC0qyUwtVrJSqFYqSS0ugYlVAkXySnNydBSU8kpzk1KLoPzaWgDlExcB",
         "response": {
             "status_code": 200,
             "headers": {
                 "content-type": "application/json; charset=utf-8",
                 "content-length": "509"
             },
-            "content": "eJy1kb1uwzAMhN9FaxOE+rFla84jZOlkyBKFCPWPIMlBCyPvXrpAh05d2okDj3f3gTtb7IzMsIqlDslWd2cnhu8xMLM/TyxjWbfscIieRKppWt1wLUw/2sY7GUB2QXVSCatB+VbJnnuPtPDgpRXaqmB1h5rLdmyClwAeVSs9hbit1HUeUl4T5hqxMLNs00SLjLbikSdAqDPoM4ebACN7I/kLgAGg83n1McRfZYR0J4mP5c1cXu2V5o1QLz943TrPuFSCpBI7Szk+qMHwDf/X5Gkbp+j+yZ6eVj8SfjFndnzwEUtcF2bIHg4jzVu66sTzE4VLlQM="
+            "content": "eJy1kc1qwzAMgN/F17XUdhL557xH6GWn4NoKNUtiYztlI/Tdpw422GG3DQQ66NPPh3a2ugWZZQ1rG7Nr/soODN/ixOx+P7CCNW3F4xgDQf0wgBqEkhY6YyRyZYzpYRDSQQdTpwfDAUwALdFAMKCJNaikFpcQvHSyA+0gdEhL/FZbWsZcUsbSIlZm122eqVDQNXzsk1z2R66OQpyFtlxaDk+cW86pfUkhTvEXTH1jpHQlJMT6ak8v7pnymVRPP3x9WhZcG0nSETvLJd7ogvFL/q/N83aZo/+n8fS09p7x07mwxwdvsca0MkstnMJIJcVAE+4fhJCPlA=="
         }
     },
     {

@@ -350,11 +350,12 @@ class TestAsyncClient:
     @pytest.mark.usefixtures("async_client_test")
     async def test_patch(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
         directory = await async_client.patch(disk_root, {"test_property": "I'm a value!"})
-        assert directory.custom_properties is not None
+        assert directory.custom_properties == {"test_property": "I'm a value!"}
 
-        assert directory.custom_properties["test_property"] == "I'm a value!"
+        directory = await async_client.patch(disk_root, {"number": 42})
+        assert directory.custom_properties == {"test_property": "I'm a value!", "number": 42}
 
-        directory = await directory.patch({"test_property": None})
+        directory = await directory.patch({"test_property": None, "number": None})
         assert directory.custom_properties is None
 
     @pytest.mark.usefixtures("async_client_test")
