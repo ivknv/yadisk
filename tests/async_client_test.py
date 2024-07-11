@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 
 import hashlib
-import tempfile
-from typing import Any
-import aiofiles
-
+import logging
 import os
 import platform
 import posixpath
-from io import BytesIO
 import sys
+import tempfile
+
+from typing import Any
+from io import BytesIO
+
+import aiofiles
 
 import yadisk
 from yadisk._common import is_operation_link, ensure_path_has_schema
@@ -703,3 +705,48 @@ class TestAsyncClient:
 
         output.seek(0)
         assert output.read() == b""
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_operation_error_triggers_retry(
+        self,
+        async_client: yadisk.AsyncClient,
+        disk_root: str,
+        poll_interval: float,
+        mocker,
+        caplog
+    ) -> None:
+        path1 = posixpath.join(disk_root, "test_file.txt")
+        path2 = posixpath.join(disk_root, "copy.txt")
+        await async_client.upload(BytesIO(b"test data"), path1)
+
+
+        class GetOperationStatusMock:
+            def __init__(self):
+                self.call_count = 0
+
+            async def __call__(self, *args, **kwargs) -> yadisk.types.OperationStatus:
+                self.call_count += 1
+
+                if self.call_count < 3:
+                    return "failed"
+
+                return await yadisk.AsyncClient.get_operation_status(async_client, *args, **kwargs)
+
+
+        mocker.patch.object(async_client, "get_operation_status", GetOperationStatusMock())
+
+        with caplog.at_level(logging.INFO, logger="yadisk"):
+            await async_client.copy(
+                path1,
+                path2,
+                force_async=True,
+                overwrite=True,
+                poll_interval=poll_interval
+            )
+
+        expected_message1 = "automatic retry triggered: (1 out of 50), got AsyncOperationFailedError: Asynchronous operation failed"  # noqa: E501
+        expected_message2 = "asynchronous operation failed, attempting to restart it"
+        assert expected_message1 in caplog.text
+        assert caplog.text.count(expected_message2) >= 2
+
+        assert await async_client.is_file(path2)

@@ -402,6 +402,8 @@ class AsyncClient:
                     # only if the asynchronous operation failed
                     if not isinstance(e, AsyncOperationFailedError):
                         e.disable_retry = True
+                    else:
+                        settings.logger.info("asynchronous operation failed, attempting to restart it")
 
                     raise e from None
 
