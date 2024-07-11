@@ -394,25 +394,29 @@ class TestAsyncClient:
         assert ensure_path_has_schema("app:/test") == "app:/test"
 
     @pytest.mark.usefixtures("async_client_test")
-    async def test_upload_download_non_seekable(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+    async def test_upload_download_non_seekable(
+        self,
+        async_client: yadisk.AsyncClient,
+        disk_root: str,
+        mocker
+    ) -> None:
         # It should be possible to upload/download non-seekable file objects (such as stdin/stdout)
         # See https://github.com/ivknv/yadisk/pull/31 for more details
-
-        test_input_file = BytesIO(b"0" * 1000)
-        test_input_file.seekable = lambda: False  # type: ignore
 
         def seek(*args, **kwargs):
             raise NotImplementedError
 
-        test_input_file.seek = seek  # type: ignore
+        test_input_file = BytesIO(b"0" * 1000)
+        mocker.patch.object(test_input_file, "seekable", lambda: False)
+        mocker.patch.object(test_input_file, "seek", seek)
 
         dst_path = posixpath.join(disk_root, "zeroes.txt")
 
         await async_client.upload(test_input_file, dst_path, n_retries=50)
 
         test_output_file = BytesIO()
-        test_output_file.seekable = lambda: False  # type: ignore
-        test_output_file.seek = seek  # type: ignore
+        mocker.patch.object(test_output_file, "seekable", lambda: False)
+        mocker.patch.object(test_output_file, "seek", seek)
 
         await async_client.download(dst_path, test_output_file, n_retries=50)
 
@@ -661,7 +665,8 @@ class TestAsyncClient:
         self,
         async_client: yadisk.AsyncClient,
         disk_root: str,
-        poll_interval: float
+        poll_interval: float,
+        mocker
     ) -> None:
         directory = await async_client.mkdir("directory")
         operation = await directory.remove(permanently=True, force_async=True, wait=False)
@@ -674,18 +679,13 @@ class TestAsyncClient:
         assert await operation.get_status() == "success"
 
         # Mock get_operation_status() to trigger an AsyncOperationFailedError
-        old_get_operation_status = async_client.get_operation_status
-
         async def fake_get_operation_status(*args, **kwargs) -> yadisk.types.OperationStatus:
             return "failed"
 
-        try:
-            async_client.get_operation_status = fake_get_operation_status  # type: ignore[method-assign]
+        mocker.patch.object(async_client, "get_operation_status", fake_get_operation_status)
 
-            with pytest.raises(yadisk.exceptions.AsyncOperationFailedError):
-                await operation.wait(poll_interval=poll_interval)
-        finally:
-            async_client.get_operation_status = old_get_operation_status  # type: ignore[method-assign]
+        with pytest.raises(yadisk.exceptions.AsyncOperationFailedError):
+            await operation.wait(poll_interval=poll_interval)
 
     @pytest.mark.usefixtures("record_or_replay")
     async def test_download_by_link_error(self, async_client: yadisk.AsyncClient) -> None:

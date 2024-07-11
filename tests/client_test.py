@@ -332,15 +332,21 @@ class TestClient:
         assert ensure_path_has_schema("app:/test") == "app:/test"
 
     @pytest.mark.usefixtures("sync_client_test")
-    def test_upload_download_non_seekable(self, client: yadisk.Client, disk_root: str) -> None:
+    def test_upload_download_non_seekable(
+        self,
+        client: yadisk.Client,
+        disk_root: str,
+        mocker
+    ) -> None:
         # It should be possible to upload/download non-seekable file objects (such as sys.stdin/sys.stdout)
         # See https://github.com/ivknv/yadisk/pull/31 for more details
 
-        test_input_file = BytesIO(b"0" * 1000)
-        test_input_file.seekable = lambda: False  # type: ignore
-
         def seek(*args, **kwargs):
             raise NotImplementedError
+
+        test_input_file = BytesIO(b"0" * 1000)
+        mocker.patch.object(test_input_file, "seekable", lambda: False)
+        mocker.patch.object(test_input_file, "seek", seek)
 
         test_input_file.seek = seek  # type: ignore
 
@@ -349,8 +355,8 @@ class TestClient:
         client.upload(test_input_file, dst_path, n_retries=50)
 
         test_output_file = BytesIO()
-        test_output_file.seekable = lambda: False  # type: ignore
-        test_output_file.seek = seek  # type: ignore
+        mocker.patch.object(test_output_file, "seekable", lambda: False)
+        mocker.patch.object(test_output_file, "seek", seek)
 
         client.download(dst_path, test_output_file, n_retries=50)
 
@@ -598,7 +604,8 @@ class TestClient:
         self,
         client: yadisk.Client,
         disk_root: str,
-        poll_interval: float
+        poll_interval: float,
+        mocker
     ) -> None:
         directory = client.mkdir("directory")
         operation = directory.remove(permanently=True, force_async=True, wait=False)
@@ -611,15 +618,10 @@ class TestClient:
         assert operation.get_status() == "success"
 
         # Mock get_operation_status() to trigger an AsyncOperationFailedError
-        old_get_operation_status = client.get_operation_status
+        mocker.patch.object(client, "get_operation_status", lambda *args, **kwargs: "failed")
 
-        try:
-            client.get_operation_status = lambda *args, **kwargs: "failed"  # type: ignore[method-assign]
-
-            with pytest.raises(yadisk.exceptions.AsyncOperationFailedError):
-                operation.wait(poll_interval=poll_interval)
-        finally:
-            client.get_operation_status = old_get_operation_status  # type: ignore[method-assign]
+        with pytest.raises(yadisk.exceptions.AsyncOperationFailedError):
+            operation.wait(poll_interval=poll_interval)
 
     @pytest.mark.usefixtures("record_or_replay")
     def test_download_by_link_error(self, client: yadisk.Client) -> None:
