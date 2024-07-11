@@ -194,12 +194,6 @@ def is_async_func(func: Any) -> bool:
     return inspect.isgeneratorfunction(func) or asyncio.iscoroutinefunction(func)
 
 
-def is_async_file(file: Any) -> bool:
-    read_method = getattr(file, "read", None)
-
-    return is_async_func(read_method)
-
-
 async def _file_tell(file: Any) -> int:
     if is_async_func(file.tell):
         return await file.tell()
