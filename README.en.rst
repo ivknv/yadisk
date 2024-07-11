@@ -15,7 +15,11 @@ YaDisk
 .. |Python Version Badge| image:: https://img.shields.io/pypi/pyversions/yadisk
    :alt: PyPI - Python Version
 
-|RTD Badge| |CI Badge| |PyPI Badge| |Python Version Badge|
+.. |Coverage Badge| image:: https://coveralls.io/repos/github/ivknv/yadisk/badge.svg
+   :alt: Coverage
+   :target: https://coveralls.io/github/ivknv/yadisk
+
+|RTD Badge| |CI Badge| |PyPI Badge| |Python Version Badge| |Coverage Badge|
 
 YaDisk is a Yandex.Disk REST API client library.
 

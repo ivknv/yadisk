@@ -15,7 +15,11 @@ YaDisk
 .. |Python Version Badge| image:: https://img.shields.io/pypi/pyversions/yadisk
    :alt: PyPI - Python Version
 
-|RTD Badge| |CI Badge| |PyPI Badge| |Python Version Badge|
+.. |Coverage Badge| image:: https://coveralls.io/repos/github/ivknv/yadisk/badge.svg
+   :alt: Coverage
+   :target: https://coveralls.io/github/ivknv/yadisk
+
+|RTD Badge| |CI Badge| |PyPI Badge| |Python Version Badge| |Coverage Badge|
 
 .. _English version of this document: https://github.com/ivknv/yadisk/blob/master/README.en.rst
 
