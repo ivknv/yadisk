@@ -34,7 +34,7 @@ from ..exceptions import InvalidResponseError
 from .._typing_compat import Iterable, Dict, List
 from typing import Optional, Union, TYPE_CHECKING
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from ..types import AnySession, AnyClient, JSON
 
 __all__ = ["GetPublicResourcesRequest", "UnpublishRequest", "GetDownloadLinkRequest",

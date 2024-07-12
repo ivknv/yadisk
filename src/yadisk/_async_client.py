@@ -194,12 +194,6 @@ def is_async_func(func: Any) -> bool:
     return inspect.isgeneratorfunction(func) or asyncio.iscoroutinefunction(func)
 
 
-def is_async_file(file: Any) -> bool:
-    read_method = getattr(file, "read", None)
-
-    return is_async_func(read_method)
-
-
 async def _file_tell(file: Any) -> int:
     if is_async_func(file.tell):
         return await file.tell()
@@ -408,6 +402,8 @@ class AsyncClient:
                     # only if the asynchronous operation failed
                     if not isinstance(e, AsyncOperationFailedError):
                         e.disable_retry = True
+                    else:
+                        settings.logger.info("asynchronous operation failed, attempting to restart it")
 
                     raise e from None
 
@@ -1254,10 +1250,10 @@ class AsyncClient:
                 settings.logger.info(f"downloading file {src_path} from {link}")
 
                 async with await session.send_request("GET", link, **temp_kwargs) as response:
-                    await response.download(file.write)
-
                     if response.status != 200:
                         raise await response.get_exception()
+
+                    await response.download(file.write)
 
             return await auto_retry(attempt, n_retries, retry_interval)
         finally:
@@ -1685,7 +1681,7 @@ class AsyncClient:
 
         new_name = new_name.rstrip("/")
 
-        if "/" in new_name or new_name in (".", ".."):
+        if "/" in new_name or new_name in (".", "..", ""):
             raise ValueError(f"Invalid filename: {new_name}")
 
         dst_path = str(PurePosixPath(src_path).parent / new_name)
@@ -2143,6 +2139,67 @@ class AsyncClient:
 
         return await GetPublicResourcesRequest(self.session, **kwargs).asend(yadisk=self)
 
+    async def get_all_public_resources(
+        self,
+        *,
+        max_items: Optional[int] = None,
+        **kwargs
+    ) -> AsyncGenerator[AsyncPublicResourceObject, None]:
+        """
+            Get a list of all public resources.
+
+            :param max_items: `int` or `None`, maximum number of returned items (`None` means unlimited)
+            :param offset: offset from the beginning of the list
+            :param limit: maximum number of elements in the list
+            :param preview_size: size of the file preview
+            :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+            :param type: filter based on type of resources ("file" or "dir")
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
+            :returns: async generator of :any:`AsyncPublicResourceObject`
+        """
+
+        if kwargs.get("offset") is None:
+            kwargs["offset"] = 0
+
+        if kwargs.get("limit") is None:
+            kwargs["limit"] = 100
+
+        remaining_items = max_items
+
+        while True:
+            # Do not query more items than necessary
+            if remaining_items is not None:
+                kwargs["limit"] = min(remaining_items, kwargs["limit"])
+
+            files = (await self.get_public_resources(**kwargs)).items or []
+            file_count = len(files)
+
+            for i in files[:remaining_items]:
+                yield i
+
+            if remaining_items is not None:
+                remaining_items -= file_count
+
+                if remaining_items <= 0:
+                    break
+
+            if file_count < kwargs["limit"]:
+                break
+
+            kwargs["offset"] += kwargs["limit"]
+
     async def patch(self, path: str, properties: dict, /, **kwargs) -> "AsyncResourceObject":
         """
             Update custom properties of a resource.
@@ -2400,11 +2457,10 @@ class AsyncClient:
         """
 
         _apply_default_args(kwargs, self.default_args)
-        _add_authorization_header(kwargs, self.token)
 
         await self._download(
-            lambda *args, **kwargs: self.get_public_download_link(public_key, **kwargs),
-            "", file_or_path, **kwargs)
+            lambda public_key, **kwargs: self.get_public_download_link(public_key, **kwargs),
+            public_key, file_or_path, **kwargs)
         return AsyncPublicResourceLinkObject.from_public_key(public_key, yadisk=self)
 
     async def get_operation_status(self, operation_id: str, /, **kwargs) -> OperationStatus:

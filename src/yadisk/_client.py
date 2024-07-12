@@ -335,6 +335,8 @@ class Client:
                     # only if the asynchronous operation failed
                     if not isinstance(e, AsyncOperationFailedError):
                         e.disable_retry = True
+                    else:
+                        settings.logger.info("asynchronous operation failed, attempting to restart it")
 
                     raise e from None
 
@@ -1221,10 +1223,24 @@ class Client:
                 settings.logger.info(f"downloading file {src_path} from {link}")
 
                 with session.send_request("GET", link, **temp_kwargs) as response:
-                    response.download(file.write)
+                    # pycurl can't get status until the response is actually read
+                    # in that case, status will be set to 0
+                    if response.status == 0:
+                        def consume(chunk: bytes) -> None:
+                            if response.status not in (0, 200):
+                                return
 
-                    if response.status != 200:
-                        raise response.get_exception()
+                            file.write(chunk)
+
+                        response.download(consume)
+
+                        if response.status != 200:
+                            raise response.get_exception()
+                    else:
+                        if response.status != 200:
+                            raise response.get_exception()
+
+                        response.download(file.write)
 
             auto_retry(attempt, n_retries, retry_interval)
         finally:
@@ -1616,7 +1632,7 @@ class Client:
 
         new_name = new_name.rstrip("/")
 
-        if "/" in new_name or new_name in (".", ".."):
+        if "/" in new_name or new_name in (".", "..", ""):
             raise ValueError(f"Invalid filename: {new_name}")
 
         dst_path = str(PurePosixPath(src_path).parent / new_name)
@@ -2090,6 +2106,66 @@ class Client:
 
         return GetPublicResourcesRequest(self.session, **kwargs).send(yadisk=self)
 
+    def get_all_public_resources(
+        self,
+        *,
+        max_items: Optional[int] = None,
+        **kwargs
+    ) -> Generator[SyncPublicResourceObject, None, None]:
+        """
+            Get a list of all public resources.
+
+            :param max_items: `int` or `None`, maximum number of returned items (`None` means unlimited)
+            :param offset: offset from the beginning of the list
+            :param limit: maximum number of elements in the list
+            :param preview_size: size of the file preview
+            :param preview_crop: `bool`, cut the preview to the size specified in the `preview_size`
+            :param type: filter based on type of resources ("file" or "dir")
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises ForbiddenError: application doesn't have enough rights for this request
+
+            :returns: generator of :any:`SyncPublicResourceObject`
+        """
+
+        if kwargs.get("offset") is None:
+            kwargs["offset"] = 0
+
+        if kwargs.get("limit") is None:
+            kwargs["limit"] = 100
+
+        remaining_items = max_items
+
+        while True:
+            # Do not query more items than necessary
+            if remaining_items is not None:
+                kwargs["limit"] = min(remaining_items, kwargs["limit"])
+
+            files = self.get_public_resources(**kwargs).items or []
+            file_count = len(files)
+
+            yield from files[:remaining_items]
+
+            if remaining_items is not None:
+                remaining_items -= file_count
+
+                if remaining_items <= 0:
+                    break
+
+            if file_count < kwargs["limit"]:
+                break
+
+            kwargs["offset"] += kwargs["limit"]
+
     def patch(self,
               path: str,
               properties: dict, /, **kwargs) -> "SyncResourceObject":
@@ -2341,8 +2417,8 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
 
         self._download(
-            lambda *args, **kwargs: self.get_public_download_link(public_key, **kwargs),
-            "", file_or_path, **kwargs)
+            lambda public_key, **kwargs: self.get_public_download_link(public_key, **kwargs),
+            public_key, file_or_path, **kwargs)
 
         return SyncPublicResourceLinkObject.from_public_key(public_key, yadisk=self)
 

@@ -38,7 +38,7 @@ from typing import (
 
 from .._typing_compat import Generator, Dict, List, AsyncGenerator
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     import datetime
     from ._operations import (
         OperationLinkObject, AsyncOperationLinkObject, SyncOperationLinkObject
@@ -317,7 +317,7 @@ class SyncPublicResourcesListObject(PublicResourcesListObject):
                  public_resources_list: Optional[Dict] = None,
                  yadisk: Optional[Any] = None):
         PublicResourcesListObject.__init__(self, None, yadisk)
-        self.set_field_type("items", typed_list(partial(SyncPublicResourcesListObject, yadisk=yadisk)))
+        self.set_field_type("items", typed_list(partial(SyncPublicResourceObject, yadisk=yadisk)))
 
         self.import_fields(public_resources_list)
 
@@ -341,7 +341,7 @@ class AsyncPublicResourcesListObject(PublicResourcesListObject):
                  public_resources_list: Optional[Dict] = None,
                  yadisk: Optional[Any] = None):
         PublicResourcesListObject.__init__(self, None, yadisk)
-        self.set_field_type("items", typed_list(partial(AsyncPublicResourcesListObject, yadisk=yadisk)))
+        self.set_field_type("items", typed_list(partial(AsyncPublicResourceObject, yadisk=yadisk)))
 
         self.import_fields(public_resources_list)
 
@@ -1574,7 +1574,8 @@ class AsyncResourceObjectMethodsMixin:
 
         path = PurePosixPath(self.path) / (relative_path or "")
 
-        return await self._yadisk.listdir(str(path), **kwargs)
+        async for i in self._yadisk.listdir(str(path), **kwargs):
+            yield i
 
     async def public_listdir(
         self: ResourceProtocol,
@@ -1614,7 +1615,8 @@ class AsyncResourceObjectMethodsMixin:
         if public_key_or_url is None:
             raise ValueError("ResourceObject doesn't have a public_key/public_url")
 
-        return await self._yadisk.public_listdir(public_key_or_url, **kwargs)
+        async for i in self._yadisk.public_listdir(public_key_or_url, **kwargs):
+            yield i
 
     async def get_upload_link(self: ResourceProtocol,
                               relative_path: Optional[str] = None, /, **kwargs) -> str:
@@ -3626,7 +3628,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         relative_path: Optional[str] = None,
         /,
         **kwargs
-    ) -> Generator["AsyncTrashResourceObject", None, None]:
+    ) -> AsyncGenerator["AsyncTrashResourceObject", None]:
         """
             Get contents of a trash resource.
 
@@ -3661,7 +3663,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
 
         path = PurePosixPath(self.path) / (relative_path or "")
 
-        return await self._yadisk.trash_listdir(str(path), **kwargs)
+        async for i in self._yadisk.trash_listdir(str(path), **kwargs):
+            yield i
 
     async def remove(self: ResourceProtocol,
                      relative_path: Optional[str] = None, /, **kwargs) -> Optional["AsyncOperationLinkObject"]:

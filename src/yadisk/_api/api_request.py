@@ -27,7 +27,7 @@ from typing import Any, Optional, Union, Type, TypeVar, TYPE_CHECKING
 from .._typing_compat import Set, Dict, Tuple, Callable, Awaitable
 import json
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from .._session import Session
     from .._async_session import AsyncSession
     from ..types import AnySession, HTTPMethod, JSON, TimeoutParameter
@@ -156,15 +156,30 @@ class APIRequest(object):
         session: "Session" = self.session
         response = session.send_request(self.method, self.url, **kwargs)
 
+        json: JSON = None
+
+        if response.status == 0:
+            # Request has not been sent yet
+            # This can happen with pycurl with stream=True
+            try:
+                json = response.json()
+            except ValueError:
+                pass
+
+            json_already_parsed = True
+        else:
+            json_already_parsed = False
+
         success = response.status in self.success_codes
 
         if not success:
             raise response.get_exception()
 
-        try:
-            json = response.json()
-        except ValueError:
-            json = None
+        if not json_already_parsed:
+            try:
+                json = response.json()
+            except ValueError:
+                pass
 
         try:
             result = self.process_json(json, yadisk=yadisk)

@@ -1078,6 +1078,27 @@ class AsyncClient:
     ) -> AsyncPublicResourcesListObject:
         ...
 
+    async def get_all_public_resources(
+        self,
+        *,
+        max_items: Optional[int] = None,
+        limit: Optional[int] = None,
+        offset: Optional[int] = None,
+        preview_size: Optional[str] = None,
+        preview_crop: Optional[bool] = None,
+        type: Optional[Union[Literal["file"], Literal["dir"]]] = None,
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> AsyncGenerator[AsyncPublicResourceObject, None]:
+        yield AsyncPublicResourceObject()
+
     async def patch(
         self,
         path: str,

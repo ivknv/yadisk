@@ -26,8 +26,9 @@ from ..exceptions import (
 from .._async_session import AsyncSession, AsyncResponse
 from .._common import is_async_func
 from ..utils import CaseInsensitiveDict
+from .._typing_compat import Dict
 from ..types import (
-    JSON, AsyncConsumeCallback, TimeoutParameter, HTTPMethod
+    JSON, AsyncConsumeCallback, Headers, TimeoutParameter, HTTPMethod, AsyncPayload
 )
 
 from .. import settings
@@ -130,7 +131,7 @@ class AIOHTTPSession(AsyncSession):
                        }
                     )
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         headers = CaseInsensitiveDict({
             "User-Agent": DEFAULT_USER_AGENT,
             "Accept-Encoding": "gzip, deflate",
@@ -138,7 +139,7 @@ class AIOHTTPSession(AsyncSession):
             "Connection": "keep-alive"
         })
 
-        headers.update(kwargs.get("headers", {}))
+        headers.update(kwargs.get("headers") or {})
 
         kwargs["headers"] = headers
 
@@ -148,17 +149,30 @@ class AIOHTTPSession(AsyncSession):
     def aiohttp_session(self) -> aiohttp.ClientSession:
         return self._session
 
-    async def send_request(self, method: HTTPMethod, url: str, **kwargs) -> AsyncResponse:
-        if "timeout" in kwargs:
-            kwargs["timeout"] = convert_timeout(kwargs["timeout"])
+    async def send_request(
+        self,
+        method: HTTPMethod,
+        url: str,
+        *,
+        params: Optional[Dict[str, Any]] = None,
+        data: Optional[AsyncPayload] = None,
+        headers: Optional[Headers] = None,
+        **kwargs
+    ) -> AsyncResponse:
+        converted_kwargs: Dict[str, Any] = {
+            "params": params,
+            "data": data,
+            "headers": headers
+        }
 
-        kwargs.pop("stream", None)
+        if "timeout" in kwargs:
+            converted_kwargs["timeout"] = convert_timeout(kwargs["timeout"])
 
         if "aiohttp_args" in kwargs:
-            kwargs.update(kwargs.pop("aiohttp_args"))
+            converted_kwargs.update(kwargs["aiohttp_args"] or {})
 
         try:
-            return AIOHTTPResponse(await self._session.request(method, url, **kwargs))
+            return AIOHTTPResponse(await self._session.request(method, url, **converted_kwargs))
         except aiohttp.ClientError as e:
             raise convert_aiohttp_exception(e) from e
 

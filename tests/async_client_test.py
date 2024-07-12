@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 
 import hashlib
-import tempfile
-from typing import Any
-import aiofiles
-
+import logging
+import os
 import platform
 import posixpath
-from io import BytesIO
 import sys
+import tempfile
+
+from typing import Any
+from io import BytesIO
+
+import aiofiles
 
 import yadisk
 from yadisk._common import is_operation_link, ensure_path_has_schema
@@ -17,6 +20,9 @@ from yadisk._api import GetOperationStatusRequest
 import pytest
 
 __all__ = ["TestAsyncClient"]
+
+replay_disabled = os.environ.get("PYTHON_YADISK_REPLAY_ENABLED", "1") != "1"
+recording_enabled = os.environ.get("PYTHON_YADISK_RECORDING_ENABLED", "0") == "1"
 
 
 def open_tmpfile(mode):
@@ -37,6 +43,21 @@ def async_open_tmpfile(mode):
 
 @pytest.mark.anyio
 class TestAsyncClient:
+    @pytest.mark.skipif(
+        replay_disabled,
+        reason="this test is not meant to run outside of replay mode, it must be modified first"
+    )
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_get_disk_info(self, async_client: yadisk.AsyncClient) -> None:
+        disk_info = await async_client.get_disk_info()
+
+        assert isinstance(disk_info, yadisk.objects.DiskInfoObject)
+        assert disk_info.user is not None
+
+        # If you re-record this test, you'll have to put your account data here
+        assert disk_info.user.login == "ivknv"
+        assert disk_info.field("reg_time").year == 2017
+
     @pytest.mark.usefixtures("async_client_test")
     async def test_get_meta(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
         resource = await async_client.get_meta(disk_root)
@@ -44,6 +65,9 @@ class TestAsyncClient:
         assert isinstance(resource, yadisk.objects.ResourceObject)
         assert resource.type == "dir"
         assert resource.name == posixpath.split(disk_root)[1]
+
+        # Test convenience method as well
+        assert (await resource.get_meta(".")).resource_id == resource.resource_id
 
     @pytest.mark.usefixtures("async_client_test")
     async def test_listdir(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
@@ -53,12 +77,14 @@ class TestAsyncClient:
         for path in paths:
             await async_client.mkdir(path)
 
-        async def get_result():
-            return [i.name async for i in async_client.listdir(disk_root)]
-
-        result = await get_result()
+        contents = [i async for i in async_client.listdir(disk_root)]
+        result = [i.name for i in contents]
 
         assert result == names
+
+        # Test the convenience method as well
+        for dir in contents:
+            assert [i async for i in dir.listdir(".")] == []
 
     @pytest.mark.usefixtures("async_client_test")
     async def test_listdir_fields(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
@@ -152,13 +178,13 @@ class TestAsyncClient:
     )
     @pytest.mark.usefixtures("async_client_test")
     async def test_upload_and_download(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
-        with BytesIO() as buf1, open_tmpfile("w+b") as buf2:
+        with open_tmpfile("w+b") as buf1, open_tmpfile("w+b") as buf2:
             buf1.write(b"0" * 1024**2)
             buf1.seek(0)
 
             path = posixpath.join(disk_root, "zeroes.txt")
 
-            await async_client.upload(buf1, path, overwrite=True, n_retries=50)
+            await async_client.upload(buf1.name, path, overwrite=True, n_retries=50)
             await async_client.download(path, buf2.name, n_retries=50)
 
             buf1.seek(0)
@@ -229,6 +255,10 @@ class TestAsyncClient:
 
         async for i in async_client.trash_listdir("/"):
             if i.origin_path == origin_path:
+                assert await i.exists()
+                assert await i.is_dir()
+                assert not await i.is_file()
+
                 trash_path = i.path
                 break
 
@@ -245,6 +275,32 @@ class TestAsyncClient:
         await async_client.move(path1, path2)
 
         assert await async_client.exists(path2)
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_rename(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        filename1 = "dir1"
+        filename2 = "dir2/"
+
+        path1 = posixpath.join(disk_root, filename1)
+        path2 = posixpath.join(disk_root, filename2)
+
+        assert not await async_client.exists(path1)
+        assert not await async_client.exists(path2)
+
+        dir = await async_client.mkdir(path1)
+
+        assert await dir.is_dir()
+        rename_result = await dir.rename(filename2)
+
+        assert isinstance(rename_result, yadisk.objects.AsyncResourceLinkObject)
+        dir = rename_result
+
+        assert not await async_client.exists(path1)
+        assert await dir.is_dir()
+
+        for bad_filename in ("", ".", "..", "/", "something/else"):
+            with pytest.raises(ValueError):
+                await dir.rename(bad_filename)
 
     @pytest.mark.usefixtures("async_client_test")
     async def test_remove_trash(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
@@ -268,26 +324,39 @@ class TestAsyncClient:
 
     @pytest.mark.usefixtures("async_client_test")
     async def test_publish_unpublish(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
-        path = disk_root
+        await async_client.publish(disk_root)
+        meta = await async_client.get_meta(disk_root)
+        assert meta.public_url is not None
+        assert meta.public_key is not None
 
-        await async_client.publish(path)
-        assert (await async_client.get_meta(path)).public_url is not None
+        public_key, public_url = meta.public_key, meta.public_url
 
-        await async_client.unpublish(path)
-        assert (await async_client.get_meta(path)).public_url is None
+        assert await async_client.is_public_dir(public_key)
+        assert await async_client.is_public_dir(public_url)
+        assert not await async_client.is_public_file(public_key)
+        assert not await async_client.is_public_file(public_url)
+
+        await async_client.unpublish(disk_root)
+
+        meta = await async_client.get_meta(disk_root)
+        assert meta.public_url is None
+        assert meta.public_key is None
+
+        assert not await async_client.is_public_dir(public_key)
+        assert not await async_client.is_public_dir(public_url)
+        assert not await async_client.is_public_file(public_key)
+        assert not await async_client.is_public_file(public_url)
 
     @pytest.mark.usefixtures("async_client_test")
     async def test_patch(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
-        path = disk_root
+        directory = await async_client.patch(disk_root, {"test_property": "I'm a value!"})
+        assert directory.custom_properties == {"test_property": "I'm a value!"}
 
-        await async_client.patch(path, {"test_property": "I'm a value!"})
+        directory = await async_client.patch(disk_root, {"number": 42})
+        assert directory.custom_properties == {"test_property": "I'm a value!", "number": 42}
 
-        props: Any = (await async_client.get_meta(path)).custom_properties
-        assert props is not None
-        assert props["test_property"] == "I'm a value!"
-
-        await async_client.patch(path, {"test_property": None})
-        assert (await async_client.get_meta(path)).custom_properties is None
+        directory = await directory.patch({"test_property": None, "number": None})
+        assert directory.custom_properties is None
 
     @pytest.mark.usefixtures("async_client_test")
     async def test_issue7(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
@@ -347,25 +416,29 @@ class TestAsyncClient:
         assert ensure_path_has_schema("app:/test") == "app:/test"
 
     @pytest.mark.usefixtures("async_client_test")
-    async def test_upload_download_non_seekable(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+    async def test_upload_download_non_seekable(
+        self,
+        async_client: yadisk.AsyncClient,
+        disk_root: str,
+        mocker
+    ) -> None:
         # It should be possible to upload/download non-seekable file objects (such as stdin/stdout)
         # See https://github.com/ivknv/yadisk/pull/31 for more details
-
-        test_input_file = BytesIO(b"0" * 1000)
-        test_input_file.seekable = lambda: False  # type: ignore
 
         def seek(*args, **kwargs):
             raise NotImplementedError
 
-        test_input_file.seek = seek  # type: ignore
+        test_input_file = BytesIO(b"0" * 1000)
+        mocker.patch.object(test_input_file, "seekable", lambda: False)
+        mocker.patch.object(test_input_file, "seek", seek)
 
         dst_path = posixpath.join(disk_root, "zeroes.txt")
 
         await async_client.upload(test_input_file, dst_path, n_retries=50)
 
         test_output_file = BytesIO()
-        test_output_file.seekable = lambda: False  # type: ignore
-        test_output_file.seek = seek  # type: ignore
+        mocker.patch.object(test_output_file, "seekable", lambda: False)
+        mocker.patch.object(test_output_file, "seek", seek)
 
         await async_client.download(dst_path, test_output_file, n_retries=50)
 
@@ -453,3 +526,247 @@ class TestAsyncClient:
 
         dst_file_info = await async_client.get_meta(dst_path)
         assert dst_file_info.md5 == hashlib.md5(test_contents).hexdigest()
+
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_none_args(self, async_client: yadisk.AsyncClient) -> None:
+        # Passing headers=None, <session_name>_args=None should not trigger any errors
+
+        assert await async_client.check_token(
+            headers=None,
+            requests_args=None,
+            httpx_args=None,
+            curl_options=None
+        )
+
+        link = "https://downloader.disk.yandex.ru/disk/4deb67f875582dfa8dd53c5d3b72e8fb49ce7cc1502765175dc3af1183a575b6/668ddef2/nsHIkeXKnaRGpTyn0UiRqaUl8Jt3QPRPLeFAjvpBi81sWp-27VfwQ64jjvznGt8kNwE-ofj0cgVKPtPiYwpOA%3D%3D?uid=455675172&filename=CsVGRa8itZzMzH19HCCF4ceXpFpwJAUHpCRAqGOb4O6I59R-oDeDyKMqTq8daIAvY89CJ64noQqRebmQ3C08d8%3D&disposition=attachment&hash=&limit=0&contenttype=application%2Foctet-stream&owneruid=455675172&fsize=72&hid=3e96286ac2b9f0703688be31e7dd0843&media_type=data&tknv=v2&etag=747ce618999f04e43b6435ab69d7108a"
+
+        # This is worth testing on download_by_link() as well, since it has
+        # slightly different logic
+        with pytest.raises(yadisk.exceptions.GoneError):
+            await async_client.download_by_link(
+                link,
+                BytesIO(),
+                headers=None,
+                requests_args=None,
+                httpx_args=None,
+                curl_options=None
+            )
+
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_get_files(self, async_client: yadisk.AsyncClient) -> None:
+        files = [i async for i in async_client.get_files(max_items=25)]
+
+        assert len(files) <= 25
+
+        for file in files:
+            assert await file.is_file()
+
+        offset = 15
+        files_with_offset = [i async for i in async_client.get_files(max_items=10, offset=offset)]
+
+        assert len(files_with_offset) <= 10
+
+        for file in files_with_offset:
+            assert await file.is_file()
+
+        assert [file @ "path" for file in files[offset:]] == [file @ "path" for file in files_with_offset]
+
+        assert len([i async for i in async_client.get_files(max_items=10, limit=3)]) <= 10
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_get_last_uploaded(
+        self,
+        async_client: yadisk.AsyncClient,
+        disk_root: str
+    ) -> None:
+        files_to_upload = [
+            ("first.txt", b"example content"),
+            ("second.txt", b"this is the second file"),
+            ("third.txt", b"this is the third file")
+        ]
+
+        for filename, content in files_to_upload:
+            await async_client.upload(BytesIO(content), posixpath.join(disk_root, filename))
+
+        last_uploaded = await async_client.get_last_uploaded(limit=3)
+
+        for uploaded_file, (filename, content) in zip(last_uploaded, files_to_upload[::-1]):
+            assert uploaded_file.path == "disk:" + posixpath.join(disk_root, filename)
+
+            output = BytesIO()
+            await uploaded_file.download(output)
+
+            output.seek(0)
+            assert output.read() == content
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_public_listdir(
+        self,
+        async_client: yadisk.AsyncClient,
+        disk_root: str
+    ) -> None:
+        directory = await async_client.mkdir(posixpath.join(disk_root, "public"))
+        await directory.publish()
+
+        public_directory = await directory.get_meta()
+
+        assert await public_directory.is_dir()
+        assert public_directory.public_key is not None
+        assert await async_client.is_public_dir(public_directory.public_key)
+
+        files_to_upload = [
+            ("first.txt", b"example content"),
+            ("second.txt", b"this is the second file"),
+            ("third.txt", b"this is the third file")
+        ]
+
+        for filename, content in files_to_upload:
+            await (await public_directory.upload(BytesIO(content), filename)).publish()
+
+        public_files = [i async for i in public_directory.public_listdir(sort="modified")]
+
+        for file, (filename, content) in zip(public_files, files_to_upload):
+            assert file.name == filename
+            assert await async_client.is_public_file(public_directory.public_key, path=file.path)
+
+            output = BytesIO()
+            await async_client.download_public(public_directory.public_key, output, path=file.path)
+
+            output.seek(0)
+            assert output.read() == content
+
+        await public_directory.unpublish()
+        assert not await async_client.is_public_dir(public_directory.public_key)
+
+    @pytest.mark.skipif(
+        recording_enabled,
+        reason="before recording this test, ensure it's not a privacy concern for you"
+    )
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_get_public_resources(self, async_client: yadisk.AsyncClient) -> None:
+        first_10 = [i async for i in async_client.get_all_public_resources(max_items=10, limit=3)]
+        with_offset = [i async for i in async_client.get_all_public_resources(max_items=5, offset=5, limit=2)]
+
+        assert first_10 is not None
+        assert with_offset is not None
+
+        for public_resource in first_10 + with_offset:
+            print(f"{public_resource @ 'path'}")
+            assert await async_client.public_exists(public_resource @ "public_key")
+
+        assert [i.path for i in first_10[5:]] == [i.path for i in with_offset]
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_get_upload_link_object(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        directory = await async_client.get_meta(disk_root)
+        upload_link = await directory.get_upload_link_object("test.txt")
+
+        assert (
+            await async_client.get_operation_status(upload_link @ "operation_id")
+        ) == "in-progress"
+
+        await async_client.upload_by_link(BytesIO(b"test file"), upload_link @ "href")
+
+        assert (
+            await async_client.get_operation_status(upload_link @ "operation_id")
+        ) == "success"
+
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_streaming_requests(self, async_client: yadisk.AsyncClient) -> None:
+        # stream=True should not break requests
+
+        assert await async_client.check_token(stream=True)
+        assert len(
+            await async_client.get_last_uploaded(
+                stream=True, limit=10, fields=["items.type"]
+            )
+        ) == 10
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_wait_for_operation(
+        self,
+        async_client: yadisk.AsyncClient,
+        disk_root: str,
+        poll_interval: float,
+        mocker
+    ) -> None:
+        directory = await async_client.mkdir("directory")
+        operation = await directory.remove(permanently=True, force_async=True, wait=False)
+
+        with pytest.raises(yadisk.exceptions.AsyncOperationPollingTimeoutError):
+            await operation.wait(poll_timeout=0.0)
+
+        await operation.wait(poll_interval=poll_interval)
+
+        assert await operation.get_status() == "success"
+
+        # Mock get_operation_status() to trigger an AsyncOperationFailedError
+        async def fake_get_operation_status(*args, **kwargs) -> yadisk.types.OperationStatus:
+            return "failed"
+
+        mocker.patch.object(async_client, "get_operation_status", fake_get_operation_status)
+
+        with pytest.raises(yadisk.exceptions.AsyncOperationFailedError):
+            await operation.wait(poll_interval=poll_interval)
+
+    @pytest.mark.usefixtures("record_or_replay")
+    async def test_download_by_link_error(self, async_client: yadisk.AsyncClient) -> None:
+        # Make sure that if the server returns a bad status code (e.g. 500),
+        # download_by_link() will not write the response into the file
+
+        # Sample link, should either produce a 500 or 410 error
+        # In case of error it outputs an HTML page, rather than a file
+        link = "https://downloader.disk.yandex.ru/disk/4deb67f875582dfa8dd53c5d3b72e8fb49ce7cc1502765175dc3af1183a575b6/668ddef2/nsHIkeXKnaRGpTyn0UiRqaUl8Jt3QPRPLeFAjvpBi81sWp-27VfwQ64jjvznGt8kNwE-ofj0cgVKPtPiYwpOA%3D%3D?uid=455675172&filename=CsVGRa8itZzMzH19HCCF4ceXpFpwJAUHpCRAqGOb4O6I59R-oDeDyKMqTq8daIAvY89CJ64noQqRebmQ3C08d8%3D&disposition=attachment&hash=&limit=0&contenttype=application%2Foctet-stream&owneruid=455675172&fsize=72&hid=3e96286ac2b9f0703688be31e7dd0843&media_type=data&tknv=v2&etag=747ce618999f04e43b6435ab69d7108a"
+
+        output = BytesIO()
+
+        with pytest.raises((yadisk.exceptions.GoneError, yadisk.exceptions.InternalServerError)):
+            await async_client.download_by_link(link, output)
+
+        output.seek(0)
+        assert output.read() == b""
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_operation_error_triggers_retry(
+        self,
+        async_client: yadisk.AsyncClient,
+        disk_root: str,
+        poll_interval: float,
+        mocker,
+        caplog
+    ) -> None:
+        path1 = posixpath.join(disk_root, "test_file.txt")
+        path2 = posixpath.join(disk_root, "copy.txt")
+        await async_client.upload(BytesIO(b"test data"), path1)
+
+
+        class GetOperationStatusMock:
+            def __init__(self):
+                self.call_count = 0
+
+            async def __call__(self, *args, **kwargs) -> yadisk.types.OperationStatus:
+                self.call_count += 1
+
+                if self.call_count < 3:
+                    return "failed"
+
+                return await yadisk.AsyncClient.get_operation_status(async_client, *args, **kwargs)
+
+
+        mocker.patch.object(async_client, "get_operation_status", GetOperationStatusMock())
+
+        with caplog.at_level(logging.INFO, logger="yadisk"):
+            await async_client.copy(
+                path1,
+                path2,
+                force_async=True,
+                overwrite=True,
+                poll_interval=poll_interval
+            )
+
+        expected_message1 = "automatic retry triggered: (1 out of 50), got AsyncOperationFailedError: Asynchronous operation failed"  # noqa: E501
+        expected_message2 = "asynchronous operation failed, attempting to restart it"
+        assert expected_message1 in caplog.text
+        assert caplog.text.count(expected_message2) >= 2
+
+        assert await async_client.is_file(path2)

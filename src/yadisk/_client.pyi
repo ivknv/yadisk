@@ -1122,6 +1122,28 @@ class Client:
     ) -> SyncPublicResourcesListObject:
         ...
 
+    def get_all_public_resources(
+        self,
+        *,
+        max_items: Optional[int] = None,
+        limit: Optional[int] = None,
+        offset: Optional[int] = None,
+        preview_size: Optional[str] = None,
+        preview_crop: Optional[bool] = None,
+        type: Optional[Union[Literal["file"], Literal["dir"]]] = None,
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> Generator[SyncPublicResourceObject, None, None]:
+        ...
+
     def patch(
         self,
         path: str,

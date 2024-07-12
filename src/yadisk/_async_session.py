@@ -24,7 +24,7 @@ from .types import (
 from .objects import ErrorObject
 from .utils import get_exception
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from .exceptions import YaDiskError
 
 __all__ = ["AsyncSession", "AsyncResponse"]

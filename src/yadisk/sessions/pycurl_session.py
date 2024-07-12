@@ -18,6 +18,7 @@
 
 from io import BytesIO
 import json
+from typing import Any, Optional
 
 from ..exceptions import (
     RequestError, RequestTimeoutError,
@@ -25,9 +26,9 @@ from ..exceptions import (
 )
 
 from .._session import Session, Response
-from .._typing_compat import Iterator, Tuple
+from .._typing_compat import Iterator, Tuple, Dict
 from ..utils import CaseInsensitiveDict
-from ..types import JSON, ConsumeCallback, HTTPMethod, TimeoutParameter
+from ..types import JSON, ConsumeCallback, HTTPMethod, Headers, Payload, TimeoutParameter
 from .. import settings
 
 from urllib.parse import urlencode
@@ -49,7 +50,11 @@ def convert_curl_error(error: pycurl.error) -> RequestError:
     return exc(msg)
 
 
-class PycurlResponse(Response):
+# see PycurlResponse.download() implementation
+MAX_RESPONSE_BUFFER_SIZE = 128 * 1024
+
+
+class PycURLResponse(Response):
     def __init__(self, curl: pycurl.Curl, response: bytes):
         super().__init__()
 
@@ -84,13 +89,35 @@ class PycurlResponse(Response):
         return json.loads(self._response)
 
     def download(self, consume_callback: ConsumeCallback) -> None:
+        buffer = BytesIO()
+
         def write_cb(chunk: bytes) -> int:
+            # Write up to `MAX_RESPONSE_BUFFER_SIZE` bytes of data into an in-memory buffer
+            # This is a hack to detect bad HTTP status codes to give
+            # `consume_callback` an opportunity to check status before writing
+            if buffer.tell() < MAX_RESPONSE_BUFFER_SIZE:
+                buffer.write(chunk)
+                return len(chunk)
+            elif buffer.tell():
+                buffer.seek(0)
+
+                chunk_from_buffer = buffer.read()
+                consume_callback(chunk_from_buffer)
+
+                buffer.seek(0)
+                buffer.truncate(0)
+
             consume_callback(chunk)
             return len(chunk)
 
         self._curl.setopt(pycurl.WRITEFUNCTION, write_cb)
 
         self._perform()
+
+        # Write left over data from the buffer
+        if buffer.tell():
+            buffer.seek(0)
+            consume_callback(buffer.read())
 
     def close(self) -> None:
         self._curl.close()
@@ -206,14 +233,20 @@ class PycURLSession(Session):
         self._share.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_DNS)
         self._share.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_SSL_SESSION)
 
-    def send_request(self, method: HTTPMethod, url: str, **kwargs) -> Response:
-        params = kwargs.get("params", {})
-        data = kwargs.get("data")
-        stream = kwargs.get("stream", False)
-        headers = CaseInsensitiveDict({"connection": "keep-alive"})
-        headers.update(kwargs.get("headers", {}))
-
-        options = kwargs.get("curl_options", {})
+    def send_request(
+        self,
+        method: HTTPMethod,
+        url: str,
+        *,
+        params: Optional[Dict[str, Any]] = None,
+        data: Optional[Payload] = None,
+        headers: Optional[Headers] = None,
+        stream: bool = False,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> Response:
+        curl_headers = CaseInsensitiveDict({"connection": "keep-alive"})
+        curl_headers.update(headers or {})
 
         if params:
             url = url + "?" + urlencode(params)
@@ -231,10 +264,12 @@ class PycURLSession(Session):
             curl.setopt(pycurl.LOW_SPEED_TIME, int(read_timeout))
             curl.setopt(pycurl.LOW_SPEED_LIMIT, 64)
 
-        curl.setopt(pycurl.HTTPHEADER, [f"{k}:{v}" for k, v in headers.items() if k and v])
+        curl.setopt(pycurl.HTTPHEADER, [f"{k}:{v}" for k, v in curl_headers.items() if k and v])
 
-        for option, value in options.items():
-            curl.setopt(option, value)
+
+        if curl_options is not None:
+            for option, value in curl_options.items():
+                curl.setopt(option, value)
 
         if isinstance(data, bytes):
             data = BytesIO(data)
@@ -246,9 +281,11 @@ class PycURLSession(Session):
             uploading_file = True
 
             if isinstance(data, Iterator):
-                data = IterableReader(data)
+                curl_data = IterableReader(data)
+            else:
+                curl_data = data
 
-            curl.setopt(pycurl.READDATA, data)
+            curl.setopt(pycurl.READDATA, curl_data)
 
         curl.setopt(pycurl.CUSTOMREQUEST, method)
 
@@ -260,7 +297,7 @@ class PycURLSession(Session):
         else:
             response = b""
 
-        return PycurlResponse(curl, response)
+        return PycURLResponse(curl, response)
 
     def close(self) -> None:
         self._share.close()

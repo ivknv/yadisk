@@ -23,10 +23,10 @@ from ..exceptions import (
 
 from .._session import Session, Response
 from ..utils import CaseInsensitiveDict
-from ..types import JSON, ConsumeCallback, HTTPMethod
-from .. import settings
+from .._typing_compat import Dict
+from ..types import JSON, ConsumeCallback, HTTPMethod, Headers, Payload
 
-from typing import Union
+from typing import Any, Optional, Union
 
 import threading
 
@@ -56,7 +56,10 @@ class RequestsResponse(Response):
         self.status = self._response.status_code
 
     def json(self) -> JSON:
-        return self._response.json()
+        try:
+            return self._response.json()
+        except RuntimeError as e:
+            raise ValueError(f"Could not parse JSON: {e}") from e
 
     def download(self, consume_callback: ConsumeCallback) -> None:
         try:
@@ -127,24 +130,38 @@ class RequestsSession(Session):
         session.close()
         self._sessions.remove(session)
 
-    def send_request(self, method: HTTPMethod, url: str, **kwargs) -> Response:
-        headers = CaseInsensitiveDict(self.requests_session.headers)
+    def send_request(
+        self,
+        method: HTTPMethod,
+        url: str,
+        *,
+        params: Optional[Dict[str, Any]] = None,
+        data: Optional[Payload] = None,
+        headers: Optional[Headers] = None,
+        stream: bool = False,
+        **kwargs
+    ) -> Response:
+        requests_headers = CaseInsensitiveDict(self.requests_session.headers)
 
-        if "requests_args" in kwargs:
-            kwargs.update(kwargs.pop("requests_args"))
+        requests_headers.update(headers or {})
 
-        headers.update(kwargs.get("headers", {}))
-
-        kwargs["headers"] = headers
+        converted_kwargs: Dict[str, Any] = {
+            "params": params,
+            "data": data,
+            "headers": requests_headers,
+            "stream": stream
+        }
 
         if "timeout" in kwargs:
-            timeout = kwargs["timeout"]
+            converted_kwargs["timeout"] = kwargs["timeout"]
 
-            if timeout is ...:
-                kwargs["timeout"] = settings.DEFAULT_TIMEOUT
+        if "requests_args" in kwargs:
+            converted_kwargs.update(kwargs["requests_args"] or {})
 
         try:
-            return RequestsResponse(self.requests_session.request(method, url, **kwargs))
+            return RequestsResponse(
+                self.requests_session.request(method, url, **converted_kwargs)
+            )
         except requests.exceptions.RequestException as e:
             raise convert_requests_exception(e) from e
 

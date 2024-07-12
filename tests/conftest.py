@@ -71,18 +71,21 @@ def disk_cleanup(
 
     yield
 
-    client.remove(
-        disk_root,
-        permanently=True,
-        poll_interval=poll_interval
-    )
+    try:
+        client.remove(
+            disk_root,
+            permanently=True,
+            poll_interval=poll_interval
+        )
+    except yadisk.utils._UnexpectedRequestError:
+        pass
 
 
 @pytest.fixture()
 async def async_disk_cleanup(
     disk_root: str,
     async_client: yadisk.AsyncClient,
-    replay_enabled: bool
+    poll_interval: float
 ) -> AsyncGenerator[None, None]:
     try:
         await async_client.mkdir(disk_root)
@@ -94,12 +97,14 @@ async def async_disk_cleanup(
 
     yield
 
-    poll_interval = 0.0 if replay_enabled else 1.0
-    await async_client.remove(
-        disk_root,
-        permanently=True,
-        poll_interval=poll_interval
-    )
+    try:
+        await async_client.remove(
+            disk_root,
+            permanently=True,
+            poll_interval=poll_interval
+        )
+    except yadisk.utils._UnexpectedRequestError:
+        pass
 
 
 @pytest.fixture(scope="package")

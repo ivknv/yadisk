@@ -43,7 +43,7 @@ else:
         AsyncIterable, Iterator, AsyncIterator, Mapping
     )
 
-    if TYPE_CHECKING:
+    if TYPE_CHECKING:  # pragma: no cover
         from typing import List, Dict, Set, Tuple, Type
     else:
         # mypy complains about this

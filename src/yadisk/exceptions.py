@@ -22,13 +22,14 @@ __all__ = [
     "UnknownYaDiskError", "WrongResourceTypeError",
     "AsyncOperationFailedError", "AsyncOperationPollingTimeoutError",
     "BadRequestError", "UnauthorizedError", "ForbiddenError", "NotFoundError",
-    "NotAcceptableError", "ConflictError", "PayloadTooLargeError",
+    "NotAcceptableError", "ConflictError", "GoneError", "PayloadTooLargeError",
     "UnsupportedMediaError", "LockedError", "UploadTrafficLimitExceededError",
-    "TooManyRequestsError", "InternalServerError", "BadGatewayError",
-    "UnavailableError", "GatewayTimeoutError", "InsufficientStorageError",
-    "PathNotFoundError", "ParentNotFoundError", "PathExistsError",
-    "DirectoryExistsError", "FieldValidationError", "ResourceIsLockedError",
-    "MD5DifferError", "OperationNotFoundError", "InvalidResponseError",
+    "TooManyRequestsError", "ResourceDownloadLimitExceededError",
+    "InternalServerError", "BadGatewayError", "UnavailableError",
+    "GatewayTimeoutError", "InsufficientStorageError", "PathNotFoundError",
+    "ParentNotFoundError", "PathExistsError", "DirectoryExistsError",
+    "FieldValidationError", "ResourceIsLockedError", "MD5DifferError",
+    "OperationNotFoundError", "InvalidResponseError",
     "AuthorizationPendingError", "InvalidClientError", "InvalidGrantError",
     "BadVerificationCodeError", "UnsupportedTokenTypeError"
 ]
@@ -164,6 +165,11 @@ class ConflictError(YaDiskError):
     pass
 
 
+class GoneError(YaDiskError):
+    """Raised when the server returns code 410."""
+    pass
+
+
 class PayloadTooLargeError(YaDiskError):
     """Thrown when the server returns code 413."""
     pass
@@ -186,6 +192,11 @@ class UploadTrafficLimitExceededError(LockedError):
 
 class TooManyRequestsError(YaDiskError):
     """Thrown when the server returns code 429."""
+    pass
+
+
+class ResourceDownloadLimitExceededError(TooManyRequestsError):
+    """Raised when the download limit for a resource is exceeded."""
     pass
 
 

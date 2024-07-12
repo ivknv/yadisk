@@ -7,7 +7,7 @@ import yadisk
 
 confirmation_code = "5320215"
 
-replay_enabled = os.environ.get("PYTHON_YADISK_REPLAY_ENABLED", "1") != "1"
+replay_disabled = os.environ.get("PYTHON_YADISK_REPLAY_ENABLED", "1") != "1"
 device_id = "test device 123"
 
 # Recording data for these tests requires human intervention
@@ -16,7 +16,7 @@ device_id = "test device 123"
 # tokens are valid, otherwise you may end up leaking that data
 
 @pytest.mark.skipif(
-    replay_enabled,
+    replay_disabled,
     reason="this test has to be explicitly modified to be run outside of replay mode"
 )
 @pytest.mark.usefixtures("record_or_replay")
@@ -38,7 +38,7 @@ def test_auth(client: yadisk.Client) -> None:
     assert not client.check_token(token.access_token)
 
 @pytest.mark.skipif(
-    replay_enabled,
+    replay_disabled,
     reason="this test has to be explicitly modified to be run outside of replay mode"
 )
 @pytest.mark.usefixtures("record_or_replay")
@@ -62,7 +62,7 @@ def test_device_code_auth(client: yadisk.Client) -> None:
     assert not client.check_token(token.access_token)
 
 @pytest.mark.skipif(
-    replay_enabled,
+    replay_disabled,
     reason="this test has to be explicitly modified to be run outside of replay mode"
 )
 @pytest.mark.usefixtures("record_or_replay")
@@ -84,7 +84,7 @@ async def test_auth_async(async_client: yadisk.AsyncClient) -> None:
     assert not await async_client.check_token(token.access_token)
 
 @pytest.mark.skipif(
-    replay_enabled,
+    replay_disabled,
     reason="this test has to be explicitly modified to be run outside of replay mode"
 )
 @pytest.mark.usefixtures("record_or_replay")

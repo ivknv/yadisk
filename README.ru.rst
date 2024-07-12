@@ -15,7 +15,11 @@ YaDisk
 .. |Python Version Badge| image:: https://img.shields.io/pypi/pyversions/yadisk
    :alt: PyPI - Python Version
 
-|RTD Badge| |CI Badge| |PyPI Badge| |Python Version Badge|
+.. |Coverage Badge| image:: https://coveralls.io/repos/github/ivknv/yadisk/badge.svg
+   :alt: Coverage
+   :target: https://coveralls.io/github/ivknv/yadisk
+
+|RTD Badge| |CI Badge| |PyPI Badge| |Python Version Badge| |Coverage Badge|
 
 .. _English version of this document: https://github.com/ivknv/yadisk/blob/master/README.en.rst
 
@@ -171,6 +175,31 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 .. _Интерфейс Session: https://yadisk.readthedocs.io/ru/latest/api_reference/session_interface.html
 .. _requests: https://pypi.org/project/requests
 .. _Руководство по миграции: https://yadisk.readthedocs.io/ru/latest/migration_guide.html
+
+* **Release 3.1.0 (2024-07-12)**
+
+  * Нововведения:
+
+    * Добавлены новые исключения: :code:`GoneError` и
+      :code:`ResourceDownloadLimitExceededError`
+    * Добавлен новый метод: :code:`Client.get_all_public_resources()` и
+      :code:`AsyncClient.get_all_public_resources()`
+  * Исправления:
+
+    * Задание :code:`headers` и других опциональных параметров сессии как
+      :code:`None` больше не вызывает ошибок
+    * Исправлено неправильное поведение :code:`Client.rename()` и
+      :code:`AsyncClient.rename()` при указании пустого имени файла
+    * Исправлено несколько опечаток в асинхронных реализациях
+      convenience-методов (:code:`listdir()` и аналогичных)
+    * Исправлен неправильный тип данных у атрибута :code:`items` класса
+      :code:`PublicResourceListObject`
+    * Исправлены ошибки при отправке запросов API с помощью
+      :code:`PycURLSession` при задании :code:`stream=True`
+    * Данные не будут записаны в файл методами :code:`Client.download()`,
+      :code:`Client.download_by_link()`, :code:`AsyncClient.download()` и
+      :code:`AsyncClient.download_by_link()`, если сервер вернул ошибочный код
+      состояния
 
 * **Release 3.0.1 (2024-07-09)**
 

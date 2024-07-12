@@ -68,6 +68,7 @@ EXCEPTION_MAP: Dict[int, Dict[str, Type[YaDiskError]]] = {
             "MD5DifferError":                         MD5DifferError
         }
     ),
+    410: defaultdict(lambda: GoneError),
     413: defaultdict(lambda: PayloadTooLargeError),
     415: defaultdict(lambda: UnsupportedMediaError),
     423: defaultdict(
@@ -77,7 +78,10 @@ EXCEPTION_MAP: Dict[int, Dict[str, Type[YaDiskError]]] = {
             "DiskUploadTrafficLimitExceeded": UploadTrafficLimitExceededError
         }
     ),
-    429: defaultdict(lambda: TooManyRequestsError),
+    429: defaultdict(
+        lambda: TooManyRequestsError,
+        {"DiskResourceDownloadLimitExceededError": ResourceDownloadLimitExceededError}
+    ),
     500: defaultdict(lambda: InternalServerError),
     502: defaultdict(lambda: BadGatewayError),
     503: defaultdict(lambda: UnavailableError),

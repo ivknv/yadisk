@@ -22,7 +22,7 @@ from ._typing_compat import (
     Iterator, AsyncIterator, Mapping, TypeAlias
 )
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from ._session import Session, Response
     from ._async_session import AsyncSession, AsyncResponse
     from ._client import Client

@@ -22,6 +22,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements-dev.txt
+    - name: Lint with ruff
+      run: ruff check
+    - name: Lint with mypy
+      run: mypy
     - name: Build the package
       run: python -m build
     - name: Install the built wheel
@@ -30,11 +34,8 @@ jobs:
         # Use the wheel to prevent broken releases, instead of the editable install
         pip uninstall -y yadisk
         pip install dist/yadisk-*.whl
-    - name: Lint with ruff
-      run: ruff check
-    - name: Lint with mypy
-      run: mypy
     - name: Run pre-recored tests
+      shell: bash
       env:
         PYTHON_YADISK_APP_ID: ${{ vars.PYTHON_YADISK_APP_ID }}
         PYTHON_YADISK_APP_SECRET: ${{ secrets.PYTHON_YADISK_APP_SECRET }}
@@ -44,4 +45,20 @@ jobs:
         PYTHON_YADISK_GATEWAY_PORT: ${{ vars.PYTHON_YADISK_GATEWAY_PORT }}
         PYTHON_YADISK_REPLAY_ENABLED: 1
       run: |
-        python -Wall -m pytest -v --log-cli-level=WARNING tests
+        if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+          # running with --cov fails on Windows in CI
+          pytest -v --log-cli-level=WARNING tests
+        else
+          source_path=$(python -c 'import importlib.util, os; print(os.path.dirname(importlib.util.find_spec("yadisk").origin))')
+          pytest --cov="$source_path" -v --log-cli-level=WARNING tests
+        fi
+    - name: Upload coverage
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      shell: bash
+      run: |
+        if [[ "${{ matrix.os }}" == "ubuntu-latest" ]] && [[ "${{ matrix.python-version }}" == "3.12" ]]; then
+          pip install coveralls
+          coveralls
+        fi
