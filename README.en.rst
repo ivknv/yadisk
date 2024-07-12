@@ -172,6 +172,31 @@ Changelog
 .. _requests: https://pypi.org/project/requests
 .. _Migration Guide: https://yadisk.readthedocs.io/en/latest/migration_guide.html
 
+* **Release 3.1.0 (2024-07-12)**
+
+  * New features:
+
+    * Added new exception classes: :code:`GoneError` and
+      :code:`ResourceDownloadLimitExceededError`
+    * Added a new method: :code:`Client.get_all_public_resources()` and
+      :code:`AsyncClient.get_all_public_resources()`
+  * Bug fixes:
+
+    * Fixed setting :code:`headers` and session arguments to :code:`None` causing
+      errors
+    * Fixed incorrect handling of empty filename in :code:`Client.rename()` and
+      :code:`AsyncClient.rename()`
+    * Fixed several typos in async convenience method implementations
+      (:code:`listdir()` and related)
+    * Fixed :code:`PublicResourceListObject` having the wrong type for its
+      :code:`items` member
+    * Fixed API requests not working with :code:`PycURLSession` when
+      :code:`stream=True` is set
+    * No data will be written to the output file by :code:`Client.download()`,
+      :code:`Client.download_by_link()`, :code:`AsyncClient.download()` and
+      :code:`AsyncClient.download_by_link()` if the server returns a bad status
+      code
+
 * **Release 3.0.1 (2024-07-09)**
 
   * Fixed broken :code:`pyproject.toml` that did not include full package

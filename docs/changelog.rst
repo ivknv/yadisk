@@ -17,6 +17,31 @@ Changelog
 .. role:: python(code)
    :language: python
 
+* **Release 3.1.0 (2024-07-12)**
+
+  * New features:
+
+    * Added new exception classes: :any:`GoneError` and
+      :any:`ResourceDownloadLimitExceededError`
+    * Added a new method: :any:`Client.get_all_public_resources()` and
+      :any:`AsyncClient.get_all_public_resources()`
+  * Bug fixes:
+
+    * Fixed setting :code:`headers` and session arguments to :code:`None` causing
+      errors
+    * Fixed incorrect handling of empty filename in :any:`Client.rename()` and
+      :any:`AsyncClient.rename()`
+    * Fixed several typos in async convenience method implementations
+      (:code:`listdir()` and related)
+    * Fixed :any:`PublicResourceListObject` having the wrong type for its
+      :code:`items` member
+    * Fixed API requests not working with :any:`PycURLSession` when
+      :code:`stream=True` is set
+    * No data will be written to the output file by :any:`Client.download()`,
+      :any:`Client.download_by_link()`, :any:`AsyncClient.download()` and
+      :any:`AsyncClient.download_by_link()` if the server returns a bad status
+      code
+
 * **Release 3.0.1 (2024-07-09)**
 
   * Fixed broken :code:`pyproject.toml` that did not include full package
