@@ -14,7 +14,7 @@ from io import BytesIO
 import aiofiles
 
 import yadisk
-from yadisk._common import is_operation_link, ensure_path_has_schema
+from yadisk._common import is_operation_link, ensure_path_has_schema, remove_path_schema
 from yadisk._api import GetOperationStatusRequest
 
 import pytest
@@ -171,6 +171,38 @@ class TestAsyncClient:
 
         for path in paths:
             await check_existence(path)
+
+    async def _test_makedirs(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        parent1 = posixpath.join(disk_root, "parent1")
+        parent2 = posixpath.join(parent1, "parent2")
+        parent3 = posixpath.join(parent2, "parent3")
+
+        path1 = posixpath.join(parent3, "leaf_directory")
+        path2 = posixpath.join(parent3, "another_directory")
+        path3 = posixpath.join(disk_root, "directory")
+
+        for path in [parent1, parent2, parent3, path1, path2, path3]:
+            assert not await async_client.exists(path)
+
+        await async_client.makedirs(path1)
+        assert await async_client.is_dir(path1)
+
+        with pytest.raises(yadisk.exceptions.DirectoryExistsError):
+            await async_client.makedirs(path1)
+
+        await async_client.makedirs(path2)
+        assert await async_client.is_dir(path2)
+
+        await async_client.makedirs(path3)
+        assert await async_client.is_dir(path3)
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_makedirs_without_schema(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        await self._test_makedirs(async_client, remove_path_schema(disk_root)[1])
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_makedirs_with_schema(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        await self._test_makedirs(async_client, ensure_path_has_schema(disk_root, "disk"))
 
     @pytest.mark.skipif(
         platform.system() == "Windows" and sys.version_info < (3, 12),

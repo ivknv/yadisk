@@ -1075,6 +1075,46 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.mkdir(str(path), **kwargs)
 
+    def makedirs(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        **kwargs
+    ) -> "SyncResourceLinkObject":
+        """
+            Create a new directory at `path`. If its parent directory doesn't
+            exist it will also be created recursively.
+
+            :param relative_path: `str` or `None`, relative path to the directory to be created
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises DirectoryExistsError: destination path already exists
+            :raises InsufficientStorageError: cannot create directory due to lack of storage space
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`SyncResourceLinkObject`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return self._yadisk.makedirs(str(path), **kwargs)
+
     def remove(self: ResourceProtocol,
                relative_path: Optional[str] = None, /, **kwargs) -> Optional["SyncOperationLinkObject"]:
         """
@@ -2045,6 +2085,45 @@ class AsyncResourceObjectMethodsMixin:
         path = PurePosixPath(self.path) / (relative_path or "")
 
         return await self._yadisk.mkdir(str(path), **kwargs)
+
+    async def makedirs(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        **kwargs
+    ) -> "AsyncResourceLinkObject":
+        """
+            Create a new directory at `path`. If its parent directory doesn't
+            exist it will also be created recursively.
+
+            :param relative_path: `str` or `None`, relative path to the directory to be created
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises DirectoryExistsError: destination path already exists
+            :raises InsufficientStorageError: cannot create directory due to lack of storage space
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`AsyncSyncResourceLinkObject`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.makedirs(str(path), **kwargs)
 
     async def remove(self: ResourceProtocol,
                      relative_path: Optional[str] = None, /, **kwargs) -> Optional["AsyncOperationLinkObject"]:
