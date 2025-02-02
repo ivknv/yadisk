@@ -28,7 +28,7 @@ from .._common import (
     ensure_path_has_schema, str_or_error, int_or_error, float_or_error,
     bool_or_error, dict_or_error, str_or_dict_or_error
 )
-from ..types import AsyncFileOrPath, AsyncFileOrPathDestination, FileOrPath, FileOrPathDestination
+from ..types import JSON, AsyncFileOrPath, AsyncFileOrPathDestination, FileOrPath, FileOrPathDestination
 
 from .. import settings
 
@@ -2393,6 +2393,36 @@ class AsyncResourceObjectMethodsMixin:
         return await self._yadisk.copy(str(src_path), dst_path, **kwargs)
 
 
+def _convert_list_of_previews(previews: JSON) -> Optional[Dict[str, str]]:
+    if previews is None:
+        return None
+
+    if not isinstance(previews, list):
+        raise ValueError(f"Expected a list, got {type(previews)}")
+
+    result = {}
+
+    for preview in previews:
+        if not isinstance(preview, dict):
+            raise ValueError(f"Expected a dict, got {type(preview)}")
+
+        try:
+            name = preview["name"]
+            url = preview["url"]
+        except KeyError:
+            continue
+
+        if not isinstance(name, str):
+            raise ValueError(f"Expected a string, got {type(name)}")
+
+        if not isinstance(url, str):
+            raise ValueError(f"Expected a string, got {type(url)}")
+
+        result[name] = url
+
+    return result
+
+
 class ResourceObject(YaDiskObject):
     """
         Resource object.
@@ -2423,6 +2453,9 @@ class ResourceObject(YaDiskObject):
         :ivar type: `str`, type ("file" or "dir")
         :ivar media_type: `str`, file type as determined by Yandex.Disk
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
+        :ivar sizes: :any:`dict[str, str]`, mapping of all preview sizes,
+                     where keys are names and values are download links
+
     """
 
     antivirus_status: Optional[str]
@@ -2449,6 +2482,7 @@ class ResourceObject(YaDiskObject):
     media_type: Optional[str]
     md5: Optional[str]
     revision: Optional[int]
+    sizes: Optional[Dict[str, str]]
 
     def __init__(self, resource: Optional[Dict] = None, yadisk: Optional[Any] = None):
         YaDiskObject.__init__(
@@ -2475,7 +2509,9 @@ class ResourceObject(YaDiskObject):
              "type":              str_or_error,
              "media_type":        str_or_error,
              "md5":               str_or_error,
-             "revision":          int_or_error},
+             "revision":          int_or_error,
+             "sizes":             _convert_list_of_previews
+            },
             yadisk)
         self.set_alias("_embedded", "embedded")
         self.import_fields(resource)
@@ -2511,6 +2547,8 @@ class SyncResourceObject(ResourceObject, ResourceObjectMethodsMixin):
         :ivar type: `str`, type ("file" or "dir")
         :ivar media_type: `str`, file type as determined by Yandex.Disk
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
+        :ivar sizes: :any:`dict[str, str]`, mapping of all preview sizes,
+                     where keys are names and values are download links
     """
 
     embedded: Optional["SyncResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
@@ -2552,6 +2590,8 @@ class AsyncResourceObject(ResourceObject, AsyncResourceObjectMethodsMixin):
         :ivar type: `str`, type ("file" or "dir")
         :ivar media_type: `str`, file type as determined by Yandex.Disk
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
+        :ivar sizes: :any:`dict[str, str]`, mapping of all preview sizes,
+                     where keys are names and values are download links
     """
 
     embedded: Optional["AsyncResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
@@ -3116,6 +3156,8 @@ class TrashResourceObject(ResourceObject):
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
         :ivar origin_path: `str`, original path
         :ivar deleted: :any:`datetime.datetime`, date of deletion
+        :ivar sizes: :any:`dict[str, str]`, mapping of all preview sizes,
+                     where keys are names and values are download links
     """
 
     embedded: Optional["TrashResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
@@ -3165,6 +3207,8 @@ class SyncTrashResourceObject(TrashResourceObject):
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
         :ivar origin_path: `str`, original path
         :ivar deleted: :any:`datetime.datetime`, date of deletion
+        :ivar sizes: :any:`dict[str, str]`, mapping of all preview sizes,
+                     where keys are names and values are download links
     """
 
     embedded: Optional["SyncTrashResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
@@ -3532,6 +3576,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
         :ivar origin_path: `str`, original path
         :ivar deleted: :any:`datetime.datetime`, date of deletion
+        :ivar sizes: :any:`dict[str, str]`, mapping of all preview sizes, where
+                     keys are names and values are download links
     """
 
     embedded: Optional["AsyncTrashResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]

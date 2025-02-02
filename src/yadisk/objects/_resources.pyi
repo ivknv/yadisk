@@ -1639,6 +1639,7 @@ class ResourceObject(YaDiskObject):
     media_type: Optional[str]
     md5: Optional[str]
     revision: Optional[int]
+    sizes: Optional[Dict[str, str]]
 
     def __init__(self, resource: Optional[Dict] = None, yadisk: Optional[Any] = None) -> None:
         ...
