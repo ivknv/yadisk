@@ -283,6 +283,44 @@ class TestClient:
             with pytest.raises(ValueError):
                 dir.rename(bad_filename)
 
+    def test_rename_edgecases(self, client: yadisk.Client, mocker) -> None:
+        # Test a few edgecases, make sure the destination paths are correct
+        # Path schemas must be preserved
+
+        dst_paths = []
+
+        def mock_move(src_path: str, dst_path: str, **kwargs) -> None:
+            # Store the destination path for later checking
+            dst_paths.append(dst_path)
+
+        mocker.patch.object(client, "move", mock_move)
+
+        with pytest.raises(ValueError):
+            client.rename("", "impossible")
+
+        with pytest.raises(ValueError):
+            client.rename("/", "impossible")
+
+        with pytest.raises(ValueError):
+            client.rename("////", "impossible")
+
+        with pytest.raises(ValueError):
+            client.rename("disk:/", "impossible")
+
+        with pytest.raises(ValueError):
+            client.rename("app:/", "another_directory")
+
+        client.rename("disk:", "not_a_schema")
+        client.rename("disk:/asd.txt", "renamed.txt")
+        client.rename("asd.txt", "renamed.txt")
+        client.rename("disk:/directory/file1.txt", "renamed_file.txt")
+        client.rename("disk:/directory/", "renamed_dir")
+
+        assert dst_paths == [
+            "not_a_schema", "disk:/renamed.txt", "renamed.txt",
+            "disk:/directory/renamed_file.txt", "disk:/renamed_dir"
+        ]
+
     @pytest.mark.usefixtures("sync_client_test")
     def test_remove_trash(self, client: yadisk.Client, disk_root: str) -> None:
         path = posixpath.join(disk_root, "dir-to-remove")

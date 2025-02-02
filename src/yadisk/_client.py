@@ -1670,7 +1670,7 @@ class Client:
             :raises PathExistsError: destination path already exists
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
-            :raises ValueError: `new_name` is not a valid filename
+            :raises ValueError: `new_name` is not a valid filename or `src_path` is root
             :raises OperationNotFoundError: requested operation was not found
             :raises AsyncOperationFailedError: requested operation failed
             :raises AsyncOperationPollingTimeoutError: requested operation did not
@@ -1685,7 +1685,18 @@ class Client:
         if "/" in new_name or new_name in (".", "..", ""):
             raise ValueError(f"Invalid filename: {new_name}")
 
-        dst_path = str(PurePosixPath(src_path).parent / new_name)
+        # Remove schema first, otherwise PurePosixPath will treat it as part of the path
+        schema, src_path_without_schema = remove_path_schema(src_path)
+        sanitized_src_path = PurePosixPath(src_path_without_schema.strip("/"))
+
+        if len(sanitized_src_path.parts) == 0:
+            raise ValueError("Cannot rename root")
+
+        dst_path = str(sanitized_src_path.parent / new_name)
+
+        # Restore schema back
+        if schema:
+            dst_path = f"{schema}:/{dst_path}"
 
         return self.move(src_path, dst_path, **kwargs)
 
