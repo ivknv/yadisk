@@ -812,15 +812,18 @@ class TestAsyncClient:
 
         class GetOperationStatusMock:
             def __init__(self):
-                self.call_count = 0
+                self.call_count_since_success = 0
 
             async def __call__(self, *args, **kwargs) -> yadisk.types.OperationStatus:
-                self.call_count += 1
+                status = await yadisk.AsyncClient.get_operation_status(async_client, *args, **kwargs)
 
-                if self.call_count < 3:
-                    return "failed"
+                if status == "success":
+                    self.call_count_since_success += 1
 
-                return await yadisk.AsyncClient.get_operation_status(async_client, *args, **kwargs)
+                    if self.call_count_since_success < 3:
+                        return "failed"
+
+                return status
 
 
         mocker.patch.object(async_client, "get_operation_status", GetOperationStatusMock())

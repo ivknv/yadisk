@@ -744,15 +744,18 @@ class TestClient:
 
         class GetOperationStatusMock:
             def __init__(self):
-                self.call_count = 0
+                self.call_count_since_success = 0
 
             def __call__(self, *args, **kwargs) -> yadisk.types.OperationStatus:
-                self.call_count += 1
+                status = yadisk.Client.get_operation_status(client, *args, **kwargs)
 
-                if self.call_count < 3:
-                    return "failed"
+                if status == "success":
+                    self.call_count_since_success += 1
 
-                return yadisk.Client.get_operation_status(client, *args, **kwargs)
+                    if self.call_count_since_success < 3:
+                        return "failed"
+
+                return status
 
 
         mocker.patch.object(client, "get_operation_status", GetOperationStatusMock())
