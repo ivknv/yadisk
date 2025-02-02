@@ -50,6 +50,12 @@ class DiskInfoObject(YaDiskObject):
         :ivar unlimited_autoupload_enabled: `bool`, tells whether unlimited
                                              autoupload from mobile devices is enabled
         :ivar revision: `int`, current revision of Yandex.Disk
+        :ivar photounlim_size: `int`, total file size in unlimited photos
+        :ivar will_be_overdrawn: `bool`, tells if the user will be in overdraft upon
+                                 reaching `free_photounlim_end_date`
+        :ivar free_photounlim_end_date: `int`, timestamp in ms of expiration date of
+                                        unlimited photo upload
+        :ivar payment_flow: `bool`, tells if the user is involved in `payment_flow`
     """
 
     paid_max_file_size:                   Optional[int]
@@ -65,6 +71,10 @@ class DiskInfoObject(YaDiskObject):
     is_idm_managed_public_access:         Optional[bool]
     unlimited_autoupload_enabled:         Optional[bool]
     revision:                             Optional[int]
+    photounlim_size:                      Optional[int]
+    will_be_overdrawn:                    Optional[bool]
+    free_photounlim_end_date:             Optional[int]
+    payment_flow:                         Optional[bool]
 
     def __init__(self, disk_info: Optional[Dict] = None, yadisk: Optional[Any] = None) -> None:
         YaDiskObject.__init__(
@@ -81,7 +91,12 @@ class DiskInfoObject(YaDiskObject):
              "user":                                 partial(UserObject, yadisk=yadisk),
              "is_idm_managed_public_access":         bool_or_error,
              "unlimited_autoupload_enabled":         bool_or_error,
-             "revision":                             int_or_error},
+             "revision":                             int_or_error,
+             "photounlim_size":                      int_or_error,
+             "will_be_overdrawn":                    bool_or_error,
+             "free_photounlim_end_date":             int_or_error,
+             "payment_flow":                         bool_or_error
+            },
             yadisk
         )
 
