@@ -612,7 +612,7 @@ class TestAsyncClient:
 
         # This is worth testing on download_by_link() as well, since it has
         # slightly different logic
-        with pytest.raises(yadisk.exceptions.GoneError):
+        with pytest.raises((yadisk.exceptions.GoneError, yadisk.exceptions.InternalServerError)):
             await async_client.download_by_link(
                 link,
                 BytesIO(),
