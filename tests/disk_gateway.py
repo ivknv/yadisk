@@ -21,7 +21,10 @@ from starlette.routing import Route
 import uvicorn
 
 __all__ = [
-    "DiskGateway", "DiskGatewayClient", "main", "BackgroundGatewayThread"
+    "BackgroundGatewayThread",
+    "DiskGateway",
+    "DiskGatewayClient",
+    "main"
 ]
 
 YADISK_BASE_URL = "https://cloud-api.yandex.net"

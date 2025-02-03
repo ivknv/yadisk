@@ -24,7 +24,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from ._async_session import AsyncSession
     from .types import AsyncSessionName, SessionName
 
-__all__ = ["import_session", "import_async_session"]
+__all__ = ["import_async_session", "import_session"]
 
 sessions = {
     "httpx":    ("sessions.httpx_session",    "HTTPXSession"),

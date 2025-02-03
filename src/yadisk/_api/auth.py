@@ -30,8 +30,10 @@ if TYPE_CHECKING:  # pragma: no cover
     from ..types import AnySession
 
 __all__ = [
-    "RefreshTokenRequest", "RevokeTokenRequest",
-    "GetTokenRequest", "GetDeviceCodeRequest"
+    "GetDeviceCodeRequest",
+    "GetTokenRequest",
+    "RefreshTokenRequest",
+    "RevokeTokenRequest"
 ]
 
 

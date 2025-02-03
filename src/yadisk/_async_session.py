@@ -27,7 +27,7 @@ from .utils import get_exception
 if TYPE_CHECKING:  # pragma: no cover
     from .exceptions import YaDiskError
 
-__all__ = ["AsyncSession", "AsyncResponse"]
+__all__ = ["AsyncResponse", "AsyncSession"]
 
 
 class AsyncResponse:

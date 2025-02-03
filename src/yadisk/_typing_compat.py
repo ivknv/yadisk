@@ -17,9 +17,22 @@
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
 __all__ = [
-    "List", "Dict", "Set", "Tuple", "Callable", "Iterable", "Generator",
-    "AsyncGenerator", "Coroutine", "Awaitable", "AsyncIterable", "Iterator",
-    "AsyncIterator", "Mapping", "TypeAlias", "Type"
+    "AsyncGenerator",
+    "AsyncIterable",
+    "AsyncIterator",
+    "Awaitable",
+    "Callable",
+    "Coroutine",
+    "Dict",
+    "Generator",
+    "Iterable",
+    "Iterator",
+    "List",
+    "Mapping",
+    "Set",
+    "Tuple",
+    "Type",
+    "TypeAlias"
 ]
 
 import sys

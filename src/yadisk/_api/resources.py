@@ -37,12 +37,28 @@ from typing import Optional, Union, TYPE_CHECKING
 if TYPE_CHECKING:  # pragma: no cover
     from ..types import AnySession, AnyClient, JSON
 
-__all__ = ["GetPublicResourcesRequest", "UnpublishRequest", "GetDownloadLinkRequest",
-           "GetTrashRequest", "RestoreTrashRequest", "DeleteTrashRequest",
-           "LastUploadedRequest", "CopyRequest", "GetMetaRequest", "GetUploadLinkRequest",
-           "MkdirRequest", "PublishRequest", "UploadURLRequest", "DeleteRequest",
-           "SaveToDiskRequest", "GetPublicMetaRequest", "GetPublicDownloadLinkRequest",
-           "MoveRequest", "FilesRequest", "PatchRequest"]
+__all__ = [
+    "CopyRequest",
+    "DeleteRequest",
+    "DeleteTrashRequest",
+    "FilesRequest",
+    "GetDownloadLinkRequest",
+    "GetMetaRequest",
+    "GetPublicDownloadLinkRequest",
+    "GetPublicMetaRequest",
+    "GetPublicResourcesRequest",
+    "GetTrashRequest",
+    "GetUploadLinkRequest",
+    "LastUploadedRequest",
+    "MkdirRequest",
+    "MoveRequest",
+    "PatchRequest",
+    "PublishRequest",
+    "RestoreTrashRequest",
+    "SaveToDiskRequest",
+    "UnpublishRequest",
+    "UploadURLRequest",
+]
 
 Fields = Iterable[str]
 

@@ -29,7 +29,7 @@ from typing import Any, Optional, Union, TypeVar
 from ._typing_compat import Callable, Awaitable, Dict, Tuple, Type
 from .types import AnyResponse
 
-__all__ = ["get_exception", "auto_retry", "async_auto_retry", "CaseInsensitiveDict"]
+__all__ = ["CaseInsensitiveDict", "async_auto_retry", "auto_retry", "get_exception"]
 
 
 class _UnexpectedRequestError(YaDiskError):

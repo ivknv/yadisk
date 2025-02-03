@@ -21,7 +21,7 @@ from .._common import str_or_error, int_or_error
 
 from typing import Any, Optional
 
-__all__ = ["TokenObject", "TokenRevokeStatusObject", "DeviceCodeObject"]
+__all__ = ["DeviceCodeObject", "TokenObject", "TokenRevokeStatusObject"]
 
 
 class TokenObject(YaDiskObject):

@@ -20,9 +20,14 @@ import logging
 from .types import TimeoutParameter
 
 __all__ = [
-    "DEFAULT_TIMEOUT", "DEFAULT_N_RETRIES", "DEFAULT_RETRY_INTERVAL",
-    "DEFAULT_UPLOAD_TIMEOUT", "DEFAULT_UPLOAD_RETRY_INTERVAL", "BASE_API_URL",
-    "BASE_OAUTH_API_URL", "logger"
+    "BASE_API_URL",
+    "BASE_OAUTH_API_URL",
+    "DEFAULT_N_RETRIES",
+    "DEFAULT_RETRY_INTERVAL",
+    "DEFAULT_TIMEOUT",
+    "DEFAULT_UPLOAD_RETRY_INTERVAL",
+    "DEFAULT_UPLOAD_TIMEOUT",
+    "logger"
 ]
 
 #: `tuple` of 2 numbers (`int` or `float`), default timeout for requests.

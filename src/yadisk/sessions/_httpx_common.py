@@ -29,7 +29,7 @@ from .. import settings
 
 import httpx
 
-__all__ = ["convert_httpx_exception", "convert_timeout", "convert_args_for_httpx"]
+__all__ = ["convert_args_for_httpx", "convert_httpx_exception", "convert_timeout"]
 
 
 def convert_httpx_exception(exc: httpx.HTTPError) -> Union[RequestError, httpx.HTTPError]:
