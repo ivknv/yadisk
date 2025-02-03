@@ -24,8 +24,10 @@ from ..types import OperationStatus
 from typing import Any, Optional
 
 __all__ = [
-    "OperationStatusObject", "OperationLinkObject",
-    "SyncOperationLinkObject", "AsyncOperationLinkObject"
+    "AsyncOperationLinkObject",
+    "OperationLinkObject",
+    "OperationStatusObject",
+    "SyncOperationLinkObject"
 ]
 
 

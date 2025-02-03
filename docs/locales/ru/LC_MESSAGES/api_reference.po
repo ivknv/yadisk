@@ -5,16 +5,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: YaDisk 3.0.0\n"
+"Project-Id-Version: YaDisk 3.1.0\n"
 "Report-Msgid-Bugs-To: ivknv0@gmail.com\n"
-"POT-Creation-Date: 2024-07-12 19:07+0500\n"
-"PO-Revision-Date: 2024-07-12 19:08+0500\n"
+"POT-Creation-Date: 2025-02-03 19:18+0500\n"
+"PO-Revision-Date: 2025-02-03 19:21+0500\n"
 "Last-Translator: Ivan Konovalov <ivknv0@gmail.com>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: ../../api_reference/async_api.rst:2
 msgid "Asynchronous API"
@@ -131,6 +131,7 @@ msgstr ""
 #: yadisk._async_client.AsyncClient.is_trash_dir
 #: yadisk._async_client.AsyncClient.is_trash_file
 #: yadisk._async_client.AsyncClient.listdir
+#: yadisk._async_client.AsyncClient.makedirs
 #: yadisk._async_client.AsyncClient.mkdir yadisk._async_client.AsyncClient.move
 #: yadisk._async_client.AsyncClient.patch
 #: yadisk._async_client.AsyncClient.public_exists
@@ -172,16 +173,17 @@ msgstr ""
 #: yadisk._client.Client.is_file yadisk._client.Client.is_public_dir
 #: yadisk._client.Client.is_public_file yadisk._client.Client.is_trash_dir
 #: yadisk._client.Client.is_trash_file yadisk._client.Client.listdir
-#: yadisk._client.Client.mkdir yadisk._client.Client.move
-#: yadisk._client.Client.patch yadisk._client.Client.public_exists
-#: yadisk._client.Client.public_listdir yadisk._client.Client.publish
-#: yadisk._client.Client.refresh_token yadisk._client.Client.remove
-#: yadisk._client.Client.remove_trash yadisk._client.Client.rename
-#: yadisk._client.Client.restore_trash yadisk._client.Client.revoke_token
-#: yadisk._client.Client.save_to_disk yadisk._client.Client.trash_exists
-#: yadisk._client.Client.trash_listdir yadisk._client.Client.unpublish
-#: yadisk._client.Client.upload yadisk._client.Client.upload_by_link
-#: yadisk._client.Client.upload_url yadisk._client.Client.wait_for_operation
+#: yadisk._client.Client.makedirs yadisk._client.Client.mkdir
+#: yadisk._client.Client.move yadisk._client.Client.patch
+#: yadisk._client.Client.public_exists yadisk._client.Client.public_listdir
+#: yadisk._client.Client.publish yadisk._client.Client.refresh_token
+#: yadisk._client.Client.remove yadisk._client.Client.remove_trash
+#: yadisk._client.Client.rename yadisk._client.Client.restore_trash
+#: yadisk._client.Client.revoke_token yadisk._client.Client.save_to_disk
+#: yadisk._client.Client.trash_exists yadisk._client.Client.trash_listdir
+#: yadisk._client.Client.unpublish yadisk._client.Client.upload
+#: yadisk._client.Client.upload_by_link yadisk._client.Client.upload_url
+#: yadisk._client.Client.wait_for_operation
 #: yadisk._import_session.import_async_session
 #: yadisk._import_session.import_session yadisk._session.Response.download
 #: yadisk._session.Session.send_request yadisk.exceptions.YaDiskError
@@ -463,6 +465,7 @@ msgstr "Большинство запросов к API могут вызвать
 #: yadisk._async_client.AsyncClient.is_trash_dir
 #: yadisk._async_client.AsyncClient.is_trash_file
 #: yadisk._async_client.AsyncClient.listdir
+#: yadisk._async_client.AsyncClient.makedirs
 #: yadisk._async_client.AsyncClient.mkdir yadisk._async_client.AsyncClient.move
 #: yadisk._async_client.AsyncClient.patch
 #: yadisk._async_client.AsyncClient.public_exists
@@ -503,16 +506,17 @@ msgstr "Большинство запросов к API могут вызвать
 #: yadisk._client.Client.is_file yadisk._client.Client.is_public_dir
 #: yadisk._client.Client.is_public_file yadisk._client.Client.is_trash_dir
 #: yadisk._client.Client.is_trash_file yadisk._client.Client.listdir
-#: yadisk._client.Client.mkdir yadisk._client.Client.move
-#: yadisk._client.Client.patch yadisk._client.Client.public_exists
-#: yadisk._client.Client.public_listdir yadisk._client.Client.publish
-#: yadisk._client.Client.refresh_token yadisk._client.Client.remove
-#: yadisk._client.Client.remove_trash yadisk._client.Client.rename
-#: yadisk._client.Client.restore_trash yadisk._client.Client.revoke_token
-#: yadisk._client.Client.save_to_disk yadisk._client.Client.trash_exists
-#: yadisk._client.Client.trash_listdir yadisk._client.Client.unpublish
-#: yadisk._client.Client.upload yadisk._client.Client.upload_by_link
-#: yadisk._client.Client.upload_url yadisk._client.Client.wait_for_operation
+#: yadisk._client.Client.makedirs yadisk._client.Client.mkdir
+#: yadisk._client.Client.move yadisk._client.Client.patch
+#: yadisk._client.Client.public_exists yadisk._client.Client.public_listdir
+#: yadisk._client.Client.publish yadisk._client.Client.refresh_token
+#: yadisk._client.Client.remove yadisk._client.Client.remove_trash
+#: yadisk._client.Client.rename yadisk._client.Client.restore_trash
+#: yadisk._client.Client.revoke_token yadisk._client.Client.save_to_disk
+#: yadisk._client.Client.trash_exists yadisk._client.Client.trash_listdir
+#: yadisk._client.Client.unpublish yadisk._client.Client.upload
+#: yadisk._client.Client.upload_by_link yadisk._client.Client.upload_url
+#: yadisk._client.Client.wait_for_operation
 #: yadisk._import_session.import_async_session
 #: yadisk._import_session.import_session yadisk._session.Response.download
 #: yadisk._session.Response.json
@@ -648,6 +652,7 @@ msgstr "токен, подлежащий проверке, то же самое,
 #: yadisk._async_client.AsyncClient.is_trash_dir:4
 #: yadisk._async_client.AsyncClient.is_trash_file:4
 #: yadisk._async_client.AsyncClient.listdir:10
+#: yadisk._async_client.AsyncClient.makedirs:6
 #: yadisk._async_client.AsyncClient.mkdir:5
 #: yadisk._async_client.AsyncClient.move:12
 #: yadisk._async_client.AsyncClient.patch:6
@@ -702,6 +707,7 @@ msgstr "`float`, `tuple` или `None`, таймаут запроса"
 #: yadisk._async_client.AsyncClient.is_trash_dir:5
 #: yadisk._async_client.AsyncClient.is_trash_file:5
 #: yadisk._async_client.AsyncClient.listdir:11
+#: yadisk._async_client.AsyncClient.makedirs:7
 #: yadisk._async_client.AsyncClient.mkdir:6
 #: yadisk._async_client.AsyncClient.move:13
 #: yadisk._async_client.AsyncClient.patch:7
@@ -743,9 +749,9 @@ msgstr "`float`, `tuple` или `None`, таймаут запроса"
 #: yadisk._client.Client.is_dir:5 yadisk._client.Client.is_file:5
 #: yadisk._client.Client.is_public_dir:6 yadisk._client.Client.is_public_file:6
 #: yadisk._client.Client.is_trash_dir:5 yadisk._client.Client.is_trash_file:5
-#: yadisk._client.Client.listdir:11 yadisk._client.Client.mkdir:6
-#: yadisk._client.Client.move:13 yadisk._client.Client.patch:7
-#: yadisk._client.Client.public_exists:6
+#: yadisk._client.Client.listdir:11 yadisk._client.Client.makedirs:7
+#: yadisk._client.Client.mkdir:6 yadisk._client.Client.move:13
+#: yadisk._client.Client.patch:7 yadisk._client.Client.public_exists:6
 #: yadisk._client.Client.public_listdir:14 yadisk._client.Client.publish:6
 #: yadisk._client.Client.refresh_token:5 yadisk._client.Client.remove:14
 #: yadisk._client.Client.remove_trash:11 yadisk._client.Client.rename:14
@@ -810,6 +816,7 @@ msgstr "`dict` или `None`, дополнительные заголовки з
 #: yadisk._async_client.AsyncClient.is_trash_dir:6
 #: yadisk._async_client.AsyncClient.is_trash_file:6
 #: yadisk._async_client.AsyncClient.listdir:12
+#: yadisk._async_client.AsyncClient.makedirs:8
 #: yadisk._async_client.AsyncClient.mkdir:7
 #: yadisk._async_client.AsyncClient.move:14
 #: yadisk._async_client.AsyncClient.patch:8
@@ -851,9 +858,9 @@ msgstr "`dict` или `None`, дополнительные заголовки з
 #: yadisk._client.Client.is_dir:6 yadisk._client.Client.is_file:6
 #: yadisk._client.Client.is_public_dir:7 yadisk._client.Client.is_public_file:7
 #: yadisk._client.Client.is_trash_dir:6 yadisk._client.Client.is_trash_file:6
-#: yadisk._client.Client.listdir:12 yadisk._client.Client.mkdir:7
-#: yadisk._client.Client.move:14 yadisk._client.Client.patch:8
-#: yadisk._client.Client.public_exists:7
+#: yadisk._client.Client.listdir:12 yadisk._client.Client.makedirs:8
+#: yadisk._client.Client.mkdir:7 yadisk._client.Client.move:14
+#: yadisk._client.Client.patch:8 yadisk._client.Client.public_exists:7
 #: yadisk._client.Client.public_listdir:15 yadisk._client.Client.publish:7
 #: yadisk._client.Client.refresh_token:6 yadisk._client.Client.remove:15
 #: yadisk._client.Client.remove_trash:12 yadisk._client.Client.rename:15
@@ -919,6 +926,7 @@ msgstr "`int`, максимальное число повторных попыт
 #: yadisk._async_client.AsyncClient.is_trash_dir:7
 #: yadisk._async_client.AsyncClient.is_trash_file:7
 #: yadisk._async_client.AsyncClient.listdir:13
+#: yadisk._async_client.AsyncClient.makedirs:9
 #: yadisk._async_client.AsyncClient.mkdir:8
 #: yadisk._async_client.AsyncClient.move:15
 #: yadisk._async_client.AsyncClient.patch:9
@@ -960,9 +968,9 @@ msgstr "`int`, максимальное число повторных попыт
 #: yadisk._client.Client.is_dir:7 yadisk._client.Client.is_file:7
 #: yadisk._client.Client.is_public_dir:8 yadisk._client.Client.is_public_file:8
 #: yadisk._client.Client.is_trash_dir:7 yadisk._client.Client.is_trash_file:7
-#: yadisk._client.Client.listdir:13 yadisk._client.Client.mkdir:8
-#: yadisk._client.Client.move:15 yadisk._client.Client.patch:9
-#: yadisk._client.Client.public_exists:8
+#: yadisk._client.Client.listdir:13 yadisk._client.Client.makedirs:9
+#: yadisk._client.Client.mkdir:8 yadisk._client.Client.move:15
+#: yadisk._client.Client.patch:9 yadisk._client.Client.public_exists:8
 #: yadisk._client.Client.public_listdir:16 yadisk._client.Client.publish:8
 #: yadisk._client.Client.refresh_token:7 yadisk._client.Client.remove:16
 #: yadisk._client.Client.remove_trash:13 yadisk._client.Client.rename:16
@@ -1027,6 +1035,7 @@ msgstr "задержка между повторными попытками в �
 #: yadisk._async_client.AsyncClient.is_trash_dir:8
 #: yadisk._async_client.AsyncClient.is_trash_file:8
 #: yadisk._async_client.AsyncClient.listdir:14
+#: yadisk._async_client.AsyncClient.makedirs:10
 #: yadisk._async_client.AsyncClient.mkdir:9
 #: yadisk._async_client.AsyncClient.move:16
 #: yadisk._async_client.AsyncClient.patch:10
@@ -1068,9 +1077,9 @@ msgstr "задержка между повторными попытками в �
 #: yadisk._client.Client.is_dir:8 yadisk._client.Client.is_file:8
 #: yadisk._client.Client.is_public_dir:9 yadisk._client.Client.is_public_file:9
 #: yadisk._client.Client.is_trash_dir:8 yadisk._client.Client.is_trash_file:8
-#: yadisk._client.Client.listdir:14 yadisk._client.Client.mkdir:9
-#: yadisk._client.Client.move:16 yadisk._client.Client.patch:10
-#: yadisk._client.Client.public_exists:9
+#: yadisk._client.Client.listdir:14 yadisk._client.Client.makedirs:10
+#: yadisk._client.Client.mkdir:9 yadisk._client.Client.move:16
+#: yadisk._client.Client.patch:10 yadisk._client.Client.public_exists:9
 #: yadisk._client.Client.public_listdir:17 yadisk._client.Client.publish:9
 #: yadisk._client.Client.refresh_token:8 yadisk._client.Client.remove:17
 #: yadisk._client.Client.remove_trash:14 yadisk._client.Client.rename:17
@@ -1137,6 +1146,7 @@ msgstr ""
 #: yadisk._async_client.AsyncClient.is_trash_dir:9
 #: yadisk._async_client.AsyncClient.is_trash_file:9
 #: yadisk._async_client.AsyncClient.listdir:15
+#: yadisk._async_client.AsyncClient.makedirs:11
 #: yadisk._async_client.AsyncClient.mkdir:10
 #: yadisk._async_client.AsyncClient.move:17
 #: yadisk._async_client.AsyncClient.patch:11
@@ -1201,6 +1211,7 @@ msgstr "`dict`, дополнительные параметры для :any:`AIO
 #: yadisk._async_client.AsyncClient.is_trash_dir:10
 #: yadisk._async_client.AsyncClient.is_trash_file:10
 #: yadisk._async_client.AsyncClient.listdir:16
+#: yadisk._async_client.AsyncClient.makedirs:12
 #: yadisk._async_client.AsyncClient.mkdir:11
 #: yadisk._async_client.AsyncClient.move:18
 #: yadisk._async_client.AsyncClient.patch:12
@@ -1266,6 +1277,7 @@ msgstr "`dict`, дополнительные параметры для :any:`Asy
 #: yadisk._async_client.AsyncClient.is_trash_dir:11
 #: yadisk._async_client.AsyncClient.is_trash_file:11
 #: yadisk._async_client.AsyncClient.listdir:17
+#: yadisk._async_client.AsyncClient.makedirs:13
 #: yadisk._async_client.AsyncClient.mkdir:12
 #: yadisk._async_client.AsyncClient.move:19
 #: yadisk._async_client.AsyncClient.patch:13
@@ -1309,9 +1321,9 @@ msgstr "`dict`, дополнительные параметры для :any:`Asy
 #: yadisk._client.Client.is_public_dir:13
 #: yadisk._client.Client.is_public_file:13
 #: yadisk._client.Client.is_trash_dir:12 yadisk._client.Client.is_trash_file:12
-#: yadisk._client.Client.listdir:18 yadisk._client.Client.mkdir:13
-#: yadisk._client.Client.move:20 yadisk._client.Client.patch:14
-#: yadisk._client.Client.public_exists:13
+#: yadisk._client.Client.listdir:18 yadisk._client.Client.makedirs:14
+#: yadisk._client.Client.mkdir:13 yadisk._client.Client.move:20
+#: yadisk._client.Client.patch:14 yadisk._client.Client.public_exists:13
 #: yadisk._client.Client.public_listdir:21 yadisk._client.Client.publish:13
 #: yadisk._client.Client.refresh_token:12 yadisk._client.Client.remove:21
 #: yadisk._client.Client.remove_trash:18 yadisk._client.Client.rename:21
@@ -1377,6 +1389,7 @@ msgstr "другие параметры для :any:`Session.send_request()`"
 #: yadisk._async_client.AsyncClient.is_trash_dir
 #: yadisk._async_client.AsyncClient.is_trash_file
 #: yadisk._async_client.AsyncClient.listdir
+#: yadisk._async_client.AsyncClient.makedirs
 #: yadisk._async_client.AsyncClient.mkdir yadisk._async_client.AsyncClient.move
 #: yadisk._async_client.AsyncClient.patch
 #: yadisk._async_client.AsyncClient.public_exists
@@ -1416,16 +1429,16 @@ msgstr "другие параметры для :any:`Session.send_request()`"
 #: yadisk._client.Client.is_file yadisk._client.Client.is_public_dir
 #: yadisk._client.Client.is_public_file yadisk._client.Client.is_trash_dir
 #: yadisk._client.Client.is_trash_file yadisk._client.Client.listdir
-#: yadisk._client.Client.mkdir yadisk._client.Client.move
-#: yadisk._client.Client.patch yadisk._client.Client.public_exists
-#: yadisk._client.Client.public_listdir yadisk._client.Client.publish
-#: yadisk._client.Client.refresh_token yadisk._client.Client.remove
-#: yadisk._client.Client.remove_trash yadisk._client.Client.rename
-#: yadisk._client.Client.restore_trash yadisk._client.Client.revoke_token
-#: yadisk._client.Client.save_to_disk yadisk._client.Client.trash_exists
-#: yadisk._client.Client.trash_listdir yadisk._client.Client.unpublish
-#: yadisk._client.Client.upload yadisk._client.Client.upload_url
-#: yadisk._import_session.import_async_session
+#: yadisk._client.Client.makedirs yadisk._client.Client.mkdir
+#: yadisk._client.Client.move yadisk._client.Client.patch
+#: yadisk._client.Client.public_exists yadisk._client.Client.public_listdir
+#: yadisk._client.Client.publish yadisk._client.Client.refresh_token
+#: yadisk._client.Client.remove yadisk._client.Client.remove_trash
+#: yadisk._client.Client.rename yadisk._client.Client.restore_trash
+#: yadisk._client.Client.revoke_token yadisk._client.Client.save_to_disk
+#: yadisk._client.Client.trash_exists yadisk._client.Client.trash_listdir
+#: yadisk._client.Client.unpublish yadisk._client.Client.upload
+#: yadisk._client.Client.upload_url yadisk._import_session.import_async_session
 #: yadisk._import_session.import_session yadisk._session.Response.get_exception
 #: yadisk._session.Response.json yadisk._session.Session.send_request
 #: yadisk.objects._operations.AsyncOperationLinkObject.get_status
@@ -1549,6 +1562,7 @@ msgstr "заставляет выполнять операцию асинхро�
 #: yadisk._async_client.AsyncClient.get_trash_meta:9
 #: yadisk._async_client.AsyncClient.get_upload_link_object:8
 #: yadisk._async_client.AsyncClient.listdir:9
+#: yadisk._async_client.AsyncClient.makedirs:5
 #: yadisk._async_client.AsyncClient.mkdir:4
 #: yadisk._async_client.AsyncClient.move:7
 #: yadisk._async_client.AsyncClient.patch:5
@@ -1569,13 +1583,14 @@ msgstr "заставляет выполнять операцию асинхро�
 #: yadisk._client.Client.get_public_resources:8
 #: yadisk._client.Client.get_trash_meta:9
 #: yadisk._client.Client.get_upload_link_object:8
-#: yadisk._client.Client.listdir:9 yadisk._client.Client.mkdir:4
-#: yadisk._client.Client.move:7 yadisk._client.Client.patch:5
-#: yadisk._client.Client.public_listdir:12 yadisk._client.Client.publish:4
-#: yadisk._client.Client.remove:12 yadisk._client.Client.remove_trash:5
-#: yadisk._client.Client.rename:8 yadisk._client.Client.restore_trash:8
-#: yadisk._client.Client.save_to_disk:10 yadisk._client.Client.trash_listdir:9
-#: yadisk._client.Client.unpublish:4 yadisk._client.Client.upload_url:6
+#: yadisk._client.Client.listdir:9 yadisk._client.Client.makedirs:5
+#: yadisk._client.Client.mkdir:4 yadisk._client.Client.move:7
+#: yadisk._client.Client.patch:5 yadisk._client.Client.public_listdir:12
+#: yadisk._client.Client.publish:4 yadisk._client.Client.remove:12
+#: yadisk._client.Client.remove_trash:5 yadisk._client.Client.rename:8
+#: yadisk._client.Client.restore_trash:8 yadisk._client.Client.save_to_disk:10
+#: yadisk._client.Client.trash_listdir:9 yadisk._client.Client.unpublish:4
+#: yadisk._client.Client.upload_url:6
 #: yadisk.objects._resources.AsyncTrashResourceObject.get_meta:9
 #: yadisk.objects._resources.AsyncTrashResourceObject.listdir:9
 #: yadisk.objects._resources.AsyncTrashResourceObject.remove:5
@@ -1712,6 +1727,7 @@ msgstr "ресурс не был найден на Диске"
 #: of yadisk._async_client.AsyncClient.copy:25
 #: yadisk._async_client.AsyncClient.get_upload_link:15
 #: yadisk._async_client.AsyncClient.get_upload_link_object:19
+#: yadisk._async_client.AsyncClient.makedirs:15
 #: yadisk._async_client.AsyncClient.mkdir:15
 #: yadisk._async_client.AsyncClient.move:22
 #: yadisk._async_client.AsyncClient.rename:23
@@ -1720,9 +1736,10 @@ msgstr "ресурс не был найден на Диске"
 #: yadisk._async_client.AsyncClient.upload_url:21 yadisk._client.Client.copy:26
 #: yadisk._client.Client.get_upload_link:16
 #: yadisk._client.Client.get_upload_link_object:20
-#: yadisk._client.Client.mkdir:16 yadisk._client.Client.move:23
-#: yadisk._client.Client.rename:24 yadisk._client.Client.restore_trash:24
-#: yadisk._client.Client.upload:19 yadisk._client.Client.upload_url:22
+#: yadisk._client.Client.makedirs:16 yadisk._client.Client.mkdir:16
+#: yadisk._client.Client.move:23 yadisk._client.Client.rename:24
+#: yadisk._client.Client.restore_trash:24 yadisk._client.Client.upload:19
+#: yadisk._client.Client.upload_url:22
 #: yadisk.objects._resources.AsyncTrashResourceObject.restore:28
 #: yadisk.objects._resources.SyncTrashResourceObject.restore:29
 msgid "destination path already exists"
@@ -1754,6 +1771,7 @@ msgstr "путь назначения уже существует"
 #: yadisk._async_client.AsyncClient.is_trash_dir:13
 #: yadisk._async_client.AsyncClient.is_trash_file:13
 #: yadisk._async_client.AsyncClient.listdir:20
+#: yadisk._async_client.AsyncClient.makedirs:17
 #: yadisk._async_client.AsyncClient.mkdir:17
 #: yadisk._async_client.AsyncClient.move:23
 #: yadisk._async_client.AsyncClient.patch:16
@@ -1789,9 +1807,9 @@ msgstr "путь назначения уже существует"
 #: yadisk._client.Client.is_public_dir:15
 #: yadisk._client.Client.is_public_file:15
 #: yadisk._client.Client.is_trash_dir:14 yadisk._client.Client.is_trash_file:14
-#: yadisk._client.Client.listdir:21 yadisk._client.Client.mkdir:18
-#: yadisk._client.Client.move:24 yadisk._client.Client.patch:17
-#: yadisk._client.Client.public_exists:15
+#: yadisk._client.Client.listdir:21 yadisk._client.Client.makedirs:18
+#: yadisk._client.Client.mkdir:18 yadisk._client.Client.move:24
+#: yadisk._client.Client.patch:17 yadisk._client.Client.public_exists:15
 #: yadisk._client.Client.public_listdir:24 yadisk._client.Client.publish:16
 #: yadisk._client.Client.remove:24 yadisk._client.Client.remove_trash:21
 #: yadisk._client.Client.rename:25 yadisk._client.Client.restore_trash:25
@@ -1828,6 +1846,7 @@ msgstr "невозможно выполнить запрос из-за нехв�
 #: yadisk._async_client.AsyncClient.get_public_download_link:16
 #: yadisk._async_client.AsyncClient.get_upload_link:17
 #: yadisk._async_client.AsyncClient.get_upload_link_object:21
+#: yadisk._async_client.AsyncClient.makedirs:18
 #: yadisk._async_client.AsyncClient.mkdir:18
 #: yadisk._async_client.AsyncClient.move:24
 #: yadisk._async_client.AsyncClient.patch:17
@@ -1845,12 +1864,13 @@ msgstr "невозможно выполнить запрос из-за нехв�
 #: yadisk._client.Client.get_public_download_link:17
 #: yadisk._client.Client.get_upload_link:18
 #: yadisk._client.Client.get_upload_link_object:22
-#: yadisk._client.Client.mkdir:19 yadisk._client.Client.move:25
-#: yadisk._client.Client.patch:18 yadisk._client.Client.publish:17
-#: yadisk._client.Client.remove:26 yadisk._client.Client.remove_trash:22
-#: yadisk._client.Client.rename:26 yadisk._client.Client.restore_trash:26
-#: yadisk._client.Client.save_to_disk:27 yadisk._client.Client.unpublish:17
-#: yadisk._client.Client.upload:22 yadisk._client.Client.upload_url:25
+#: yadisk._client.Client.makedirs:19 yadisk._client.Client.mkdir:19
+#: yadisk._client.Client.move:25 yadisk._client.Client.patch:18
+#: yadisk._client.Client.publish:17 yadisk._client.Client.remove:26
+#: yadisk._client.Client.remove_trash:22 yadisk._client.Client.rename:26
+#: yadisk._client.Client.restore_trash:26 yadisk._client.Client.save_to_disk:27
+#: yadisk._client.Client.unpublish:17 yadisk._client.Client.upload:22
+#: yadisk._client.Client.upload_url:25
 #: yadisk.objects._resources.AsyncTrashResourceObject.remove:21
 #: yadisk.objects._resources.AsyncTrashResourceObject.restore:30
 #: yadisk.objects._resources.SyncTrashResourceObject.remove:22
@@ -2152,9 +2172,9 @@ msgstr "фильтр по типу ресурса (\"file\" или \"dir\")"
 #: yadisk._client.Client.is_dir:4 yadisk._client.Client.is_file:4
 #: yadisk._client.Client.is_public_dir:5 yadisk._client.Client.is_public_file:5
 #: yadisk._client.Client.is_trash_dir:4 yadisk._client.Client.is_trash_file:4
-#: yadisk._client.Client.listdir:10 yadisk._client.Client.mkdir:5
-#: yadisk._client.Client.move:12 yadisk._client.Client.patch:6
-#: yadisk._client.Client.public_exists:5
+#: yadisk._client.Client.listdir:10 yadisk._client.Client.makedirs:6
+#: yadisk._client.Client.mkdir:5 yadisk._client.Client.move:12
+#: yadisk._client.Client.patch:6 yadisk._client.Client.public_exists:5
 #: yadisk._client.Client.public_listdir:13 yadisk._client.Client.publish:5
 #: yadisk._client.Client.refresh_token:4 yadisk._client.Client.remove:13
 #: yadisk._client.Client.remove_trash:10 yadisk._client.Client.rename:13
@@ -2210,8 +2230,9 @@ msgstr "`float` или `tuple`, таймаут запроса"
 #: yadisk._client.Client.is_public_dir:10
 #: yadisk._client.Client.is_public_file:10 yadisk._client.Client.is_trash_dir:9
 #: yadisk._client.Client.is_trash_file:9 yadisk._client.Client.listdir:15
-#: yadisk._client.Client.mkdir:10 yadisk._client.Client.move:17
-#: yadisk._client.Client.patch:11 yadisk._client.Client.public_exists:10
+#: yadisk._client.Client.makedirs:11 yadisk._client.Client.mkdir:10
+#: yadisk._client.Client.move:17 yadisk._client.Client.patch:11
+#: yadisk._client.Client.public_exists:10
 #: yadisk._client.Client.public_listdir:18 yadisk._client.Client.publish:10
 #: yadisk._client.Client.refresh_token:9 yadisk._client.Client.remove:18
 #: yadisk._client.Client.remove_trash:15 yadisk._client.Client.rename:18
@@ -2258,9 +2279,9 @@ msgstr "`dict`, Дополнительные параметры для :any:`Req
 #: yadisk._client.Client.is_public_dir:11
 #: yadisk._client.Client.is_public_file:11
 #: yadisk._client.Client.is_trash_dir:10 yadisk._client.Client.is_trash_file:10
-#: yadisk._client.Client.listdir:16 yadisk._client.Client.mkdir:11
-#: yadisk._client.Client.move:18 yadisk._client.Client.patch:12
-#: yadisk._client.Client.public_exists:11
+#: yadisk._client.Client.listdir:16 yadisk._client.Client.makedirs:12
+#: yadisk._client.Client.mkdir:11 yadisk._client.Client.move:18
+#: yadisk._client.Client.patch:12 yadisk._client.Client.public_exists:11
 #: yadisk._client.Client.public_listdir:19 yadisk._client.Client.publish:11
 #: yadisk._client.Client.refresh_token:10 yadisk._client.Client.remove:19
 #: yadisk._client.Client.remove_trash:16 yadisk._client.Client.rename:19
@@ -2307,9 +2328,9 @@ msgstr "`dict`, дополнительные параметры для :any:`HTT
 #: yadisk._client.Client.is_public_dir:12
 #: yadisk._client.Client.is_public_file:12
 #: yadisk._client.Client.is_trash_dir:11 yadisk._client.Client.is_trash_file:11
-#: yadisk._client.Client.listdir:17 yadisk._client.Client.mkdir:12
-#: yadisk._client.Client.move:19 yadisk._client.Client.patch:13
-#: yadisk._client.Client.public_exists:12
+#: yadisk._client.Client.listdir:17 yadisk._client.Client.makedirs:13
+#: yadisk._client.Client.mkdir:12 yadisk._client.Client.move:19
+#: yadisk._client.Client.patch:13 yadisk._client.Client.public_exists:12
 #: yadisk._client.Client.public_listdir:20 yadisk._client.Client.publish:12
 #: yadisk._client.Client.refresh_token:11 yadisk._client.Client.remove:20
 #: yadisk._client.Client.remove_trash:17 yadisk._client.Client.rename:20
@@ -2978,22 +2999,35 @@ msgstr "путь к папке"
 msgid "resource is not a directory"
 msgstr "указанный ресурс не является папкой"
 
-#: of yadisk._async_client.AsyncClient.mkdir:1 yadisk._client.Client.mkdir:1
-msgid "Create a new directory."
-msgstr "Создаёт новую папку."
+#: of yadisk._async_client.AsyncClient.makedirs:1
+#: yadisk._client.Client.makedirs:1
+msgid ""
+"Create a new directory at `path`. If its parent directory doesn't exist "
+"it will also be created recursively."
+msgstr "Создаёт новую папку. Если родительская папка не сущсетвует, то она"
+"будет также создана рекурсивно."
 
-#: of yadisk._async_client.AsyncClient.mkdir:3 yadisk._client.Client.mkdir:3
+#: of yadisk._async_client.AsyncClient.makedirs:4
+#: yadisk._async_client.AsyncClient.mkdir:3 yadisk._client.Client.makedirs:4
+#: yadisk._client.Client.mkdir:3
 msgid "path to the directory to be created"
 msgstr "путь к папке, подлежащей созданию"
 
-#: of yadisk._async_client.AsyncClient.mkdir:16 yadisk._client.Client.mkdir:17
+#: of yadisk._async_client.AsyncClient.makedirs:16
+#: yadisk._async_client.AsyncClient.mkdir:16 yadisk._client.Client.makedirs:17
+#: yadisk._client.Client.mkdir:17
 msgid "cannot create directory due to lack of storage space"
 msgstr "невозможно создать папку из-за нехватки места на Диске"
 
-#: of yadisk._async_client.AsyncClient.mkdir:20
+#: of yadisk._async_client.AsyncClient.makedirs:20
+#: yadisk._async_client.AsyncClient.mkdir:20
 #: yadisk._async_client.AsyncClient.unpublish:18
 msgid ":any:`AsyncResourceLinkObject`"
 msgstr ":any:`AsyncResourceLinkObject`"
+
+#: of yadisk._async_client.AsyncClient.mkdir:1 yadisk._client.Client.mkdir:1
+msgid "Create a new directory."
+msgstr "Создаёт новую папку."
 
 #: of yadisk._async_client.AsyncClient.move:1 yadisk._client.Client.move:1
 msgid "Move `src_path` to `dst_path`."
@@ -3126,8 +3160,8 @@ msgstr "новое имя файла, в которое следует пере�
 
 #: of yadisk._async_client.AsyncClient.rename:26
 #: yadisk._client.Client.rename:27
-msgid "`new_name` is not a valid filename"
-msgstr "`new_name` не является допустимым именем файла"
+msgid "`new_name` is not a valid filename or `src_path` is root"
+msgstr "`new_name` не является допустимым именем файла или `src_path` - корень диска"
 
 #: of yadisk._async_client.AsyncClient.restore_trash:1
 #: yadisk._client.Client.restore_trash:1
@@ -4240,6 +4274,18 @@ msgstr "Объект ресурса."
 msgid ":any:`AsyncResourceListObject`, list of nested resources"
 msgstr ":any:`AsyncResourceListObject`, список вложенных ресурсов"
 
+#: of yadisk.objects._resources.AsyncResourceObject:29
+#: yadisk.objects._resources.AsyncTrashResourceObject:31
+#: yadisk.objects._resources.ResourceObject:29
+#: yadisk.objects._resources.SyncResourceObject:29
+#: yadisk.objects._resources.SyncTrashResourceObject:31
+#: yadisk.objects._resources.TrashResourceObject:31
+msgid ""
+"`dict[str, str]`, mapping of all preview sizes, where keys are names and "
+"values are download links"
+msgstr "`dict[str, str]`, соответствие всех размеров превью, где ключи - "
+"названия размеров, а значения - ссылки для скачивания превью"
+
 #: of yadisk.objects._resources.AsyncTrashResourceListObject:1
 #: yadisk.objects._resources.SyncTrashResourceListObject:1
 msgid "Bases: :py:class:`~yadisk.objects._resources.TrashResourceListObject`"
@@ -4503,6 +4549,24 @@ msgstr "`bool`, признак включенной безлимитной ав�
 #: of yadisk.objects._disk.DiskInfoObject:19
 msgid "`int`, current revision of Yandex.Disk"
 msgstr "`int`, текущая ревизия Яндекс.Диска"
+
+#: of yadisk.objects._disk.DiskInfoObject:20
+msgid "`int`, total file size in unlimited photos"
+msgstr "`int`, общий размер файлов в фотобезлимите"
+
+#: of yadisk.objects._disk.DiskInfoObject:21
+msgid ""
+"`bool`, tells if the user will be in overdraft upon reaching "
+"`free_photounlim_end_date`"
+msgstr "`bool`, признак - будет ли пользователь в овердрафте по достижении free_photounlim_end_date"
+
+#: of yadisk.objects._disk.DiskInfoObject:23
+msgid "`int`, timestamp in ms of expiration date of unlimited photo upload"
+msgstr "`int`, timestamp в мс окончания бесплатного места в фотобезлимите"
+
+#: of yadisk.objects._disk.DiskInfoObject:25
+msgid "`bool`, tells if the user is involved in `payment_flow`"
+msgstr "`bool`, признак причастности пользователя к payment_flow"
 
 #: of yadisk.objects._resources.EXIFObject:1
 msgid "EXIF metadata object."
@@ -5656,7 +5720,8 @@ msgstr "Проверяет, является ли публичный ресур�
 msgid "Check whether the public resource is a public file."
 msgstr "Проверяет, является ли публичный ресурс публичным файлом."
 
-#: of yadisk._client.Client.mkdir:21 yadisk._client.Client.unpublish:19
+#: of yadisk._client.Client.makedirs:21 yadisk._client.Client.mkdir:21
+#: yadisk._client.Client.unpublish:19
 msgid ":any:`SyncResourceLinkObject`"
 msgstr ":any:`SyncResourceLinkObject`"
 
@@ -5931,13 +5996,15 @@ msgstr "Insert key with a value of default if key is not in the dictionary."
 
 #: of yadisk.utils.CaseInsensitiveDict.update:1
 msgid ""
-"If E is present and has a .keys() method, then does:  for k in E: D[k] = "
-"E[k] If E is present and lacks a .keys() method, then does:  for k, v in "
-"E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]"
+"If E is present and has a .keys() method, then does:  for k in E.keys(): "
+"D[k] = E[k] If E is present and lacks a .keys() method, then does:  for "
+"k, v in E: D[k] = v In either case, this is followed by: for k in F:  "
+"D[k] = F[k]"
 msgstr ""
-"If E is present and has a .keys() method, then does:  for k in E: D[k] = "
-"E[k] If E is present and lacks a .keys() method, then does:  for k, v in "
-"E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]"
+"If E is present and has a .keys() method, then does:  for k in E.keys(): "
+"D[k] = E[k] If E is present and lacks a .keys() method, then does:  for "
+"k, v in E: D[k] = v In either case, this is followed by: for k in F:  "
+"D[k] = F[k]"
 
 #: of yadisk.utils.async_auto_retry:1 yadisk.utils.auto_retry:1
 msgid ""

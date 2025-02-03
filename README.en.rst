@@ -28,6 +28,8 @@ YaDisk is a Yandex.Disk REST API client library.
 
 Documentation is available at `Read the Docs (EN)`_ and `Read the Docs (RU)`_.
 
+.. contents:: Table of contents:
+
 Installation
 ************
 
@@ -151,6 +153,12 @@ Asynchronous API
         # Create a new directory at "/test-dir"
         print(await client.mkdir("/test-dir"))
 
+Contributing
+************
+
+If you would like to contribute to this project, see
+`CONTRIBUTING.rst <https://github.com/ivknv/yadisk/blob/master/CONTRIBUTING.rst>`_.
+
 Changelog
 *********
 
@@ -165,12 +173,36 @@ Changelog
 .. _issue #43: https://github.com/ivknv/yadisk/issues/43
 .. _issue #45: https://github.com/ivknv/yadisk/issues/45
 .. _issue #49: https://github.com/ivknv/yadisk/issues/49
+.. _issue #53: https://github.com/ivknv/yadisk/issues/53
 .. _Introduction: https://yadisk.readthedocs.io/en/latest/intro.html
 .. _API Reference: https://yadisk.readthedocs.io/en/latest/api_reference/index.html
 .. _Available Session Implementations: https://yadisk.readthedocs.io/en/latest/api_reference/sessions.html
 .. _Session Interface: https://yadisk.readthedocs.io/en/latest/api_reference/session_interface.html
 .. _requests: https://pypi.org/project/requests
 .. _Migration Guide: https://yadisk.readthedocs.io/en/latest/migration_guide.html
+
+* **Release 3.2.0 (2025-02-03)**
+
+  * New features:
+
+    * Added new method: :code:`Client.makedirs()` / :code:`AsyncClient.makedirs()`
+      (see `issue #53`_)
+    * Added several missing fields for :code:`DiskInfoObject`:
+
+      * :code:`photounlim_size`
+      * :code:`will_be_overdrawn`
+      * :code:`free_photounlim_end_date`
+      * :code:`payment_flow`
+
+    * Added missing field :code:`sizes` for :code:`ResourceObject` and related
+      objects
+
+  * Bug fixes:
+
+    * :code:`Client.rename()` / :code:`AsyncClient.rename()` now raises
+      :code:`ValueError` on attempt to rename the root directory
+    * Automatic retry attempt numbers were logged off by one, now they are
+      logged correctly
 
 * **Release 3.1.0 (2024-07-12)**
 

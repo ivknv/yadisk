@@ -25,10 +25,14 @@ from .objects import ResourceObject, LinkObject
 from typing import Any, AnyStr, IO, Optional
 
 __all__ = [
-    "_apply_default_args", "_filter_request_kwargs",
-    "_read_file_as_generator", "_set_authorization_header",
-    "_add_authorization_header", "_validate_listdir_response",
-    "_validate_link_response", "_validate_get_type_response"
+    "_add_authorization_header",
+    "_apply_default_args",
+    "_filter_request_kwargs",
+    "_read_file_as_generator",
+    "_set_authorization_header",
+    "_validate_get_type_response",
+    "_validate_link_response",
+    "_validate_listdir_response"
 ]
 
 

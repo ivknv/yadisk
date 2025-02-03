@@ -25,7 +25,7 @@ from .types import (
     ConsumeCallback, JSON, HTTPMethod, Headers, Payload, TimeoutParameter
 )
 
-__all__ = ["Session", "Response"]
+__all__ = ["Response", "Session"]
 
 
 class Response:

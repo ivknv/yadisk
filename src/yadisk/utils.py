@@ -29,7 +29,7 @@ from typing import Any, Optional, Union, TypeVar
 from ._typing_compat import Callable, Awaitable, Dict, Tuple, Type
 from .types import AnyResponse
 
-__all__ = ["get_exception", "auto_retry", "async_auto_retry", "CaseInsensitiveDict"]
+__all__ = ["CaseInsensitiveDict", "async_auto_retry", "auto_retry", "get_exception"]
 
 
 class _UnexpectedRequestError(YaDiskError):
@@ -168,12 +168,12 @@ def auto_retry(
         except exceptions as e:
             if i == n_retries or (isinstance(e, YaDiskError) and e.disable_retry):
                 settings.logger.info(
-                    f"not triggering an automatic retry: ({i} out of {n_retries}), got {e.__class__.__name__}: {e}"
+                    f"not triggering an automatic retry: ({i + 1} out of {n_retries}), got {e.__class__.__name__}: {e}"
                 )
                 raise
 
             settings.logger.info(
-                f"automatic retry triggered: ({i} out of {n_retries}), got {e.__class__.__name__}: {e}"
+                f"automatic retry triggered: ({i + 1} out of {n_retries}), got {e.__class__.__name__}: {e}"
             )
 
         if retry_interval:
@@ -234,12 +234,12 @@ async def async_auto_retry(
         except exceptions as e:
             if i == n_retries or (isinstance(e, YaDiskError) and e.disable_retry):
                 settings.logger.info(
-                    f"not triggering an automatic retry: ({i} out of {n_retries}), got {e.__class__.__name__}: {e}"
+                    f"not triggering an automatic retry: ({i + 1} out of {n_retries}), got {e.__class__.__name__}: {e}"
                 )
                 raise
 
             settings.logger.info(
-                f"automatic retry triggered: ({i} out of {n_retries}), got {e.__class__.__name__}: {e}"
+                f"automatic retry triggered: ({i + 1} out of {n_retries}), got {e.__class__.__name__}: {e}"
             )
 
         if retry_interval:

@@ -28,7 +28,7 @@ from .._common import (
     ensure_path_has_schema, str_or_error, int_or_error, float_or_error,
     bool_or_error, dict_or_error, str_or_dict_or_error
 )
-from ..types import AsyncFileOrPath, AsyncFileOrPathDestination, FileOrPath, FileOrPathDestination
+from ..types import JSON, AsyncFileOrPath, AsyncFileOrPathDestination, FileOrPath, FileOrPathDestination
 
 from .. import settings
 
@@ -45,20 +45,44 @@ if TYPE_CHECKING:  # pragma: no cover
     )
 
 __all__ = [
-    "CommentIDsObject", "EXIFObject", "FilesResourceListObject",
-    "SyncFilesResourceListObject", "AsyncFilesResourceListObject",
-    "LastUploadedResourceListObject", "SyncLastUploadedResourceListObject",
-    "AsyncLastUploadedResourceListObject", "PublicResourcesListObject",
-    "SyncPublicResourcesListObject", "AsyncPublicResourcesListObject",
-    "ResourceListObject", "SyncResourceListObject", "AsyncResourceListObject",
-    "ResourceObject", "SyncResourceObject", "AsyncResourceObject",
-    "ResourceUploadLinkObject", "ShareInfoObject", "PublicResourceObject",
-    "SyncPublicResourceObject", "AsyncPublicResourceObject", "PublicResourceListObject",
-    "SyncPublicResourceListObject", "AsyncPublicResourceListObject", "TrashResourceObject",
-    "SyncTrashResourceObject", "AsyncTrashResourceObject", "TrashResourceListObject",
-    "SyncTrashResourceListObject", "AsyncTrashResourceListObject", "ResourceLinkObject",
-    "SyncResourceLinkObject", "AsyncResourceLinkObject", "PublicResourceLinkObject",
-    "SyncPublicResourceLinkObject", "AsyncPublicResourceLinkObject", "ResourceDownloadLinkObject"
+    "AsyncFilesResourceListObject",
+    "AsyncLastUploadedResourceListObject",
+    "AsyncPublicResourceLinkObject",
+    "AsyncPublicResourceListObject",
+    "AsyncPublicResourceObject",
+    "AsyncPublicResourcesListObject",
+    "AsyncResourceLinkObject",
+    "AsyncResourceListObject",
+    "AsyncResourceObject",
+    "AsyncTrashResourceListObject",
+    "AsyncTrashResourceObject",
+    "CommentIDsObject",
+    "EXIFObject",
+    "FilesResourceListObject",
+    "LastUploadedResourceListObject",
+    "PublicResourceLinkObject",
+    "PublicResourceListObject",
+    "PublicResourceObject",
+    "PublicResourcesListObject",
+    "ResourceDownloadLinkObject",
+    "ResourceLinkObject",
+    "ResourceListObject",
+    "ResourceObject",
+    "ResourceUploadLinkObject",
+    "ShareInfoObject",
+    "SyncFilesResourceListObject",
+    "SyncLastUploadedResourceListObject",
+    "SyncPublicResourceLinkObject",
+    "SyncPublicResourceListObject",
+    "SyncPublicResourceObject",
+    "SyncPublicResourcesListObject",
+    "SyncResourceLinkObject",
+    "SyncResourceListObject",
+    "SyncResourceObject",
+    "SyncTrashResourceListObject",
+    "SyncTrashResourceObject",
+    "TrashResourceListObject",
+    "TrashResourceObject"
 ]
 
 
@@ -1075,6 +1099,46 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.mkdir(str(path), **kwargs)
 
+    def makedirs(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        **kwargs
+    ) -> "SyncResourceLinkObject":
+        """
+            Create a new directory at `path`. If its parent directory doesn't
+            exist it will also be created recursively.
+
+            :param relative_path: `str` or `None`, relative path to the directory to be created
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises DirectoryExistsError: destination path already exists
+            :raises InsufficientStorageError: cannot create directory due to lack of storage space
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`SyncResourceLinkObject`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return self._yadisk.makedirs(str(path), **kwargs)
+
     def remove(self: ResourceProtocol,
                relative_path: Optional[str] = None, /, **kwargs) -> Optional["SyncOperationLinkObject"]:
         """
@@ -2046,6 +2110,45 @@ class AsyncResourceObjectMethodsMixin:
 
         return await self._yadisk.mkdir(str(path), **kwargs)
 
+    async def makedirs(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        **kwargs
+    ) -> "AsyncResourceLinkObject":
+        """
+            Create a new directory at `path`. If its parent directory doesn't
+            exist it will also be created recursively.
+
+            :param relative_path: `str` or `None`, relative path to the directory to be created
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises DirectoryExistsError: destination path already exists
+            :raises InsufficientStorageError: cannot create directory due to lack of storage space
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`AsyncSyncResourceLinkObject`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.makedirs(str(path), **kwargs)
+
     async def remove(self: ResourceProtocol,
                      relative_path: Optional[str] = None, /, **kwargs) -> Optional["AsyncOperationLinkObject"]:
         """
@@ -2314,6 +2417,36 @@ class AsyncResourceObjectMethodsMixin:
         return await self._yadisk.copy(str(src_path), dst_path, **kwargs)
 
 
+def _convert_list_of_previews(previews: JSON) -> Optional[Dict[str, str]]:
+    if previews is None:
+        return None
+
+    if not isinstance(previews, list):
+        raise ValueError(f"Expected a list, got {type(previews)}")
+
+    result = {}
+
+    for preview in previews:
+        if not isinstance(preview, dict):
+            raise ValueError(f"Expected a dict, got {type(preview)}")
+
+        try:
+            name = preview["name"]
+            url = preview["url"]
+        except KeyError:
+            continue
+
+        if not isinstance(name, str):
+            raise ValueError(f"Expected a string, got {type(name)}")
+
+        if not isinstance(url, str):
+            raise ValueError(f"Expected a string, got {type(url)}")
+
+        result[name] = url
+
+    return result
+
+
 class ResourceObject(YaDiskObject):
     """
         Resource object.
@@ -2344,6 +2477,9 @@ class ResourceObject(YaDiskObject):
         :ivar type: `str`, type ("file" or "dir")
         :ivar media_type: `str`, file type as determined by Yandex.Disk
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
+        :ivar sizes: `dict[str, str]`, mapping of all preview sizes,
+                     where keys are names and values are download links
+
     """
 
     antivirus_status: Optional[str]
@@ -2370,6 +2506,7 @@ class ResourceObject(YaDiskObject):
     media_type: Optional[str]
     md5: Optional[str]
     revision: Optional[int]
+    sizes: Optional[Dict[str, str]]
 
     def __init__(self, resource: Optional[Dict] = None, yadisk: Optional[Any] = None):
         YaDiskObject.__init__(
@@ -2396,7 +2533,9 @@ class ResourceObject(YaDiskObject):
              "type":              str_or_error,
              "media_type":        str_or_error,
              "md5":               str_or_error,
-             "revision":          int_or_error},
+             "revision":          int_or_error,
+             "sizes":             _convert_list_of_previews
+            },
             yadisk)
         self.set_alias("_embedded", "embedded")
         self.import_fields(resource)
@@ -2432,6 +2571,8 @@ class SyncResourceObject(ResourceObject, ResourceObjectMethodsMixin):
         :ivar type: `str`, type ("file" or "dir")
         :ivar media_type: `str`, file type as determined by Yandex.Disk
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
+        :ivar sizes: `dict[str, str]`, mapping of all preview sizes,
+                     where keys are names and values are download links
     """
 
     embedded: Optional["SyncResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
@@ -2473,6 +2614,8 @@ class AsyncResourceObject(ResourceObject, AsyncResourceObjectMethodsMixin):
         :ivar type: `str`, type ("file" or "dir")
         :ivar media_type: `str`, file type as determined by Yandex.Disk
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
+        :ivar sizes: `dict[str, str]`, mapping of all preview sizes,
+                     where keys are names and values are download links
     """
 
     embedded: Optional["AsyncResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
@@ -3037,6 +3180,8 @@ class TrashResourceObject(ResourceObject):
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
         :ivar origin_path: `str`, original path
         :ivar deleted: :any:`datetime.datetime`, date of deletion
+        :ivar sizes: `dict[str, str]`, mapping of all preview sizes,
+                     where keys are names and values are download links
     """
 
     embedded: Optional["TrashResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
@@ -3086,6 +3231,8 @@ class SyncTrashResourceObject(TrashResourceObject):
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
         :ivar origin_path: `str`, original path
         :ivar deleted: :any:`datetime.datetime`, date of deletion
+        :ivar sizes: `dict[str, str]`, mapping of all preview sizes,
+                     where keys are names and values are download links
     """
 
     embedded: Optional["SyncTrashResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]
@@ -3453,6 +3600,8 @@ class AsyncTrashResourceObject(TrashResourceObject):
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
         :ivar origin_path: `str`, original path
         :ivar deleted: :any:`datetime.datetime`, date of deletion
+        :ivar sizes: `dict[str, str]`, mapping of all preview sizes, where
+                     keys are names and values are download links
     """
 
     embedded: Optional["AsyncTrashResourceListObject"]  # pyright: ignore[reportIncompatibleVariableOverride]

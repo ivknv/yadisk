@@ -7,7 +7,7 @@ from urllib.parse import urljoin, urlparse
 
 from typing import Optional
 
-__all__ = ["TestSession", "AsyncTestSession"]
+__all__ = ["AsyncTestSession", "TestSession"]
 
 def _ensure_trailing_slash(s: str) -> str:
     if not s.endswith("/"):

@@ -543,6 +543,24 @@ class ResourceObjectMethodsMixin:
     ) -> SyncResourceLinkObject:
         ...
 
+    def makedirs(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        *,
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncResourceLinkObject:
+        ...
+
     @overload
     def remove(
         self: ResourceProtocol,
@@ -1252,6 +1270,23 @@ class AsyncResourceObjectMethodsMixin:
     ) -> "AsyncResourceLinkObject":
         ...
 
+    async def makedirs(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        *,
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> "AsyncResourceLinkObject":
+        ...
+
     @overload
     async def remove(
         self: ResourceProtocol,
@@ -1604,6 +1639,7 @@ class ResourceObject(YaDiskObject):
     media_type: Optional[str]
     md5: Optional[str]
     revision: Optional[int]
+    sizes: Optional[Dict[str, str]]
 
     def __init__(self, resource: Optional[Dict] = None, yadisk: Optional[Any] = None) -> None:
         ...

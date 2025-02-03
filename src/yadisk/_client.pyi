@@ -525,6 +525,24 @@ class Client:
     ) -> SyncResourceLinkObject:
         ...
 
+    def makedirs(
+        self,
+        path: str,
+        /,
+        *,
+        fields: Optional[Iterable[str]] = None,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> SyncResourceLinkObject:
+        ...
+
     def get_trash_meta(
         self,
         path: str,

@@ -89,7 +89,7 @@ class AsyncHTTPXSession(AsyncSession):
                        "/my_file.txt",
                        n_retries=5,
                        httpx_args={
-                           "proxies":"http://localhost:11234",
+                           "proxy": "http://localhost:11234",
                            "verify": False,
                            "max_redirects": 10
                        }

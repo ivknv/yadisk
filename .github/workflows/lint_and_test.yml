@@ -1,6 +1,14 @@
 name: Perform linting and run tests
 
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - master
+      - dev
+  pull_request:
+    branches:
+      - master
+      - dev
 
 jobs:
   build:
@@ -9,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -58,7 +66,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       shell: bash
       run: |
-        if [[ "${{ matrix.os }}" == "ubuntu-latest" ]] && [[ "${{ matrix.python-version }}" == "3.12" ]]; then
+        if [[ "${{ matrix.os }}" == "ubuntu-latest" ]] && [[ "${{ matrix.python-version }}" == "3.13" ]]; then
           pip install coveralls
           coveralls
         fi

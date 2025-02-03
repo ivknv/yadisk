@@ -17,13 +17,14 @@
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
 from pathlib import PurePosixPath
+import posixpath
 import time
 from urllib.parse import urlencode
 
 from ._api import *
 
 from .exceptions import (
-    AsyncOperationFailedError, AsyncOperationPollingTimeoutError,
+    AsyncOperationFailedError, AsyncOperationPollingTimeoutError, ParentNotFoundError,
     PathNotFoundError, RetriableYaDiskError, UnauthorizedError,
     OperationNotFoundError, InvalidResponseError, WrongResourceTypeError
 )
@@ -55,6 +56,8 @@ from ._client_common import (
     _add_authorization_header, _validate_listdir_response,
     _validate_link_response, _validate_get_type_response
 )
+
+from ._common import remove_path_schema
 
 __all__ = ["Client"]
 
@@ -251,7 +254,7 @@ class Client:
                  default_args:    Optional[Dict[str, Any]] = None,
                  session:         Optional[Union[Session, SessionName]] = None,
                  open_file:       Optional[OpenFileCallback] = None,
-                 session_factory: Optional[SessionFactory] = None):
+                 session_factory: Optional[SessionFactory] = None) -> None:
         self.id = id
         self.secret = secret
         self.token = ""
@@ -1382,6 +1385,53 @@ class Client:
 
         return MkdirRequest(self.session, path, **kwargs).send(yadisk=self)
 
+    def makedirs(self, path: str, /, **kwargs) -> SyncResourceLinkObject:
+        """
+            Create a new directory at `path`. If its parent directory doesn't
+            exist it will also be created recursively.
+
+            :param path: path to the directory to be created
+            :param fields: list of keys to be included in the response
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises DirectoryExistsError: destination path already exists
+            :raises InsufficientStorageError: cannot create directory due to lack of storage space
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`SyncResourceLinkObject`
+        """
+
+        while True:
+            try:
+                return self.mkdir(path, **kwargs)
+            except ParentNotFoundError as e:
+                # We first have to remove the schema, otherwise posixpath.split()
+                # may treat it as part of the path
+                schema, path_without_schema = remove_path_schema(path)
+
+                # Extract the parent directory
+                head, tail = posixpath.split(path_without_schema)
+                head = head.strip("/")
+
+                if head == "":
+                    # We should never find ourselves in this situation
+                    raise e from None
+
+                # Restore the schema
+                if schema:
+                    head = f"{schema}:/{head}"
+
+                self.makedirs(head, **kwargs)
+
     def get_trash_meta(self, path: str, /, **kwargs) -> "SyncTrashResourceObject":
         """
             Get meta information about a trash resource.
@@ -1620,7 +1670,7 @@ class Client:
             :raises PathExistsError: destination path already exists
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
-            :raises ValueError: `new_name` is not a valid filename
+            :raises ValueError: `new_name` is not a valid filename or `src_path` is root
             :raises OperationNotFoundError: requested operation was not found
             :raises AsyncOperationFailedError: requested operation failed
             :raises AsyncOperationPollingTimeoutError: requested operation did not
@@ -1635,7 +1685,18 @@ class Client:
         if "/" in new_name or new_name in (".", "..", ""):
             raise ValueError(f"Invalid filename: {new_name}")
 
-        dst_path = str(PurePosixPath(src_path).parent / new_name)
+        # Remove schema first, otherwise PurePosixPath will treat it as part of the path
+        schema, src_path_without_schema = remove_path_schema(src_path)
+        sanitized_src_path = PurePosixPath(src_path_without_schema.strip("/"))
+
+        if len(sanitized_src_path.parts) == 0:
+            raise ValueError("Cannot rename root")
+
+        dst_path = str(sanitized_src_path.parent / new_name)
+
+        # Restore schema back
+        if schema:
+            dst_path = f"{schema}:/{dst_path}"
 
         return self.move(src_path, dst_path, **kwargs)
 

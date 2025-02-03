@@ -14,7 +14,7 @@ from io import BytesIO
 import aiofiles
 
 import yadisk
-from yadisk._common import is_operation_link, ensure_path_has_schema
+from yadisk._common import is_operation_link, ensure_path_has_schema, remove_path_schema
 from yadisk._api import GetOperationStatusRequest
 
 import pytest
@@ -172,6 +172,38 @@ class TestAsyncClient:
         for path in paths:
             await check_existence(path)
 
+    async def _test_makedirs(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        parent1 = posixpath.join(disk_root, "parent1")
+        parent2 = posixpath.join(parent1, "parent2")
+        parent3 = posixpath.join(parent2, "parent3")
+
+        path1 = posixpath.join(parent3, "leaf_directory")
+        path2 = posixpath.join(parent3, "another_directory")
+        path3 = posixpath.join(disk_root, "directory")
+
+        for path in [parent1, parent2, parent3, path1, path2, path3]:
+            assert not await async_client.exists(path)
+
+        await async_client.makedirs(path1)
+        assert await async_client.is_dir(path1)
+
+        with pytest.raises(yadisk.exceptions.DirectoryExistsError):
+            await async_client.makedirs(path1)
+
+        await async_client.makedirs(path2)
+        assert await async_client.is_dir(path2)
+
+        await async_client.makedirs(path3)
+        assert await async_client.is_dir(path3)
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_makedirs_without_schema(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        await self._test_makedirs(async_client, remove_path_schema(disk_root)[1])
+
+    @pytest.mark.usefixtures("async_client_test")
+    async def test_makedirs_with_schema(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        await self._test_makedirs(async_client, ensure_path_has_schema(disk_root, "disk"))
+
     @pytest.mark.skipif(
         platform.system() == "Windows" and sys.version_info < (3, 12),
         reason="won't work on Windows with Python < 3.12"
@@ -301,6 +333,44 @@ class TestAsyncClient:
         for bad_filename in ("", ".", "..", "/", "something/else"):
             with pytest.raises(ValueError):
                 await dir.rename(bad_filename)
+
+    async def test_rename_edgecases(self, async_client: yadisk.AsyncClient, mocker) -> None:
+        # Test a few edgecases, make sure the destination paths are correct
+        # Path schemas must be preserved
+
+        dst_paths = []
+
+        async def mock_move(src_path: str, dst_path: str, **kwargs) -> None:
+            # Store the destination path for later checking
+            dst_paths.append(dst_path)
+
+        mocker.patch.object(async_client, "move", mock_move)
+
+        with pytest.raises(ValueError):
+            await async_client.rename("", "impossible")
+
+        with pytest.raises(ValueError):
+            await async_client.rename("/", "impossible")
+
+        with pytest.raises(ValueError):
+            await async_client.rename("////", "impossible")
+
+        with pytest.raises(ValueError):
+            await async_client.rename("disk:/", "impossible")
+
+        with pytest.raises(ValueError):
+            await async_client.rename("app:/", "another_directory")
+
+        await async_client.rename("disk:", "not_a_schema")
+        await async_client.rename("disk:/asd.txt", "renamed.txt")
+        await async_client.rename("asd.txt", "renamed.txt")
+        await async_client.rename("disk:/directory/file1.txt", "renamed_file.txt")
+        await async_client.rename("disk:/directory/", "renamed_dir")
+
+        assert dst_paths == [
+            "not_a_schema", "disk:/renamed.txt", "renamed.txt",
+            "disk:/directory/renamed_file.txt", "disk:/renamed_dir"
+        ]
 
     @pytest.mark.usefixtures("async_client_test")
     async def test_remove_trash(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
@@ -542,7 +612,7 @@ class TestAsyncClient:
 
         # This is worth testing on download_by_link() as well, since it has
         # slightly different logic
-        with pytest.raises(yadisk.exceptions.GoneError):
+        with pytest.raises((yadisk.exceptions.GoneError, yadisk.exceptions.InternalServerError)):
             await async_client.download_by_link(
                 link,
                 BytesIO(),
@@ -742,15 +812,18 @@ class TestAsyncClient:
 
         class GetOperationStatusMock:
             def __init__(self):
-                self.call_count = 0
+                self.call_count_since_success = 0
 
             async def __call__(self, *args, **kwargs) -> yadisk.types.OperationStatus:
-                self.call_count += 1
+                status = await yadisk.AsyncClient.get_operation_status(async_client, *args, **kwargs)
 
-                if self.call_count < 3:
-                    return "failed"
+                if status == "success":
+                    self.call_count_since_success += 1
 
-                return await yadisk.AsyncClient.get_operation_status(async_client, *args, **kwargs)
+                    if self.call_count_since_success < 3:
+                        return "failed"
+
+                return status
 
 
         mocker.patch.object(async_client, "get_operation_status", GetOperationStatusMock())

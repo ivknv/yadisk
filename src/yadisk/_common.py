@@ -25,13 +25,23 @@ from . import settings
 
 from typing import Optional, TypeVar, Any, Union
 
-from .types import TimeoutParameter
+from .types import TimeoutParameter, Tuple
 
 __all__ = [
-    "typed_list", "int_or_error", "float_or_error", "str_or_error", "bool_or_error",
-    "dict_or_error", "str_or_dict_or_error", "yandex_date", "is_operation_link",
-    "is_resource_link", "is_public_resource_link", "ensure_path_has_schema",
-    "is_default_timeout"
+    "bool_or_error",
+    "dict_or_error",
+    "ensure_path_has_schema",
+    "float_or_error",
+    "int_or_error",
+    "is_default_timeout",
+    "is_operation_link",
+    "is_public_resource_link",
+    "is_resource_link",
+    "remove_path_schema",
+    "str_or_dict_or_error",
+    "str_or_error",
+    "typed_list",
+    "yandex_date"
 ]
 
 T = TypeVar("T", bound=Callable)
@@ -121,12 +131,13 @@ def is_public_resource_link(url: str) -> bool:
     return _is_endpoint_link(url, f"{settings.BASE_API_URL}/v1/disk/public/resources?")
 
 
+KNOWN_SCHEMAS = ("disk:", "trash:", "app:", "photounlim:")
+
+
 def ensure_path_has_schema(path: str, default_schema: str = "disk") -> str:
     # Modifies path to always have a schema (disk:/, trash:/ or app:/).
     # Without the schema Yandex.Disk won't let you upload filenames with the ':' character.
     # See https://github.com/ivknv/yadisk/issues/26 for more details
-
-    KNOWN_SCHEMAS = ("disk:", "trash:", "app:", "photounlim:")
 
     if path in KNOWN_SCHEMAS:
         return default_schema + ":/" + path
@@ -138,6 +149,26 @@ def ensure_path_has_schema(path: str, default_schema: str = "disk") -> str:
         return path
 
     return default_schema + ":/" + path
+
+
+def remove_path_schema(path: str) -> Tuple[str, str]:
+    """
+        Remove schema from path.
+
+        :param path: `str`, path to remove the schema from
+
+        :returns: `tuple[str, str]`, removed schema (without `:/`) and the path without it
+    """
+
+    if path.startswith("/") or path in KNOWN_SCHEMAS:
+        return "", path
+
+    if any(path.startswith(schema + "/") for schema in KNOWN_SCHEMAS):
+        schema, sep, path = path.partition(":/")
+
+        return schema, path
+
+    return "", path
 
 
 def is_async_func(func: Any) -> bool:

@@ -24,7 +24,7 @@ from ._resources import *
 from ._operations import *
 from ._auth import *
 
-__all__ = [
+__all__ = [  # noqa: RUF022
     # _yadisk_object
     "YaDiskObject",
 

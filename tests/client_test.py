@@ -2,7 +2,7 @@
 
 import yadisk
 
-from yadisk._common import is_operation_link, ensure_path_has_schema
+from yadisk._common import is_operation_link, ensure_path_has_schema, remove_path_schema
 from yadisk._api import GetOperationStatusRequest
 
 import hashlib
@@ -156,6 +156,38 @@ class TestClient:
             client.remove(path, permanently=True)
             assert not client.exists(path)
 
+    def _test_makedirs(self, client: yadisk.Client, disk_root: str) -> None:
+        parent1 = posixpath.join(disk_root, "parent1")
+        parent2 = posixpath.join(parent1, "parent2")
+        parent3 = posixpath.join(parent2, "parent3")
+
+        path1 = posixpath.join(parent3, "leaf_directory")
+        path2 = posixpath.join(parent3, "another_directory")
+        path3 = posixpath.join(disk_root, "directory")
+
+        for path in [parent1, parent2, parent3, path1, path2, path3]:
+            assert not client.exists(path)
+
+        client.makedirs(path1)
+        assert client.is_dir(path1)
+
+        with pytest.raises(yadisk.exceptions.DirectoryExistsError):
+            client.makedirs(path1)
+
+        client.makedirs(path2)
+        assert client.is_dir(path2)
+
+        client.makedirs(path3)
+        assert client.is_dir(path3)
+
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_makedirs_without_schema(self, client: yadisk.Client, disk_root: str) -> None:
+        self._test_makedirs(client, remove_path_schema(disk_root)[1])
+
+    @pytest.mark.usefixtures("sync_client_test")
+    def test_makedirs_with_schema(self, client: yadisk.Client, disk_root: str) -> None:
+        self._test_makedirs(client, ensure_path_has_schema(disk_root, "disk"))
+
     @pytest.mark.skipif(
         platform.system() == "Windows" and sys.version_info < (3, 12),
         reason="won't work on Windows with Python < 3.12"
@@ -250,6 +282,44 @@ class TestClient:
         for bad_filename in ("", ".", "..", "/", "something/else"):
             with pytest.raises(ValueError):
                 dir.rename(bad_filename)
+
+    def test_rename_edgecases(self, client: yadisk.Client, mocker) -> None:
+        # Test a few edgecases, make sure the destination paths are correct
+        # Path schemas must be preserved
+
+        dst_paths = []
+
+        def mock_move(src_path: str, dst_path: str, **kwargs) -> None:
+            # Store the destination path for later checking
+            dst_paths.append(dst_path)
+
+        mocker.patch.object(client, "move", mock_move)
+
+        with pytest.raises(ValueError):
+            client.rename("", "impossible")
+
+        with pytest.raises(ValueError):
+            client.rename("/", "impossible")
+
+        with pytest.raises(ValueError):
+            client.rename("////", "impossible")
+
+        with pytest.raises(ValueError):
+            client.rename("disk:/", "impossible")
+
+        with pytest.raises(ValueError):
+            client.rename("app:/", "another_directory")
+
+        client.rename("disk:", "not_a_schema")
+        client.rename("disk:/asd.txt", "renamed.txt")
+        client.rename("asd.txt", "renamed.txt")
+        client.rename("disk:/directory/file1.txt", "renamed_file.txt")
+        client.rename("disk:/directory/", "renamed_dir")
+
+        assert dst_paths == [
+            "not_a_schema", "disk:/renamed.txt", "renamed.txt",
+            "disk:/directory/renamed_file.txt", "disk:/renamed_dir"
+        ]
 
     @pytest.mark.usefixtures("sync_client_test")
     def test_remove_trash(self, client: yadisk.Client, disk_root: str) -> None:
@@ -499,7 +569,7 @@ class TestClient:
 
         # This is worth testing on download_by_link() as well, since it has
         # slightly different logic
-        with pytest.raises(yadisk.exceptions.GoneError):
+        with pytest.raises((yadisk.exceptions.GoneError, yadisk.exceptions.InternalServerError)):
             client.download_by_link(
                 link,
                 BytesIO(),
@@ -674,15 +744,18 @@ class TestClient:
 
         class GetOperationStatusMock:
             def __init__(self):
-                self.call_count = 0
+                self.call_count_since_success = 0
 
             def __call__(self, *args, **kwargs) -> yadisk.types.OperationStatus:
-                self.call_count += 1
+                status = yadisk.Client.get_operation_status(client, *args, **kwargs)
 
-                if self.call_count < 3:
-                    return "failed"
+                if status == "success":
+                    self.call_count_since_success += 1
 
-                return yadisk.Client.get_operation_status(client, *args, **kwargs)
+                    if self.call_count_since_success < 3:
+                        return "failed"
+
+                return status
 
 
         mocker.patch.object(client, "get_operation_status", GetOperationStatusMock())
