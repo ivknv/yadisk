@@ -12,10 +12,34 @@ Changelog
 .. _issue #43: https://github.com/ivknv/yadisk/issues/43
 .. _issue #45: https://github.com/ivknv/yadisk/issues/45
 .. _issue #49: https://github.com/ivknv/yadisk/issues/49
+.. _issue #53: https://github.com/ivknv/yadisk/issues/53
 .. _requests: https://pypi.org/project/requests
 
 .. role:: python(code)
    :language: python
+
+* **Release 3.2.0 (2025-02-03)**
+
+  * New features:
+
+    * Added new method: :any:`Client.makedirs()` / :any:`AsyncClient.makedirs()`
+      (see `issue #53`_)
+    * Added several missing fields for :any:`DiskInfoObject`:
+
+      * :code:`photounlim_size`
+      * :code:`will_be_overdrawn`
+      * :code:`free_photounlim_end_date`
+      * :code:`payment_flow`
+
+    * Added missing field :code:`sizes` for :any:`ResourceObject` and related
+      objects
+
+  * Bug fixes:
+
+    * :any:`Client.rename()` / :any:`AsyncClient.rename()` now raises
+      :any:`ValueError` on attempt to rename the root directory
+    * Automatic retry attempt numbers were logged off by one, now they are
+      logged correctly
 
 * **Release 3.1.0 (2024-07-12)**
 
@@ -25,6 +49,7 @@ Changelog
       :any:`ResourceDownloadLimitExceededError`
     * Added a new method: :any:`Client.get_all_public_resources()` and
       :any:`AsyncClient.get_all_public_resources()`
+
   * Bug fixes:
 
     * Fixed setting :code:`headers` and session arguments to :code:`None` causing

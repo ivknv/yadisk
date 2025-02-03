@@ -177,12 +177,36 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 .. _issue #43: https://github.com/ivknv/yadisk/issues/43
 .. _issue #45: https://github.com/ivknv/yadisk/issues/45
 .. _issue #49: https://github.com/ivknv/yadisk/issues/49
+.. _issue #53: https://github.com/ivknv/yadisk/issues/53
 .. _Введение: https://yadisk.readthedocs.io/ru/latest/intro.html
 .. _Справочник API: https://yadisk.readthedocs.io/ru/latest/api_reference/index.html
 .. _Доступные реализации сессий: https://yadisk.readthedocs.io/ru/latest/api_reference/sessions.html
 .. _Интерфейс Session: https://yadisk.readthedocs.io/ru/latest/api_reference/session_interface.html
 .. _requests: https://pypi.org/project/requests
 .. _Руководство по миграции: https://yadisk.readthedocs.io/ru/latest/migration_guide.html
+
+* **Release 3.2.0 (2025-02-03)**
+
+  * Нововведения:
+
+    * Добавлен новый метод: :code:`Client.makedirs()` и
+      :code:`AsyncClient.makedirs()` (см. `issue #53`_)
+    * Добавлено несколько недостающих полей :code:`DiskInfoObject`
+
+      * :code:`photounlim_size`
+      * :code:`will_be_overdrawn`
+      * :code:`free_photounlim_end_date`
+      * :code:`payment_flow`
+
+    * Добавлено недостающее поле :code:`sizes` для :code:`ResourceObject` и
+      связанных с ним объектов
+
+  * Исправления:
+
+    * :code:`Client.rename()` / :code:`AsyncClient.rename()` теперь вызывает
+      :code:`ValueError` при попытке переименовать корневую папку
+    * Номера автоматических повторных попыток логировались с ошибкой на
+      единицу, теперь они логируются правильно
 
 * **Release 3.1.0 (2024-07-12)**
 
