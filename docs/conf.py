@@ -54,7 +54,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'YaDisk'
-copyright = '2024, Ivan Konovalov'
+copyright = '2025, Ivan Konovalov'
 author = 'Ivan Konovalov'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -62,7 +62,7 @@ author = 'Ivan Konovalov'
 # built documents.
 #
 # The short X.Y version.
-version = '3.1.0'
+version = '3.2.0'
 # The full version, including alpha/beta/rc tags.
 release = version
 
