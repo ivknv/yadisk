@@ -1,6 +1,14 @@
 name: Perform linting and run tests
 
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - master
+      - dev
+  pull_request:
+    branches:
+      - master
+      - dev
 
 jobs:
   build:
