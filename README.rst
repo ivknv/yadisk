@@ -32,6 +32,8 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 
 Документация доступна на `Read the Docs (RU)`_ и `Read the Docs (EN)`_.
 
+.. contents:: Содержание
+
 Установка
 *********
 
@@ -154,6 +156,12 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 
         # Создаёт новую папку "/test-dir"
         print(await client.mkdir("/test-dir"))
+
+Участие в разработке
+********************
+
+Если вы хотите поучаствовать в разработке, см.
+`CONTRIBUTING.rst <https://github.com/ivknv/yadisk/blob/master/CONTRIBUTING.rst>`_.
 
 История изменений
 *****************
