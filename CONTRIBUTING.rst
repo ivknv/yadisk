@@ -1,7 +1,7 @@
 Contributing
 ============
 
-.. contents:: Table of contents
+.. contents:: Table of contents:
 
 Bug reports, feedback, questions, feature requests, etc.
 ********************************************************
@@ -256,6 +256,19 @@ The translation workflow looks something like this:
 #. Build translated documentation with :code:`make -e SPHINXOPTS='-D language=ru' html`
 
 See `Sphinx/Internationalization`_ for more instructions.
+
+Building the package
+********************
+
+To build the wheel (:code:`.whl` file) and the source archive, use the following
+command:
+
+.. code:: bash
+
+   python -m build
+
+Afterwards you should have the built wheel and source archive in the :code:`dist/`
+directory.
 
 New release workflow
 **********************
