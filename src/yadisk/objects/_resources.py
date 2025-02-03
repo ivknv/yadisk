@@ -2477,7 +2477,7 @@ class ResourceObject(YaDiskObject):
         :ivar type: `str`, type ("file" or "dir")
         :ivar media_type: `str`, file type as determined by Yandex.Disk
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
-        :ivar sizes: :any:`dict[str, str]`, mapping of all preview sizes,
+        :ivar sizes: `dict[str, str]`, mapping of all preview sizes,
                      where keys are names and values are download links
 
     """
@@ -2571,7 +2571,7 @@ class SyncResourceObject(ResourceObject, ResourceObjectMethodsMixin):
         :ivar type: `str`, type ("file" or "dir")
         :ivar media_type: `str`, file type as determined by Yandex.Disk
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
-        :ivar sizes: :any:`dict[str, str]`, mapping of all preview sizes,
+        :ivar sizes: `dict[str, str]`, mapping of all preview sizes,
                      where keys are names and values are download links
     """
 
@@ -2614,7 +2614,7 @@ class AsyncResourceObject(ResourceObject, AsyncResourceObjectMethodsMixin):
         :ivar type: `str`, type ("file" or "dir")
         :ivar media_type: `str`, file type as determined by Yandex.Disk
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
-        :ivar sizes: :any:`dict[str, str]`, mapping of all preview sizes,
+        :ivar sizes: `dict[str, str]`, mapping of all preview sizes,
                      where keys are names and values are download links
     """
 
@@ -3180,7 +3180,7 @@ class TrashResourceObject(ResourceObject):
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
         :ivar origin_path: `str`, original path
         :ivar deleted: :any:`datetime.datetime`, date of deletion
-        :ivar sizes: :any:`dict[str, str]`, mapping of all preview sizes,
+        :ivar sizes: `dict[str, str]`, mapping of all preview sizes,
                      where keys are names and values are download links
     """
 
@@ -3231,7 +3231,7 @@ class SyncTrashResourceObject(TrashResourceObject):
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
         :ivar origin_path: `str`, original path
         :ivar deleted: :any:`datetime.datetime`, date of deletion
-        :ivar sizes: :any:`dict[str, str]`, mapping of all preview sizes,
+        :ivar sizes: `dict[str, str]`, mapping of all preview sizes,
                      where keys are names and values are download links
     """
 
@@ -3600,7 +3600,7 @@ class AsyncTrashResourceObject(TrashResourceObject):
         :ivar revision: `int`, Yandex.Disk revision at the time of last modification
         :ivar origin_path: `str`, original path
         :ivar deleted: :any:`datetime.datetime`, date of deletion
-        :ivar sizes: :any:`dict[str, str]`, mapping of all preview sizes, where
+        :ivar sizes: `dict[str, str]`, mapping of all preview sizes, where
                      keys are names and values are download links
     """
 
