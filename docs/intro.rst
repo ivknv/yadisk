@@ -134,7 +134,7 @@ Recursive upload
                 in_path = os.path.join(from_dir, p_sys, file)
 
                 try:
-                    y.upload(in_path, file_path)
+                    client.upload(in_path, file_path)
                 except yadisk.exceptions.PathExistsError:
                     pass
 
