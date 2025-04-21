@@ -53,7 +53,8 @@ from ._async_session import AsyncSession
 from ._import_session import import_async_session
 
 from ._client_common import (
-    _apply_default_args, _filter_request_kwargs, _set_authorization_header,
+    _add_spoof_user_agent_header, _apply_default_args, 
+    _filter_request_kwargs, _set_authorization_header,
     _add_authorization_header, _validate_listdir_response,
     _validate_link_response, _validate_get_type_response
 )
@@ -952,6 +953,7 @@ class AsyncClient:
 
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
+        _add_spoof_user_agent_header(kwargs)
 
         return (
             await GetUploadLinkRequest(
@@ -990,6 +992,7 @@ class AsyncClient:
 
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
+        _add_spoof_user_agent_header(kwargs)
 
         return await GetUploadLinkRequest(
             self.session, path, **kwargs
