@@ -113,6 +113,7 @@ def _add_spoof_user_agent_header(
         "session_id": random_session_id
     }, separators=(',', ':'))
     headers["User-Agent"] = f'Yandex.Disk {data}'
+    kwargs["headers"] = headers
 
 
 def _validate_listdir_response(response: ResourceObject) -> ResourceObject:
