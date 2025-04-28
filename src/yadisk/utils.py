@@ -109,17 +109,29 @@ def get_exception(response: AnyResponse, error: Optional[ErrorObject]) -> YaDisk
         return UnknownYaDiskError(f"Unknown Yandex.Disk error: status code {response.status}")
 
     if error is not None:
-        msg = error.message or "<empty>"
-        desc = error.description or "<empty>"
+        msg = error.message or ""
+        desc = error.description or ""
         error_name = error.error or "<empty>"
     else:
-        msg = "<empty>"
-        desc = "<empty>"
+        msg = ""
+        desc = ""
         error_name = "<empty>"
 
     exc = exc_group[error_name]
 
-    return exc(error_name, "%s (%s / %s)" % (msg, desc, error_name), response)
+    exc_message = ""
+
+    if msg:
+        if desc:
+            exc_message = f"{msg.rstrip('.')}. Error description: {desc.rstrip('.')}. Error code: {error_name}"
+        else:
+            exc_message = f"{msg.rstrip('.')}. Error code: {error_name}"
+    elif desc:
+        exc_message = f"Error description: {desc.rstrip('.')}. Error code: {error_name}"
+    else:
+        exc_message = f"Error code: {error_name}"
+
+    return exc(error_name, exc_message, response)
 
 
 T = TypeVar("T")
