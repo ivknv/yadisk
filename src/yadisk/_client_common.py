@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 # Copyright © 2024 Ivan Konovalov
+import json
+import random
+import string
 
 # This file is part of a Python library yadisk.
 
@@ -30,6 +33,7 @@ __all__ = [
     "_filter_request_kwargs",
     "_read_file_as_generator",
     "_set_authorization_header",
+    "_add_spoof_user_agent_header",
     "_validate_get_type_response",
     "_validate_link_response",
     "_validate_listdir_response"
@@ -86,6 +90,29 @@ def _add_authorization_header(
     else:
         headers["Authorization"] = ""
 
+    kwargs["headers"] = headers
+
+
+def _add_spoof_user_agent_header(
+        kwargs: Dict[str, Any],
+) -> None:
+    headers = CaseInsensitiveDict(kwargs.get("headers") or {})
+
+    if "User-Agent" in headers:
+        return
+
+    random_session_id = ''.join(
+        random.choice(string.ascii_uppercase + string.digits) for _ in range(32)
+    )
+    data = json.dumps({
+        "os": "windows",
+        "dtype": "ydisk3",
+        "vsn": "3.2.37.4977",
+        "id": "6BD01244C7A94456BBCEE7EEC990AEAD",
+        "id2": "0F370CD40C594A4783BC839C846B999C",
+        "session_id": random_session_id
+    }, separators=(',', ':'))
+    headers["User-Agent"] = f'Yandex.Disk {data}'
     kwargs["headers"] = headers
 
 

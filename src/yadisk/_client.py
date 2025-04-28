@@ -51,7 +51,7 @@ from .types import (
 )
 
 from ._client_common import (
-    _apply_default_args, _filter_request_kwargs,
+    _add_spoof_user_agent_header, _apply_default_args, _filter_request_kwargs,
     _read_file_as_generator, _set_authorization_header,
     _add_authorization_header, _validate_listdir_response,
     _validate_link_response, _validate_get_type_response
@@ -925,6 +925,7 @@ class Client:
 
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
+        _add_spoof_user_agent_header(kwargs)
 
         return GetUploadLinkRequest(
             self.session, path, fields=["href"], **kwargs
@@ -962,7 +963,7 @@ class Client:
 
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
-
+        _add_spoof_user_agent_header(kwargs)
         return GetUploadLinkRequest(
             self.session, path, **kwargs
         ).send(yadisk=self)
