@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 # Copyright © 2024 Ivan Konovalov
-import json
-import random
-import string
 
 # This file is part of a Python library yadisk.
 
@@ -101,18 +98,7 @@ def _add_spoof_user_agent_header(
     if "User-Agent" in headers:
         return
 
-    random_session_id = ''.join(
-        random.choice(string.ascii_uppercase + string.digits) for _ in range(32)
-    )
-    data = json.dumps({
-        "os": "windows",
-        "dtype": "ydisk3",
-        "vsn": "3.2.37.4977",
-        "id": "6BD01244C7A94456BBCEE7EEC990AEAD",
-        "id2": "0F370CD40C594A4783BC839C846B999C",
-        "session_id": random_session_id
-    }, separators=(',', ':'))
-    headers["User-Agent"] = f'Yandex.Disk {data}'
+    headers["User-Agent"] = 'Yandex.Disk {"os":"windows"}'
     kwargs["headers"] = headers
 
 
