@@ -90,16 +90,9 @@ def _add_authorization_header(
     kwargs["headers"] = headers
 
 
-def _add_spoof_user_agent_header(
-        kwargs: Dict[str, Any],
-) -> None:
-    headers = CaseInsensitiveDict(kwargs.get("headers") or {})
-
-    if "User-Agent" in headers:
-        return
-
+def _add_spoof_user_agent_header(kwargs: Dict[str, Any]) -> None:
+    headers = kwargs.setdefault("headers", {})
     headers["User-Agent"] = 'Yandex.Disk {"os":"windows"}'
-    kwargs["headers"] = headers
 
 
 def _validate_listdir_response(response: ResourceObject) -> ResourceObject:

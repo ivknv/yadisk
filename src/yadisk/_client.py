@@ -897,12 +897,21 @@ class Client:
 
         return _listdir(self.get_meta, path, **kwargs)
 
-    def get_upload_link(self, path: str, /, **kwargs) -> str:
+    def get_upload_link(
+        self,
+        path: str,
+        /,
+        spoof_user_agent: bool = True,
+        **kwargs
+    ) -> str:
         """
             Get a link to upload the file using the PUT request.
 
             :param path: destination path
             :param overwrite: `bool`, determines whether to overwrite the destination
+            :param spoof_user_agent: `bool`, if `True`, the `User-Agent` header
+                will be set to a special value, which should allow bypassing
+                Yandex.Disk's upload speed limit
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -925,13 +934,22 @@ class Client:
 
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
-        _add_spoof_user_agent_header(kwargs)
+
+        # This is used to bypass Yandex.Disk's upload speed limit for some file types
+        if spoof_user_agent:
+            _add_spoof_user_agent_header(kwargs)
 
         return GetUploadLinkRequest(
             self.session, path, fields=["href"], **kwargs
         ).send(yadisk=self, then=_validate_link_response).href
 
-    def get_upload_link_object(self, path: str, /, **kwargs) -> ResourceUploadLinkObject:
+    def get_upload_link_object(
+        self,
+        path: str,
+        /,
+        spoof_user_agent: bool = True,
+        **kwargs
+    ) -> ResourceUploadLinkObject:
         """
             Get a link to upload the file using the PUT request.
             This is similar to :any:`Client.get_upload_link()`, except it returns
@@ -941,6 +959,9 @@ class Client:
             :param path: destination path
             :param overwrite: `bool`, determines whether to overwrite the destination
             :param fields: list of keys to be included in the response
+            :param spoof_user_agent: `bool`, if `True`, the `User-Agent` header
+                will be set to a special value, which should allow bypassing
+                Yandex.Disk's upload speed limit
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -963,7 +984,11 @@ class Client:
 
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
-        _add_spoof_user_agent_header(kwargs)
+
+        # This is used to bypass Yandex.Disk's upload speed limit for some file types
+        if spoof_user_agent:
+            _add_spoof_user_agent_header(kwargs)
+
         return GetUploadLinkRequest(
             self.session, path, **kwargs
         ).send(yadisk=self)
