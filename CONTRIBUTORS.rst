@@ -6,3 +6,4 @@ Contributors
 - Vladislav (`@Omnivanitate <https://github.com/Omnivanitate>`_)
 - `@unix3dgforce <https://github.com/unix3dgforce>`_
 - Nikita Kolesov (`@NikitaKolesov <https://github.com/NikitaKolesov>`_)
+- Katant Savelev (`@KatantDev <https://github.com/KatantDev>`_)
