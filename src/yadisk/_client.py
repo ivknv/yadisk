@@ -2573,11 +2573,11 @@ class Client:
                                                        (when `poll_timeout` is not `None`)
         """
 
-        poll_start_time = time.time()
+        poll_start_time = time.monotonic()
 
         while (status := self.get_operation_status(operation_id, **kwargs)) == "in-progress":
             if poll_timeout is not None:
-                total_poll_duration = time.time() - poll_start_time
+                total_poll_duration = time.monotonic() - poll_start_time
 
                 if total_poll_duration >= poll_timeout:
                     raise AsyncOperationPollingTimeoutError("Asynchronous operation did not complete in specified time")
