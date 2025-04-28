@@ -162,6 +162,28 @@ class YaDiskObject:
     def __repr__(self) -> str:
         return "<%s%r>" % (self.__class__.__name__, self.FIELDS)
 
+    def _repr_pretty_(self, p, cycle: bool) -> None:
+        """IPython pretty-print implementation."""
+
+        if cycle:
+            p.text(f"<{self.__class__.__name__}{'{...}'}>")
+        else:
+            if not self.FIELDS:
+                p.text(f"<{self.__class__.__name__}{'{}'}>")
+                return
+
+            with p.group(4, f"<{self.__class__.__name__}{'{'}", "})>"):
+                p.breakable()
+
+                for idx, (k, v) in enumerate(self.FIELDS.items()):
+                    if idx:
+                        p.text(",")
+                        p.breakable()
+
+                    p.text(repr(k))
+                    p.text(": ")
+                    p.pretty(v)
+
     def field(self, name: str) -> Any:
         """
             Get value of field `name`, guarantee it's not :code:`None` or
