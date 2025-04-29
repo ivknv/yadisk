@@ -119,27 +119,35 @@ def get_exception(response: AnyResponse, error: Optional[ErrorObject]) -> YaDisk
     if error is not None:
         msg = error.message or ""
         desc = error.description or ""
-        error_name = error.error or "<empty>"
+        error_name = error.error or ""
     else:
         msg = ""
         desc = ""
-        error_name = "<empty>"
+        error_name = ""
 
     exc = exc_group[error_name]
 
     exc_message = ""
 
     if msg:
-        if desc:
-            exc_message = f"{msg.rstrip('.')}. Error description: {desc.rstrip('.')}. Error code: {error_name}"
-        else:
-            exc_message = f"{msg.rstrip('.')}. Error code: {error_name}"
-    elif desc:
-        exc_message = f"Error description: {desc.rstrip('.')}. Error code: {error_name}"
-    else:
-        exc_message = f"Error code: {error_name}"
+        exc_message = msg
 
-    exc_message = f"{exc_message}. Status code: {response.status}."
+    if desc:
+        if exc_message:
+            exc_message = f"{exc_message.rstrip('.')}. "
+
+        exc_message += f"Error description: {desc.rstrip('.')}. Error code: {error_name}"
+
+    if error_name:
+        if exc_message:
+            exc_message = f"{exc_message.rstrip('.')}. "
+
+        exc_message += f"Error code: {error_name}"
+
+    if exc_message:
+        exc_message = f"{exc_message.rstrip('.')}. "
+
+    exc_message += f"Status code: {response.status}"
 
     return exc(error_name, exc_message, response)
 
@@ -194,7 +202,7 @@ def auto_retry(
                 )
 
                 if i:
-                    _add_exception_note(e, f"Got the error after {i} retry attempts.")
+                    _add_exception_note(e, f"Got the error after {i} retry attempts")
 
                 raise
 
@@ -264,7 +272,7 @@ async def async_auto_retry(
                 )
 
                 if i:
-                    _add_exception_note(e, f"Got the error after {i} retry attempts.")
+                    _add_exception_note(e, f"Got the error after {i} retry attempts")
 
                 raise
 
