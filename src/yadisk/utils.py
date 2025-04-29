@@ -134,18 +134,18 @@ def get_exception(response: AnyResponse, error: Optional[ErrorObject]) -> YaDisk
 
     if desc:
         if exc_message:
-            exc_message = f"{exc_message.rstrip('.')}. "
+            exc_message += " | "
 
         exc_message += f"Error description: {desc.rstrip('.')}. Error code: {error_name}"
 
     if error_name:
         if exc_message:
-            exc_message = f"{exc_message.rstrip('.')}. "
+            exc_message += " | "
 
         exc_message += f"Error code: {error_name}"
 
     if exc_message:
-        exc_message = f"{exc_message.rstrip('.')}. "
+        exc_message += " | "
 
     exc_message += f"Status code: {response.status}"
 
