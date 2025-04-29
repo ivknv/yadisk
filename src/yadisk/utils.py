@@ -131,6 +131,8 @@ def get_exception(response: AnyResponse, error: Optional[ErrorObject]) -> YaDisk
     else:
         exc_message = f"Error code: {error_name}"
 
+    exc_message = f"{exc_message}. Status code: {response.status}"
+
     return exc(error_name, exc_message, response)
 
 
