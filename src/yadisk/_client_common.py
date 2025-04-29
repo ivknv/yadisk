@@ -26,6 +26,7 @@ from typing import Any, AnyStr, IO, Optional
 
 __all__ = [
     "_add_authorization_header",
+    "_add_spoof_user_agent_header",
     "_apply_default_args",
     "_filter_request_kwargs",
     "_read_file_as_generator",
@@ -87,6 +88,11 @@ def _add_authorization_header(
         headers["Authorization"] = ""
 
     kwargs["headers"] = headers
+
+
+def _add_spoof_user_agent_header(kwargs: Dict[str, Any]) -> None:
+    headers = kwargs.setdefault("headers", {})
+    headers["User-Agent"] = 'Yandex.Disk {"os":"windows"}'
 
 
 def _validate_listdir_response(response: ResourceObject) -> ResourceObject:

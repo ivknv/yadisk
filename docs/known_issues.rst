@@ -24,11 +24,14 @@ official website, is that this throttling does not apply to internal services
 While it is not clear what the purpose of this throttling is, it is certain at
 this point that this is not a bug.
 
-The only known workaround is to upload files with changed filename extensions (or without them entirely).
-For example, if you want to upload a file named "my_database.db", you can initially
-upload it under the name "my_database.some_other_extension" and then rename it back
-to "my_database.db". This approach has some obvious downsides but at least it
-works.
+One workaround is to upload files with changed filename extensions (or without them entirely).
+For example, if you want to upload a file named :code:`"my_database.db"`, you can initially
+upload it under the name :code:`"my_database.some_other_extension"` and then rename it back
+to :code:`"my_database.db"`.
+
+Another workaround is to spoof user agent (see `PR#57 <https://github.com/ivknv/yadisk/pull/57>`_).
+Starting with version :code:`3.3.0`, the user agent is spoofed by default (see
+:any:`yadisk.Client.get_upload_link()`'s :code:`spoof_user_agent` parameter).
 
 Low Upload Speed on Windows When Using requests
 ###############################################

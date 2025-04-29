@@ -51,7 +51,7 @@ from .types import (
 )
 
 from ._client_common import (
-    _apply_default_args, _filter_request_kwargs,
+    _add_spoof_user_agent_header, _apply_default_args, _filter_request_kwargs,
     _read_file_as_generator, _set_authorization_header,
     _add_authorization_header, _validate_listdir_response,
     _validate_link_response, _validate_get_type_response
@@ -897,12 +897,21 @@ class Client:
 
         return _listdir(self.get_meta, path, **kwargs)
 
-    def get_upload_link(self, path: str, /, **kwargs) -> str:
+    def get_upload_link(
+        self,
+        path: str,
+        /,
+        spoof_user_agent: bool = True,
+        **kwargs
+    ) -> str:
         """
             Get a link to upload the file using the PUT request.
 
             :param path: destination path
             :param overwrite: `bool`, determines whether to overwrite the destination
+            :param spoof_user_agent: `bool`, if `True` (default), the `User-Agent` header
+                will be set to a special value, which should allow bypassing of
+                Yandex.Disk's upload speed limit
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -926,11 +935,21 @@ class Client:
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
 
+        # This is used to bypass Yandex.Disk's upload speed limit for some file types
+        if spoof_user_agent:
+            _add_spoof_user_agent_header(kwargs)
+
         return GetUploadLinkRequest(
             self.session, path, fields=["href"], **kwargs
         ).send(yadisk=self, then=_validate_link_response).href
 
-    def get_upload_link_object(self, path: str, /, **kwargs) -> ResourceUploadLinkObject:
+    def get_upload_link_object(
+        self,
+        path: str,
+        /,
+        spoof_user_agent: bool = True,
+        **kwargs
+    ) -> ResourceUploadLinkObject:
         """
             Get a link to upload the file using the PUT request.
             This is similar to :any:`Client.get_upload_link()`, except it returns
@@ -940,6 +959,9 @@ class Client:
             :param path: destination path
             :param overwrite: `bool`, determines whether to overwrite the destination
             :param fields: list of keys to be included in the response
+            :param spoof_user_agent: `bool`, if `True` (default), the `User-Agent` header
+                will be set to a special value, which should allow bypassing of
+                Yandex.Disk's upload speed limit
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -962,6 +984,10 @@ class Client:
 
         _apply_default_args(kwargs, self.default_args)
         _add_authorization_header(kwargs, self.token)
+
+        # This is used to bypass Yandex.Disk's upload speed limit for some file types
+        if spoof_user_agent:
+            _add_spoof_user_agent_header(kwargs)
 
         return GetUploadLinkRequest(
             self.session, path, **kwargs
@@ -1077,6 +1103,9 @@ class Client:
             :param dst_path: destination path
             :param overwrite: if `True`, the resource will be overwritten if it already exists,
                               an error will be raised otherwise
+            :param spoof_user_agent: `bool`, if `True` (default), the `User-Agent` header
+                will be set to a special value, which should allow bypassing of
+                Yandex.Disk's upload speed limit
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
@@ -2547,11 +2576,11 @@ class Client:
                                                        (when `poll_timeout` is not `None`)
         """
 
-        poll_start_time = time.time()
+        poll_start_time = time.monotonic()
 
         while (status := self.get_operation_status(operation_id, **kwargs)) == "in-progress":
             if poll_timeout is not None:
-                total_poll_duration = time.time() - poll_start_time
+                total_poll_duration = time.monotonic() - poll_start_time
 
                 if total_poll_duration >= poll_timeout:
                     raise AsyncOperationPollingTimeoutError("Asynchronous operation did not complete in specified time")

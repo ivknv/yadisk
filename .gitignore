@@ -9,3 +9,4 @@ pyrightconfig.json
 .vim/
 .coverage
 .tool-versions
+*.mo

@@ -18,6 +18,7 @@
 
 import asyncio
 from collections import defaultdict
+import sys
 import time
 
 from .objects import ErrorObject
@@ -35,6 +36,14 @@ __all__ = ["CaseInsensitiveDict", "async_auto_retry", "auto_retry", "get_excepti
 class _UnexpectedRequestError(YaDiskError):
     # Used for testing (see tests/disk_gateway.py)
     pass
+
+
+if sys.version_info >= (3, 11) and hasattr(Exception, "add_note"):
+    def _add_exception_note(exc: Exception, note: str) -> None:
+        exc.add_note(note)
+else:
+    def _add_exception_note(exc: Exception, note: str) -> None:
+        pass
 
 
 EXCEPTION_MAP: Dict[int, Dict[str, Type[YaDiskError]]] = {
@@ -109,17 +118,39 @@ def get_exception(response: AnyResponse, error: Optional[ErrorObject]) -> YaDisk
         return UnknownYaDiskError(f"Unknown Yandex.Disk error: status code {response.status}")
 
     if error is not None:
-        msg = error.message or "<empty>"
-        desc = error.description or "<empty>"
-        error_name = error.error or "<empty>"
+        msg = error.message or ""
+        desc = error.description or ""
+        error_name = error.error or ""
     else:
-        msg = "<empty>"
-        desc = "<empty>"
-        error_name = "<empty>"
+        msg = ""
+        desc = ""
+        error_name = ""
 
     exc = exc_group[error_name]
 
-    return exc(error_name, "%s (%s / %s)" % (msg, desc, error_name), response)
+    exc_message = ""
+
+    if msg:
+        exc_message = msg
+
+    if desc:
+        if exc_message:
+            exc_message += " | "
+
+        exc_message += f"Error description: {desc.rstrip('.')}. Error code: {error_name}"
+
+    if error_name:
+        if exc_message:
+            exc_message += " | "
+
+        exc_message += f"Error code: {error_name}"
+
+    if exc_message:
+        exc_message += " | "
+
+    exc_message += f"Status code: {response.status}"
+
+    return exc(error_name, exc_message, response)
 
 
 T = TypeVar("T")
@@ -170,6 +201,10 @@ def auto_retry(
                 settings.logger.info(
                     f"not triggering an automatic retry: ({i + 1} out of {n_retries}), got {e.__class__.__name__}: {e}"
                 )
+
+                if i:
+                    _add_exception_note(e, f"Got the error after {i} retry attempts")
+
                 raise
 
             settings.logger.info(
@@ -236,6 +271,10 @@ async def async_auto_retry(
                 settings.logger.info(
                     f"not triggering an automatic retry: ({i + 1} out of {n_retries}), got {e.__class__.__name__}: {e}"
                 )
+
+                if i:
+                    _add_exception_note(e, f"Got the error after {i} retry attempts")
+
                 raise
 
             settings.logger.info(

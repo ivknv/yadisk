@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2024 Ivan Konovalov
+# Copyright © 2025 Ivan Konovalov
 
 # This file is part of a Python library yadisk.
 
@@ -24,7 +24,7 @@ from ._session import Session, Response
 from ._async_session import AsyncSession, AsyncResponse
 from ._import_session import import_session, import_async_session
 
-__version__ = "3.2.0"
+__version__ = "3.3.0"
 
 YaDisk = Client
 AsyncYaDisk = AsyncClient

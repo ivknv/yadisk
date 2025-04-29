@@ -179,7 +179,12 @@ def client(
         os.environ["PYTHON_YADISK_APP_TOKEN"],
         session=test_session
     ) as client:
-        client.default_args.update({"n_retries": 50})
+        client.default_args.update({
+            "n_retries": 50,
+            "retry_interval": 0.0 if replay_enabled else 3.0,
+            "timeout": (30.0, 60.0)
+        })
+
         yield client
 
 
@@ -216,7 +221,12 @@ async def async_client(
         os.environ["PYTHON_YADISK_APP_TOKEN"],
         session=test_session
     ) as async_client:
-        async_client.default_args.update({"n_retries": 50})
+        async_client.default_args.update({
+            "n_retries": 50,
+            "retry_interval": 0.0 if replay_enabled else 3.0,
+            "timeout": (30.0, 60.0)
+        })
+
         yield async_client
 
 
