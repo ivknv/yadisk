@@ -37,6 +37,14 @@ class _UnexpectedRequestError(YaDiskError):
     pass
 
 
+if hasattr(Exception, "add_note"):
+    def _add_exception_note(exc: Exception, note: str) -> None:
+        exc.add_note(note)
+else:
+    def _add_exception_note(exc: Exception, note: str) -> None:
+        pass
+
+
 EXCEPTION_MAP: Dict[int, Dict[str, Type[YaDiskError]]] = {
     400: defaultdict(
         lambda: BadRequestError,
@@ -131,7 +139,7 @@ def get_exception(response: AnyResponse, error: Optional[ErrorObject]) -> YaDisk
     else:
         exc_message = f"Error code: {error_name}"
 
-    exc_message = f"{exc_message}. Status code: {response.status}"
+    exc_message = f"{exc_message}. Status code: {response.status}."
 
     return exc(error_name, exc_message, response)
 
@@ -184,6 +192,10 @@ def auto_retry(
                 settings.logger.info(
                     f"not triggering an automatic retry: ({i + 1} out of {n_retries}), got {e.__class__.__name__}: {e}"
                 )
+
+                if i:
+                    _add_exception_note(e, f"Got the error after {i} retry attempts.")
+
                 raise
 
             settings.logger.info(
@@ -250,6 +262,10 @@ async def async_auto_retry(
                 settings.logger.info(
                     f"not triggering an automatic retry: ({i + 1} out of {n_retries}), got {e.__class__.__name__}: {e}"
                 )
+
+                if i:
+                    _add_exception_note(e, f"Got the error after {i} retry attempts.")
+
                 raise
 
             settings.logger.info(
