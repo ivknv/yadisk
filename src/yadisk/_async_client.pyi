@@ -365,6 +365,7 @@ class AsyncClient:
         /,
         *,
         overwrite: bool = False,
+        spoof_user_agent: bool = True,
         headers: Optional[Headers] = None,
         timeout: TimeoutParameter = ...,
         n_retries: Optional[int] = None,

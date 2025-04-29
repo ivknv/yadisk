@@ -1103,6 +1103,9 @@ class Client:
             :param dst_path: destination path
             :param overwrite: if `True`, the resource will be overwritten if it already exists,
                               an error will be raised otherwise
+            :param spoof_user_agent: `bool`, if `True`, the `User-Agent` header
+                will be set to a special value, which should allow bypassing
+                Yandex.Disk's upload speed limit
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
             :param n_retries: `int`, maximum number of retries
