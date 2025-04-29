@@ -909,8 +909,8 @@ class Client:
 
             :param path: destination path
             :param overwrite: `bool`, determines whether to overwrite the destination
-            :param spoof_user_agent: `bool`, if `True`, the `User-Agent` header
-                will be set to a special value, which should allow bypassing
+            :param spoof_user_agent: `bool`, if `True` (default), the `User-Agent` header
+                will be set to a special value, which should allow bypassing of
                 Yandex.Disk's upload speed limit
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
@@ -959,8 +959,8 @@ class Client:
             :param path: destination path
             :param overwrite: `bool`, determines whether to overwrite the destination
             :param fields: list of keys to be included in the response
-            :param spoof_user_agent: `bool`, if `True`, the `User-Agent` header
-                will be set to a special value, which should allow bypassing
+            :param spoof_user_agent: `bool`, if `True` (default), the `User-Agent` header
+                will be set to a special value, which should allow bypassing of
                 Yandex.Disk's upload speed limit
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
@@ -1103,8 +1103,8 @@ class Client:
             :param dst_path: destination path
             :param overwrite: if `True`, the resource will be overwritten if it already exists,
                               an error will be raised otherwise
-            :param spoof_user_agent: `bool`, if `True`, the `User-Agent` header
-                will be set to a special value, which should allow bypassing
+            :param spoof_user_agent: `bool`, if `True` (default), the `User-Agent` header
+                will be set to a special value, which should allow bypassing of
                 Yandex.Disk's upload speed limit
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
