@@ -18,6 +18,7 @@
 
 import asyncio
 from collections import defaultdict
+import sys
 import time
 
 from .objects import ErrorObject
@@ -37,7 +38,7 @@ class _UnexpectedRequestError(YaDiskError):
     pass
 
 
-if hasattr(Exception, "add_note"):
+if sys.version_info >= (3, 11) and hasattr(Exception, "add_note"):
     def _add_exception_note(exc: Exception, note: str) -> None:
         exc.add_note(note)
 else:
