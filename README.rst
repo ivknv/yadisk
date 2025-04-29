@@ -184,6 +184,31 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 .. _Интерфейс Session: https://yadisk.readthedocs.io/ru/latest/api_reference/session_interface.html
 .. _requests: https://pypi.org/project/requests
 .. _Руководство по миграции: https://yadisk.readthedocs.io/ru/latest/migration_guide.html
+.. _PR #57: https://github.com/ivknv/yadisk/pull/57
+
+* **Release 3.3.0 (2025-04-29)**
+
+  * Нововведения:
+
+    * Спуфинг User-Agent для обхода ограничения скорости загрузки файлов на
+      Диск (см. `PR #57`_). :code:`Client.upload()` и связанные с ним методы
+      (включая :any:`AsyncClient`) имеют новый опциональный параметр "
+      :code:`spoof_user_agent`, который по умолчанию имеет значение
+      :code:`True`. Этот параметр можно использовать для отключения спуфинга,
+      если это необходимо.
+
+    * Добавлена поддержка pretty-printing в IPython для :any:`YaDiskObject` и
+      производных классов
+
+  * Исправления:
+
+    * :code:`Client.wait_for_operation()` теперь использует
+      :code:`time.monotonic()` вместо :code:`time.time()`
+
+  * Улучшения:
+
+    * Сообщения об ошибках REST API теперь чётко разделены на четыре части
+      (сообщение, описание, код ошибки и код состояния HTTP)
 
 * **Release 3.2.0 (2025-02-03)**
 

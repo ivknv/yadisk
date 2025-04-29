@@ -14,9 +14,33 @@ Changelog
 .. _issue #49: https://github.com/ivknv/yadisk/issues/49
 .. _issue #53: https://github.com/ivknv/yadisk/issues/53
 .. _requests: https://pypi.org/project/requests
+.. _PR #57: https://github.com/ivknv/yadisk/pull/57
 
 .. role:: python(code)
    :language: python
+
+* **Release 3.3.0 (2025-04-29)**
+
+  * New features:
+
+    * User-Agent spoofing to bypass Yandex.Disk's upload speed limit (see `PR #57`_).
+      :any:`Client.upload()` and related methods (including :any:`AsyncClient`)
+      have a new optional parameter :code:`spoof_user_agent`, which is set to
+      :code:`True` by default. This parameter can be used to disable User-Agent
+      spoofing if necessary.
+
+    * Added IPython's pretty printing support for :any:`YaDiskObject` and
+      derived classes
+
+  * Bug fixes:
+
+    * :any:`Client.wait_for_operation()` now uses :code:`time.monotonic()` 
+      instead of :code:`time.time()`
+
+  * Improvements:
+
+    * REST API error messages are now clearly divided into four parts (message,
+      description, error code and HTTP status code)
 
 * **Release 3.2.0 (2025-02-03)**
 
