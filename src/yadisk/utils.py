@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2024 Ivan Konovalov
+# Copyright © 2025 Ivan Konovalov
 
 # This file is part of a Python library yadisk.
 
@@ -59,7 +59,12 @@ EXCEPTION_MAP: Dict[int, Dict[str, Type[YaDiskError]]] = {
         }
     ),
     401: defaultdict(lambda: UnauthorizedError),
-    403: defaultdict(lambda: ForbiddenError),
+    403: defaultdict(
+        lambda: ForbiddenError,
+        {
+            "DiskSymlinkPasswordRequiredError": PasswordRequiredError
+        }
+    ),
     404: defaultdict(
         lambda: NotFoundError,
         {

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2024 Ivan Konovalov
+# Copyright © 2025 Ivan Konovalov
 
 # This file is part of a Python library yadisk.
 
@@ -40,6 +40,7 @@ __all__ = [
     "NotFoundError",
     "OperationNotFoundError",
     "ParentNotFoundError",
+    "PasswordRequiredError",
     "PathExistsError",
     "PathNotFoundError",
     "PayloadTooLargeError",
@@ -319,4 +320,9 @@ class BadVerificationCodeError(BadRequestError):
 
 class UnsupportedTokenTypeError(BadRequestError):
     """Thrown when the specified token cannot be used in a request"""
+    pass
+
+
+class PasswordRequiredError(ForbiddenError):
+    """Thrown when a password is required to access the resource"""
     pass
