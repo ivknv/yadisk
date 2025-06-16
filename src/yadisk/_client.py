@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2024 Ivan Konovalov
+# Copyright © 2025 Ivan Konovalov
 
 # This file is part of a Python library yadisk.
 
@@ -35,7 +35,8 @@ from .objects import (
     SyncTrashResourceObject, SyncFilesResourceListObject, SyncResourceObject,
     SyncLastUploadedResourceListObject, SyncOperationLinkObject,
     SyncPublicResourceObject, SyncPublicResourcesListObject, DiskInfoObject,
-    TokenObject, TokenRevokeStatusObject, DeviceCodeObject, ResourceUploadLinkObject
+    TokenObject, TokenRevokeStatusObject, DeviceCodeObject, ResourceUploadLinkObject,
+    PublicSettingsObject, PublicAvailableSettingsObject
 )
 
 from ._session import Session
@@ -46,7 +47,7 @@ from . import settings
 from typing import Any, Optional, Union, Literal
 from ._typing_compat import Callable, Generator, Dict, List, Type
 from .types import (
-    OpenFileCallback, FileOrPath, FileOrPathDestination, OperationStatus,
+    OpenFileCallback, FileOrPath, FileOrPathDestination, OperationStatus, PublicSettings,
     SessionFactory, SessionName
 )
 
@@ -1777,6 +1778,9 @@ class Client:
             Make a resource public.
 
             :param path: path to the resource to be published
+            :param allow_address_access: `bool`, specifies the request format, i.e.
+                with personal access settings (when set to `True`) or without
+            :param public_settings: :any:`PublicSettings` or `None`, public access settings for the resource
             :param fields: list of keys to be included in the response
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
@@ -1827,6 +1831,90 @@ class Client:
         _add_authorization_header(kwargs, self.token)
 
         return UnpublishRequest(self.session, path, **kwargs).send(yadisk=self)
+
+    def get_public_settings(self, path: str, /, **kwargs) -> PublicSettingsObject:
+        """
+            Get public settings of a resource.
+
+            :param path: path to the resource
+            :param allow_address_access: `bool`, specifies the request format, i.e.
+                with personal access settings (when set to `True`) or without
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`PublicSettingsObject`
+        """
+
+        _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
+
+        return GetPublicSettingsRequest(self.session, path, **kwargs).send(yadisk=self)
+
+    def get_public_available_settings(self, path: str, /, **kwargs) -> PublicAvailableSettingsObject:
+        """
+            Get public settings of a shared resource for the current OAuth token owner.
+
+            :param path: path to the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`PublicAvailableSettingsObject`
+        """
+
+        _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
+
+        return GetPublicAvailableSettingsRequest(self.session, path, **kwargs).send(yadisk=self)
+
+    def update_public_settings(self, path: str, public_settings: PublicSettings, /, **kwargs) -> None:
+        """
+            Update public settings of a shared resource.
+
+            :param path: path to the resource
+            :param public_settings: :any:`PublicSettings`, public access settings for the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: `None`
+        """
+
+        _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
+
+        return UpdatePublicSettingsRequest(self.session, path, public_settings, **kwargs).send(yadisk=self)
 
     def save_to_disk(
         self,

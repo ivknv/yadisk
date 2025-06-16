@@ -24,15 +24,17 @@ from .objects import (
     DiskInfoObject, AsyncResourceObject, AsyncResourceLinkObject,
     AsyncOperationLinkObject, AsyncTrashResourceObject, AsyncPublicResourceObject,
     AsyncPublicResourcesListObject, AsyncPublicResourceLinkObject,
-    ResourceUploadLinkObject
+    ResourceUploadLinkObject, PublicAvailableSettingsObject, PublicSettingsObject
 )
 
 from .types import (
     AsyncFileOrPath, AsyncFileOrPathDestination, Headers, OperationStatus, AsyncSession,
-    AsyncSessionName, AsyncSessionFactory, AsyncOpenFileCallback, TimeoutParameter
+    AsyncSessionName, AsyncSessionFactory, AsyncOpenFileCallback, TimeoutParameter,
+    PublicSettings
 )
 
 __all__ = ["AsyncClient"]
+
 
 class AsyncClient:
     id: str
@@ -803,6 +805,7 @@ class AsyncClient:
         path: str,
         /,
         *,
+        allow_address_access: bool = False,
         fields: Optional[Iterable[str]] = None,
         headers: Optional[Headers] = None,
         timeout: TimeoutParameter = ...,
@@ -830,6 +833,53 @@ class AsyncClient:
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
     ) -> AsyncResourceLinkObject:
+        ...
+
+    async def get_public_settings(
+        self,
+        path: str,
+        /,
+        allow_address_access: bool = False,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> PublicSettingsObject:
+        ...
+
+    async def get_public_available_settings(
+        self,
+        path: str,
+        /,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> PublicAvailableSettingsObject:
+        ...
+
+    async def update_public_settings(
+        self,
+        path: str,
+        public_settings: PublicSettings,
+        /,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> None:
         ...
 
     @overload

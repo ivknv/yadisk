@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2024 Ivan Konovalov
+# Copyright © 2025 Ivan Konovalov
 
 # This file is part of a Python library yadisk.
 
@@ -16,6 +16,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
+import typing
+from ..types import PublicSettings
 from .api_request import APIRequest
 from ..objects import (
     PublicResourcesListObject, SyncPublicResourcesListObject, AsyncPublicResourcesListObject,
@@ -25,7 +27,8 @@ from ..objects import (
     ResourceObject, SyncResourceObject, AsyncResourceObject, ResourceUploadLinkObject,
     PublicResourceObject, SyncPublicResourceObject, AsyncPublicResourceObject,
     OperationLinkObject, SyncOperationLinkObject, AsyncOperationLinkObject,
-    ResourceLinkObject, SyncResourceLinkObject, AsyncResourceLinkObject, ResourceDownloadLinkObject
+    ResourceLinkObject, SyncResourceLinkObject, AsyncResourceLinkObject, ResourceDownloadLinkObject,
+    PublicSettingsObject, PublicAvailableSettingsObject
 )
 
 from .._common import is_operation_link, ensure_path_has_schema
@@ -44,9 +47,11 @@ __all__ = [
     "FilesRequest",
     "GetDownloadLinkRequest",
     "GetMetaRequest",
+    "GetPublicAvailableSettingsRequest",
     "GetPublicDownloadLinkRequest",
     "GetPublicMetaRequest",
     "GetPublicResourcesRequest",
+    "GetPublicSettingsRequest",
     "GetTrashRequest",
     "GetUploadLinkRequest",
     "LastUploadedRequest",
@@ -57,6 +62,7 @@ __all__ = [
     "RestoreTrashRequest",
     "SaveToDiskRequest",
     "UnpublishRequest",
+    "UpdatePublicSettingsRequest",
     "UploadURLRequest",
 ]
 
@@ -690,6 +696,9 @@ class PublishRequest(APIRequest):
 
         :param session: an instance of :any:`Session` or :any:`AsyncSession` with prepared headers
         :param path: path to the resource to be published
+        :param allow_address_access: `bool`, specifies the request format, i.e.
+            with personal access settings (when set to `True`) or without
+        :param public_settings: :any:`PublicSettings`, public access settings for the resource
         :param fields: list of keys to be included in the response
 
         :returns: :any:`ResourceLinkObject`
@@ -697,17 +706,22 @@ class PublishRequest(APIRequest):
 
     method = "PUT"
     path = "/v1/disk/resources/publish"
+    content_type = "application/json"
 
     def __init__(
         self,
-        session:  "AnySession",
-        path:     str,
-        fields:   Optional[Fields] = None,
+        session:              "AnySession",
+        path:                 str,
+        allow_address_access: bool = False,
+        public_settings:      Optional[PublicSettings] = None,
+        fields:               Optional[Fields] = None,
         **kwargs
     ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["path"] = ensure_path_has_schema(path)
+        self.params["allow_address_access"] = "true" if allow_address_access else "false"
+        self.data = {"public_settings": public_settings or {}}
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)
@@ -725,6 +739,116 @@ class PublishRequest(APIRequest):
             return SyncResourceLinkObject(js, yadisk)
         else:
             return AsyncResourceLinkObject(js, yadisk)
+
+
+class GetPublicSettingsRequest(APIRequest):
+    """
+        A request to get public settings of a resource.
+
+        :param session: an instance of :any:`Session` or :any:`AsyncSession` with prepared headers
+        :param path: path to the resource
+        :param allow_address_access: `bool`, specifies the request format, i.e.
+            with personal access settings (when set to `True`) or without
+        :param fields: list of keys to be included in the response
+
+        :returns: :any:`PublicSettingsObject`
+    """
+
+    method = "GET"
+    path = "/v1/disk/public/resources/public-settings"
+
+    def __init__(
+        self,
+        session: "AnySession",
+        path: str,
+        allow_address_access: bool = False,
+        fields: Optional[Fields] = None,
+        **kwargs
+    ) -> None:
+        APIRequest.__init__(self, session, **kwargs)
+
+        self.params["path"] = ensure_path_has_schema(path)
+        self.params["allow_address_access"] = "true" if allow_address_access else "false"
+
+        if fields is not None:
+            self.params["fields"] = ",".join(fields)
+
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> PublicSettingsObject:
+        if not isinstance(js, dict):
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
+        return PublicSettingsObject(js)
+
+
+class GetPublicAvailableSettingsRequest(APIRequest):
+    """
+        A request to get public settings of a shared resource for the current OAuth token owner.
+
+        :param session: an instance of :any:`Session` or :any:`AsyncSession` with prepared headers
+        :param path: path to the resource
+
+        :returns: :any:`PublicAvailableSettingsObject`
+    """
+
+    method = "GET"
+    path = "/v1/disk/public/resources/public-settings/available-settings"
+
+    def __init__(
+        self,
+        session: "AnySession",
+        path: str,
+        **kwargs
+    ) -> None:
+        APIRequest.__init__(self, session, **kwargs)
+
+        self.params["path"] = ensure_path_has_schema(path)
+
+    def process_json(
+        self,
+        js: "JSON",
+        yadisk: Optional["AnyClient"] = None,
+        **kwargs
+    ) -> PublicAvailableSettingsObject:
+        if not isinstance(js, dict):
+            raise InvalidResponseError("Yandex.Disk returned invalid JSON")
+
+        return PublicAvailableSettingsObject(js)
+
+
+class UpdatePublicSettingsRequest(APIRequest):
+    """
+        A request to update public settings of a shared resource.
+
+        :param session: an instance of :any:`Session` or :any:`AsyncSession` with prepared headers
+        :param path: path to the resource
+        :param public_settings: :any:`PublicSettings`, public access settings for the resource
+
+        :returns: `None`
+    """
+
+    method = "PATCH"
+    path = "/v1/disk/public/resources/public-settings"
+    content_type = "application/json"
+
+    def __init__(
+        self,
+        session: "AnySession",
+        path: str,
+        public_settings: PublicSettings,
+        **kwargs
+    ) -> None:
+        APIRequest.__init__(self, session, **kwargs)
+
+        self.params["path"] = ensure_path_has_schema(path)
+        self.data = typing.cast(Dict, public_settings)
+
+    def process_json(self, js: "JSON", yadisk: Optional["AnyClient"] = None, **kwargs) -> None:
+        return
 
 
 class UploadURLRequest(APIRequest):

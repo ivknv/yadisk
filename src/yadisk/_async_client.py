@@ -26,7 +26,7 @@ from urllib.parse import urlencode
 from .types import (
     AsyncFileOrPath, AsyncFileOrPathDestination, AsyncOpenFileCallback,
     AsyncSessionFactory, FileOpenMode, BinaryAsyncFileLike, AsyncSessionName,
-    OperationStatus
+    OperationStatus, PublicSettings
 )
 
 from . import settings
@@ -43,7 +43,7 @@ from .objects import (
     AsyncOperationLinkObject, AsyncTrashResourceObject,
     AsyncPublicResourceObject, AsyncPublicResourcesListObject,
     AsyncFilesResourceListObject, AsyncLastUploadedResourceListObject,
-    DeviceCodeObject, ResourceUploadLinkObject
+    DeviceCodeObject, ResourceUploadLinkObject, PublicSettingsObject, PublicAvailableSettingsObject
 )
 
 from typing import Any, Optional, Union, IO, BinaryIO, Literal
@@ -1825,6 +1825,9 @@ class AsyncClient:
             Make a resource public.
 
             :param path: path to the resource to be published
+            :param allow_address_access: `bool`, specifies the request format, i.e.
+                with personal access settings (when set to `True`) or without
+            :param public_settings: :any:`PublicSettings` or `None`, public access settings for the resource
             :param fields: list of keys to be included in the response
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers
@@ -1852,6 +1855,8 @@ class AsyncClient:
             Make a public resource private.
 
             :param path: path to the resource to be unpublished
+            :param allow_address_access: `bool`, specifies the request format, i.e.
+                with personal access settings (when set to `True`) or without
             :param fields: list of keys to be included in the response
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers
@@ -1873,6 +1878,87 @@ class AsyncClient:
         _add_authorization_header(kwargs, self.token)
 
         return await UnpublishRequest(self.session, path, **kwargs).asend(yadisk=self)
+
+    async def get_public_settings(self, path: str, /, **kwargs) -> PublicSettingsObject:
+        """
+            Get public settings of a resource.
+
+            :param path: path to the resource
+            :param allow_address_access: `bool`, specifies the request format, i.e.
+                with personal access settings (when set to `True`) or without
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`PublicSettingsObject`
+        """
+
+        _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
+
+        return await GetPublicSettingsRequest(self.session, path, **kwargs).asend(yadisk=self)
+
+    async def get_public_available_settings(self, path: str, /, **kwargs) -> PublicAvailableSettingsObject:
+        """
+            Get public settings of a shared resource for the current OAuth token owner.
+
+            :param path: path to the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`PublicAvailableSettingsObject`
+        """
+
+        _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
+
+        return await GetPublicAvailableSettingsRequest(self.session, path, **kwargs).asend(yadisk=self)
+
+    async def update_public_settings(self, path: str, public_settings: PublicSettings, /, **kwargs) -> None:
+        """
+            Update public settings of a shared resource.
+
+            :param path: path to the resource
+            :param public_settings: :any:`PublicSettings`, public access settings for the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: `None`
+        """
+
+        _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
+
+        return await UpdatePublicSettingsRequest(self.session, path, public_settings, **kwargs).asend(yadisk=self)
 
     async def save_to_disk(
         self,

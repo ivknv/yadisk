@@ -28,12 +28,15 @@ from .._common import (
     ensure_path_has_schema, str_or_error, int_or_error, float_or_error,
     bool_or_error, dict_or_error, str_or_dict_or_error
 )
-from ..types import JSON, AsyncFileOrPath, AsyncFileOrPathDestination, FileOrPath, FileOrPathDestination
+from ..types import (
+    JSON, AsyncFileOrPath, AsyncFileOrPathDestination, FileOrPath,
+    FileOrPathDestination
+)
 
 from .. import settings
 
 from typing import (
-    TYPE_CHECKING, Any, overload, Union, Protocol, Optional
+    TYPE_CHECKING, Any, Literal, overload, Union, Protocol, Optional
 )
 
 from .._typing_compat import Generator, Dict, List, AsyncGenerator
@@ -56,14 +59,21 @@ __all__ = [
     "AsyncResourceObject",
     "AsyncTrashResourceListObject",
     "AsyncTrashResourceObject",
+    "AvailableUntilVerboseObject",
     "CommentIDsObject",
     "EXIFObject",
+    "ExternalOrganizationIdVerboseObject",
     "FilesResourceListObject",
     "LastUploadedResourceListObject",
+    "PasswordVerboseObject",
+    "PublicAccessObject",
+    "PublicAvailableSettingsObject",
+    "PublicDefault",
     "PublicResourceLinkObject",
     "PublicResourceListObject",
     "PublicResourceObject",
     "PublicResourcesListObject",
+    "PublicSettingsObject",
     "ResourceDownloadLinkObject",
     "ResourceLinkObject",
     "ResourceListObject",
@@ -82,7 +92,7 @@ __all__ = [
     "SyncTrashResourceListObject",
     "SyncTrashResourceObject",
     "TrashResourceListObject",
-    "TrashResourceObject"
+    "TrashResourceObject",
 ]
 
 
@@ -1005,12 +1015,19 @@ class ResourceObjectMethodsMixin:
 
         return self._yadisk.patch(str(path), properties, **kwargs)
 
-    def publish(self: ResourceProtocol,
-                relative_path: Optional[str] = None, /, **kwargs) -> "SyncResourceLinkObject":
+    def publish(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        **kwargs
+    ) -> "SyncResourceLinkObject":
         """
             Make a resource public.
 
             :param relative_path: `str` or `None`, relative path to the resource to be published
+            :param allow_address_access: `bool`, specifies the request format, i.e.
+                with personal access settings (when set to `True`) or without
+            :param public_settings: :any:`PublicSettings` or `None`, public access settings for the resource
             :param fields: list of keys to be included in the response
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
@@ -1072,6 +1089,129 @@ class ResourceObjectMethodsMixin:
         path = PurePosixPath(self.path) / (relative_path or "")
 
         return self._yadisk.unpublish(str(path), **kwargs)
+
+    def get_public_settings(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        **kwargs
+    ) -> "PublicSettingsObject":
+        """
+            Get public settings of a resource.
+
+            :param relative_path: `str` or `None`, relative path to the resource to be published
+            :param allow_address_access: `bool`, specifies the request format, i.e.
+                with personal access settings (when set to `True`) or without
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`PublicSettingsObject`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return self._yadisk.get_public_settings(str(path), **kwargs)
+
+    def get_public_available_settings(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        **kwargs
+    ) -> "PublicSettingsObject":
+        """
+            Get public settings of a shared resource for the current OAuth token owner.
+
+            :param relative_path: `str` or `None`, relative path to the resource to be published
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`PublicAvailableSettingsObject`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return self._yadisk.get_public_available_settings(str(path), **kwargs)
+
+    def update_public_settings(
+        self: ResourceProtocol,
+        *args,
+        **kwargs
+    ) -> "PublicSettingsObject":
+        """
+            Get public settings of a shared resource for the current OAuth token owner.
+            This method takes 1 or 2 positional arguments:
+            1. :code:`update_public_settings(public_settings, /, **kwargs)`
+            2. :code:`update_public_settings(relative_path, public_settings, /, **kwargs)`
+
+            :param relative_path: `str` or `None`, relative path to the resource to be published
+            :param public_settings: :any:`PublicSettings`, public access settings for the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param requests_args: `dict`, additional parameters for :any:`RequestsSession`
+            :param httpx_args: `dict`, additional parameters for :any:`HTTPXSession`
+            :param curl_options: `dict`, additional options for :any:`PycURLSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`PublicAvailableSettingsObject`
+        """
+
+        if len(args) == 1:
+            relative_path, public_settings = None, args[0]
+        elif len(args) == 2:
+            relative_path, public_settings = args
+        else:
+            raise TypeError("update_public_settings() takes 1 or 2 positional arguments")
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return self._yadisk.update_public_settings(str(path), public_settings, **kwargs)
 
     def mkdir(self: ResourceProtocol,
               relative_path: Optional[str] = None, /, **kwargs) -> "SyncResourceLinkObject":
@@ -2032,6 +2172,9 @@ class AsyncResourceObjectMethodsMixin:
             Make a resource public.
 
             :param relative_path: `str` or `None`, relative path to the resource to be published
+            :param allow_address_access: `bool`, specifies the request format, i.e.
+                with personal access settings (when set to `True`) or without
+            :param public_settings: :any:`PublicSettings`, public access settings for the resource
             :param fields: list of keys to be included in the response
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
@@ -2091,6 +2234,126 @@ class AsyncResourceObjectMethodsMixin:
         path = PurePosixPath(self.path) / (relative_path or "")
 
         return await self._yadisk.unpublish(str(path), **kwargs)
+
+    async def get_public_settings(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        **kwargs
+    ) -> "PublicSettingsObject":
+        """
+            Get public settings of a resource.
+
+            :param relative_path: `str` or `None`, relative path to the resource to be published
+            :param allow_address_access: `bool`, specifies the request format, i.e.
+                with personal access settings (when set to `True`) or without
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`PublicSettingsObject`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.get_public_settings(str(path), **kwargs)
+
+    async def get_public_available_settings(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        **kwargs
+    ) -> "PublicSettingsObject":
+        """
+            Get public settings of a shared resource for the current OAuth token owner.
+
+            :param relative_path: `str` or `None`, relative path to the resource to be published
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`PublicAvailableSettingsObject`
+        """
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.get_public_available_settings(str(path), **kwargs)
+
+    async def update_public_settings(
+        self: ResourceProtocol,
+        *args,
+        **kwargs
+    ) -> "PublicSettingsObject":
+        """
+            Get public settings of a shared resource for the current OAuth token owner.
+            This method takes 1 or 2 positional arguments:
+            1. :code:`update_public_settings(public_settings, /, **kwargs)`
+            2. :code:`update_public_settings(relative_path, public_settings, /, **kwargs)`
+
+            :param relative_path: `str` or `None`, relative path to the resource to be published
+            :param public_settings: :any:`PublicSettings`, public access settings for the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            :returns: :any:`PublicAvailableSettingsObject`
+        """
+
+        if len(args) == 1:
+            relative_path, public_settings = None, args[0]
+        elif len(args) == 2:
+            relative_path, public_settings = args
+        else:
+            raise TypeError("update_public_settings() takes 1 or 2 positional arguments")
+
+        if self._yadisk is None:
+            raise ValueError("This object is not bound to a YaDisk instance")
+
+        if self.path is None:
+            raise ValueError("ResourceObject doesn't have a path")
+
+        path = PurePosixPath(self.path) / (relative_path or "")
+
+        return await self._yadisk.update_public_settings(str(path), public_settings, **kwargs)
 
     async def mkdir(self: ResourceProtocol,
                     relative_path: Optional[str] = None, /, **kwargs) -> "AsyncResourceLinkObject":
@@ -4025,3 +4288,273 @@ class AsyncTrashResourceListObject(TrashResourceListObject):
         TrashResourceListObject.__init__(self, None, yadisk)
         self.set_field_type("items", typed_list(partial(AsyncTrashResourceObject, yadisk=yadisk)))
         self.import_fields(trash_resource_list)
+
+
+class PublicSettingsObject(YaDiskObject):
+    """
+        Public settings of a shared resource.
+
+        :ivar available_until: `int`, timestamp indicating the expiration date of the link
+        :ivar read_only: `bool`, whether the resource is read-only
+        :ivar available_until_verbose: :any:`AvailableUntilVerboseObject`, verbose information about the expiration date
+        :ivar password: `str`, password to access the resource
+        :ivar password_verbose: :any:`PasswordVerboseObject`, verbose information about the password
+        :ivar external_organization_id: `str`, external organization ID
+        :ivar external_organization_id_verbose: :any:`ExternalOrganizationIdVerboseObject`,
+            verbose information about the external organization ID
+        :ivar accesses: `List[PublicSettingsAccessObject]`, list of access settings
+    """
+
+    available_until: Optional[int]
+    read_only: Optional[bool]
+    available_until_verbose: Optional["AvailableUntilVerboseObject"]
+    password: Optional[str]
+    password_verbose: Optional["PasswordVerboseObject"]
+    external_organization_id: Optional[str]
+    external_organization_id_verbose: Optional["ExternalOrganizationIdVerboseObject"]
+    accesses: Optional[List["PublicAccessObject"]]
+
+    def __init__(
+        self,
+        public_settings: Optional[Dict] = None,
+        yadisk: Optional[Any] = None
+    ) -> None:
+        YaDiskObject.__init__(
+            self,
+            {
+                "available_until": int_or_error,
+                 "read_only": bool_or_error,
+                 "available_until_verbose": AvailableUntilVerboseObject,
+                 "password": str_or_error,
+                 "password_verbose": PasswordVerboseObject,
+                 "external_organization_id": str_or_error,
+                 "external_organization_id_verbose": ExternalOrganizationIdVerboseObject,
+                 "accesses": typed_list(PublicAccessObject)
+            },
+            yadisk
+        )
+        self.import_fields(public_settings)
+
+
+class AvailableUntilVerboseObject(YaDiskObject):
+    """
+        Verbose information about the expiration date of a shared resource.
+
+        :ivar enabled: `bool`, whether the expiration date is enabled
+        :ivar value: `int`, timestamp of the expiration date
+    """
+
+    enabled: Optional[bool]
+    value: Optional[int]
+
+    def __init__(
+        self,
+        available_until_verbose: Optional[Dict] = None,
+        yadisk: Optional[Any] = None
+    ) -> None:
+        YaDiskObject.__init__(
+            self,
+            {
+                "enabled": bool_or_error,
+                "value": int_or_error
+            },
+            yadisk
+        )
+        self.import_fields(available_until_verbose)
+
+
+class PasswordVerboseObject(YaDiskObject):
+    """
+        Verbose information about the password of shared resource.
+
+        :ivar enabled: `bool`, whether the password is enabled
+        :ivar value: `str`, password value
+    """
+
+    enabled: Optional[bool]
+    value: Optional[str]
+
+    def __init__(
+        self,
+        password_verbose: Optional[Dict] = None,
+        yadisk: Optional[Any] = None
+    ) -> None:
+        YaDiskObject.__init__(
+            self,
+            {
+                "enabled": bool_or_error,
+                "value": str_or_error
+            },
+            yadisk
+        )
+        self.import_fields(password_verbose)
+
+
+class ExternalOrganizationIdVerboseObject(YaDiskObject):
+    """
+        Verbose information about the external organization ID of a shared resource.
+
+        :ivar enabled: `bool`, whether the external organization ID is enabled
+        :ivar value: `str`, external organization ID
+    """
+
+    enabled: Optional[bool]
+    value: Optional[str]
+
+    def __init__(
+        self,
+        external_organization_id_verbose: Optional[Dict] = None,
+        yadisk: Optional[Any] = None
+    ) -> None:
+        YaDiskObject.__init__(
+            self,
+            {
+                "enabled": bool_or_error,
+                "value": str_or_error
+            },
+            yadisk
+        )
+        self.import_fields(external_organization_id_verbose)
+
+
+class PublicAccessObject(YaDiskObject):
+    """
+        Access settings of a shared resource.
+
+        :ivar macros: `List[Union[Literal["employees"], Literal["all"]]],`,
+            specifies who has access to the shared resource, must contain only
+            one element
+        :ivar type: `str`, specifies the type of access, must be one of the following:
+            - `macro`: access for all employees or all users
+            - `user`: access for a specific user
+            - `group`: access for a specific group
+            - `department`: access for a specific department
+        :ivar org_id: `int`, organization ID
+        :ivar id: `str`, user, group or department ID
+        :ivar rights: `List[str]`, specifies the access rights
+
+        Valid access rights:
+        - `write`: write access
+        - `read`: read access
+        - `read_without_download`: read access without download
+        - `read_with_password`: read access with password
+        - `read_with_password_without_download`: read access with password and without download
+    """
+
+    macros: Optional[List[Union[Literal["all", "employees"], str]]]
+    type: Optional[Union[Literal["macro", "user", "group", "department"], str]]
+    org_id: Optional[int]
+    id: Optional[str]
+    rights: Optional[List[
+        Union[
+            Literal[
+                "read",
+                "write",
+                "read_without_download",
+                "read_with_password",
+                "read_with_password_without_download"
+            ],
+            str
+        ]
+    ]]
+
+    def __init__(
+        self,
+        public_access: Optional[Dict] = None,
+        yadisk: Optional[Any] = None
+    ) -> None:
+        YaDiskObject.__init__(
+            self,
+            {
+                "macros": typed_list(str_or_error),
+                "type": str_or_error,
+                "org_id": int_or_error,
+                "id": str_or_error,
+                "group_ids": typed_list(int_or_error),
+                "department_ids": typed_list(int_or_error),
+                "rights": typed_list(str_or_error)
+            },
+            yadisk
+        )
+        self.import_fields(public_access)
+
+
+class PublicAvailableSettingsObject(YaDiskObject):
+    """
+        Public settings of a shared resource for the current OAuth token owner.
+
+        :ivar permissions: `List[str]`, list of available permissions
+        :ivar address_access_sharing: `str`, specifies who has access to the
+            shared resource, must be one of the following:
+            - `all`: access for all users
+            - `inner`: access for all employees
+        :ivar use_sharing: `bool`, whether the resource can be shared
+        :ivar macro_sharing: `str`, specifies who has access to the shared
+            resource, must be one of the following:
+            - `all`: access for all users
+            - `inner`: access for all employees
+        :ivar default: `List[PublicDefault]`, default public settings
+    """
+
+    permissions: Optional[List[str]]
+    address_access_sharing: Optional[Union[Literal["all", "inner"], str]]
+    use_sharing: Optional[bool]
+    macro_sharing: Optional[Union[Literal["all", "inner"], str]]
+    default: Optional[List["PublicDefault"]]
+
+    def __init__(
+        self,
+        public_available_settings: Optional[Dict] = None,
+        yadisk: Optional[Any] = None
+    ) -> None:
+        YaDiskObject.__init__(
+            self,
+            {
+                "permissions": typed_list(str_or_error),
+                "address_access_sharing": str_or_error,
+                "use_sharing": bool_or_error,
+                "macro_sharing": str_or_error,
+                "default": typed_list(PublicDefault)
+            },
+            yadisk
+        )
+        self.import_fields(public_available_settings)
+
+
+class PublicDefault(YaDiskObject):
+    """
+        Access settings of a shared resource.
+
+        :ivar macros: `List[Union[Literal["employees"], Literal["all"]]],`,
+            specifies who has access to the shared resource, must contain only
+            one element
+        :ivar org_id: `int`, organization ID
+        :ivar rights: `List[str]`, specifies the access rights
+
+        Valid access rights:
+        - `write`: write access
+        - `read`: read access
+        - `read_without_download`: read access without download
+        - `read_with_password`: read access with password
+        - `read_with_password_without_download`: read access with password and without download
+    """
+
+    macros: Optional[List[str]]
+    org_id: Optional[int]
+    rights: Optional[List[str]]
+
+    def __init__(
+        self,
+        public_default: Optional[Dict] = None,
+        yadisk: Optional[Any] = None
+    ) -> None:
+        YaDiskObject.__init__(
+            self,
+            {
+                "macros": typed_list(str_or_error),
+                "org_id": int_or_error,
+                "rights": typed_list(str_or_error)
+            },
+            yadisk
+        )
+        self.import_fields(public_default)

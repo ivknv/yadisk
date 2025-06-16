@@ -79,6 +79,11 @@ __all__ = [  # noqa: RUF022
     "SyncPublicResourceLinkObject",
     "AsyncPublicResourceLinkObject",
     "ResourceDownloadLinkObject",
+    "PublicSettingsObject",
+    "PasswordVerboseObject",
+    "PublicAccessObject",
+    "ExternalOrganizationIdVerboseObject",
+    "AvailableUntilVerboseObject",
 
     # _operations
     "OperationStatusObject",
