@@ -501,7 +501,7 @@ class ResourceObjectMethodsMixin:
         /,
         *,
         allow_address_access: bool = False,
-        public_settings: Optional[PublicSettings],
+        public_settings: Optional[PublicSettings] = None,
         fields: Optional[Iterable[str]] = None,
         headers: Optional[Headers] = None,
         timeout: TimeoutParameter = ...,
