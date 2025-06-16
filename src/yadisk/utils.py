@@ -142,7 +142,7 @@ def get_exception(response: AnyResponse, error: Optional[ErrorObject]) -> YaDisk
         if exc_message:
             exc_message += " | "
 
-        exc_message += f"Error description: {desc.rstrip('.')}. Error code: {error_name}"
+        exc_message += f"Error description: {desc.rstrip('.')}."
 
     if error_name:
         if exc_message:
