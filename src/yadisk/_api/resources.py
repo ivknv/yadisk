@@ -111,7 +111,7 @@ class GetPublicResourcesRequest(APIRequest):
             self.params["preview_size"] = preview_size
 
         if preview_crop is not None:
-            self.params["preview_crop"] = preview_crop
+            self.params["preview_crop"] = "true" if preview_crop else "false"
 
         if type is not None:
             self.params["type"] = type
@@ -260,7 +260,7 @@ class GetTrashRequest(APIRequest):
             self.params["preview_size"] = preview_size
 
         if preview_crop is not None:
-            self.params["preview_crop"] = preview_crop
+            self.params["preview_crop"] = "true" if preview_crop else "false"
 
         if fields is not None:
             sub_map = {"embedded": "_embedded"}
@@ -449,7 +449,7 @@ class LastUploadedRequest(APIRequest):
             self.params["preview_size"] = preview_size
 
         if preview_crop is not None:
-            self.params["preview_crop"] = preview_crop
+            self.params["preview_crop"] = "true" if preview_crop else "false"
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)
@@ -1089,7 +1089,7 @@ class GetPublicMetaRequest(APIRequest):
             self.params["preview_size"] = preview_size
 
         if preview_crop is not None:
-            self.params["preview_crop"] = preview_crop
+            self.params["preview_crop"] = "true" if preview_crop else "false"
 
         if fields is not None:
             sub_map = {"embedded": "_embedded",
@@ -1270,7 +1270,7 @@ class FilesRequest(APIRequest):
             self.params["preview_size"] = preview_size
 
         if preview_crop is not None:
-            self.params["preview_crop"] = preview_crop
+            self.params["preview_crop"] = "true" if preview_crop else "false"
 
         if sort is not None:
             self.params["sort"] = sort
