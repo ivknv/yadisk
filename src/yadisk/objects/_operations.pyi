@@ -24,6 +24,14 @@ from ._link_object import LinkObject
 
 from ..types import OperationStatus, TimeoutParameter, Headers
 
+__all__ = [
+    "AsyncOperationLinkObject",
+    "OperationLinkObject",
+    "OperationStatusObject",
+    "SyncOperationLinkObject"
+]
+
+
 class OperationStatusObject(YaDiskObject):
     status: OperationStatus
 
