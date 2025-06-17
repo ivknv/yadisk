@@ -746,6 +746,7 @@ class AsyncClient:
         """
             Get disk information.
 
+            :param extra_fields: list of additional keys to be included in the response
             :param fields: list of keys to be included in the response
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers

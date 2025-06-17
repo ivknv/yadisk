@@ -36,66 +36,77 @@ class DiskInfoObject(YaDiskObject):
         :param disk_info: `dict` or `None`
         :param yadisk: :any:`YaDisk` or `None`, `YaDisk` object
 
-        :ivar paid_max_file_size: `int`, maximum supported file size for a paid account (bytes)
+        :ivar deletion_restriction_days: `int`, number of days before file deletion after account lock
+        :ivar free_photounlim_end_date: `int`, timestamp in ms of expiration date
+            of unlimited photo upload
+        :ivar hide_screenshots_in_photoslice: `bool`, tells whether the
+            screenshots are hidden in photoslice
+        :ivar is_idm_managed_folder_address_access: `bool`, not clear what this is for
+        :ivar is_idm_managed_public_access: `bool`, not clear what this is for
+        :ivar is_legal_entity: `bool`, tells if the account belongs to a legal entity
+        :ivar is_paid: `bool`, tells if the account is paid or not
         :ivar max_file_size: `int`, maximum supported file size (bytes)
+        :ivar paid_max_file_size: `int`, maximum supported file size for a paid account (bytes)
+        :ivar payment_flow: `bool`, tells if the user is involved in `payment_flow`
+        :ivar photounlim_size: `int`, total file size in unlimited photos
+        :ivar reg_time: :any:`datetime.datetime`, Disk registration date
+        :ivar revision: `int`, current revision of Yandex.Disk
+        :ivar system_folders: :any:`SystemFoldersObject`, paths to the system folders
         :ivar total_space: `int`, total disk size (bytes)
         :ivar trash_size: `int`, amount of space used by trash (bytes), part of `used_space`
-        :ivar used_space: `int`, amount of space used (bytes)
-        :ivar is_paid: `bool`, tells if the account is paid or not
-        :ivar is_idm_managed_folder_address_access: `bool`, not clear what this is for
-        :ivar reg_time: :any:`datetime.datetime`, Disk registration date
-        :ivar system_folders: :any:`SystemFoldersObject`, paths to the system folders
-        :ivar user: :any:`UserObject`, owner of the disk
-        :ivar is_idm_managed_public_access: `bool`, not clear what this is for
         :ivar unlimited_autoupload_enabled: `bool`, tells whether unlimited
-                                             autoupload from mobile devices is enabled
-        :ivar revision: `int`, current revision of Yandex.Disk
-        :ivar photounlim_size: `int`, total file size in unlimited photos
-        :ivar will_be_overdrawn: `bool`, tells if the user will be in overdraft upon
-                                 reaching `free_photounlim_end_date`
-        :ivar free_photounlim_end_date: `int`, timestamp in ms of expiration date of
-                                        unlimited photo upload
-        :ivar payment_flow: `bool`, tells if the user is involved in `payment_flow`
+            autoupload from mobile devices is enabled
+        :ivar used_space: `int`, amount of space used (bytes)
+        :ivar user: :any:`UserObject`, owner of the disk
+        :ivar will_be_overdrawn: `bool`, tells if the user will be in overdraft
+            upon reaching `free_photounlim_end_date`
     """
 
-    paid_max_file_size:                   Optional[int]
+    deletion_restriction_days:            Optional[int]
+    free_photounlim_end_date:             Optional[int]
+    hide_screenshots_in_photoslice:       Optional[bool]
+    is_idm_managed_folder_address_access: Optional[bool]
+    is_idm_managed_public_access:         Optional[bool]
+    is_legal_entity:                      Optional[bool]
+    is_paid:                              Optional[bool]
     max_file_size:                        Optional[int]
+    paid_max_file_size:                   Optional[int]
+    payment_flow:                         Optional[bool]
+    photounlim_size:                      Optional[int]
+    reg_time:                             Optional["datetime.datetime"]
+    revision:                             Optional[int]
+    system_folders:                       "SystemFoldersObject"
     total_space:                          Optional[int]
     trash_size:                           Optional[int]
-    used_space:                           Optional[int]
-    is_paid:                              Optional[bool]
-    is_idm_managed_folder_address_access: Optional[bool]
-    reg_time:                             Optional["datetime.datetime"]
-    system_folders:                       "SystemFoldersObject"
-    user:                                 "UserObject"
-    is_idm_managed_public_access:         Optional[bool]
     unlimited_autoupload_enabled:         Optional[bool]
-    revision:                             Optional[int]
-    photounlim_size:                      Optional[int]
+    used_space:                           Optional[int]
+    user:                                 "UserObject"
     will_be_overdrawn:                    Optional[bool]
-    free_photounlim_end_date:             Optional[int]
-    payment_flow:                         Optional[bool]
 
     def __init__(self, disk_info: Optional[Dict] = None, yadisk: Optional[Any] = None) -> None:
         YaDiskObject.__init__(
             self,
-            {"paid_max_file_size":                   int_or_error,
-             "max_file_size":                        int_or_error,
-             "total_space":                          int_or_error,
-             "trash_size":                           int_or_error,
-             "used_space":                           int_or_error,
-             "is_paid":                              bool_or_error,
-             "is_idm_managed_folder_address_access": bool_or_error,
-             "reg_time":                             yandex_date,
-             "system_folders":                       partial(SystemFoldersObject, yadisk=yadisk),
-             "user":                                 partial(UserObject, yadisk=yadisk),
-             "is_idm_managed_public_access":         bool_or_error,
-             "unlimited_autoupload_enabled":         bool_or_error,
-             "revision":                             int_or_error,
-             "photounlim_size":                      int_or_error,
-             "will_be_overdrawn":                    bool_or_error,
-             "free_photounlim_end_date":             int_or_error,
-             "payment_flow":                         bool_or_error
+            {
+                "deletion_restriction_days":            int_or_error,
+                "free_photounlim_end_date":             int_or_error,
+                "hide_screenshots_in_photoslice":       bool_or_error,
+                "is_idm_managed_folder_address_access": bool_or_error,
+                "is_idm_managed_public_access":         bool_or_error,
+                "is_legal_entity":                      bool_or_error,
+                "is_paid":                              bool_or_error,
+                "max_file_size":                        int_or_error,
+                "paid_max_file_size":                   int_or_error,
+                "payment_flow":                         bool_or_error,
+                "photounlim_size":                      int_or_error,
+                "reg_time":                             yandex_date,
+                "revision":                             int_or_error,
+                "system_folders":                       partial(SystemFoldersObject, yadisk=yadisk),
+                "total_space":                          int_or_error,
+                "trash_size":                           int_or_error,
+                "unlimited_autoupload_enabled":         bool_or_error,
+                "used_space":                           int_or_error,
+                "user":                                 partial(UserObject, yadisk=yadisk),
+                "will_be_overdrawn":                    bool_or_error
             },
             yadisk
         )

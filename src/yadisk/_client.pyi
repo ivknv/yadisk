@@ -205,6 +205,7 @@ class Client:
     def get_disk_info(
         self,
         *,
+        extra_fields: Optional[Iterable[str]] = None,
         fields: Optional[Iterable[str]] = None,
         headers: Optional[Headers] = None,
         timeout: TimeoutParameter = ...,

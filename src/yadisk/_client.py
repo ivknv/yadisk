@@ -717,6 +717,7 @@ class Client:
         """
             Get disk information.
 
+            :param extra_fields: list of additional keys to be included in the response
             :param fields: list of keys to be included in the response
             :param timeout: `float` or `tuple`, request timeout
             :param headers: `dict` or `None`, additional request headers
