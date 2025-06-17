@@ -2928,12 +2928,15 @@ class ResourceLinkObject(LinkObject):
     path: Optional[str]
 
     def __init__(self, link: Optional[Dict] = None, yadisk: Optional[Any] = None):
-        LinkObject.__init__(self, link, yadisk)
+        LinkObject.__init__(self, None, yadisk)
+
         self.set_field_type("path", str_or_error)
         self.set_field_type("public_key", str_or_error)
         self.set_field_type("public_url", str_or_error)
         self.set_field_type("type", str_or_error)
         self.set_field_type("file", str_or_error)
+
+        self.import_fields(link)
 
         if self.href is not None and is_resource_link(self.href):
             try:
@@ -3010,10 +3013,12 @@ class PublicResourceLinkObject(LinkObject):
     public_url: Optional[str]
 
     def __init__(self, link: Optional[Dict] = None, yadisk: Optional[Any] = None):
-        LinkObject.__init__(self, link, yadisk)
+        LinkObject.__init__(self, None, yadisk)
         self.set_field_type("public_key", str_or_error)
         self.set_field_type("public_url", str_or_error)
         self.set_field_type("path", str_or_error)
+
+        self.import_fields(link)
 
         if self.href is not None and is_public_resource_link(self.href):
             try:

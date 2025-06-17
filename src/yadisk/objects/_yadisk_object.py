@@ -59,9 +59,6 @@ class YaDiskObject:
 
         self.FIELD_TYPES = field_types
 
-        for field in field_types.keys():
-            self[field] = None
-
     def set_field_type(self, field: str, type: Callable) -> None:
         """
             Set field type.
@@ -71,7 +68,6 @@ class YaDiskObject:
         """
 
         self.FIELD_TYPES[field] = type
-        self[field] = None
 
     def set_alias(self, alias: str, name: str) -> None:
         """
@@ -99,7 +95,7 @@ class YaDiskObject:
             :param field: `str`
         """
 
-        self.FIELDS.pop(field)
+        self.FIELDS.pop(field, None)
         self.FIELD_TYPES.pop(field)
 
     def import_fields(self, source_dict: Optional[dict]) -> None:
@@ -111,7 +107,7 @@ class YaDiskObject:
         """
 
         if source_dict is not None:
-            for field in self.FIELDS:
+            for field in self.FIELD_TYPES:
                 try:
                     self[field] = source_dict[field]
                 except KeyError:
@@ -142,16 +138,26 @@ class YaDiskObject:
         if attr not in self.FIELD_TYPES:
             raise AttributeError("Unknown attribute: %r" % (attr,))
 
-        return self.FIELDS[attr]
+        return self.FIELDS.get(attr)
 
     def __getitem__(self, key: str) -> Any:
-        return self.FIELDS[key]
+        key = self.ALIASES.get(key, key)
+
+        if key not in self.FIELD_TYPES:
+            raise KeyError(str(key))
+
+        return self.FIELDS.get(key)
 
     def __setitem__(self, key: str, value: Any) -> None:
         self.__setattr__(key, value)
 
     def __delitem__(self, key: str) -> None:
-        del self.FIELDS[key]
+        key = self.ALIASES.get(key, key)
+
+        if key not in self.FIELD_TYPES:
+            raise KeyError(str(key))
+
+        self.FIELDS.pop(key, None)
 
     def __iter__(self) -> Iterator[dict]:
         return iter(self.FIELDS)
