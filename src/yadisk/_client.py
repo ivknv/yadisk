@@ -731,6 +731,11 @@ class Client:
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/capacity>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk/GetDisk>`__
+
             :returns: :any:`DiskInfoObject`
         """
 
@@ -762,6 +767,11 @@ class Client:
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/meta>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/GetResource>`__
 
             :returns: :any:`SyncResourceObject`
         """
@@ -930,6 +940,11 @@ class Client:
             :raises ResourceIsLockedError: resource is locked by another request
             :raises InsufficientStorageError: cannot upload file due to lack of storage space
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/upload>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/GetResourceUploadLink>`__
 
             :returns: `str`
         """
@@ -1181,6 +1196,11 @@ class Client:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/content>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/GetResourceDownloadLink>`__
+
             :returns: `str`
         """
 
@@ -1378,6 +1398,11 @@ class Client:
                                                        complete in specified time
                                                        (when `poll_timeout` is not `None`)
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/delete>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/DeleteResource>`__
+
             :returns: :any:`SyncOperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
@@ -1407,6 +1432,11 @@ class Client:
             :raises InsufficientStorageError: cannot create directory due to lack of storage space
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/create-folder>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/CreateResource>`__
 
             :returns: :any:`SyncResourceLinkObject`
         """
@@ -1487,6 +1517,11 @@ class Client:
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/meta?tabs=defaultTabsGroup-ko8isjf5_resource%2520in%2520trash>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47trash47resources/GetTrashResource>`__
+
             :returns: :any:`SyncTrashResourceObject`
         """
 
@@ -1564,6 +1599,11 @@ class Client:
                                                        complete in specified time
                                                        (when `poll_timeout` is not `None`)
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/copy>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/CopyResource>`__
+
             :returns: :any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`
         """
 
@@ -1612,6 +1652,11 @@ class Client:
                                                        complete in specified time
                                                        (when `poll_timeout` is not `None`)
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/trash-restore>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47trash47resources/RestoreFromTrash>`__
+
             :returns: :any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`
         """
 
@@ -1658,6 +1703,11 @@ class Client:
             :raises AsyncOperationPollingTimeoutError: requested operation did not
                                                        complete in specified time
                                                        (when `poll_timeout` is not `None`)
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/move>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/MoveResource>`__
 
             :returns: :any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`
         """
@@ -1766,6 +1816,11 @@ class Client:
                                                        complete in specified time
                                                        (when `poll_timeout` is not `None`)
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/trash-delete>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47trash47resources/ClearTrash>`__
+
             :returns: :any:`SyncOperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
@@ -1797,6 +1852,11 @@ class Client:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/publish>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/PublishResource>`__
+
             :returns: :any:`SyncResourceLinkObject`, link to the resource
         """
 
@@ -1824,6 +1884,11 @@ class Client:
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/publish#unpublish-q>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/UnpublishResource>`__
 
             :returns: :any:`SyncResourceLinkObject`
         """
@@ -1854,6 +1919,10 @@ class Client:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
+            More info about this request:
+
+            * `Official docs <https://yandex.ru/dev/disk-api/doc/ru/reference/public-settings-get>`__
+
             :returns: :any:`PublicSettingsObject`
         """
 
@@ -1880,6 +1949,10 @@ class Client:
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.ru/dev/disk-api/doc/ru/reference/public-settings-get-available>`__
 
             :returns: :any:`PublicAvailableSettingsObject`
         """
@@ -1908,6 +1981,11 @@ class Client:
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.ru/dev/disk-api/doc/ru/reference/public-settings-change>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47public47resources/UpdatePublicSettings>`__
 
             :returns: `None`
         """
@@ -1959,6 +2037,11 @@ class Client:
                                                        complete in specified time
                                                        (when `poll_timeout` is not `None`)
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/public#save>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47public47resources/SaveToDiskPublicResource>`__
+
             :returns: :any:`SyncResourceLinkObject` or :any:`SyncOperationLinkObject`
         """
 
@@ -1998,6 +2081,11 @@ class Client:
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/public>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47public47resources/GetPublicResource>`__
 
             :returns: :any:`SyncPublicResourceObject`
         """
@@ -2277,6 +2365,11 @@ class Client:
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/recent-public>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/ListPublicResources>`__
+
             :returns: :any:`SyncPublicResourcesListObject`
         """
 
@@ -2313,6 +2406,11 @@ class Client:
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/recent-public>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/ListPublicResources>`__
+
             :returns: generator of :any:`SyncPublicResourceObject`
         """
 
@@ -2345,9 +2443,7 @@ class Client:
 
             kwargs["offset"] += kwargs["limit"]
 
-    def patch(self,
-              path: str,
-              properties: dict, /, **kwargs) -> "SyncResourceObject":
+    def patch(self, path: str, properties: dict, /, **kwargs) -> "SyncResourceObject":
         """
             Update custom properties of a resource.
 
@@ -2367,6 +2463,11 @@ class Client:
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/meta-add>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/UpdateResource>`__
 
             :returns: :any:`ResourceObject`
         """
@@ -2413,6 +2514,11 @@ class Client:
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/all-files>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/GetFlatFilesList>`__
 
             :returns: generator of :any:`ResourceObject`
         """
@@ -2470,6 +2576,11 @@ class Client:
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/recent-upload>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/GetLastUploadedFilesList>`__
+
             :returns: generator of :any:`ResourceObject`
         """
 
@@ -2525,6 +2636,11 @@ class Client:
                                                        complete in specified time
                                                        (when `poll_timeout` is not `None`)
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/upload-ext>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/UploadExternalResource>`__
+
             :returns: :any:`SyncOperationLinkObject`, link to the asynchronous operation
         """
 
@@ -2552,6 +2668,11 @@ class Client:
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/public#download-request>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47public47resources/GetPublicResourceDownloadLink>`__
 
             :returns: `str`
         """
@@ -2617,6 +2738,11 @@ class Client:
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises OperationNotFoundError: requested operation was not found
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/operations>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47operations47123operation95id125/GetOperationStatus/>`__
 
             :returns: `str`, :code:`"in-progress"` indicates that the operation
                       is currently running, :code:`"success"` indicates that
