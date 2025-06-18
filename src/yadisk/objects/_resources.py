@@ -68,7 +68,7 @@ __all__ = [
     "PasswordVerboseObject",
     "PublicAccessObject",
     "PublicAvailableSettingsObject",
-    "PublicDefault",
+    "PublicDefaultObject",
     "PublicResourceLinkObject",
     "PublicResourceListObject",
     "PublicResourceObject",
@@ -4430,15 +4430,18 @@ class PublicAccessObject(YaDiskObject):
             specifies who has access to the shared resource, must contain only
             one element
         :ivar type: `str`, specifies the type of access, must be one of the following:
+
             - `macro`: access for all employees or all users
             - `user`: access for a specific user
             - `group`: access for a specific group
             - `department`: access for a specific department
+
         :ivar org_id: `int`, organization ID
         :ivar id: `str`, user, group or department ID
         :ivar rights: `List[str]`, specifies the access rights
 
         Valid access rights:
+
         - `write`: write access
         - `read`: read access
         - `read_without_download`: read access without download
@@ -4491,13 +4494,17 @@ class PublicAvailableSettingsObject(YaDiskObject):
         :ivar permissions: `List[str]`, list of available permissions
         :ivar address_access_sharing: `str`, specifies who has access to the
             shared resource, must be one of the following:
+
             - `all`: access for all users
             - `inner`: access for all employees
+
         :ivar use_sharing: `bool`, whether the resource can be shared
         :ivar macro_sharing: `str`, specifies who has access to the shared
             resource, must be one of the following:
+
             - `all`: access for all users
             - `inner`: access for all employees
+
         :ivar default: `List[PublicDefault]`, default public settings
     """
 
@@ -4505,7 +4512,7 @@ class PublicAvailableSettingsObject(YaDiskObject):
     address_access_sharing: Optional[Union[Literal["all", "inner"], str]]
     use_sharing: Optional[bool]
     macro_sharing: Optional[Union[Literal["all", "inner"], str]]
-    default: Optional[List["PublicDefault"]]
+    default: Optional[List["PublicDefaultObject"]]
 
     def __init__(
         self,
@@ -4519,14 +4526,14 @@ class PublicAvailableSettingsObject(YaDiskObject):
                 "address_access_sharing": str_or_error,
                 "use_sharing": bool_or_error,
                 "macro_sharing": str_or_error,
-                "default": typed_list(PublicDefault)
+                "default": typed_list(PublicDefaultObject)
             },
             yadisk
         )
         self.import_fields(public_available_settings)
 
 
-class PublicDefault(YaDiskObject):
+class PublicDefaultObject(YaDiskObject):
     """
         Access settings of a shared resource.
 
@@ -4537,6 +4544,7 @@ class PublicDefault(YaDiskObject):
         :ivar rights: `List[str]`, specifies the access rights
 
         Valid access rights:
+
         - `write`: write access
         - `read`: read access
         - `read_without_download`: read access without download

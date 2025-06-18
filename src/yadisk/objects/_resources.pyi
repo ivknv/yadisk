@@ -57,7 +57,7 @@ __all__ = [
     "PasswordVerboseObject",
     "PublicAccessObject",
     "PublicAvailableSettingsObject",
-    "PublicDefault",
+    "PublicDefaultObject",
     "PublicResourceLinkObject",
     "PublicResourceListObject",
     "PublicResourceObject",
@@ -2657,7 +2657,7 @@ class PublicAvailableSettingsObject(YaDiskObject):
     address_access_sharing: Optional[Union[Literal["all", "inner"], str]]
     use_sharing: Optional[bool]
     macro_sharing: Optional[Union[Literal["all", "inner"], str]]
-    default: Optional[List["PublicDefault"]]
+    default: Optional[List["PublicDefaultObject"]]
 
     def __init__(
         self,
@@ -2667,7 +2667,7 @@ class PublicAvailableSettingsObject(YaDiskObject):
         ...
 
 
-class PublicDefault(YaDiskObject):
+class PublicDefaultObject(YaDiskObject):
     macros: Optional[List[str]]
     org_id: Optional[int]
     rights: Optional[List[str]]
