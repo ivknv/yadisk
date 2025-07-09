@@ -4431,10 +4431,10 @@ class PublicAccessObject(YaDiskObject):
             one element
         :ivar type: `str`, specifies the type of access, must be one of the following:
 
-            - `macro`: access for all employees or all users
-            - `user`: access for a specific user
-            - `group`: access for a specific group
-            - `department`: access for a specific department
+        - `macro`: access for all employees or all users
+        - `user`: access for a specific user
+        - `group`: access for a specific group
+        - `department`: access for a specific department
 
         :ivar org_id: `int`, organization ID
         :ivar id: `str`, user, group or department ID

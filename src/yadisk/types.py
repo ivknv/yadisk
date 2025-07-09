@@ -343,6 +343,7 @@ class PublicSettingsAccess(TypedDict, total=False):
         :ivar rights: `list[str]`, list of access rights
 
         Valid access rights:
+
         - `write`: write access
         - `read`: read access
         - `read_without_download`: read access without download

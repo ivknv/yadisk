@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 2.0.0\n"
 "Report-Msgid-Bugs-To: ivknv0@gmail.com\n"
-"POT-Creation-Date: 2023-12-11 20:52+0500\n"
+"POT-Creation-Date: 2025-07-09 17:39+0500\n"
 "PO-Revision-Date: 2023-12-12 20:02+0500\n"
 "Last-Translator: Ivan Konovalov <ivknv0@gmail.com>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: ../../intro.rst:2
 msgid "Introduction"
@@ -32,7 +32,8 @@ msgstr "Установка"
 msgid ""
 ":code:`yadisk` supports multiple HTTP client libraries and has both "
 "synchronous and asynchronous API."
-msgstr ":code:`yadisk` поддерживает несколько HTTP библиотек и реализует "
+msgstr ""
+":code:`yadisk` поддерживает несколько HTTP библиотек и реализует "
 "одновременно как синхронный, так и асинхронный API."
 
 #: ../../intro.rst:12
@@ -47,7 +48,8 @@ msgstr ":code:`requests` (используется по умолчанию дл�
 msgid ""
 ":code:`httpx` (both synchronous and asynchronous, used by default for "
 "asynchronous API)"
-msgstr ":code:`httpx` (синхронный и асинхронный API, используется по умолчанию "
+msgstr ""
+":code:`httpx` (синхронный и асинхронный API, используется по умолчанию "
 "для асинхронного API)"
 
 #: ../../intro.rst:16
@@ -73,33 +75,46 @@ msgid ""
 msgstr "Вы можете также вручную установить нужные библиотеки:"
 
 #: ../../intro.rst:42
+msgid "Links to Official Yandex.Disk REST API Docs"
+msgstr "Ссылки на официальную документацию REST API Яндекс.Диска"
+
+#: ../../intro.rst:44
+msgid "`Official Yandex.Disk REST API Docs <https://yandex.com/dev/disk/rest/>`__"
+msgstr "`Официальная документация REST API Яндекс.Диска <https://yandex.ru/dev/disk/rest/>`__"
+
+#: ../../intro.rst:45
+msgid "`Polygon <https://yandex.com/dev/disk/poligon>`__"
+msgstr "`Полигон <https://yandex.ru/dev/disk/poligon>`__"
+
+#: ../../intro.rst:48
 msgid "Examples"
 msgstr "Примеры"
 
-#: ../../intro.rst:45
+#: ../../intro.rst:51
 msgid "Synchronous API"
 msgstr "Синхронный API"
 
-#: ../../intro.rst:83 ../../intro.rst:275
+#: ../../intro.rst:89 ../../intro.rst:264
 msgid "Receiving token with confirmation code"
 msgstr "Получение токена через код подтверждения"
 
-#: ../../intro.rst:113 ../../intro.rst:306
+#: ../../intro.rst:119 ../../intro.rst:295
 msgid "Recursive upload"
 msgstr "Рекурсивная загрузка файлов"
 
-#: ../../intro.rst:147 ../../intro.rst:375
+#: ../../intro.rst:153 ../../intro.rst:364
 msgid "Setting custom properties of files"
 msgstr "Задание пользовательских свойств файлов"
 
-#: ../../intro.rst:176 ../../intro.rst:405
+#: ../../intro.rst:182 ../../intro.rst:394
 msgid "Emptying the trash bin"
 msgstr "Очищение корзины"
 
-#: ../../intro.rst:216 ../../intro.rst:447
+#: ../../intro.rst:206 ../../intro.rst:419
 msgid "Specifying HTTP client library"
 msgstr "Выбор HTTP библиотеки"
 
-#: ../../intro.rst:228
+#: ../../intro.rst:217
 msgid "Asynchronous API"
 msgstr "Асинхронный API"
+
