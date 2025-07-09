@@ -38,6 +38,12 @@ Alternatively, you can manually choose which optional libraries to install:
    # For use with aiohttp, will also install aiofiles
    pip install yadisk[async_files,aiohttp]
 
+Links to Official Yandex.Disk REST API Docs
+*******************************************
+
+| `Official Yandex.Disk REST API Docs <https://yandex.com/dev/disk/rest/>`__
+| `Polygon <https://yandex.com/dev/disk/poligon>`__
+
 Examples
 ********
 
