@@ -1567,7 +1567,7 @@ class AsyncClient:
 
             More info about this request:
 
-            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/meta?tabs=defaultTabsGroup-ko8isjf5_resource%2520in%2520trash>`__
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/meta>`__
             * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47trash47resources/GetTrashResource>`__
 
             :returns: :any:`AsyncTrashResourceObject`

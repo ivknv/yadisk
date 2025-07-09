@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: YaDisk 3.3.0\n"
 "Report-Msgid-Bugs-To: ivknv0@gmail.com\n"
-"POT-Creation-Date: 2025-07-09 19:03+0500\n"
+"POT-Creation-Date: 2025-07-09 19:35+0500\n"
 "PO-Revision-Date: 2025-02-03 19:21+0500\n"
 "Last-Translator: Ivan Konovalov <ivknv0@gmail.com>\n"
 "Language-Team: Russian\n"
@@ -2302,7 +2302,8 @@ msgid "resource was not found on Disk"
 msgstr "ресурс не был найден на Диске"
 
 #: of yadisk._async_client.AsyncClient.get_meta:22
-#: yadisk._client.Client.get_meta:25
+#: yadisk._async_client.AsyncClient.get_trash_meta:24
+#: yadisk._client.Client.get_meta:25 yadisk._client.Client.get_trash_meta:25
 msgid "`Official docs <https://yandex.com/dev/disk-api/doc/en/reference/meta>`__"
 msgstr ""
 "`Официальная документация <https://yandex.ru/dev/disk-"
@@ -3816,18 +3817,6 @@ msgstr "Получает мета-информацию о ресурсе кор�
 #: yadisk._client.Client.is_trash_file:3 yadisk._client.Client.trash_exists:3
 msgid "path to the trash resource"
 msgstr "путь к ресурсу корзины"
-
-#: of yadisk._async_client.AsyncClient.get_trash_meta:24
-#: yadisk._client.Client.get_trash_meta:25
-#, python-format
-msgid ""
-"`Official docs <https://yandex.com/dev/disk-"
-"api/doc/en/reference/meta?tabs=defaultTabsGroup-"
-"ko8isjf5_resource%2520in%2520trash>`__"
-msgstr ""
-"`Официальная документация <https://yandex.ru/dev/disk-"
-"api/doc/ru/reference/meta?tabs=defaultTabsGroup-"
-"ko8isjf5_resource%2520in%2520trash>`__"
 
 #: of yadisk._async_client.AsyncClient.get_trash_meta:25
 #: yadisk._client.Client.get_trash_meta:26
@@ -7637,4 +7626,13 @@ msgstr "Объект исключения, подкласс :any:`YaDiskError`"
 #~ "которой настроен персональный доступ - "
 #~ "`department`: отдел в организации, для "
 #~ "которого настроен персональный доступ"
+
+#~ msgid ""
+#~ "`Official docs <https://yandex.com/dev/disk-"
+#~ "api/doc/en/reference/meta?tabs=defaultTabsGroup-"
+#~ "ko8isjf5_resource%2520in%2520trash>`__"
+#~ msgstr ""
+#~ "`Официальная документация <https://yandex.ru/dev/disk-"
+#~ "api/doc/ru/reference/meta?tabs=defaultTabsGroup-"
+#~ "ko8isjf5_resource%2520in%2520trash>`__"
 
