@@ -24,12 +24,13 @@ from .objects import (
     DiskInfoObject, SyncResourceObject, SyncResourceLinkObject,
     SyncOperationLinkObject, SyncTrashResourceObject, SyncPublicResourceObject,
     SyncPublicResourcesListObject, SyncPublicResourceLinkObject,
-    ResourceUploadLinkObject
+    ResourceUploadLinkObject, PublicSettingsObject, PublicAvailableSettingsObject
 )
 
 from .types import (
-    FileOrPath, FileOrPathDestination, Headers, OperationStatus, Session,
-    SessionName, SessionFactory, OpenFileCallback, TimeoutParameter
+    FileOrPath, FileOrPathDestination, Headers, OperationStatus,
+    PublicSettings, Session, SessionName, SessionFactory, OpenFileCallback,
+    TimeoutParameter
 )
 
 __all__ = ["Client"]
@@ -204,6 +205,7 @@ class Client:
     def get_disk_info(
         self,
         *,
+        extra_fields: Optional[Iterable[str]] = None,
         fields: Optional[Iterable[str]] = None,
         headers: Optional[Headers] = None,
         timeout: TimeoutParameter = ...,
@@ -837,6 +839,8 @@ class Client:
         path: str,
         /,
         *,
+        allow_address_access: bool = False,
+        public_settings: Optional[PublicSettings] = None,
         fields: Optional[Iterable[str]] = None,
         headers: Optional[Headers] = None,
         timeout: TimeoutParameter = ...,
@@ -866,6 +870,56 @@ class Client:
         curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> SyncResourceLinkObject:
+        ...
+
+    def get_public_settings(
+        self,
+        path: str,
+        /,
+        allow_address_access: bool = False,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> PublicSettingsObject:
+        ...
+
+    def get_public_available_settings(
+        self,
+        path: str,
+        /,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> PublicAvailableSettingsObject:
+        ...
+
+    def update_public_settings(
+        self,
+        path: str,
+        public_settings: PublicSettings,
+        /,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> None:
         ...
 
     @overload

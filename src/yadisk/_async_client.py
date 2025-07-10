@@ -26,7 +26,7 @@ from urllib.parse import urlencode
 from .types import (
     AsyncFileOrPath, AsyncFileOrPathDestination, AsyncOpenFileCallback,
     AsyncSessionFactory, FileOpenMode, BinaryAsyncFileLike, AsyncSessionName,
-    OperationStatus
+    OperationStatus, PublicSettings
 )
 
 from . import settings
@@ -43,7 +43,7 @@ from .objects import (
     AsyncOperationLinkObject, AsyncTrashResourceObject,
     AsyncPublicResourceObject, AsyncPublicResourcesListObject,
     AsyncFilesResourceListObject, AsyncLastUploadedResourceListObject,
-    DeviceCodeObject, ResourceUploadLinkObject
+    DeviceCodeObject, ResourceUploadLinkObject, PublicSettingsObject, PublicAvailableSettingsObject
 )
 
 from typing import Any, Optional, Union, IO, BinaryIO, Literal
@@ -746,6 +746,7 @@ class AsyncClient:
         """
             Get disk information.
 
+            :param extra_fields: list of additional keys to be included in the response
             :param fields: list of keys to be included in the response
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers
@@ -757,6 +758,11 @@ class AsyncClient:
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/capacity>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk/GetDisk>`__
 
             :returns: :any:`DiskInfoObject`
         """
@@ -788,6 +794,9 @@ class AsyncClient:
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/meta>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/GetResource>`__
 
             :returns: :any:`AsyncResourceObject`
         """
@@ -956,6 +965,11 @@ class AsyncClient:
             :raises ResourceIsLockedError: resource is locked by another request
             :raises InsufficientStorageError: cannot upload file due to lack of storage space
             :raises UploadTrafficLimitExceededError: upload limit has been exceeded
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/upload>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/GetResourceUploadLink>`__
 
             :returns: `str`
         """
@@ -1205,6 +1219,11 @@ class AsyncClient:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/content>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/GetResourceDownloadLink>`__
+
             :returns: `str`
         """
 
@@ -1393,6 +1412,11 @@ class AsyncClient:
                                                        complete in specified time
                                                        (when `poll_timeout` is not `None`)
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/delete>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/DeleteResource>`__
+
             :returns: :any:`AsyncOperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
@@ -1421,6 +1445,11 @@ class AsyncClient:
             :raises InsufficientStorageError: cannot create directory due to lack of storage space
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/create-folder>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/CreateResource>`__
 
             :returns: :any:`AsyncResourceLinkObject`
         """
@@ -1536,6 +1565,11 @@ class AsyncClient:
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/meta>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47trash47resources/GetTrashResource>`__
+
             :returns: :any:`AsyncTrashResourceObject`
         """
 
@@ -1613,6 +1647,11 @@ class AsyncClient:
                                                        complete in specified time
                                                        (when `poll_timeout` is not `None`)
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/copy>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/CopyResource>`__
+
             :returns: :any:`AsyncResourceLinkObject` or :any:`AsyncOperationLinkObject`
         """
 
@@ -1658,6 +1697,11 @@ class AsyncClient:
             :raises AsyncOperationPollingTimeoutError: requested operation did not
                                                        complete in specified time
                                                        (when `poll_timeout` is not `None`)
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/trash-restore>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47trash47resources/RestoreFromTrash>`__
 
             :returns: :any:`AsyncResourceLinkObject` or :any:`AsyncOperationLinkObject`
         """
@@ -1706,6 +1750,11 @@ class AsyncClient:
             :raises AsyncOperationPollingTimeoutError: requested operation did not
                                                        complete in specified time
                                                        (when `poll_timeout` is not `None`)
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/move>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/MoveResource>`__
 
             :returns: :any:`AsyncResourceLinkObject` or :any:`AsyncOperationLinkObject`
         """
@@ -1812,6 +1861,11 @@ class AsyncClient:
                                                        complete in specified time
                                                        (when `poll_timeout` is not `None`)
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/trash-delete>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47trash47resources/ClearTrash>`__
+
             :returns: :any:`AsyncOperationLinkObject` if the operation is performed asynchronously, `None` otherwise
         """
 
@@ -1825,6 +1879,9 @@ class AsyncClient:
             Make a resource public.
 
             :param path: path to the resource to be published
+            :param allow_address_access: `bool`, specifies the request format, i.e.
+                with personal access settings (when set to `True`) or without
+            :param public_settings: :any:`PublicSettings` or `None`, public access settings for the resource
             :param fields: list of keys to be included in the response
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers
@@ -1838,6 +1895,11 @@ class AsyncClient:
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/publish>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/PublishResource>`__
 
             :returns: :any:`AsyncResourceLinkObject`, link to the resource
         """
@@ -1852,6 +1914,8 @@ class AsyncClient:
             Make a public resource private.
 
             :param path: path to the resource to be unpublished
+            :param allow_address_access: `bool`, specifies the request format, i.e.
+                with personal access settings (when set to `True`) or without
             :param fields: list of keys to be included in the response
             :param timeout: `float`, `tuple` or `None`, request timeout
             :param headers: `dict` or `None`, additional request headers
@@ -1866,6 +1930,11 @@ class AsyncClient:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/publish#unpublish-q>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/UnpublishResource>`__
+
             :returns: :any:`AsyncResourceLinkObject`
         """
 
@@ -1873,6 +1942,100 @@ class AsyncClient:
         _add_authorization_header(kwargs, self.token)
 
         return await UnpublishRequest(self.session, path, **kwargs).asend(yadisk=self)
+
+    async def get_public_settings(self, path: str, /, **kwargs) -> PublicSettingsObject:
+        """
+            Get public settings of a resource.
+
+            :param path: path to the resource
+            :param allow_address_access: `bool`, specifies the request format, i.e.
+                with personal access settings (when set to `True`) or without
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.ru/dev/disk-api/doc/ru/reference/public-settings-get>`__
+
+            :returns: :any:`PublicSettingsObject`
+        """
+
+        _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
+
+        return await GetPublicSettingsRequest(self.session, path, **kwargs).asend(yadisk=self)
+
+    async def get_public_available_settings(self, path: str, /, **kwargs) -> PublicAvailableSettingsObject:
+        """
+            Get public settings of a shared resource for the current OAuth token owner.
+
+            :param path: path to the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.ru/dev/disk-api/doc/ru/reference/public-settings-get-available>`__
+
+            :returns: :any:`PublicAvailableSettingsObject`
+        """
+
+        _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
+
+        return await GetPublicAvailableSettingsRequest(self.session, path, **kwargs).asend(yadisk=self)
+
+    async def update_public_settings(self, path: str, public_settings: PublicSettings, /, **kwargs) -> None:
+        """
+            Update public settings of a shared resource.
+
+            :param path: path to the resource
+            :param public_settings: :any:`PublicSettings`, public access settings for the resource
+            :param timeout: `float` or `tuple`, request timeout
+            :param headers: `dict` or `None`, additional request headers
+            :param n_retries: `int`, maximum number of retries
+            :param retry_interval: delay between retries in seconds
+            :param retry_on: `tuple`, additional exception classes to retry on
+            :param aiohttp_args: `dict`, additional parameters for :any:`AIOHTTPSession`
+            :param httpx_args: `dict`, additional parameters for :any:`AsyncHTTPXSession`
+            :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
+
+            :raises PathNotFoundError: resource was not found on Disk
+            :raises ForbiddenError: application doesn't have enough rights for this request
+            :raises ResourceIsLockedError: resource is locked by another request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.ru/dev/disk-api/doc/ru/reference/public-settings-change>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47public47resources/UpdatePublicSettings>`__
+
+            :returns: `None`
+        """
+
+        _apply_default_args(kwargs, self.default_args)
+        _add_authorization_header(kwargs, self.token)
+
+        return await UpdatePublicSettingsRequest(self.session, path, public_settings, **kwargs).asend(yadisk=self)
 
     async def save_to_disk(
         self,
@@ -1915,6 +2078,11 @@ class AsyncClient:
                                                        complete in specified time
                                                        (when `poll_timeout` is not `None`)
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/public#save>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47public47resources/SaveToDiskPublicResource>`__
+
             :returns: :any:`AsyncResourceLinkObject` or :any:`AsyncOperationLinkObject`
         """
 
@@ -1948,6 +2116,11 @@ class AsyncClient:
 
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/public>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47public47resources/GetPublicResource>`__
 
             :returns: :any:`AsyncPublicResourceObject`
         """
@@ -2221,6 +2394,11 @@ class AsyncClient:
 
             :raises ForbiddenError: application doesn't have enough rights for this request
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/recent-public>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/ListPublicResources>`__
+
             :returns: :any:`AsyncPublicResourcesListObject`
         """
 
@@ -2256,6 +2434,11 @@ class AsyncClient:
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/recent-public>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/ListPublicResources>`__
 
             :returns: async generator of :any:`AsyncPublicResourceObject`
         """
@@ -2310,6 +2493,11 @@ class AsyncClient:
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/meta-add>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/UpdateResource>`__
+
             :returns: :any:`AsyncResourceObject`
         """
 
@@ -2360,6 +2548,11 @@ class AsyncClient:
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/all-files>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/GetFlatFilesList>`__
 
             :returns: async generator of :any:`AsyncResourceObject`
         """
@@ -2416,6 +2609,11 @@ class AsyncClient:
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises ForbiddenError: application doesn't have enough rights for this request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/recent-upload>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/GetLastUploadedFilesList>`__
 
             :returns: async generator of :any:`AsyncResourceObject`
         """
@@ -2478,6 +2676,11 @@ class AsyncClient:
                                                        complete in specified time
                                                        (when `poll_timeout` is not `None`)
 
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/upload-ext>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47resources/UploadExternalResource>`__
+
             :returns: :any:`AsyncOperationLinkObject`, link to the asynchronous operation
         """
 
@@ -2504,6 +2707,11 @@ class AsyncClient:
             :raises PathNotFoundError: resource was not found on Disk
             :raises ForbiddenError: application doesn't have enough rights for this request
             :raises ResourceIsLockedError: resource is locked by another request
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/public#download-request>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47public47resources/GetPublicResourceDownloadLink>`__
 
             :returns: `str`
         """
@@ -2568,6 +2776,11 @@ class AsyncClient:
             :param kwargs: any other parameters, accepted by :any:`Session.send_request()`
 
             :raises OperationNotFoundError: requested operation was not found
+
+            More info about this request:
+
+            * `Official docs <https://yandex.com/dev/disk-api/doc/en/reference/operations>`__
+            * `Polygon <https://yandex.com/dev/disk/poligon#!/v147disk47operations47123operation95id125/GetOperationStatus/>`__
 
             :returns: `str`, :code:`"in-progress"` indicates that the operation
                       is currently running, :code:`"success"` indicates that

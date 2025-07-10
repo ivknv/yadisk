@@ -34,6 +34,7 @@ class DiskInfoRequest(APIRequest):
         A request to get disk information.
 
         :param session: an instance of :any:`Session` or :any:`AsyncSession` with prepared headers
+        :param extra_fields: list of additional keys to be included in the response
         :param fields: list of keys to be included in the response
 
         :returns: :any:`DiskInfoObject`
@@ -45,10 +46,14 @@ class DiskInfoRequest(APIRequest):
     def __init__(
         self,
         session: "AnySession",
+        extra_fields: Optional[Iterable[str]] = None,
         fields: Optional[Iterable[str]] = None,
         **kwargs
     ) -> None:
         APIRequest.__init__(self, session, **kwargs)
+
+        if extra_fields is not None:
+            self.params["extra_fields"] = ",".join(extra_fields)
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)

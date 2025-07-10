@@ -47,13 +47,13 @@ For synchronous API (installs :code:`requests`):
 
 .. code:: bash
 
-   pip install yadisk[sync_defaults]
+   pip install yadisk[sync-defaults]
 
 For asynchronous API (installs :code:`aiofiles` and :code:`httpx`):
 
 .. code:: bash
 
-   pip install yadisk[async_defaults]
+   pip install yadisk[async-defaults]
 
 Alternatively, you can manually choose which optional libraries to install:
 
@@ -63,7 +63,7 @@ Alternatively, you can manually choose which optional libraries to install:
    pip install yadisk[pycurl]
 
    # For use with aiohttp, will also install aiofiles
-   pip install yadisk[async_files,aiofiles]
+   pip install yadisk[async-files,aiofiles]
 
 Examples
 ********
@@ -182,6 +182,35 @@ Changelog
 .. _Migration Guide: https://yadisk.readthedocs.io/en/latest/migration_guide.html
 .. _PR #57: https://github.com/ivknv/yadisk/pull/57
 
+* **Release 3.4.0 (2025-07-10)**
+
+  * New features:
+
+    * Added methods for managing public settings of resources:
+
+      * :code:`Client.update_public_settings()`
+      * :code:`Client.get_public_settings()`
+      * :code:`Client.get_public_available_settings()`
+
+      Note, it appears that these API endpoints do not fully conform to the
+      official REST API documentation, their functionality is limited in
+      practice.
+
+    * Added new exception class :code:`PasswordRequiredError`
+
+    * Added several new fields for :code:`DiskInfoObject`:
+
+      * :code:`deletion_restricion_days`
+      * :code:`hide_screenshots_in_photoslice`
+      * :code:`is_legal_entity`
+
+    * Implemented the :code:`__dir__()` method for response objects
+
+  * Improvements:
+
+    * :code:`repr()` of API response objects now only shows the keys that are
+      actually present (instead of displaying them as :code:`None` like before)
+
 * **Release 3.3.0 (2025-04-29)**
 
   * New features:
@@ -197,7 +226,7 @@ Changelog
 
   * Bug fixes:
 
-    * :code:`Client.wait_for_operation()` now uses :code:`time.monotonic()` 
+    * :code:`Client.wait_for_operation()` now uses :code:`time.monotonic()`
       instead of :code:`time.time()`
 
   * Improvements:

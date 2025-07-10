@@ -368,6 +368,37 @@ class TestClient:
         assert not client.is_public_file(public_url)
 
     @pytest.mark.usefixtures("sync_client_test")
+    def test_public_settings(self, client: yadisk.Client, disk_root: str) -> None:
+        client.publish(disk_root)
+        public_url = client.get_meta(disk_root) @ "public_url"
+
+        # First, set a password
+        client.update_public_settings(disk_root, {
+            "password": "1234"
+        })
+
+        with pytest.raises(yadisk.exceptions.PasswordRequiredError):
+            client.get_public_download_link(public_url)
+
+        # We will make the public resource link expire by updating the settings
+        available_until = 1
+        client.update_public_settings(disk_root, {
+            "password": "1234",
+            "available_until": available_until
+        })
+
+        # As of writing, the endpoint returns only "available_until"
+        settings = client.get_public_settings(disk_root)
+
+        assert settings.available_until == available_until
+
+        # At this point the public link should no longer be valid
+        with pytest.raises(yadisk.exceptions.PathNotFoundError):
+            client.get_public_meta(public_url)
+
+        client.unpublish(disk_root)
+
+    @pytest.mark.usefixtures("sync_client_test")
     def test_patch(self, client: yadisk.Client, disk_root: str) -> None:
         directory = client.patch(disk_root, {"test_property": "I'm a value!"})
         assert directory.custom_properties == {"test_property": "I'm a value!"}

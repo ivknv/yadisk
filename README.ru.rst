@@ -3,7 +3,7 @@ YaDisk
 
 .. |RTD Badge| image:: https://img.shields.io/readthedocs/yadisk.svg
    :alt: Read the Docs
-   :target: https://yadisk.readthedocs.io/en/latest/
+   :target: https://yadisk.readthedocs.io/ru/latest/
 
 .. |CI Badge| image:: https://img.shields.io/github/actions/workflow/status/ivknv/yadisk/lint_and_test.yml
    :alt: GitHub Actions Workflow Status
@@ -51,13 +51,13 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 
 .. code:: bash
 
-    pip install yadisk[sync_defaults]
+    pip install yadisk[sync-defaults]
 
 Для асинхронного API (устанавливает :code:`httpx` и :code:`aiofiles`):
 
 .. code:: bash
 
-   pip install yadisk[async_defaults]
+   pip install yadisk[async-defaults]
 
 Вы можете также вручную установить нужные библиотеки:
 
@@ -67,7 +67,7 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
    pip install yadisk[pycurl]
 
    # Для использования совместно с aiohttp, также установит aiofiles
-   pip install yadisk[async_files,aiohttp]
+   pip install yadisk[async-files,aiohttp]
 
 Примеры
 *******
@@ -185,6 +185,36 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 .. _requests: https://pypi.org/project/requests
 .. _Руководство по миграции: https://yadisk.readthedocs.io/ru/latest/migration_guide.html
 .. _PR #57: https://github.com/ivknv/yadisk/pull/57
+
+* **Release 3.4.0 (2025-07-10)**
+
+  * Нововведения:
+
+    * Добавлены методы для управления настройками публичного доступа к ресурсам:
+
+      * :code:`Client.update_public_settings()`
+      * :code:`Client.get_public_settings()`
+      * :code:`Client.get_public_available_settings()`
+
+      Внимание: похоже, что эти эндпоинты не полностью соответствуют
+      официальной документации REST API, их функциональность на практике
+      ограничена.
+
+    * Добавлен новый класс исключений :code:`PasswordRequiredError`
+
+    * Добавлено несколько новых полей :code:`DiskInfoObject`:
+
+      * :code:`deletion_restricion_days`
+      * :code:`hide_screenshots_in_photoslice`
+      * :code:`is_legal_entity`
+
+    * Реализован метод :code:`__dir__()` для объектов ответов сервера
+
+  * Улучшения:
+
+    * :code:`repr()` объектов ответов API теперь показывает только те ключи,
+      которые фактически присутствуют (вместо отображения их значений как
+      :code:`None`, как раньше)
 
 * **Release 3.3.0 (2025-04-29)**
 

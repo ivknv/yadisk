@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2024 Ivan Konovalov
+# Copyright © 2025 Ivan Konovalov
 
 # This file is part of a Python library yadisk.
 
@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-from typing import Any, Optional, Union, TYPE_CHECKING, Protocol, BinaryIO, Literal
+from typing import Any, Optional, TypedDict, Union, TYPE_CHECKING, Protocol, BinaryIO, Literal
 from ._typing_compat import (
     Dict, List, Tuple, Callable, Awaitable,
     Iterator, AsyncIterator, Mapping, TypeAlias
@@ -40,8 +40,10 @@ __all__ = [
     "AsyncPayload",
     "AsyncSessionFactory",
     "AsyncSessionName",
+    "AvailableUntilVerbose",
     "BinaryAsyncFileLike",
     "ConsumeCallback",
+    "ExternalOrganizationIdVerbose",
     "FileOpenMode",
     "FileOrPath",
     "FileOrPathDestination",
@@ -49,10 +51,13 @@ __all__ = [
     "Headers",
     "OpenFileCallback",
     "OperationStatus",
+    "PasswordVerbose",
     "Payload",
+    "PublicSettings",
+    "PublicSettingsAccess",
     "SessionFactory",
     "SessionName",
-    "TimeoutParameter"
+    "TimeoutParameter",
 ]
 
 #: JSON data (parsed)
@@ -259,3 +264,111 @@ AsyncSessionName: TypeAlias = Union[Literal["aiohttp"], Literal["httpx"]]
 
 #: Yandex.Disk's asynchronous operation status
 OperationStatus: TypeAlias = Union[Literal["in-progress"], Literal["success"], Literal["failed"]]
+
+
+class PublicSettings(TypedDict, total=False):
+    """
+        Public settings of a shared resource. This type describes the input for
+        requests that modify public settings. For the related response object,
+        see :any:`PublicSettingsObject`.
+
+        :ivar available_until: `int`, timestamp indicating the expiration date of the link
+        :ivar read_only: `bool`, whether the resource is read-only
+        :ivar available_until_verbose: :any:`AvailableUntilVerbose`, verbose information about the expiration date
+        :ivar password: `str`, password to access the resource
+        :ivar password_verbose: :any:`PasswordVerbose`, verbose information about the password
+        :ivar external_organization_id: `str`, external organization ID
+        :ivar external_organization_id_verbose: :any:`ExternalOrganizationIdVerbose`,
+            verbose information about the external organization ID
+        :ivar accesses: `List[PublicSettingsAccess]`, list of access settings
+
+        .. note::
+
+           It appears that passing :code:`available_until` as an empty string
+           disables the expiration date. Similarly, password can be disabled
+           by passing :code:`False` or :code:`0`. This is not officially
+           documented, though.
+    """
+
+    available_until: Union[int, str]
+    read_only: bool
+    available_until_verbose: "AvailableUntilVerbose"
+    password: Union[str, Literal[False, 0]]
+    password_verbose: "PasswordVerbose"
+    external_organization_id: str
+    external_organization_id_verbose: "ExternalOrganizationIdVerbose"
+    accesses: List["PublicSettingsAccess"]
+
+
+class AvailableUntilVerbose(TypedDict):
+    """
+        Verbose information about the expiration date of a shared resource.
+
+        :ivar enabled: `bool`, whether the expiration date is enabled
+        :ivar value: `int`, timestamp indicating the expiration date
+    """
+
+    enabled: bool
+    value: int
+
+
+class PasswordVerbose(TypedDict):
+    """
+        Verbose information about the password of a shared resource.
+
+        :ivar enabled: `bool`, whether the password is enabled
+        :ivar value: `str`, password to access the resource
+    """
+
+    enabled: bool
+    value: str
+
+
+class ExternalOrganizationIdVerbose(TypedDict):
+    """
+        Verbose information about the external organization ID of a shared resource.
+
+        :ivar enabled: `bool`, whether the external organization ID is enabled
+        :ivar value: `str`, external organization ID
+    """
+
+    enabled: bool
+    value: str
+
+
+class PublicSettingsAccess(TypedDict, total=False):
+    """
+        Access settings of a shared resource.
+
+        :ivar macros: `List[Union[Literal["employees"], Literal["all"]]],`,
+            specifies who has access to the shared resource, must contain only
+            one element
+        :ivar org_id: `int`, organization ID
+        :ivar user_ids: `List[str]`, list of user IDs
+        :ivar group_ids: `List[int]`, list of group IDs
+        :ivar department_ids: `List[int]`, list of department IDs
+        :ivar rights: `list[str]`, list of access rights
+
+        Valid access rights:
+
+        - `write`: write access
+        - `read`: read access
+        - `read_without_download`: read access without download
+        - `read_with_password`: read access with password
+        - `read_with_password_without_download`: read access with password and without download
+    """
+
+    macros: List[Union[Literal["employees"], Literal["all"]]]
+    org_id: int
+    user_ids: List[str]
+    group_ids: List[int]
+    department_ids: List[int]
+    rights: List[
+        Union[
+            Literal["write"],
+            Literal["read"],
+            Literal["read_without_download"],
+            Literal["read_with_password"],
+            Literal["read_with_password_without_download"]
+        ]
+    ]

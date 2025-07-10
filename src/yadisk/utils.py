@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright © 2024 Ivan Konovalov
+# Copyright © 2025 Ivan Konovalov
 
 # This file is part of a Python library yadisk.
 
@@ -59,7 +59,12 @@ EXCEPTION_MAP: Dict[int, Dict[str, Type[YaDiskError]]] = {
         }
     ),
     401: defaultdict(lambda: UnauthorizedError),
-    403: defaultdict(lambda: ForbiddenError),
+    403: defaultdict(
+        lambda: ForbiddenError,
+        {
+            "DiskSymlinkPasswordRequiredError": PasswordRequiredError
+        }
+    ),
     404: defaultdict(
         lambda: NotFoundError,
         {
@@ -137,7 +142,7 @@ def get_exception(response: AnyResponse, error: Optional[ErrorObject]) -> YaDisk
         if exc_message:
             exc_message += " | "
 
-        exc_message += f"Error description: {desc.rstrip('.')}. Error code: {error_name}"
+        exc_message += f"Error description: {desc.rstrip('.')}."
 
     if error_name:
         if exc_message:

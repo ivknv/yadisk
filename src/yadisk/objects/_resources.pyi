@@ -28,13 +28,63 @@ from .._typing_compat import (
 
 from ..types import (
     AsyncFileOrPath, AsyncFileOrPathDestination, FileOrPath,
-    FileOrPathDestination, Headers, TimeoutParameter
+    FileOrPathDestination, Headers, TimeoutParameter, PublicSettings
 )
 
 import datetime
 from ._operations import (
     OperationLinkObject, AsyncOperationLinkObject, SyncOperationLinkObject
 )
+
+__all__ = [
+    "AsyncFilesResourceListObject",
+    "AsyncLastUploadedResourceListObject",
+    "AsyncPublicResourceLinkObject",
+    "AsyncPublicResourceListObject",
+    "AsyncPublicResourceObject",
+    "AsyncPublicResourcesListObject",
+    "AsyncResourceLinkObject",
+    "AsyncResourceListObject",
+    "AsyncResourceObject",
+    "AsyncTrashResourceListObject",
+    "AsyncTrashResourceObject",
+    "AvailableUntilVerboseObject",
+    "CommentIDsObject",
+    "EXIFObject",
+    "ExternalOrganizationIdVerboseObject",
+    "FilesResourceListObject",
+    "LastUploadedResourceListObject",
+    "PasswordVerboseObject",
+    "PublicAccessObject",
+    "PublicAvailableSettingsObject",
+    "PublicDefaultObject",
+    "PublicResourceLinkObject",
+    "PublicResourceListObject",
+    "PublicResourceObject",
+    "PublicResourcesListObject",
+    "PublicSettingsObject",
+    "ResourceDownloadLinkObject",
+    "ResourceLinkObject",
+    "ResourceListObject",
+    "ResourceObject",
+    "ResourceUploadLinkObject",
+    "ShareInfoObject",
+    "SyncFilesResourceListObject",
+    "SyncLastUploadedResourceListObject",
+    "SyncPublicResourceLinkObject",
+    "SyncPublicResourceListObject",
+    "SyncPublicResourceObject",
+    "SyncPublicResourcesListObject",
+    "SyncResourceLinkObject",
+    "SyncResourceListObject",
+    "SyncResourceObject",
+    "SyncTrashResourceListObject",
+    "SyncTrashResourceObject",
+    "TrashResourceListObject",
+    "TrashResourceObject",
+]
+
+
 class CommentIDsObject(YaDiskObject):
     private_resource: Optional[str]
     public_resource: Optional[str]
@@ -498,6 +548,8 @@ class ResourceObjectMethodsMixin:
         relative_path: Optional[str] = None,
         /,
         *,
+        allow_address_access: bool = False,
+        public_settings: Optional[PublicSettings] = None,
         fields: Optional[Iterable[str]] = None,
         headers: Optional[Headers] = None,
         timeout: TimeoutParameter = ...,
@@ -527,6 +579,76 @@ class ResourceObjectMethodsMixin:
         curl_options: Optional[Dict[int, Any]] = None,
         **kwargs
     ) -> "SyncResourceLinkObject":
+        ...
+
+    def get_public_settings(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        allow_address_access: bool = False,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> "PublicSettingsObject":
+        ...
+
+    def get_public_available_settings(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> "PublicSettingsObject":
+        ...
+
+    @overload
+    def update_public_settings(
+        self: ResourceProtocol,
+        relative_path: Optional[str],
+        public_settings: PublicSettings,
+        /,
+        *,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> "PublicSettingsObject":
+        ...
+
+    @overload
+    def update_public_settings(
+        self: ResourceProtocol,
+        public_settings: PublicSettings,
+        /,
+        *,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        requests_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        curl_options: Optional[Dict[int, Any]] = None,
+        **kwargs
+    ) -> "PublicSettingsObject":
         ...
 
     def mkdir(
@@ -1232,6 +1354,8 @@ class AsyncResourceObjectMethodsMixin:
         relative_path: Optional[str] = None,
         /,
         *,
+        allow_address_access: bool = False,
+        public_settings: Optional[PublicSettings] = None,
         fields: Optional[Iterable[str]] = None,
         headers: Optional[Headers] = None,
         timeout: TimeoutParameter = ...,
@@ -1259,6 +1383,72 @@ class AsyncResourceObjectMethodsMixin:
         httpx_args: Optional[Dict[str, Any]] = None,
         **kwargs
     ) -> "AsyncResourceLinkObject":
+        ...
+
+    async def get_public_settings(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        allow_address_access: bool = False,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> "PublicSettingsObject":
+        ...
+
+    async def get_public_available_settings(
+        self: ResourceProtocol,
+        relative_path: Optional[str] = None,
+        /,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> "PublicSettingsObject":
+        ...
+
+    @overload
+    async def update_public_settings(
+        self: ResourceProtocol,
+        relative_path: Optional[str],
+        public_settings: PublicSettings,
+        /,
+        *,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> "PublicSettingsObject":
+        ...
+
+    @overload
+    async def update_public_settings(
+        self: ResourceProtocol,
+        public_settings: PublicSettings,
+        /,
+        *,
+        headers: Optional[Headers] = None,
+        timeout: TimeoutParameter = ...,
+        n_retries: Optional[int] = None,
+        retry_interval: Optional[float] = None,
+        retry_on: Tuple[Type[Exception], ...] = tuple(),
+        aiohttp_args: Optional[Dict[str, Any]] = None,
+        httpx_args: Optional[Dict[str, Any]] = None,
+        **kwargs
+    ) -> "PublicSettingsObject":
         ...
 
     async def mkdir(
@@ -2379,4 +2569,112 @@ class AsyncTrashResourceListObject(TrashResourceListObject):
     def __init__(self,
                  trash_resource_list: Optional[Dict] = None,
                  yadisk: Optional[Any] = None) -> None:
+        ...
+
+
+class PublicSettingsObject(YaDiskObject):
+    available_until: Optional[int]
+    read_only: Optional[bool]
+    available_until_verbose: Optional["AvailableUntilVerboseObject"]
+    password: Optional[str]
+    password_verbose: Optional["PasswordVerboseObject"]
+    external_organization_id: Optional[str]
+    external_organization_id_verbose: Optional["ExternalOrganizationIdVerboseObject"]
+    accesses: Optional[List["PublicAccessObject"]]
+
+    def __init__(
+        self,
+        public_settings: Optional[Dict] = None,
+        yadisk: Optional[Any] = None
+    ) -> None:
+        ...
+
+
+class AvailableUntilVerboseObject(YaDiskObject):
+    enabled: Optional[bool]
+    value: Optional[int]
+
+    def __init__(
+        self,
+        available_until_verbose: Optional[Dict] = None,
+        yadisk: Optional[Any] = None
+    ) -> None:
+        ...
+
+
+class PasswordVerboseObject(YaDiskObject):
+    enabled: Optional[bool]
+    value: Optional[str]
+
+    def __init__(
+        self,
+        password_verbose: Optional[Dict] = None,
+        yadisk: Optional[Any] = None
+    ) -> None:
+        ...
+
+
+class ExternalOrganizationIdVerboseObject(YaDiskObject):
+    enabled: Optional[bool]
+    value: Optional[str]
+
+    def __init__(
+        self,
+        external_organization_id_verbose: Optional[Dict] = None,
+        yadisk: Optional[Any] = None
+    ) -> None:
+        ...
+
+
+class PublicAccessObject(YaDiskObject):
+    macros: Optional[List[Union[Literal["all", "employees"], str]]]
+    type: Optional[Union[Literal["macro", "user", "group", "department"], str]]
+    org_id: Optional[int]
+    id: Optional[str]
+    rights: Optional[List[
+        Union[
+            Literal[
+                "read",
+                "write",
+                "read_without_download",
+                "read_with_password",
+                "read_with_password_without_download"
+            ],
+            str
+        ]
+    ]]
+
+    def __init__(
+        self,
+        public_access: Optional[Dict] = None,
+        yadisk: Optional[Any] = None
+    ) -> None:
+        ...
+
+
+class PublicAvailableSettingsObject(YaDiskObject):
+    permissions: Optional[List[str]]
+    address_access_sharing: Optional[Union[Literal["all", "inner"], str]]
+    use_sharing: Optional[bool]
+    macro_sharing: Optional[Union[Literal["all", "inner"], str]]
+    default: Optional[List["PublicDefaultObject"]]
+
+    def __init__(
+        self,
+        public_available_settings: Optional[Dict] = None,
+        yadisk: Optional[Any] = None
+    ) -> None:
+        ...
+
+
+class PublicDefaultObject(YaDiskObject):
+    macros: Optional[List[str]]
+    org_id: Optional[int]
+    rights: Optional[List[str]]
+
+    def __init__(
+        self,
+        public_default: Optional[Dict] = None,
+        yadisk: Optional[Any] = None
+    ) -> None:
         ...

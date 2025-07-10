@@ -1,6 +1,9 @@
 name: Perform linting and run tests
 
-on: 
+permissions:
+  contents: read
+
+on:
   push:
     branches:
       - master
