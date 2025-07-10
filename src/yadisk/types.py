@@ -281,12 +281,19 @@ class PublicSettings(TypedDict, total=False):
         :ivar external_organization_id_verbose: :any:`ExternalOrganizationIdVerbose`,
             verbose information about the external organization ID
         :ivar accesses: `List[PublicSettingsAccess]`, list of access settings
+
+        .. note::
+
+           It appears that passing :code:`available_until` as an empty string
+           disables the expiration date. Similarly, password can be disabled
+           by passing :code:`False` or :code:`0`. This is not officially
+           documented, though.
     """
 
-    available_until: int
+    available_until: Union[int, str]
     read_only: bool
     available_until_verbose: "AvailableUntilVerbose"
-    password: str
+    password: Union[str, Literal[False, 0]]
     password_verbose: "PasswordVerbose"
     external_organization_id: str
     external_organization_id_verbose: "ExternalOrganizationIdVerbose"

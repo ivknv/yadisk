@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: YaDisk 3.3.0\n"
+"Project-Id-Version: YaDisk 3.4.0\n"
 "Report-Msgid-Bugs-To: ivknv0@gmail.com\n"
-"POT-Creation-Date: 2025-07-09 19:35+0500\n"
-"PO-Revision-Date: 2025-02-03 19:21+0500\n"
+"POT-Creation-Date: 2025-07-10 18:15+0500\n"
+"PO-Revision-Date: 2025-07-10 18:19+0500\n"
 "Last-Translator: Ivan Konovalov <ivknv0@gmail.com>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -6914,6 +6914,18 @@ msgstr ""
 #: of yadisk.types.PublicSettings:13
 msgid "`List[PublicSettingsAccess]`, list of access settings"
 msgstr "`List[PublicSettingsAccess]`, список настроек доступа"
+
+#: of yadisk.types.PublicSettings:17
+msgid ""
+"It appears that passing :code:`available_until` as an empty string "
+"disables the expiration date. Similarly, password can be disabled by "
+"passing :code:`False` or :code:`0`. This is not officially documented, "
+"though."
+msgstr ""
+"Как показывает практика, передача пустой строки в поле "
+":code:`available_until` отключает дату истечения доступа. Аналогично, "
+"пароль можно отключить, передав :code:`False` или :code:`0`. Но подобное "
+"поведение не задокументировано."
 
 #: of yadisk.types.PublicSettingsAccess:7
 msgid "`List[str]`, list of user IDs"
