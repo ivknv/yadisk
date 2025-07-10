@@ -19,6 +19,35 @@ Changelog
 .. role:: python(code)
    :language: python
 
+* **Release 3.4.0 (2025-07-10)**
+
+  * New features:
+
+    * Added methods for managing public settings of resources:
+
+      * :any:`Client.update_public_settings()`
+      * :any:`Client.get_public_settings()`
+      * :any:`Client.get_public_available_settings()`
+
+      Note, it appears that these API endpoints do not fully conform to the
+      official REST API documentation, their functionality is limited in
+      practice.
+
+    * Added new exception class :any:`PasswordRequiredError`
+
+    * Added several new fields for :any:`DiskInfoObject`:
+
+      * :code:`deletion_restricion_days`
+      * :code:`hide_screenshots_in_photoslice`
+      * :code:`is_legal_entity`
+
+    * Implemented the :code:`__dir__()` method for response objects
+
+  * Improvements:
+
+    * :code:`repr()` of API response objects now only shows the keys that are
+      actually present (instead of displaying them as :code:`None` like before)
+
 * **Release 3.3.0 (2025-04-29)**
 
   * New features:
@@ -34,7 +63,7 @@ Changelog
 
   * Bug fixes:
 
-    * :any:`Client.wait_for_operation()` now uses :code:`time.monotonic()` 
+    * :any:`Client.wait_for_operation()` now uses :code:`time.monotonic()`
       instead of :code:`time.time()`
 
   * Improvements:

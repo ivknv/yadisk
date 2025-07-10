@@ -186,6 +186,36 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 .. _Руководство по миграции: https://yadisk.readthedocs.io/ru/latest/migration_guide.html
 .. _PR #57: https://github.com/ivknv/yadisk/pull/57
 
+* **Release 3.4.0 (2025-07-10)**
+
+  * Нововведения:
+
+    * Добавлены методы для управления настройками публичного доступа к ресурсам:
+
+      * :code:`Client.update_public_settings()`
+      * :code:`Client.get_public_settings()`
+      * :code:`Client.get_public_available_settings()`
+
+      Внимание: похоже, что эти эндпоинты не полностью соответствуют
+      официальной документации REST API, их функциональность на практике
+      ограничена.
+
+    * Добавлен новый класс исключений :code:`PasswordRequiredError`
+
+    * Добавлено несколько новых полей :code:`DiskInfoObject`:
+
+      * :code:`deletion_restricion_days`
+      * :code:`hide_screenshots_in_photoslice`
+      * :code:`is_legal_entity`
+
+    * Реализован метод :code:`__dir__()` для объектов ответов сервера
+
+  * Улучшения:
+
+    * :code:`repr()` объектов ответов API теперь показывает только те ключи,
+      которые фактически присутствуют (вместо отображения их значений как
+      :code:`None`, как раньше)
+
 * **Release 3.3.0 (2025-04-29)**
 
   * Нововведения:
