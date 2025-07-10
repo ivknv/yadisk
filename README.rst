@@ -3,7 +3,7 @@ YaDisk
 
 .. |RTD Badge| image:: https://img.shields.io/readthedocs/yadisk.svg
    :alt: Read the Docs
-   :target: https://yadisk.readthedocs.io/en/latest/
+   :target: https://yadisk.readthedocs.io/ru/latest/
 
 .. |CI Badge| image:: https://img.shields.io/github/actions/workflow/status/ivknv/yadisk/lint_and_test.yml
    :alt: GitHub Actions Workflow Status
