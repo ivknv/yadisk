@@ -51,13 +51,13 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 
 .. code:: bash
 
-    pip install yadisk[sync_defaults]
+    pip install yadisk[sync-defaults]
 
 Для асинхронного API (устанавливает :code:`httpx` и :code:`aiofiles`):
 
 .. code:: bash
 
-   pip install yadisk[async_defaults]
+   pip install yadisk[async-defaults]
 
 Вы можете также вручную установить нужные библиотеки:
 
@@ -67,7 +67,7 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
    pip install yadisk[pycurl]
 
    # Для использования совместно с aiohttp, также установит aiofiles
-   pip install yadisk[async_files,aiohttp]
+   pip install yadisk[async-files,aiohttp]
 
 Примеры
 *******

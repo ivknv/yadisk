@@ -1,4 +1,4 @@
--e .[async_files,aiohttp,httpx,pycurl,requests]
+-e .[async-files,aiohttp,httpx,pycurl,requests]
 
 # Stub packages
 types-aiofiles

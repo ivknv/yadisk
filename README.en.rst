@@ -47,13 +47,13 @@ For synchronous API (installs :code:`requests`):
 
 .. code:: bash
 
-   pip install yadisk[sync_defaults]
+   pip install yadisk[sync-defaults]
 
 For asynchronous API (installs :code:`aiofiles` and :code:`httpx`):
 
 .. code:: bash
 
-   pip install yadisk[async_defaults]
+   pip install yadisk[async-defaults]
 
 Alternatively, you can manually choose which optional libraries to install:
 
@@ -63,7 +63,7 @@ Alternatively, you can manually choose which optional libraries to install:
    pip install yadisk[pycurl]
 
    # For use with aiohttp, will also install aiofiles
-   pip install yadisk[async_files,aiofiles]
+   pip install yadisk[async-files,aiofiles]
 
 Examples
 ********
