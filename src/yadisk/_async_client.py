@@ -1494,7 +1494,7 @@ class AsyncClient:
                 schema, path_without_schema = remove_path_schema(path)
 
                 # Extract the parent directory
-                head, tail = posixpath.split(path_without_schema)
+                head, _tail = posixpath.split(path_without_schema)
                 head = head.strip("/")
 
                 if head == "":

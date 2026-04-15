@@ -163,7 +163,7 @@ def remove_path_schema(path: str) -> Tuple[str, str]:
         return "", path
 
     if any(path.startswith(schema + "/") for schema in KNOWN_SCHEMAS):
-        schema, sep, path = path.partition(":/")
+        schema, _sep, path = path.partition(":/")
 
         return schema, path
 
