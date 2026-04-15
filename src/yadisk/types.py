@@ -81,13 +81,13 @@ TimeoutParameter: TypeAlias = Optional[
 Headers: TypeAlias = Mapping[str, str]
 
 #: Request payload - data to be uploaded
-Payload: TypeAlias = Union[bytes, Iterator[bytes]]
+Payload: TypeAlias = Union[bytes, Iterator[bytes], BinaryIO]
 
 #: Callback function that is invoked to consume the streamed HTTP response body
 ConsumeCallback: TypeAlias = Callable[[bytes], None]
 
 #: Request payload - data to be uploaded (async variant)
-AsyncPayload: TypeAlias = Union[bytes, Iterator[bytes], AsyncIterator[bytes]]
+AsyncPayload: TypeAlias = Union[bytes, Iterator[bytes], AsyncIterator[bytes], BinaryIO, "BinaryAsyncFileLike"]
 
 #: Callback function (may be asynchronous) that is invoked to consume the
 #: streamed HTTP response body
