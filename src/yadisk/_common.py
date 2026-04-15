@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-import asyncio
 import datetime
 import inspect
 
@@ -172,7 +171,8 @@ def remove_path_schema(path: str) -> Tuple[str, str]:
 
 
 def is_async_func(func: Any) -> bool:
-    return inspect.isgeneratorfunction(func) or asyncio.iscoroutinefunction(func)
+    return inspect.isgeneratorfunction(func) or inspect.iscoroutinefunction(func)
+
 
 def is_default_timeout(timeout: TimeoutParameter) -> bool:
     return timeout is ...

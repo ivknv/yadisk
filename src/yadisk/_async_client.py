@@ -59,7 +59,7 @@ from ._client_common import (
     _validate_link_response, _validate_get_type_response
 )
 
-from ._common import remove_path_schema
+from ._common import remove_path_schema, is_async_func
 
 _default_open_file: AsyncOpenFileCallback
 
@@ -192,10 +192,6 @@ async def read_in_chunks_sync(file: IO, chunk_size: int = 64 * 1024) -> Union[As
                                                                               AsyncGenerator[bytes, None]]:
     while chunk := file.read(chunk_size):
         yield chunk
-
-
-def is_async_func(func: Any) -> bool:
-    return inspect.isgeneratorfunction(func) or asyncio.iscoroutinefunction(func)
 
 
 async def _file_tell(file: Any) -> int:
