@@ -1125,7 +1125,10 @@ class AsyncClient:
             await auto_retry(attempt, n_retries, retry_interval)
         finally:
             if close_file and file is not None:
-                await file.close()
+                if is_async_func(file.close):
+                    await file.close()
+                else:
+                    file.close()
 
     async def upload(
         self,
@@ -1306,7 +1309,10 @@ class AsyncClient:
             return await auto_retry(attempt, n_retries, retry_interval)
         finally:
             if close_file and file is not None:
-                await file.close()
+                if is_async_func(file.close):
+                    await file.close()
+                else:
+                    file.close()
 
     async def download(
         self,
