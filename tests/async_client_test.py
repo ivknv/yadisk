@@ -8,7 +8,7 @@ import posixpath
 import sys
 import tempfile
 
-from typing import Any
+from typing import Any, Union, BinaryIO
 from io import BytesIO
 
 import aiofiles
@@ -18,6 +18,8 @@ from yadisk._common import is_operation_link, ensure_path_has_schema, remove_pat
 from yadisk._api import GetOperationStatusRequest
 
 import pytest
+
+from yadisk.types import FileOpenMode
 
 __all__ = ["TestAsyncClient"]
 
@@ -209,7 +211,21 @@ class TestAsyncClient:
         reason="won't work on Windows with Python < 3.12"
     )
     @pytest.mark.usefixtures("async_client_test")
-    async def test_upload_and_download(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+    @pytest.mark.parametrize("use_sync_open_function", (True, False))
+    async def test_upload_and_download(
+        self,
+        async_client: yadisk.AsyncClient,
+        disk_root: str,
+        use_sync_open_function: bool
+    ) -> None:
+        # Ensure to test synchronous file IO here
+        # see https://github.com/ivknv/yadisk/issues/62
+        if use_sync_open_function:
+            async def sync_open(path: Union[str, bytes], mode: FileOpenMode) -> BinaryIO:
+                return open(path, mode)
+
+            async_client.open_file = sync_open
+
         with open_tmpfile("w+b") as buf1, open_tmpfile("w+b") as buf2:
             buf1.write(b"0" * 1024**2)
             buf1.seek(0)
