@@ -156,6 +156,8 @@ def client(
 ) -> Generator[yadisk.Client, None, None]:
     base_gateway_url = f"http://{gateway_host}:{gateway_port}"
 
+    test_session: yadisk.Session
+
     if replay_enabled:
         test_session = TestSession(
             yadisk.import_session(request.param)(),
@@ -164,7 +166,7 @@ def client(
             download_base_url=f"{base_gateway_url}/replay/response/download",
             upload_base_url=f"{base_gateway_url}/replay/response/upload"
         )
-    else:
+    elif recording_enabled:
         test_session = TestSession(
             yadisk.import_session(request.param)(),
             disk_base_url=f"{base_gateway_url}/forward/disk",
@@ -172,6 +174,8 @@ def client(
             download_base_url=f"{base_gateway_url}/forward/download",
             upload_base_url=f"{base_gateway_url}/forward/upload"
         )
+    else:
+        test_session = yadisk.import_session(request.param)()
 
     with yadisk.Client(
         os.environ["PYTHON_YADISK_APP_ID"],
@@ -198,6 +202,8 @@ async def async_client(
 ) -> AsyncGenerator[yadisk.AsyncClient, None]:
     base_gateway_url = f"http://{gateway_host}:{gateway_port}"
 
+    test_session: yadisk.AsyncSession
+
     if replay_enabled:
         test_session = AsyncTestSession(
             yadisk.import_async_session(request.param)(),
@@ -206,7 +212,7 @@ async def async_client(
             download_base_url=f"{base_gateway_url}/replay/response/download",
             upload_base_url=f"{base_gateway_url}/replay/response/upload"
         )
-    else:
+    elif recording_enabled:
         test_session = AsyncTestSession(
             yadisk.import_async_session(request.param)(),
             disk_base_url=f"{base_gateway_url}/forward/disk",
@@ -214,6 +220,8 @@ async def async_client(
             download_base_url=f"{base_gateway_url}/forward/download",
             upload_base_url=f"{base_gateway_url}/forward/upload"
         )
+    else:
+        test_session = yadisk.import_async_session(request.param)()
 
     async with yadisk.AsyncClient(
         os.environ["PYTHON_YADISK_APP_ID"],
