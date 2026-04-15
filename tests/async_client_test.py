@@ -14,7 +14,7 @@ from io import BytesIO
 import aiofiles
 
 import yadisk
-from yadisk._common import is_operation_link, ensure_path_has_schema, remove_path_schema
+from yadisk._common import is_operation_link, ensure_path_has_scheme, remove_path_scheme
 from yadisk._api import GetOperationStatusRequest
 
 import pytest
@@ -199,12 +199,12 @@ class TestAsyncClient:
         assert await async_client.is_dir(path3)
 
     @pytest.mark.usefixtures("async_client_test")
-    async def test_makedirs_without_schema(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
-        await self._test_makedirs(async_client, remove_path_schema(disk_root)[1])
+    async def test_makedirs_without_scheme(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        await self._test_makedirs(async_client, remove_path_scheme(disk_root)[1])
 
     @pytest.mark.usefixtures("async_client_test")
-    async def test_makedirs_with_schema(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
-        await self._test_makedirs(async_client, ensure_path_has_schema(disk_root, "disk"))
+    async def test_makedirs_with_scheme(self, async_client: yadisk.AsyncClient, disk_root: str) -> None:
+        await self._test_makedirs(async_client, ensure_path_has_scheme(disk_root, "disk"))
 
     @pytest.mark.skipif(
         platform.system() == "Windows" and sys.version_info < (3, 12),
@@ -352,7 +352,7 @@ class TestAsyncClient:
 
     async def test_rename_edgecases(self, async_client: yadisk.AsyncClient, mocker) -> None:
         # Test a few edgecases, make sure the destination paths are correct
-        # Path schemas must be preserved
+        # Path schemes must be preserved
 
         dst_paths = []
 
@@ -377,14 +377,14 @@ class TestAsyncClient:
         with pytest.raises(ValueError):
             await async_client.rename("app:/", "another_directory")
 
-        await async_client.rename("disk:", "not_a_schema")
+        await async_client.rename("disk:", "not_a_scheme")
         await async_client.rename("disk:/asd.txt", "renamed.txt")
         await async_client.rename("asd.txt", "renamed.txt")
         await async_client.rename("disk:/directory/file1.txt", "renamed_file.txt")
         await async_client.rename("disk:/directory/", "renamed_dir")
 
         assert dst_paths == [
-            "not_a_schema", "disk:/renamed.txt", "renamed.txt",
+            "not_a_scheme", "disk:/renamed.txt", "renamed.txt",
             "disk:/directory/renamed_file.txt", "disk:/renamed_dir"
         ]
 
@@ -522,15 +522,15 @@ class TestAsyncClient:
         await async_client.upload(buf1, path, overwrite=True, n_retries=50)
         assert await async_client.is_file(path)
 
-    def test_ensure_path_has_schema(self) -> None:
+    def test_ensure_path_has_scheme(self) -> None:
         # See https://github.com/ivknv/yadisk/issues/26 for more details
 
-        assert ensure_path_has_schema("disk:") == "disk:/disk:"
-        assert ensure_path_has_schema("trash:", default_schema="trash") == "trash:/trash:"
-        assert ensure_path_has_schema("/asd:123") == "disk:/asd:123"
-        assert ensure_path_has_schema("/asd:123", "trash") == "trash:/asd:123"
-        assert ensure_path_has_schema("example/path") == "disk:/example/path"
-        assert ensure_path_has_schema("app:/test") == "app:/test"
+        assert ensure_path_has_scheme("disk:") == "disk:/disk:"
+        assert ensure_path_has_scheme("trash:", default_scheme="trash") == "trash:/trash:"
+        assert ensure_path_has_scheme("/asd:123") == "disk:/asd:123"
+        assert ensure_path_has_scheme("/asd:123", "trash") == "trash:/asd:123"
+        assert ensure_path_has_scheme("example/path") == "disk:/example/path"
+        assert ensure_path_has_scheme("app:/test") == "app:/test"
 
     @pytest.mark.usefixtures("async_client_test")
     async def test_upload_download_non_seekable(

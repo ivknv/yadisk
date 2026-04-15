@@ -29,14 +29,14 @@ from .types import TimeoutParameter, Tuple
 __all__ = [
     "bool_or_error",
     "dict_or_error",
-    "ensure_path_has_schema",
+    "ensure_path_has_scheme",
     "float_or_error",
     "int_or_error",
     "is_default_timeout",
     "is_operation_link",
     "is_public_resource_link",
     "is_resource_link",
-    "remove_path_schema",
+    "remove_path_scheme",
     "str_or_dict_or_error",
     "str_or_error",
     "typed_list",
@@ -106,10 +106,10 @@ def yandex_date(string: str) -> datetime.datetime:
 
 
 def _is_endpoint_link(link: str, base_endpoint_url: str) -> bool:
-    link_schema, _, link = link.partition("://")
-    endpoint_schema, _, base_endpoint_url = base_endpoint_url.partition("://")
+    link_scheme, _, link = link.partition("://")
+    endpoint_scheme, _, base_endpoint_url = base_endpoint_url.partition("://")
 
-    if link_schema not in ("http", "https") or endpoint_schema not in ("http", "https"):
+    if link_scheme not in ("http", "https") or endpoint_scheme not in ("http", "https"):
         return False
 
     if not base_endpoint_url.endswith("/") and not base_endpoint_url.endswith("?"):
@@ -133,39 +133,39 @@ def is_public_resource_link(url: str) -> bool:
 KNOWN_SCHEMAS = ("disk:", "trash:", "app:", "photounlim:")
 
 
-def ensure_path_has_schema(path: str, default_schema: str = "disk") -> str:
-    # Modifies path to always have a schema (disk:/, trash:/ or app:/).
-    # Without the schema Yandex.Disk won't let you upload filenames with the ':' character.
+def ensure_path_has_scheme(path: str, default_scheme: str = "disk") -> str:
+    # Modifies path to always have a scheme (disk:/, trash:/ or app:/).
+    # Without the scheme Yandex.Disk won't let you upload filenames with the ':' character.
     # See https://github.com/ivknv/yadisk/issues/26 for more details
 
     if path in KNOWN_SCHEMAS:
-        return default_schema + ":/" + path
+        return default_scheme + ":/" + path
 
     if path.startswith("/"):
-        return default_schema + ":" + path
+        return default_scheme + ":" + path
 
-    if any(path.startswith(schema + "/") for schema in KNOWN_SCHEMAS):
+    if any(path.startswith(scheme + "/") for scheme in KNOWN_SCHEMAS):
         return path
 
-    return default_schema + ":/" + path
+    return default_scheme + ":/" + path
 
 
-def remove_path_schema(path: str) -> Tuple[str, str]:
+def remove_path_scheme(path: str) -> Tuple[str, str]:
     """
-        Remove schema from path.
+        Remove scheme from path.
 
-        :param path: `str`, path to remove the schema from
+        :param path: `str`, path to remove the scheme from
 
-        :returns: `tuple[str, str]`, removed schema (without `:/`) and the path without it
+        :returns: `tuple[str, str]`, removed scheme (without `:/`) and the path without it
     """
 
     if path.startswith("/") or path in KNOWN_SCHEMAS:
         return "", path
 
-    if any(path.startswith(schema + "/") for schema in KNOWN_SCHEMAS):
-        schema, _sep, path = path.partition(":/")
+    if any(path.startswith(scheme + "/") for scheme in KNOWN_SCHEMAS):
+        scheme, _sep, path = path.partition(":/")
 
-        return schema, path
+        return scheme, path
 
     return "", path
 

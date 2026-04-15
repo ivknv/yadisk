@@ -31,7 +31,7 @@ from ..objects import (
     PublicSettingsObject, PublicAvailableSettingsObject
 )
 
-from .._common import is_operation_link, ensure_path_has_schema
+from .._common import is_operation_link, ensure_path_has_scheme
 from ..exceptions import InvalidResponseError
 
 from .._typing_compat import Iterable, Dict, List
@@ -157,7 +157,7 @@ class UnpublishRequest(APIRequest):
     ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
-        self.params["path"] = ensure_path_has_schema(path)
+        self.params["path"] = ensure_path_has_scheme(path)
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)
@@ -200,7 +200,7 @@ class GetDownloadLinkRequest(APIRequest):
     ):
         APIRequest.__init__(self, session, **kwargs)
 
-        self.params["path"] = ensure_path_has_schema(path)
+        self.params["path"] = ensure_path_has_scheme(path)
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)
@@ -249,7 +249,7 @@ class GetTrashRequest(APIRequest):
     ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
-        self.params["path"] = ensure_path_has_schema(path, "trash")
+        self.params["path"] = ensure_path_has_scheme(path, "trash")
         self.params["offset"] = offset
         self.params["limit"] = limit
 
@@ -312,7 +312,7 @@ class RestoreTrashRequest(APIRequest):
     ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
-        self.params["path"] = ensure_path_has_schema(path, "trash")
+        self.params["path"] = ensure_path_has_scheme(path, "trash")
         self.params["overwrite"] = "true" if overwrite else "false"
         self.params["force_async"] = "true" if force_async else "false"
 
@@ -375,7 +375,7 @@ class DeleteTrashRequest(APIRequest):
         APIRequest.__init__(self, session, **kwargs)
 
         if path is not None:
-            self.params["path"] = ensure_path_has_schema(path, "trash")
+            self.params["path"] = ensure_path_has_scheme(path, "trash")
 
         self.params["force_async"] = "true" if force_async else "false"
 
@@ -500,8 +500,8 @@ class CopyRequest(APIRequest):
     ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
-        self.params["from"] = ensure_path_has_schema(src_path)
-        self.params["path"] = ensure_path_has_schema(dst_path)
+        self.params["from"] = ensure_path_has_scheme(src_path)
+        self.params["path"] = ensure_path_has_scheme(dst_path)
         self.params["overwrite"] = "true" if overwrite else "false"
         self.params["force_async"] = "true" if force_async else "false"
 
@@ -567,7 +567,7 @@ class GetMetaRequest(APIRequest):
     ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
-        self.params["path"] = ensure_path_has_schema(path)
+        self.params["path"] = ensure_path_has_scheme(path)
 
         if limit is not None:
             self.params["limit"] = limit
@@ -629,7 +629,7 @@ class GetUploadLinkRequest(APIRequest):
     ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
-        self.params["path"] = ensure_path_has_schema(path)
+        self.params["path"] = ensure_path_has_scheme(path)
         self.params["overwrite"] = "true" if overwrite else "false"
 
         if fields is not None:
@@ -670,7 +670,7 @@ class MkdirRequest(APIRequest):
     ):
         APIRequest.__init__(self, session, **kwargs)
 
-        self.params["path"] = ensure_path_has_schema(path)
+        self.params["path"] = ensure_path_has_scheme(path)
 
         if fields is not None:
             self.params["fields"] = ",".join(fields)
@@ -719,7 +719,7 @@ class PublishRequest(APIRequest):
     ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
-        self.params["path"] = ensure_path_has_schema(path)
+        self.params["path"] = ensure_path_has_scheme(path)
         self.params["allow_address_access"] = "true" if allow_address_access else "false"
         self.data = {"public_settings": public_settings or {}}
 
@@ -767,7 +767,7 @@ class GetPublicSettingsRequest(APIRequest):
     ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
-        self.params["path"] = ensure_path_has_schema(path)
+        self.params["path"] = ensure_path_has_scheme(path)
         self.params["allow_address_access"] = "true" if allow_address_access else "false"
 
         if fields is not None:
@@ -806,7 +806,7 @@ class GetPublicAvailableSettingsRequest(APIRequest):
     ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
-        self.params["path"] = ensure_path_has_schema(path)
+        self.params["path"] = ensure_path_has_scheme(path)
 
     def process_json(
         self,
@@ -844,7 +844,7 @@ class UpdatePublicSettingsRequest(APIRequest):
     ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
-        self.params["path"] = ensure_path_has_schema(path)
+        self.params["path"] = ensure_path_has_scheme(path)
         self.data = typing.cast(Dict, public_settings)
 
     def process_json(self, js: "JSON", yadisk: Optional["AnyClient"] = None, **kwargs) -> None:
@@ -880,7 +880,7 @@ class UploadURLRequest(APIRequest):
         APIRequest.__init__(self, session, **kwargs)
 
         self.params["url"] = url
-        self.params["path"] = ensure_path_has_schema(path)
+        self.params["path"] = ensure_path_has_scheme(path)
         self.params["disable_redirects"] = "true" if disable_redirects else "false"
 
         if fields is not None:
@@ -932,7 +932,7 @@ class DeleteRequest(APIRequest):
     ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
-        self.params["path"] = ensure_path_has_schema(path)
+        self.params["path"] = ensure_path_has_scheme(path)
         self.params["permanently"] = "true" if permanently else "false"
         self.params["force_async"] = "true" if force_async else "false"
 
@@ -1005,7 +1005,7 @@ class SaveToDiskRequest(APIRequest):
             self.params["path"] = path
 
         if save_path is not None:
-            self.params["save_path"] = ensure_path_has_schema(save_path)
+            self.params["save_path"] = ensure_path_has_scheme(save_path)
 
         self.params["force_async"] = "true" if force_async else "false"
 
@@ -1187,8 +1187,8 @@ class MoveRequest(APIRequest):
     ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
-        self.params["from"] = ensure_path_has_schema(src_path)
-        self.params["path"] = ensure_path_has_schema(dst_path)
+        self.params["from"] = ensure_path_has_scheme(src_path)
+        self.params["path"] = ensure_path_has_scheme(dst_path)
         self.params["overwrite"] = "true" if overwrite else "false"
         self.params["force_async"] = "true" if force_async else "false"
 
@@ -1319,7 +1319,7 @@ class PatchRequest(APIRequest):
     ) -> None:
         APIRequest.__init__(self, session, **kwargs)
 
-        self.params["path"] = ensure_path_has_schema(path)
+        self.params["path"] = ensure_path_has_scheme(path)
         self.data = {"custom_properties": properties}
 
         if fields is not None:
