@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -69,7 +69,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       shell: bash
       run: |
-        if [[ "${{ matrix.os }}" == "ubuntu-latest" ]] && [[ "${{ matrix.python-version }}" == "3.13" ]]; then
+        if [[ "${{ matrix.os }}" == "ubuntu-latest" ]] && [[ "${{ matrix.python-version }}" == "3.14" ]]; then
           pip install coveralls
           coveralls
         fi
