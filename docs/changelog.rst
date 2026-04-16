@@ -15,9 +15,22 @@ Changelog
 .. _issue #53: https://github.com/ivknv/yadisk/issues/53
 .. _requests: https://pypi.org/project/requests
 .. _PR #57: https://github.com/ivknv/yadisk/pull/57
+.. _issue #62: https://github.com/ivknv/yadisk/issues/62
 
 .. role:: python(code)
    :language: python
+
+* **Release 3.4.1 (2026-04-16)**
+
+  * Bug fixes:
+
+    * Fixed a :code:`TypeError` when passing a file path to
+      :any:`AsyncClient.download()` or :any:`AsyncClient.upload()` while not
+      having :code:`aiofiles` installed (see `issue #62`_)
+
+    * Work around Yandex.Disk ignoring request body for :any:`Client.patch()` and
+      :any:`Client.update_public_settings()` when using :code:`pycurl` due to
+      setting :code:`Transfer-Encoding: chunked` by default
 
 * **Release 3.4.0 (2025-07-10)**
 
