@@ -59,7 +59,7 @@ from ._client_common import (
     _validate_link_response, _validate_get_type_response
 )
 
-from ._common import remove_path_schema
+from ._common import remove_path_scheme, is_async_func
 
 _default_open_file: AsyncOpenFileCallback
 
@@ -192,10 +192,6 @@ async def read_in_chunks_sync(file: IO, chunk_size: int = 64 * 1024) -> Union[As
                                                                               AsyncGenerator[bytes, None]]:
     while chunk := file.read(chunk_size):
         yield chunk
-
-
-def is_async_func(func: Any) -> bool:
-    return inspect.isgeneratorfunction(func) or asyncio.iscoroutinefunction(func)
 
 
 async def _file_tell(file: Any) -> int:
@@ -1129,7 +1125,10 @@ class AsyncClient:
             await auto_retry(attempt, n_retries, retry_interval)
         finally:
             if close_file and file is not None:
-                await file.close()
+                if is_async_func(file.close):
+                    await file.close()
+                else:
+                    file.close()
 
     async def upload(
         self,
@@ -1310,7 +1309,10 @@ class AsyncClient:
             return await auto_retry(attempt, n_retries, retry_interval)
         finally:
             if close_file and file is not None:
-                await file.close()
+                if is_async_func(file.close):
+                    await file.close()
+                else:
+                    file.close()
 
     async def download(
         self,
@@ -1487,21 +1489,21 @@ class AsyncClient:
             try:
                 return await self.mkdir(path, **kwargs)
             except ParentNotFoundError as e:
-                # We first have to remove the schema, otherwise posixpath.split()
+                # We first have to remove the scheme, otherwise posixpath.split()
                 # may treat it as part of the path
-                schema, path_without_schema = remove_path_schema(path)
+                scheme, path_without_scheme = remove_path_scheme(path)
 
                 # Extract the parent directory
-                head, tail = posixpath.split(path_without_schema)
+                head, _tail = posixpath.split(path_without_scheme)
                 head = head.strip("/")
 
                 if head == "":
                     # We should never find ourselves in this situation
                     raise e from None
 
-                # Restore the schema
-                if schema:
-                    head = f"{schema}:/{head}"
+                # Restore the scheme
+                if scheme:
+                    head = f"{scheme}:/{head}"
 
                 await self.makedirs(head, **kwargs)
 
@@ -1812,18 +1814,18 @@ class AsyncClient:
         if "/" in new_name or new_name in (".", "..", ""):
             raise ValueError(f"Invalid filename: {new_name}")
 
-        # Remove schema first, otherwise PurePosixPath will treat it as part of the path
-        schema, src_path_without_schema = remove_path_schema(src_path)
-        sanitized_src_path = PurePosixPath(src_path_without_schema.strip("/"))
+        # Remove scheme first, otherwise PurePosixPath will treat it as part of the path
+        scheme, src_path_without_scheme = remove_path_scheme(src_path)
+        sanitized_src_path = PurePosixPath(src_path_without_scheme.strip("/"))
 
         if len(sanitized_src_path.parts) == 0:
             raise ValueError("Cannot rename root")
 
         dst_path = str(sanitized_src_path.parent / new_name)
 
-        # Restore schema back
-        if schema:
-            dst_path = f"{schema}:/{dst_path}"
+        # Restore scheme back
+        if scheme:
+            dst_path = f"{scheme}:/{dst_path}"
 
         return await self.move(src_path, dst_path, **kwargs)
 

@@ -25,7 +25,7 @@ from ._link_object import LinkObject
 from ._disk import UserPublicInfoObject
 from .._common import (
     typed_list, yandex_date, is_resource_link, is_public_resource_link,
-    ensure_path_has_schema, str_or_error, int_or_error, float_or_error,
+    ensure_path_has_scheme, str_or_error, int_or_error, float_or_error,
     bool_or_error, dict_or_error, str_or_dict_or_error
 )
 from ..types import (
@@ -2940,7 +2940,7 @@ class ResourceLinkObject(LinkObject):
 
         if self.href is not None and is_resource_link(self.href):
             try:
-                self.path = ensure_path_has_schema(
+                self.path = ensure_path_has_scheme(
                     parse_qs(urlparse(self.href).query).get("path", [])[0])
             except IndexError:
                 pass
@@ -2950,7 +2950,7 @@ class ResourceLinkObject(LinkObject):
         if path is None:
             return cls(yadisk=yadisk)
 
-        path = ensure_path_has_schema(path)
+        path = ensure_path_has_scheme(path)
 
         return cls(
             {"method": "GET",

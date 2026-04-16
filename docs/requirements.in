@@ -1,0 +1,6 @@
+# It is expected that the install command is running from the parent directory
+-e .[async_files,aiohttp,httpx,pycurl,requests]
+
+sphinx==7.4.7
+sphinx-intl==2.3.2
+sphinx_rtd_theme==3.1.0

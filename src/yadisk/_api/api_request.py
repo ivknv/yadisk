@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this library; if not, see <http://www.gnu.org/licenses/>.
 
-import asyncio
+import inspect
 from ..exceptions import InvalidResponseError
 
 from ..utils import auto_retry, async_auto_retry, CaseInsensitiveDict
@@ -217,7 +217,7 @@ class APIRequest(object):
         except ValueError as e:
             raise InvalidResponseError(f"Server returned invalid response: {e}") from e
 
-        if asyncio.iscoroutinefunction(then):
+        if inspect.iscoroutinefunction(then):
             return await then(result)
         else:
             return then(result)

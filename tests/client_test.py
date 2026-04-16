@@ -2,7 +2,7 @@
 
 import yadisk
 
-from yadisk._common import is_operation_link, ensure_path_has_schema, remove_path_schema
+from yadisk._common import is_operation_link, ensure_path_has_scheme, remove_path_scheme
 from yadisk._api import GetOperationStatusRequest
 
 import hashlib
@@ -181,12 +181,12 @@ class TestClient:
         assert client.is_dir(path3)
 
     @pytest.mark.usefixtures("sync_client_test")
-    def test_makedirs_without_schema(self, client: yadisk.Client, disk_root: str) -> None:
-        self._test_makedirs(client, remove_path_schema(disk_root)[1])
+    def test_makedirs_without_scheme(self, client: yadisk.Client, disk_root: str) -> None:
+        self._test_makedirs(client, remove_path_scheme(disk_root)[1])
 
     @pytest.mark.usefixtures("sync_client_test")
-    def test_makedirs_with_schema(self, client: yadisk.Client, disk_root: str) -> None:
-        self._test_makedirs(client, ensure_path_has_schema(disk_root, "disk"))
+    def test_makedirs_with_scheme(self, client: yadisk.Client, disk_root: str) -> None:
+        self._test_makedirs(client, ensure_path_has_scheme(disk_root, "disk"))
 
     @pytest.mark.skipif(
         platform.system() == "Windows" and sys.version_info < (3, 12),
@@ -285,7 +285,7 @@ class TestClient:
 
     def test_rename_edgecases(self, client: yadisk.Client, mocker) -> None:
         # Test a few edgecases, make sure the destination paths are correct
-        # Path schemas must be preserved
+        # Path schemes must be preserved
 
         dst_paths = []
 
@@ -310,14 +310,14 @@ class TestClient:
         with pytest.raises(ValueError):
             client.rename("app:/", "another_directory")
 
-        client.rename("disk:", "not_a_schema")
+        client.rename("disk:", "not_a_scheme")
         client.rename("disk:/asd.txt", "renamed.txt")
         client.rename("asd.txt", "renamed.txt")
         client.rename("disk:/directory/file1.txt", "renamed_file.txt")
         client.rename("disk:/directory/", "renamed_dir")
 
         assert dst_paths == [
-            "not_a_schema", "disk:/renamed.txt", "renamed.txt",
+            "not_a_scheme", "disk:/renamed.txt", "renamed.txt",
             "disk:/directory/renamed_file.txt", "disk:/renamed_dir"
         ]
 
@@ -443,15 +443,15 @@ class TestClient:
         assert is_operation_link(request.url)
         assert request.url.startswith("https://")
 
-    def test_ensure_path_has_schema(self) -> None:
+    def test_ensure_path_has_scheme(self) -> None:
         # See https://github.com/ivknv/yadisk/issues/26 for more details
 
-        assert ensure_path_has_schema("disk:") == "disk:/disk:"
-        assert ensure_path_has_schema("trash:", default_schema="trash") == "trash:/trash:"
-        assert ensure_path_has_schema("/asd:123") == "disk:/asd:123"
-        assert ensure_path_has_schema("/asd:123", "trash") == "trash:/asd:123"
-        assert ensure_path_has_schema("example/path") == "disk:/example/path"
-        assert ensure_path_has_schema("app:/test") == "app:/test"
+        assert ensure_path_has_scheme("disk:") == "disk:/disk:"
+        assert ensure_path_has_scheme("trash:", default_scheme="trash") == "trash:/trash:"
+        assert ensure_path_has_scheme("/asd:123") == "disk:/asd:123"
+        assert ensure_path_has_scheme("/asd:123", "trash") == "trash:/asd:123"
+        assert ensure_path_has_scheme("example/path") == "disk:/example/path"
+        assert ensure_path_has_scheme("app:/test") == "app:/test"
 
     @pytest.mark.usefixtures("sync_client_test")
     def test_upload_download_non_seekable(

@@ -266,13 +266,9 @@ class PycURLSession(Session):
 
         curl.setopt(pycurl.HTTPHEADER, [f"{k}:{v}" for k, v in curl_headers.items() if k and v])
 
-
         if curl_options is not None:
             for option, value in curl_options.items():
                 curl.setopt(option, value)
-
-        if isinstance(data, bytes):
-            data = BytesIO(data)
 
         uploading_file = False
 
@@ -280,10 +276,23 @@ class PycURLSession(Session):
             curl.setopt(pycurl.UPLOAD, True)
             uploading_file = True
 
-            if isinstance(data, Iterator):
-                curl_data = IterableReader(data)
-            else:
+            curl_data: Any
+
+            if isinstance(data, bytes):
+                curl_data = BytesIO(data)
+
+                # Some requests may silently fail without specifying the exact
+                # payload size. This appears to happen with PatchRequest (PUT
+                # /v1/disk/resources). The server claims to have received an
+                # empty string, but when using the test API gateway (which
+                # forwards all requests using httpx) all data is sent
+                # correctly. Weird. This also doesn't seem to affect file
+                # uploads.
+                curl.setopt(pycurl.INFILESIZE, len(data))
+            elif hasattr(data, "read"):
                 curl_data = data
+            elif isinstance(data, Iterator):
+                curl_data = IterableReader(data)
 
             curl.setopt(pycurl.READDATA, curl_data)
 

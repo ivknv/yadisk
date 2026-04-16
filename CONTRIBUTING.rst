@@ -84,9 +84,9 @@ development dependencies and tools:
    # Enter the created virtual environment
    source .venv/bin/activate
 
-   # Now install development dependencies and tools (requirements-dev.txt)
-   # as well as tools needed to build the documentation (docs/requirements.txt)
-   pip install -r requirements-dev.txt -r docs/requirements.txt
+   # Now install development dependencies and tools, including the tools needed
+   # to build the documentation
+   pip install -r requirements-dev.txt
 
 Linting
 *******

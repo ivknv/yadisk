@@ -18,6 +18,7 @@
 
 import asyncio
 from collections import defaultdict
+import inspect
 import sys
 import time
 
@@ -258,7 +259,7 @@ async def async_auto_retry(
     if kwargs is None:
         kwargs = {}
 
-    is_coro = asyncio.iscoroutinefunction(func)
+    is_coro = inspect.iscoroutinefunction(func)
 
     # Suppress false type hint errors
     callback: Any = func

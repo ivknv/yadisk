@@ -185,6 +185,20 @@ YaDisk - это библиотека-клиент REST API Яндекс.Диск
 .. _requests: https://pypi.org/project/requests
 .. _Руководство по миграции: https://yadisk.readthedocs.io/ru/latest/migration_guide.html
 .. _PR #57: https://github.com/ivknv/yadisk/pull/57
+.. _issue #62: https://github.com/ivknv/yadisk/issues/62
+
+* **Release 3.4.1 (2026-04-16)**
+
+  * Исправления:
+
+    * Исправлена ошибка :code:`TypeError` при передаче пути к файлу в
+      :code:`AsyncClient.download()` или :code:`AsyncClient.upload()` без
+      установленного :code:`aiofiles` (см. `issue #62`_)
+
+    * Обход проблемы, когда Яндекс.Диск игнорирует тело запроса для
+      :code:`Client.patch()` и :code:`Client.update_public_settings()` при
+      использовании :code:`pycurl` из-за задания заголовка :code:`Transfer-Encoding: chunked`
+      по умолчанию
 
 * **Release 3.4.0 (2025-07-10)**
 
